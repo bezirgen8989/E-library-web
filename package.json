@@ -35,7 +35,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "test": "test",
+    "test": "craco test",
     "build": "craco build",
     "eject": "craco eject",
     "test-watch": "craco test",
