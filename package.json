@@ -29,6 +29,7 @@
     "react-scripts": "5.0.0",
     "react-slick": "^0.30.2",
     "redux": "^4.1.2",
+    "scripts": "^0.1.0",
     "slick-carousel": "^1.8.1",
     "yup": "^1.4.0"
   },
