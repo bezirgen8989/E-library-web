@@ -1,0 +1,331 @@
+.centered {
+  text-align: center;
+  margin: 0 auto;
+  padding: 0 16px;
+  min-width: 452px;
+  max-width: 452px;
+  @media (max-width: 450px) {
+    min-width: 100%;
+    max-width: 100%;
+  }
+}
+.centeredWrapper {
+  display: flex;
+  flex-grow: 1;
+  width: 50%;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100vh;
+}
+.footerCentered {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px 30px;
+  bottom: 30px;
+  @media (max-width: 450px) {
+    min-width: 100%;
+    display: block;
+    .login_subtitle{
+      text-align: center;
+      padding-bottom: 10px;
+    }
+  }
+}
+.logo_name {
+  font-size: 39px;
+  line-height: 47px;
+  color: #fff;
+  font-weight: 700;
+  padding-bottom: 37px;
+}
+.login_subtitle {
+  font-size: 18px;
+  line-height: 27px;
+  color: #fff;
+  font-weight: 700;
+  white-space: nowrap;
+  padding: 0 9px;
+}
+.sideOnboardingImg {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  padding: 13px;
+  @media (max-width: 1450px) {
+    display: none;
+  }
+}
+.inputField {
+  width: 100%;
+  height: 68px;
+  border-radius: 14px !important;
+  padding: 20px 16px 0;
+  color: #fff;
+  font-size: 21px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  outline: none;
+  background: rgba(255, 255, 255, 0.14);
+  font-weight: 700;
+
+  &::placeholder {
+    color: lightgrey;
+    font-weight: 400;
+  }
+
+  &:focus,
+  &:not(:placeholder-shown) {
+    border: 1px solid #b1886a !important;
+    background: #c69775;
+  }
+
+  &:focus + .inputLabel,
+  &:not(:placeholder-shown) + .inputLabel {
+    color: #FFEA84;
+  }
+}
+.errorInput {
+  background-color: #7c4540;
+  border: 1px solid #FF9084;
+}
+
+.error {
+  color: #FFD8D4;
+  background: #94524C;
+  font-size: 14px;
+  padding: 20px 20px 12px;
+  border-radius: 0 0 14px 14px;
+  margin-top: -10px;
+  text-align: start;
+}
+
+.inputLabel {
+  position: absolute;
+  top: 30%;
+  left: 16px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: lightgrey;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.inputWrapper .errorLabel {
+  color: #FFD8D4;
+}
+
+.inputLabel {
+  position: absolute;
+  top: 20px;
+  left: 16px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: lightgrey;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.inputWrapper {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.error {
+  color: #FFD8D4;
+  background: #94524C;
+  font-size: 14px;
+  padding: 20px 20px 12px;
+  border-radius: 0 0 14px 14px;
+  margin-top: -30px;
+  text-align: start;
+}
+.errorController {
+  color: #FFD8D4;
+  background: #94524C;
+  font-size: 14px;
+  padding: 20px 20px 12px;
+  border-radius: 0 0 14px 14px;
+  margin-top: -10px;
+  text-align: start;
+}
+
+.navTop {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px 40px 0;
+}
+
+.backBtn {
+  position: absolute;
+  top: 30px;
+  left: 40px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.backBtnRelative {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.backBtnRelativePage {
+  color: #996C42;
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.login_logo {
+  width: 100px;
+  margin: 0 auto;
+  padding-bottom: 15px;
+  img{
+    width: 100%;
+  }
+}
+
+//Upload photo
+
+.uploadSubtitle {
+  font-size: 21px;
+  font-weight: 700;
+  color: #fff;
+}
+
+//Language + modal
+
+.languageItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px 12px;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 21px !important;
+  color: #000 !important;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+  &.active {
+    background-color: #F3EDE8;
+    &:before {
+      content: ' ';
+      width: 21px;
+      height: 15px;
+      background-image: url('../../images/icons/langCheckIcon.svg');
+      background-repeat: no-repeat;
+      background-position: center;
+      position: absolute;
+      top: 17px;
+      right: 12px;
+    }
+  }
+}
+.searchInput {
+  border-radius: 12px;
+  background: #EEF0F0;
+  border: transparent;
+  height: 48px;
+}
+.languageList {
+  max-height: 450px;
+  overflow-y: auto;
+  padding-top: 16px;
+  padding-bottom: 10px;
+  padding-right: 20px;
+  scrollbar-width: thin;
+  scrollbar-color: lightgrey transparent;
+}
+
+/* WebKit Browsers (Chrome, Safari) */
+.languageList::-webkit-scrollbar {
+  width: 5px;
+}
+
+.languageList::-webkit-scrollbar-thumb {
+  background-color: lightgrey;
+  border-radius: 10px;
+}
+
+.languageList::-webkit-scrollbar-track {
+  background: transparent;
+  margin-right: 20px; /* Additional offset for scrollbar */
+}
+
+.languageSelectWrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: start;
+  height: 68px;
+  border-radius: 14px;
+  padding: 25px 16px 0;
+  color: #fff;
+  font-size: 21px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  outline: none;
+  background: rgba(255, 255, 255, 0.14);
+  font-weight: 700;
+  img {
+    width: 18px;
+    height: 18px;
+    margin-right: 7px;
+    margin-top: -3px;
+  }
+}
+.languageSelect {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 140%;
+  margin-right: 7px;
+}
+.inputWrapperLang {
+  position: relative;
+  margin-bottom: 16px;
+  background-image: url('../../images/icons/arrowDown.svg');
+  background-repeat: no-repeat;
+  background-position: top 50% right 31px;
+}
+.flagIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+.modalCloseIcon {
+  margin-top: 40px;
+  margin-right: 15px;
+}
+.recover_name {
+  font-size: 40px;
+  color: white;
+  font-weight: 700;
+
+}
+.recover_subtitle {
+  font-size: 18px;
+  color: white;
+  padding-bottom: 40px;
+}
+.success_subtitle {
+  font-size: 18px;
+  color: white;
+  padding-bottom: 25px;
+}

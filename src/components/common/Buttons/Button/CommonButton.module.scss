@@ -1,0 +1,24 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 54px;
+  padding: 0 20px;
+  width: 100%;
+  color: #000;
+  font-size: 16px;
+  background: #fff;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 700;
+  white-space: nowrap;
+  border: none;
+  &:hover {
+    background: #FCE9DB;
+    color: #000;
+  }
+  &:active {
+    background: #FCE9DB;
+  }
+}

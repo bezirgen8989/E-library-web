@@ -1,0 +1,209 @@
+@import url('https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap');
+
+html {
+  width: 100%;
+  height: 100%;
+  font-size: 16px;
+}
+
+body {
+  width: 100%;
+  min-width: 320px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Gabarito', sans-serif !important;
+  -webkit-text-size-adjust: 100%;
+}
+h1 {
+  font-size: 44px !important;
+}
+h1, h2 {
+  color: #000 !important;
+  margin-bottom: 0 !important;
+}
+h2 {
+  font-weight: 700;
+  font-size: 27px;
+}
+h3 {
+  color: #fff !important;
+  margin-bottom: 0 !important;
+  padding-left: 65px;
+  opacity: 0.8 !important;
+}
+h4 {
+  color: #fff !important;
+  margin-bottom: 0 !important;
+  opacity: 0.8 !important;
+  /*padding-bottom: 5px;*/
+  padding-left: 23px;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  background: linear-gradient(to bottom, #d3a271, #a46542);
+}
+
+a,
+a:link,
+a:visited,
+a:hover {
+  text-decoration: none;
+}
+a {
+  color: #996C42;
+}
+
+a:hover {
+  color: #996C42;
+  opacity: 0.8;
+}
+
+p {
+  font-size: 15px;
+  color: #121212;
+}
+
+
+.container {
+  min-height: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  background-repeat: no-repeat;
+  background-position: right -200px bottom 0;
+  background-size: 55%;
+}
+
+.main {
+  flex: 1 1 auto;
+}
+
+.pageLayer {
+  height: 100%;
+  background: #FBF1EA;
+  position: relative;
+  /*padding-bottom: 100px;*/
+}
+
+.ant-picker-input input {
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 21px !important;
+  margin-top: 10px;
+  padding-left: 5px !important;
+}
+.ant-upload.ant-upload-select-picture-card {
+  background-color: transparent !important;
+  border-radius: 35px !important;
+  border: none !important;
+  overflow: hidden !important;
+  width: 85px !important;
+  height: 85px !important;
+}
+
+.uploadedImage {
+  display: block;
+  margin: auto;
+  width: auto;
+  height: auto;
+  min-width: 82px;
+  min-height: 82px;
+  max-width: 100%;
+  max-height: 100%;
+}
+.ant-modal-close {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.custom-modal-title {
+  font-size: 32px !important;
+  font-weight: 700 !important;
+  color: #000 !important;
+}
+.ant-modal-body {
+  padding: 24px 24px 0 !important;
+}
+.custom-modal .ant-modal-content {
+  border-radius: 20px !important;
+  overflow: hidden;
+  padding: 24px 20px !important;
+}
+.ant-modal-header {
+  border-bottom: transparent !important;
+}
+.ant-input {
+  background: #EEF0F0 !important;
+  font-size: 21px !important;
+  color: #000 !important;
+}
+.ant-input-prefix {
+  margin-right: 12px ;
+}
+.ant-notification-notice {
+  border: 1px solid rgba(234, 29, 29, 0.12);
+  background: #94524C !important;
+  color: white !important;
+  padding: 20px !important;
+  border-radius: 14px !important;
+}
+.ant-notification-notice-description {
+  color: white !important;
+  font-size: 16px !important;
+}
+.ant-notification-notice-message {
+  color: white !important;
+  margin-bottom: 0 !important;
+  font-size: 21px !important;
+}
+.ant-notification-notice-close {
+  color: white !important;
+  svg {
+    height: 16px !important;
+    width: 16px !important;
+  }
+}
+.ant-picker-panel-container {
+  border-radius: 16px !important;
+}
+.ant-picker-today-btn {
+  color: #996C42 !important;
+}
+.ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+  border: 1px solid #996C42 !important;
+  border-radius: 50% !important;
+}
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
+  background: #996C42 !important;
+  border-radius: 50% !important;
+}
+.slick-dots li button:before {
+  color: #996C42; /* Customize bullet color */
+}
+.slick-dots li.slick-active button:before {
+  color: #333; /* Active bullet color */
+}
+.slick-dots li button:before {
+  color: #E8D9CF !important;
+  opacity: 1 !important;
+}
+.slick-dots li.slick-active button:before {
+  color: #996C42 !important;
+  opacity: 1 !important;
+  transform: scale(1.5) !important;
+}
+.ant-modal-body textarea:focus {
+  border: 2px solid #996C42 !important;
+}
+.ant-popover-message-title {
+  padding-left: 0 !important;
+  font-size: 17px;
+  font-weight: 500;
+}
+.ant-popover-inner {
+  border-radius: 12px !important;
+}

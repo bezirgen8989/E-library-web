@@ -1,0 +1,72 @@
+.centered {
+  text-align: center;
+  margin: 0 auto;
+  padding: 0 16px;
+  min-width: 420px;
+  @media (max-width: 420px) {
+    min-width: 100%;
+  }
+}
+a {
+  color: #FFEA84;
+}
+.login_logo {
+  width: 100px;
+  margin: 0 auto;
+  padding-bottom: 15px;
+  img{
+    width: 100%;
+  }
+}
+.logo_name {
+  font-size: 39px;
+  line-height: 47px;
+  color: #fff;
+  font-weight: 700;
+  padding-bottom: 37px;
+}
+.login_subtitle {
+  font-size: 18px;
+  line-height: 27px;
+  color: #fff;
+  font-weight: 700;
+  white-space: nowrap;
+  padding: 0 9px;
+}
+.subtitle_line {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  height: 1px;
+}
+
+.centeredWrapper {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.backBtn {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.uploadSubtitle {
+  font-size: 21px;
+  font-weight: 700;
+  color: #fff;
+}
+.navTop {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  top: 0;
+  padding: 30px 40px;
+}

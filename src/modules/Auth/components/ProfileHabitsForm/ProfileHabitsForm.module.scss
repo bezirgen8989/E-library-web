@@ -1,0 +1,66 @@
+.habitPageContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.habit_wrap {
+  background: #fff;
+  border-radius: 22px 22px 0 0;
+  padding-bottom: 21px;
+  width: 100%;
+  bottom: 0;
+}
+.grid_container {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 2fr));
+  padding: 32px 32px 0;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.grid_item {
+  border-radius: 10px;
+  height: 100px;
+  background-position: right bottom;
+  color: #fff;
+  padding: 10px;
+  position: relative;
+  overflow: hidden;
+  background-repeat: no-repeat;
+}
+
+.grid-item input {
+  margin-right: 10px;
+}
+
+button {
+  margin-top: 20px;
+}
+.btnWrap {
+  max-width: 400px;
+  margin: 17px auto 0;
+  padding: 0 10px;
+}
+
+.habit_title {
+  font-size: 31px;
+  line-height: 38px;
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+  padding-top: 87px;
+  padding-bottom: 50px;
+  @media (max-width: 500px) {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}
+
+.controllerWrap {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}

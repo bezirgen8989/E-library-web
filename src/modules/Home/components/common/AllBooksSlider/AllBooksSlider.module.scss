@@ -1,0 +1,106 @@
+
+.homeTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 25px;
+  img {
+    height: 33px;
+    width: 32px;
+    margin-left: 5px;
+  }
+}
+.newBooksList{
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  margin: 0 -12px;
+  @media (max-width: 1050px) {
+    display: none;
+  }
+}
+.newBooksSlider {
+  @media (min-width: 1050px) {
+    display: none !important;
+  }
+}
+.newBook {
+  max-width: 142px;
+  height: auto;
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 0 12px;
+  a {
+    color: #996C42;
+    font-weight: 700;
+    background-image: url('../../../../../assets/images/icons/readArrow.svg');
+    background-repeat: no-repeat;
+    background-position: right center;
+    padding-right: 20px;
+  }
+}
+
+.sliderNewBook {
+  min-width: 142px;
+  max-width: 142px;
+  flex-grow: 0;
+  height: auto;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 0 12px !important;
+  box-sizing: border-box;
+  a {
+    color: #996C42;
+    font-weight: 700;
+    background-image: url('../../../../../assets/images/icons/readArrow.svg');
+    background-repeat: no-repeat;
+    background-position: right center;
+    padding-right: 20px;
+  }
+}
+.titleLink {
+  color: #996C42;
+  font-weight: 700;
+  font-size: 17px;
+  background-image: url('../../../../../assets/images/icons/readArrow.svg');
+  background-repeat: no-repeat;
+  background-position: right center;
+  padding-right: 20px;
+  transition: 0.2ms;
+  &:hover {
+    opacity: 0.8;
+    color: #996C42;
+  }
+}
+
+.imgWrap {
+  width: 142px;
+  max-width: 142px;
+  min-height: 166px !important;
+  height: 175px;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  img {
+    width: 100%;
+  }
+}
+.newBookTitle {
+  font-size: 19px;
+  font-weight: 600;
+  color: #121212;
+  width: 169px;
+  line-height: 25px;
+  padding-bottom: 5px;
+}
+.newBookAuthor {
+  font-size: 14px;
+  color: #996C42;
+  font-weight: 700;
+  padding-bottom: 10px;
+}
+.rowNewBooks {
+  padding-top: 25px;
+  padding-bottom: 25px;
+}

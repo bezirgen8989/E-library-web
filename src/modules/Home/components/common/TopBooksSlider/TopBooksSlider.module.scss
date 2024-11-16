@@ -1,0 +1,113 @@
+.topBooksList {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 -8px;
+  align-items: stretch;
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+.topBooksSlider {
+  //padding-bottom: 20px;
+  @media (min-width: 768px) {
+    display: none !important;
+  }
+}
+.topBook {
+  position: relative;
+  overflow: hidden;
+  max-width: 314px;
+  flex-grow: 1;
+  flex-direction: column;
+  display: flex;
+  justify-content: space-between;
+  height: auto;
+  background: #E8D9CF;
+  border-radius: 8px;
+  padding: 20px 18px;
+  margin: 0 8px;
+  a {
+    width: 50px;
+    color: #996C42;
+    font-weight: 700;
+    background-image: url('../../../../../assets/images/icons/readArrow.svg');
+    background-repeat: no-repeat;
+    background-position: right center;
+  }
+}
+.sliderBook {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  position: relative;
+  min-width: 314px;
+  height: 166px;
+  background: #E8D9CF;
+  border-radius: 8px;
+  padding: 20px 18px;
+  margin: 8px !important;
+  box-sizing: border-box;
+}
+.sliderBookLink {
+  color: #996C42;
+  font-weight: 700;
+  background-image: url('../../../../../assets/images/icons/readArrow.svg');
+  background-repeat: no-repeat;
+  background-position: right center;
+  padding-right: 20px;
+  width: 50px;
+  cursor: pointer;
+}
+.topBookTitle {
+  font-size: 22px;
+  font-weight: 600;
+  color: #121212;
+  width: 169px;
+  line-height: 25px;
+  padding-bottom: 5px;
+}
+.topBookAuthor {
+  font-size: 14px;
+  font-weight: 400;
+  width: 169px;
+  color: #121212;
+  padding-bottom: 10px;
+}
+.homeTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 25px;
+  img {
+    height: 33px;
+    width: 32px;
+    margin-left: 5px;
+  }
+}
+.backgroundImg {
+  position: absolute;
+  bottom: -25px; // Adjust to position it at the bottom
+  right: -10px; // Adjust to position it towards the right
+  width: 119px;
+  height: 119px;
+  transform: rotate(340deg); // Rotate the background by 30 degrees
+  pointer-events: none; // Prevent interaction
+  img {
+    width: 100%;
+  }
+}
+
+.stretchItems {
+  display: flex !important; // Ensures items take up available height
+  align-items: stretch !important; // Stretches all items within the slider
+}
+
+.sliderItemWrapper {
+  display: flex !important;
+  align-items: stretch !important; // Stretches wrapper to the tallest item’s height
+}
+.rowDesktop {
+  padding-bottom: 25px;
+}

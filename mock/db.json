@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "David",
+      "age": 35
+    },
+    {
+      "id": 2,
+      "name": "Ann",
+      "age": 24
+    }
+  ],
+  "buttons": [
+    {
+      "title": "one",
+      "status": "false"
+    },
+    {
+      "title": "two",
+      "status": "false"
+    },
+    {
+      "title": "three",
+      "status": "false"
+    }
+  ]
+}

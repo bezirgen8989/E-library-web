@@ -1,0 +1,85 @@
+{
+  "name": "E-library",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@cloudflare/stream-react": "^1.8.0",
+    "@hookform/resolvers": "^3.9.0",
+    "@react-oauth/google": "^0.12.1",
+    "@reduxjs/toolkit": "^1.7.2",
+    "@types/d3-scale-chromatic": "^3.0.0",
+    "antd": "^4.19.5",
+    "axios": "^0.27.2",
+    "date-fns": "^2.28.0",
+    "history": "^4.10.1",
+    "jwt-decode": "^4.0.0",
+    "node-sass": "^7.0.1",
+    "normalize.css": "^8.0.1",
+    "query-string": "^7.1.0",
+    "react": "^17.0.2",
+    "react-content-loader": "^6.2.0",
+    "react-custom-scrollbars": "^4.2.1",
+    "react-dom": "^17.0.2",
+    "react-google-login": "^5.2.2",
+    "react-hook-form": "^7.53.0",
+    "react-rating-stars-component": "^2.2.0",
+    "react-redux": "^7.2.6",
+    "react-router": "^5.2.1",
+    "react-router-dom": "^5.2.1",
+    "react-scripts": "5.0.0",
+    "react-slick": "^0.30.2",
+    "redux": "^4.1.2",
+    "slick-carousel": "^1.8.1",
+    "yup": "^1.4.0"
+  },
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "eject": "craco eject",
+    "test-watch": "craco test",
+    "prettier": "npx prettier --write '**/*.{js,jsx,ts,tsx}'",
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "mock": "json-server --watch --port 3004 --routes mock/routes.json --static mock/public mock/db.json"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@craco/craco": "^6.4.3",
+    "@types/leaflet": "^1.7.11",
+    "@types/node": "^17.0.19",
+    "@types/react": "^17.0.39",
+    "@types/react-custom-scrollbars": "^4.0.10",
+    "@types/react-dom": "^17.0.11",
+    "@types/react-redux": "^7.1.22",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/react-slick": "^0.23.13",
+    "husky": "^4.3.8",
+    "json-server": "^0.17.0",
+    "lint-staged": "^12.3.4",
+    "prettier": "^2.5.1",
+    "source-map-explorer": "^2.5.2",
+    "stream-browserify": "^3.0.0",
+    "timers-browserify": "^2.0.12",
+    "typescript": "^4.5.5",
+    "webpack": "^5.69.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run test"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "npx prettier --write"
+  }
+}

@@ -1,0 +1,241 @@
+.home_page {
+  max-width: 996px;
+  margin: 0 auto;
+  padding: 50px 10px 10px;
+  min-height: calc(100vh - 74px);
+}
+.desktopView {
+  display: block;
+  @media (max-width: 968px) {
+    display: none;
+  }
+}
+.mobileView {
+  display: none;
+  @media (max-width: 968px) {
+    display: block;
+  }
+}
+.flex_wrap {
+  width: 100%;
+  display: flex;
+  @media (max-width: 968px) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+.divider {
+  min-width: 13px;
+  flex-grow: 0;
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+.img_wrap {
+  width: 247px;
+  border-radius: 8px;
+  overflow: hidden;
+  -webkit-box-shadow: 2px 2px 6px 0 rgba(95, 95, 97, 1);
+  -moz-box-shadow: 2px 2px 6px 0 rgba(95, 95, 97, 1);
+  box-shadow: 2px 2px 6px 0 rgba(95, 95, 97, 1);
+  @media (max-width: 768px) {
+    width: 247px;
+    margin-bottom: 25px;
+  }
+  img {
+    width: 100%;
+  }
+}
+.habitsWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 16px;
+  @media (max-width: 968px) {
+    justify-content: left;
+    padding-bottom: 16px;
+  }
+}
+
+.habit_tag {
+  display: flex;
+  align-items: center;
+  border-radius: 40px;
+  padding: 9px 14px;
+  margin: 0 3px;
+  color: white;
+  img {
+    min-width: 16px;
+  }
+}
+.bookDescription {
+  p {
+    margin-bottom: 0 !important;
+  }
+}
+.description {
+  padding: 15px 0;
+}
+.age_row {
+  padding-top: 25px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  @media (max-width: 968px) {
+    padding-top: 0;
+    text-align: left;
+  }
+}
+.left_side {
+  padding-right: 90px;
+  @media (max-width: 968px) {
+    padding-right: 0;
+  }
+}
+.right_side {
+  flex-grow: 1;
+}
+.top_block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.book_title {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 31px;
+  font-weight: 700;
+  color: #121212;
+  line-height: 31px;
+}
+.author_title {
+  color: #996C42;
+  font-size: 27px;
+  font-weight: 700;
+}
+.btns_block {
+  display: flex;
+  align-items: center;
+  padding-top: 30px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(153, 108, 66, 0.2);
+  @media (max-width: 768px) {
+    display: block;
+    padding-top: 15px;
+  }
+}
+.readBtn {
+  margin-right: 6px;
+  @media (max-width: 968px) {
+    margin: 0
+  }
+}
+
+.questionBtn {
+  color: #996C42 !important;
+  border: 2px solid rgba(153, 108, 66, 0.2) !important;
+  border-radius: 50px !important;
+  margin-left: 6px !important;
+  @media (max-width: 968px) {
+    margin-left: 0;
+  }
+}
+.section_title {
+  font-size: 19px;
+  font-weight: 700;
+  color: #121212;
+}
+
+.overallRating {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  margin-bottom: 10px;
+  span {
+    margin-left: 8px;
+    color: #996C42 !important;
+  }
+}
+
+.reviewsSection {
+  margin-top: 20px;
+}
+
+.rating_count {
+  margin-left: 5px;
+  color: #121212 !important;
+}
+
+.languageSelectWrapper {
+  cursor: pointer;
+  display: flex;
+  height: 39px;
+  align-items: center;
+  text-align: start;
+  border-radius: 22px;
+  padding: 3px 30px 3px 6px;
+  color: #996C42 !important;
+  //background-image: url('../../../images/icons/arrowDown.svg');
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+  background-color: #EFE1D6;
+  font-weight: 700;
+  img {
+    width: 25px;
+    height: 25px;
+    margin-right: 7px;
+    margin-top: -3px;
+  }
+}
+.languageSelect {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 140%;
+  margin-right: 7px;
+}
+.bookSettings {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+.bookShelfButton {
+  width: 40px;
+  height: 40px;
+  background: #EFDFD3;
+  border-radius: 50%;
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+//.bookShelfButton img {
+//  transition: filter 0.3s ease;
+//}
+
+.likedIcon {
+  filter: invert(21%) sepia(83%) saturate(4953%) hue-rotate(338deg) brightness(95%) contrast(107%);
+}
+.backBtnRelativePage {
+  color: #996C42;
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 16px;
+}
+.author {
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+}

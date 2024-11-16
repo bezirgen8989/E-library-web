@@ -1,0 +1,244 @@
+import commonStyles from '../../../../assets/css/commonStyles/CommonStyles.module.scss';
+import React, {useState, useEffect} from "react";
+import {useForm, Controller} from "react-hook-form";
+import {Upload, DatePicker} from "antd";
+import moment from "moment";
+import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
+import Button from "../../../../components/common/Buttons/Button";
+import BackIcon from "../../../../assets/images/icons/goBackIcon.svg";
+import {useHistory} from "react-router-dom";
+import homeRoutes from "../../../Home/routing/routes";
+import LanguageModal from "../LanguageModal";
+
+type LanguageType = {
+    id: number;
+    name: string;
+    flag: {
+        link: string;
+    };
+};
+
+type RecoverProps = {
+    onSubmit: (values: any) => void;
+    languages: LanguageType[];
+    handleUpload: (params: any) => void;
+    photoId: string | null;
+};
+
+type FormValues = {
+    userName: string;
+    dateBirth: string;
+    language: string;
+    photo: any;
+};
+
+const ProfileForm: React.FC<RecoverProps> = ({onSubmit, languages = [], handleUpload, photoId}) => {
+    const defaultLanguage = languages.find(lang => lang.name === "English") || {
+        id: 0,
+        name: "Select Language",
+        flag: {link: NoAvatar}
+    };
+    const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const {control, handleSubmit, setValue, watch, formState: {errors}} = useForm<FormValues>({
+        defaultValues: {
+            userName: "",
+            dateBirth: "",
+            language: defaultLanguage.name,
+            photo: null,
+        },
+    });
+
+    const history = useHistory();
+    const profilePicture = watch("photo");
+
+    useEffect(() => {
+        if (languages.length > 0) {
+            const englishLanguage = languages.find(lang => lang.name === "English");
+            if (englishLanguage) {
+                setSelectedLanguage(englishLanguage);
+                setValue("language", englishLanguage.name);
+            }
+        }
+    }, [languages, setValue]);
+
+    const onLanguageSelect = (language: LanguageType) => {
+        setSelectedLanguage(language);
+        setValue("language", language.name);
+    };
+
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const onSubmitForm = (data: FormValues) => {
+        console.log("profileForm", data);
+        const formattedData = {
+            photo: {
+                id: photoId,
+            },
+            userName: data.userName,
+            dateBirth: data.dateBirth,
+            language: {
+                id: selectedLanguage.id,
+            },
+        };
+        console.log("profileformattedData", formattedData);
+        onSubmit(formattedData);
+    };
+
+    const uploadPhoto = (file: any) => {
+        const formData = new FormData();
+        formData.append("files", file);
+        formData.append("prefix", "prefix");
+        formData.append("postfix", "postfix");
+        formData.append("tag", "AVATAR");
+
+        handleUpload(formData);
+    };
+
+    return (
+        <div style={{display: "flex", width: '100%', height: '100vh'}}>
+            <div className={commonStyles.centeredWrapper}>
+                <div className={commonStyles.navTop}>
+                    <div onClick={() => history.goBack()} className={commonStyles.backBtnRelative}>
+                        <img style={{marginRight: 9}} src={BackIcon} alt="Back arrow"/>
+                        Back
+                    </div>
+                    <div onClick={() => history.push(homeRoutes.root)} className={commonStyles.backBtnRelative}>
+                        Skip
+                        <img style={{marginLeft: 9, transform: 'rotate(180deg)'}} src={BackIcon} alt="Back arrow"/>
+                    </div>
+                </div>
+                <div className={commonStyles.centered}>
+                    <div className={commonStyles.logo_name}>Profile Details</div>
+                    <form onSubmit={handleSubmit(onSubmitForm)}>
+                        <div className="form-group">
+                            <Controller
+                                name="photo"
+                                control={control}
+                                render={({field}) => (
+                                    <Upload
+                                        beforeUpload={(file) => {
+                                            setValue("photo", file);
+                                            uploadPhoto(file);
+                                            return false; // Prevent automatic upload
+                                        }}
+                                        showUploadList={false}
+                                        fileList={profilePicture ? [profilePicture] : []}
+                                        accept="image/*"
+                                        listType="picture-card"
+                                    >
+                                        {profilePicture ? (
+                                            <img
+                                                src={URL.createObjectURL(profilePicture)}
+                                                alt="avatar"
+                                                className={commonStyles.uploadedImage}
+                                            />
+                                        ) : (
+                                            <img src={NoAvatar} alt="avatar"/>
+                                        )}
+                                    </Upload>
+                                )}
+                            />
+                        </div>
+                        <span className={commonStyles.uploadSubtitle}>Upload Your Picture</span>
+                        <div style={{marginTop: 15}}>
+                            <div className={commonStyles.inputWrapper}>
+                                <Controller
+                                    name="userName"
+                                    control={control}
+                                    rules={{required: "Name is required"}}
+                                    render={({field}) => (
+                                        <>
+                                            <input
+                                                {...field}
+                                                id="name"
+                                                placeholder=""
+                                                autoComplete="off"
+                                                className={`${commonStyles.inputField} ${errors.userName ? commonStyles.errorInput : ""}`}
+                                                type="text"
+                                            />
+                                            <label
+                                                className={`${commonStyles.inputLabel} ${errors.userName ? commonStyles.errorLabel : ""}`}>
+                                                Name
+                                            </label>
+                                            {errors.userName &&
+                                                <p className={commonStyles.errorController}>{errors.userName.message}</p>}
+                                        </>
+                                    )}
+                                />
+                            </div>
+                            <div className={commonStyles.inputWrapper}>
+                                <Controller
+                                    name="dateBirth"
+                                    control={control}
+                                    render={({field}) => (
+                                        <div className="inputWrapper">
+                                            <DatePicker
+                                                className={`${commonStyles.inputField} ${errors.dateBirth ? commonStyles.errorInput : ""}`}
+                                                onChange={(date) => field.onChange(date ? date.format("YYYY-MM-DD") : "")}
+                                                value={field.value ? moment(field.value) : undefined}
+                                                placeholder=""
+                                                placement="topRight"
+                                                format="DD MMM, YYYY"
+                                                suffixIcon={null}
+                                                allowClear={false}
+                                            />
+                                            <label
+                                                className={`${commonStyles.inputLabel} ${errors.dateBirth ? commonStyles.errorLabel : ""} ${
+                                                    field.value ? 'has-value' : ''
+                                                }`}>
+                                                Date of Birth
+                                            </label>
+                                        </div>
+                                    )}
+                                />
+                            </div>
+                            {languages.length > 0 && (
+                                <div className={commonStyles.inputWrapperLang}>
+                                    <Controller
+                                        name="language"
+                                        control={control}
+                                        render={({field}) => (
+                                            <div
+                                                onMouseDown={(e) => {
+                                                    e.preventDefault();
+                                                    showModal();
+                                                }}
+                                                className={commonStyles.languageSelectWrapper}
+                                            >
+                                                <div className={commonStyles.languageSelect}
+                                                     style={{
+                                                         backgroundImage: `url(${selectedLanguage.flag.link})`,
+                                                     }}>
+                                                </div>
+                                                <span>{selectedLanguage.name}</span>
+                                            </div>
+                                        )}
+                                    />
+                                    <label className={commonStyles.inputLabel}>Preferred Language</label>
+                                </div>
+                            )}
+                        </div>
+                        <Button variant="White" type="submit">
+                            Continue
+                        </Button>
+                    </form>
+                </div>
+                <div style={{ height: '58px', width: '100%' }}/>
+            </div>
+            <LanguageModal
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+                languages={languages}
+                defaultLanguage={defaultLanguage}
+                onLanguageSelect={onLanguageSelect} // pass handler to update selected language
+            />
+        </div>
+    );
+};
+
+export default ProfileForm;
