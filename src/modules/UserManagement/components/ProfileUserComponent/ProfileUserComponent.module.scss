@@ -1,0 +1,34 @@
+.profile_page_wrap {
+  margin: 0 auto;
+  padding: 100px 0 0;
+  background: #996C42;
+}
+.profile_page {
+  margin: 0 auto;
+  min-height: calc(100vh - 74px);
+  background: #FBF1EA;
+  border-radius: 32px 32px 0 0;
+  position: relative;
+}
+.profile_logo {
+  width: 74px;
+  height: 74px;
+  padding: 5px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #FBF1EA;
+  position: absolute;
+  top: -37px;
+  left: calc(50% - 37px);
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+}
+.profile_page_content {
+  padding-top: 70px;
+  max-width: 358px;
+  margin: 0 auto;
+}

@@ -1,0 +1,73 @@
+.inputLabel {
+  position: absolute;
+  top: 20px;
+  left: 16px;
+  font-weight: 700;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #595959;
+  pointer-events: none;
+  transition: all 0.3s ease;
+
+}
+
+.inputWrapper {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.error {
+  color: #FFD8D4;
+  background: #94524C;
+  font-size: 14px;
+  padding: 20px 20px 12px;
+  border-radius: 0 0 14px 14px;
+  margin-top: -30px;
+  text-align: start;
+}
+
+.languageSelectWrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: start;
+  height: 68px;
+  border-radius: 14px;
+  padding: 25px 16px 0;
+  color: #121212 !important;
+  font-size: 21px;
+  border: 1px solid rgba(153, 108, 66, 0.12);
+  box-sizing: border-box;
+  outline: none;
+  //background: #EEE0D4 !important;
+  font-weight: 700;
+  img {
+    width: 18px;
+    height: 18px;
+    margin-right: 7px;
+    margin-top: -3px;
+  }
+}
+.languageSelect {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 140%;
+  margin-right: 7px;
+}
+.inputWrapperLang {
+  position: relative;
+  margin-bottom: 16px;
+  background-image: url('../../../../assets/images/icons/arrowDownBlack.svg') !important;
+  background-repeat: no-repeat;
+  background-position: top 50% right 31px;
+  background-color: #EEE0D4 !important;
+  border-radius: 14px;
+}
+.flagIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}

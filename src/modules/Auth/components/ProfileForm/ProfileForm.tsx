@@ -51,7 +51,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
   };
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const defaultGender = genders[0].value;
   const {
     control,
     handleSubmit,
@@ -63,7 +63,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
       userName: "",
       dateBirth: "",
       language: defaultLanguage.name,
-      gender: "",
+      gender: defaultGender, // Устанавливаем значение по умолчанию для Gender
       photo: null,
     },
   });
