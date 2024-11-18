@@ -207,3 +207,12 @@ p {
 .ant-popover-inner {
   border-radius: 12px !important;
 }
+.ant-switch-checked {
+  background-color: #996C42 !important;
+}
+.ant-switch-checked:focus {
+  box-shadow: none !important;
+}
+.ant-switch-checked:hover {
+  box-shadow: none !important;
+}

@@ -28,7 +28,43 @@
   }
 }
 .profile_page_content {
-  padding-top: 70px;
+  padding-top: 40px;
   max-width: 358px;
   margin: 0 auto;
+}
+.userInfo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+.userName {
+  display: flex;
+  align-items: center;
+  span {
+    color: #000;
+    font-size: 27px;
+    font-weight: 700;
+    line-height: 27px;
+    text-align: center;
+  }
+}
+.editButton {
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(153, 108, 66, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 0;
+  margin-left: 9px;
+  cursor: pointer;
+}
+.userBirth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #121212;
+  margin-bottom: 30px;
 }
