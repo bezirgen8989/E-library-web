@@ -16,7 +16,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  min-height: 100vh;
+  min-height: calc(100vh - 58px);
 }
 .footerCentered {
   display: flex;
@@ -158,6 +158,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 30px 40px 0;
+  height: 58px;
 }
 
 .backBtn {
@@ -188,9 +189,9 @@
   cursor: pointer;
 }
 .login_logo {
-  width: 100px;
+  width: 220px;
   margin: 0 auto;
-  padding-bottom: 15px;
+  padding-bottom: 40px;
   img{
     width: 100%;
   }
@@ -300,7 +301,7 @@
 .inputWrapperLang {
   position: relative;
   margin-bottom: 16px;
-  background-image: url('../../images/icons/arrowDown.svg');
+  background-image: url('../../images/icons/arrowDown.svg') !important;
   background-repeat: no-repeat;
   background-position: top 50% right 31px;
 }
@@ -315,8 +316,10 @@
 }
 .recover_name {
   font-size: 40px;
+  line-height: 40px;
   color: white;
   font-weight: 700;
+  padding-bottom: 10px;
 
 }
 .recover_subtitle {
@@ -328,4 +331,27 @@
   font-size: 18px;
   color: white;
   padding-bottom: 25px;
+}
+.dropdown {
+  position: relative !important;
+
+  select {
+    appearance: none !important;
+    //background: none !important;
+
+  }
+
+  &::after {
+    content: '' !important;
+    display: none !important;
+  }
+  &::before {
+    content: '' !important;
+    display: none !important;
+  }
+}
+.inputFieldSelect {
+  background-image: url('../../images/icons/arrowDown.svg') !important;
+  background-repeat: no-repeat !important;
+  background-position: top 50% right 31px !important;
 }

@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import commonStyles from "../../../../assets/css/commonStyles/CommonStyles.module.scss";
-// import styles from './RegistrationForm.module.scss';
 import logo from "../../../../assets/images/icons/logo.svg";
 import Onboarding from "../../../../assets/images/Onboarding-img.png";
 import { Link, useHistory } from "react-router-dom";
@@ -17,6 +16,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
 
@@ -24,6 +24,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
     console.log("values", values);
     onSubmit(values);
   };
+
+  // Watching the password field to validate confirm password
+  const password = watch("password");
 
   return (
     <div
@@ -113,6 +116,35 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
               </div>
               {errors.password && (
                 <p className={commonStyles.error}>{errors.password.message}</p>
+              )}
+            </div>
+            <div>
+              <div className={commonStyles.inputWrapper}>
+                <input
+                  className={`${commonStyles.inputField} ${
+                    errors.confirmPassword ? commonStyles.errorInput : ""
+                  }`}
+                  type="password"
+                  inputMode="text"
+                  placeholder=""
+                  {...register("confirmPassword", {
+                    required: "Please confirm your password!",
+                    validate: (value) =>
+                      value === password || "Passwords do not match!",
+                  })}
+                />
+                <label
+                  className={`${commonStyles.inputLabel} ${
+                    errors.confirmPassword ? commonStyles.errorLabel : ""
+                  }`}
+                >
+                  Confirm Password
+                </label>
+              </div>
+              {errors.confirmPassword && (
+                <p className={commonStyles.error}>
+                  {errors.confirmPassword.message}
+                </p>
               )}
             </div>
             <Button variant="White" type="submit">
