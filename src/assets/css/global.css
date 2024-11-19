@@ -97,6 +97,11 @@ p {
   margin-top: 10px;
   padding-left: 5px !important;
 }
+.uploadWrap {
+  display: flex;
+  justify-content: center;
+}
+
 .ant-upload.ant-upload-select-picture-card {
   background-color: transparent !important;
   border-radius: 35px !important;
@@ -106,16 +111,25 @@ p {
   height: 85px !important;
 }
 
-.uploadedImage {
-  display: block;
-  margin: auto;
-  width: auto;
-  height: auto;
-  min-width: 82px;
-  min-height: 82px;
-  max-width: 100%;
-  max-height: 100%;
+.uploadWrap .ant-upload.ant-upload-select-picture-card {
+  background-color: transparent !important;
+  border-radius: 50% !important;
+  border: none !important;
+  overflow: hidden !important;
+  width: 126px !important;
+  height: 126px !important;
 }
+.uploadWrap img {
+  width: 100% !important;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.ant-upload-picture-card-wrapper {
+  width: auto !important;
+}
+
 .ant-modal-close {
   margin: 0 !important;
   padding: 0 !important;

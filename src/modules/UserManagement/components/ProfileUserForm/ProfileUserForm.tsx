@@ -84,7 +84,6 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   };
 
   const onSubmitForm = (data: FormValues) => {
-    console.log("profileForm", data);
     const formattedData = {
       userName: data.userName,
       dateBirth: data.dateBirth,
@@ -106,7 +105,7 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmitForm)}>
+      <form style={{ marginBottom: 40 }} onSubmit={handleSubmit(onSubmitForm)}>
         <div style={{ marginTop: 15 }}>
           {languages.length > 0 && (
             <div className={styles.inputWrapperLang}>
@@ -177,7 +176,6 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
         {/*    Continue*/}
         {/*</Button>*/}
       </form>
-      <div style={{ height: "58px", width: "100%" }} />
       <LanguageModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}

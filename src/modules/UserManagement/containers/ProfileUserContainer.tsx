@@ -1,7 +1,7 @@
 import ProfileUserComponent from "../components/ProfileUserComponent";
 import { useLazySelector } from "../../../hooks";
 import { useCallback, useEffect } from "react";
-import { getLanguages, setProfile } from "../../Auth/slices/auth";
+import { getLanguages } from "../../Auth/slices/auth";
 import { useDispatch } from "react-redux";
 
 const ProfileUserContainer: React.FC = () => {
@@ -22,7 +22,7 @@ const ProfileUserContainer: React.FC = () => {
 
   const handleSubmit = useCallback(
     (values) => {
-      dispatch(setProfile(values));
+      console.log("profile submit values", values);
     },
     [dispatch]
   );

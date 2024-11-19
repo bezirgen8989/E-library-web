@@ -68,3 +68,23 @@
   color: #121212;
   margin-bottom: 30px;
 }
+.logOutBtn {
+  display: flex;
+  margin: 0 auto;
+  align-items: center;
+  width: 158px;
+  text-align: start;
+  height: 53px;
+  border-radius: 14px;
+  padding: 0 16px;
+  color: #996C42;
+  font-size: 21px;
+  cursor: pointer;
+  border: 1px solid rgba(153, 108, 66, 0.12);
+  outline: none;
+  background-color: #EEE0D4 !important;
+  font-weight: 700;
+  &:hover {
+    opacity: 0.8;
+  }
+}

@@ -1,18 +1,12 @@
 import styles from "./Header.module.scss";
 import logo from "../../../assets/images/icons/homeLogo.svg";
 import bell from "../../../assets/images/icons/bellIcon.svg";
-import { useDispatch } from "react-redux";
-import { logoutUser } from "../../../core/session/slices/session";
 import { Link } from "react-router-dom";
 import React, { useContext, useState } from "react";
 import { UserContext } from "../../../core/contexts";
 import { routes } from "../../../modules/UserManagement/routing";
 
 const Header: React.FC = () => {
-  const dispatch = useDispatch();
-  const onLogout = () => {
-    dispatch(logoutUser());
-  };
   const [hasNotifications, setHasNotifications] = useState(true);
   console.log(setHasNotifications);
   const value = useContext(UserContext);
@@ -97,7 +91,6 @@ const Header: React.FC = () => {
             </div>
             {value?.userName ? value?.userName : value?.email}
           </Link>
-          <div onClick={onLogout}>Log Out</div>
         </div>
       </div>
       <div className={styles.headerMobile}>
