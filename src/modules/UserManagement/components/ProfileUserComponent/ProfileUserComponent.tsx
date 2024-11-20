@@ -14,11 +14,15 @@ import EditProfileModal from "../EditProfileModal";
 interface ProfileUserComponentProps {
   languages: LanguageType[];
   onSubmit: (values: any) => void;
+  handleUpload: (params: any) => void;
+  photoId: string | null;
 }
 
 const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
   languages,
   onSubmit,
+  handleUpload,
+  photoId,
 }) => {
   const value = useContext(UserContext);
   const dispatch = useDispatch();
@@ -75,6 +79,8 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
         userName={value?.userName}
         gender={value?.gender}
         userPhoto={value?.photo?.link}
+        handleUpload={handleUpload}
+        photoId={photoId}
       />
     </div>
   );

@@ -1,11 +1,13 @@
-import { FC, useRef, useState, useEffect } from "react";
-import { Modal } from "antd";
+import { FC, useEffect } from "react";
+import { Modal, Upload } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import Button from "../../../../components/common/Buttons/Button";
 import styles from "./EditProfile.module.scss";
 import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
 import Close from "../../../../assets/images/icons/Close.svg";
+import Delete from "../../../../assets/images/icons/delete_icon.svg";
 import EditUpload from "../../../../assets/images/icons/editUploadIcon.svg";
+import commonStyles from "../../../../assets/css/commonStyles/CommonStyles.module.scss";
 
 interface EditProfileModalProps {
   isModalOpen: boolean;
@@ -15,13 +17,15 @@ interface EditProfileModalProps {
   userName?: string;
   gender?: string;
   userPhoto?: string;
+  handleUpload: (params: any) => void;
+  photoId: string | null;
 }
 
 interface FormValues {
   userName: string;
   gender: string;
-  photo: File | null;
-  dateBirth: string;
+  photo: any;
+  dateBirth?: string;
 }
 
 const genders = [
@@ -37,15 +41,15 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
   userName,
   gender,
   userPhoto,
+  handleUpload,
+  photoId,
 }) => {
-  const [profilePicture, setProfilePicture] = useState<File | null>(null);
-  const uploadInputRef = useRef<HTMLInputElement | null>(null);
-
   const {
     control,
     handleSubmit,
     setValue,
     reset,
+    watch,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
@@ -56,8 +60,10 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
     },
   });
 
+  const profilePicture = watch("photo");
+
   useEffect(() => {
-    if (userName || gender || dateBirth) {
+    if (userName || gender || dateBirth || userPhoto) {
       reset({
         userName: userName || "",
         gender: gender || "",
@@ -65,7 +71,7 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
         dateBirth: dateBirth || "",
       });
     }
-  }, [userName, gender, dateBirth, reset]);
+  }, [userName, gender, dateBirth, userPhoto, reset]);
 
   const hideModal = () => {
     setIsModalOpen(false);
@@ -75,26 +81,28 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
       photo: null,
       dateBirth: dateBirth || "",
     });
-    setProfilePicture(null);
-  };
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setProfilePicture(file);
-      setValue("photo", file);
-    }
   };
 
   const onSubmitForm = (data: FormValues) => {
     const formattedData = {
+      photo: {
+        id: photoId,
+      },
       userName: data.userName,
       gender: data.gender,
-      photo: profilePicture,
-      dateBirth: data.dateBirth,
     };
     onSubmit(formattedData);
-    hideModal();
+  };
+
+  const uploadPhoto = (file: File) => {
+    const formData = new FormData();
+    formData.append("files", file);
+    formData.append("prefix", "prefix");
+    formData.append("postfix", "postfix");
+    formData.append("tag", "AVATAR");
+
+    handleUpload(formData);
+    setValue("photo", file); // Обновляем поле в форме
   };
 
   return (
@@ -110,37 +118,53 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
     >
       <form onSubmit={handleSubmit(onSubmitForm)}>
         <div className="uploadWrap">
-          <div
-            style={{ position: "relative", width: "125px", height: "125px" }}
-          >
-            <div
-              className={styles.uploadIcon}
-              onClick={() => uploadInputRef.current?.click()}
-            >
-              <img src={EditUpload} alt="icon" />
+          <div style={{ position: "relative" }}>
+            <div className={styles.uploadIcon}>
+              <img src={EditUpload} alt="" />
             </div>
-            <input
-              type="file"
-              ref={uploadInputRef}
-              style={{ display: "none" }}
-              accept="image/*"
-              onChange={handleFileChange}
+            <Controller
+              name="photo"
+              control={control}
+              render={({ field }) => (
+                <Upload
+                  beforeUpload={(file) => {
+                    uploadPhoto(file);
+                    return false; // Prevent automatic upload
+                  }}
+                  showUploadList={false}
+                  fileList={
+                    profilePicture
+                      ? [
+                          {
+                            uid: "1", // You can generate a unique ID for each file
+                            name: profilePicture.name,
+                            status: "done", // Set the upload status
+                            url: URL.createObjectURL(profilePicture), // Provide a preview URL
+                          },
+                        ]
+                      : []
+                  }
+                  accept="image/*"
+                  listType="picture-card"
+                >
+                  {profilePicture ? (
+                    <img
+                      src={URL.createObjectURL(profilePicture)}
+                      alt="avatar"
+                      className={commonStyles.uploadedImage}
+                    />
+                  ) : userPhoto ? (
+                    <img
+                      src={userPhoto}
+                      alt="avatar"
+                      className={commonStyles.uploadedImage}
+                    />
+                  ) : (
+                    <img src={NoAvatar} alt="avatar" />
+                  )}
+                </Upload>
+              )}
             />
-            {profilePicture ? (
-              <img
-                src={URL.createObjectURL(profilePicture)}
-                alt="avatar"
-                className={styles.uploadedImage}
-              />
-            ) : userPhoto ? (
-              <img
-                src={userPhoto}
-                alt="user-avatar"
-                className={styles.uploadedImage}
-              />
-            ) : (
-              <img src={NoAvatar} alt="no-avatar" />
-            )}
           </div>
         </div>
         <div style={{ marginTop: 15 }}>
@@ -179,7 +203,6 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
             <Controller
               name="gender"
               control={control}
-              rules={{ required: "Gender is required" }}
               render={({ field }) => (
                 <div className={styles.dropdown}>
                   <select
@@ -229,6 +252,15 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
         </div>
         <Button variant="Brown" type="submit">
           Save
+        </Button>
+        <Button
+          style={{ width: 249, margin: "30px auto 0 auto" }}
+          variant="Error"
+          type="button"
+          icon={<img src={Delete} alt="delete-icon" />}
+          onClick={() => console.log("Account deletion logic here")}
+        >
+          Delete Account
         </Button>
       </form>
     </Modal>

@@ -63,7 +63,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
       userName: "",
       dateBirth: "",
       language: defaultLanguage.name,
-      gender: defaultGender, // Устанавливаем значение по умолчанию для Gender
+      gender: defaultGender,
       photo: null,
     },
   });
@@ -91,19 +91,17 @@ const ProfileForm: React.FC<RecoverProps> = ({
   };
 
   const onSubmitForm = (data: FormValues) => {
-    console.log("profileForm", data);
     const formattedData = {
       photo: {
         id: photoId,
       },
       userName: data.userName,
       dateBirth: data.dateBirth,
-      language: {
+      bookLanguage: {
         id: selectedLanguage.id,
       },
       gender: data.gender,
     };
-    console.log("profileFormattedData", formattedData);
     onSubmit(formattedData);
   };
 
@@ -144,33 +142,35 @@ const ProfileForm: React.FC<RecoverProps> = ({
           <div className={commonStyles.logo_name}>Profile Details</div>
           <form onSubmit={handleSubmit(onSubmitForm)}>
             <div className="form-group">
-              <Controller
-                name="photo"
-                control={control}
-                render={({ field }) => (
-                  <Upload
-                    beforeUpload={(file) => {
-                      setValue("photo", file);
-                      uploadPhoto(file);
-                      return false; // Prevent automatic upload
-                    }}
-                    showUploadList={false}
-                    fileList={profilePicture ? [profilePicture] : []}
-                    accept="image/*"
-                    listType="picture-card"
-                  >
-                    {profilePicture ? (
-                      <img
-                        src={URL.createObjectURL(profilePicture)}
-                        alt="avatar"
-                        className={commonStyles.uploadedImage}
-                      />
-                    ) : (
-                      <img src={NoAvatar} alt="avatar" />
-                    )}
-                  </Upload>
-                )}
-              />
+              <div className="authUploadWrap">
+                <Controller
+                  name="photo"
+                  control={control}
+                  render={({ field }) => (
+                    <Upload
+                      beforeUpload={(file) => {
+                        setValue("photo", file);
+                        uploadPhoto(file);
+                        return false; // Prevent automatic upload
+                      }}
+                      showUploadList={false}
+                      fileList={profilePicture ? [profilePicture] : []}
+                      accept="image/*"
+                      listType="picture-card"
+                    >
+                      {profilePicture ? (
+                        <img
+                          src={URL.createObjectURL(profilePicture)}
+                          alt="avatar"
+                          className={commonStyles.uploadedImage}
+                        />
+                      ) : (
+                        <img src={NoAvatar} alt="avatar" />
+                      )}
+                    </Upload>
+                  )}
+                />
+              </div>
             </div>
             <span className={commonStyles.uploadSubtitle}>
               Upload Your Picture
