@@ -1,5 +1,5 @@
-import { FC, useEffect } from "react";
-import { Modal, Upload } from "antd";
+import { FC, useEffect, useRef } from "react";
+import { Modal } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import Button from "../../../../components/common/Buttons/Button";
 import styles from "./EditProfile.module.scss";
@@ -19,6 +19,7 @@ interface EditProfileModalProps {
   userPhoto?: string;
   handleUpload: (params: any) => void;
   photoId: string | null;
+  deleteAccount: () => void;
 }
 
 interface FormValues {
@@ -43,6 +44,7 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
   userPhoto,
   handleUpload,
   photoId,
+  deleteAccount,
 }) => {
   const {
     control,
@@ -61,6 +63,7 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
   });
 
   const profilePicture = watch("photo");
+  const uploadRef = useRef<any>(null);
 
   useEffect(() => {
     if (userName || gender || dateBirth || userPhoto) {
@@ -102,7 +105,13 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
     formData.append("tag", "AVATAR");
 
     handleUpload(formData);
-    setValue("photo", file); // Обновляем поле в форме
+    setValue("photo", file);
+  };
+
+  const handleUploadIconClick = () => {
+    if (uploadRef.current) {
+      uploadRef.current.click();
+    }
   };
 
   return (
@@ -117,55 +126,47 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
       }
     >
       <form onSubmit={handleSubmit(onSubmitForm)}>
-        <div className="uploadWrap">
-          <div style={{ position: "relative" }}>
-            <div className={styles.uploadIcon}>
-              <img src={EditUpload} alt="" />
-            </div>
-            <Controller
-              name="photo"
-              control={control}
-              render={({ field }) => (
-                <Upload
-                  beforeUpload={(file) => {
-                    uploadPhoto(file);
-                    return false; // Prevent automatic upload
-                  }}
-                  showUploadList={false}
-                  fileList={
-                    profilePicture
-                      ? [
-                          {
-                            uid: "1", // You can generate a unique ID for each file
-                            name: profilePicture.name,
-                            status: "done", // Set the upload status
-                            url: URL.createObjectURL(profilePicture), // Provide a preview URL
-                          },
-                        ]
-                      : []
-                  }
-                  accept="image/*"
-                  listType="picture-card"
-                >
-                  {profilePicture ? (
-                    <img
-                      src={URL.createObjectURL(profilePicture)}
-                      alt="avatar"
-                      className={commonStyles.uploadedImage}
-                    />
-                  ) : userPhoto ? (
-                    <img
-                      src={userPhoto}
-                      alt="avatar"
-                      className={commonStyles.uploadedImage}
-                    />
-                  ) : (
-                    <img src={NoAvatar} alt="avatar" />
-                  )}
-                </Upload>
-              )}
-            />
+        <div className={styles.uploadWrap}>
+          {/*<div style={{ position: "relative" }}>*/}
+          <div className={styles.uploadIcon} onClick={handleUploadIconClick}>
+            <img src={EditUpload} alt="" />
           </div>
+          <Controller
+            name="photo"
+            control={control}
+            render={({ field }) => (
+              <>
+                <input
+                  type="file"
+                  ref={uploadRef}
+                  style={{ display: "none" }}
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      uploadPhoto(file);
+                    }
+                  }}
+                />
+                {profilePicture ? (
+                  <img
+                    src={URL.createObjectURL(profilePicture)}
+                    alt="avatar"
+                    className={commonStyles.uploadedImage}
+                  />
+                ) : userPhoto ? (
+                  <img
+                    src={userPhoto}
+                    alt="avatar"
+                    className={commonStyles.uploadedImage}
+                  />
+                ) : (
+                  <img src={NoAvatar} alt="avatar" />
+                )}
+              </>
+            )}
+          />
+          {/*</div>*/}
         </div>
         <div style={{ marginTop: 15 }}>
           <div className={styles.inputWrapper}>
@@ -253,16 +254,16 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
         <Button variant="Brown" type="submit">
           Save
         </Button>
-        <Button
-          style={{ width: 249, margin: "30px auto 0 auto" }}
-          variant="Error"
-          type="button"
-          icon={<img src={Delete} alt="delete-icon" />}
-          onClick={() => console.log("Account deletion logic here")}
-        >
-          Delete Account
-        </Button>
       </form>
+      <Button
+        style={{ width: 249, margin: "30px auto 0 auto" }}
+        variant="Error"
+        type="button"
+        icon={<img src={Delete} alt="delete-icon" />}
+        onClick={deleteAccount}
+      >
+        Delete Account
+      </Button>
     </Modal>
   );
 };

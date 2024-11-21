@@ -97,10 +97,6 @@ p {
   margin-top: 10px;
   padding-left: 5px !important;
 }
-.uploadWrap {
-  display: flex;
-  justify-content: center;
-}
 
 .authUploadWrap .ant-upload.ant-upload-select-picture-card {
   background-color: transparent !important;
@@ -111,20 +107,6 @@ p {
   height: 85px !important;
 }
 
-.uploadWrap .ant-upload.ant-upload-select-picture-card {
-  background-color: transparent !important;
-  border-radius: 50% !important;
-  border: none !important;
-  overflow: hidden !important;
-  width: 126px !important;
-  height: 126px !important;
-}
-.uploadWrap img {
-  width: 100% !important;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
 .authUploadWrap img {
   width: 100% !important;
   height: 100%;

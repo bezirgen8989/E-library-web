@@ -5,6 +5,7 @@ export type User = {
   photo_url?: string;
 };
 export type RegisterUserParams = {
+  userId?: any;
   gender?: string;
   completedBooks?: number;
   userName?: string;

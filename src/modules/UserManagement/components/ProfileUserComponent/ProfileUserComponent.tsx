@@ -16,6 +16,7 @@ interface ProfileUserComponentProps {
   onSubmit: (values: any) => void;
   handleUpload: (params: any) => void;
   photoId: string | null;
+  deleteAccount: () => void;
 }
 
 const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
@@ -23,6 +24,7 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
   onSubmit,
   handleUpload,
   photoId,
+  deleteAccount,
 }) => {
   const value = useContext(UserContext);
   const dispatch = useDispatch();
@@ -81,6 +83,7 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
         userPhoto={value?.photo?.link}
         handleUpload={handleUpload}
         photoId={photoId}
+        deleteAccount={deleteAccount}
       />
     </div>
   );

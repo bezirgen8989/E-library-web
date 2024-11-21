@@ -2,6 +2,7 @@ import ProfileUserComponent from "../components/ProfileUserComponent";
 import { useLazySelector } from "../../../hooks";
 import { useCallback, useEffect } from "react";
 import {
+  deleteUserAccount,
   getLanguages,
   setProfile,
   uploadUserPhotoId,
@@ -36,12 +37,18 @@ const ProfileUserContainer: React.FC = () => {
     dispatch(uploadUserPhotoId(values));
   };
 
+  const deleteAccount = () => {
+    console.log();
+    dispatch(deleteUserAccount());
+  };
+
   return (
     <ProfileUserComponent
       languages={languages?.result?.data}
       onSubmit={handleSubmit}
       handleUpload={handleUpload}
       photoId={photoId?.result?.[0]?.id || null}
+      deleteAccount={deleteAccount}
     />
   );
 };

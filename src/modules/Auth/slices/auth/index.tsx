@@ -18,6 +18,7 @@ import {
   authRegister,
   authGoogleLogin,
   resetUserPassword,
+  deleteAccount,
 } from "../../api/authService";
 import {
   EditUserParams,
@@ -498,6 +499,18 @@ export const updatePhoto = createAsyncThunk(
   "auth/updatePhoto",
   async (originObj: any) => {
     const response = await authUpdatePhoto(originObj);
+    return response;
+  }
+);
+
+export const deleteUserAccount = createAsyncThunk(
+  "delete/api/v1/auth/me",
+  async () => {
+    const response = await deleteAccount();
+    const { success } = response;
+    if (success) {
+      history.push(routes.onboarding);
+    }
     return response;
   }
 );
