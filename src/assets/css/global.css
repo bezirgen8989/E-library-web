@@ -45,7 +45,7 @@ h4 {
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  background: linear-gradient(to bottom, #d3a271, #a46542);
+  /*background: linear-gradient(to bottom, #d3a271, #a46542);*/
 }
 
 a,
@@ -80,12 +80,12 @@ p {
 }
 
 .main {
-  flex: 1 1 auto;
+  /*flex: 1 1 auto;*/
 }
 
 .pageLayer {
   height: 100%;
-  background: #FBF1EA;
+  /*background: #FBF1EA;*/
   position: relative;
   /*padding-bottom: 100px;*/
 }

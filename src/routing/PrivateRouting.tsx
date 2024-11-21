@@ -12,18 +12,14 @@ import FooterMobile from "../components/common/FooterMobile/FooterMobile";
 const PrivateRouting: React.FC = () => (
   <AppLayer>
     <Suspense fallback={<Spinner />}>
-      <div className="pageLayer">
-        <Header />
-        <div className="wrap">
-          <Switch>
-            <PrivateRoute path={usersRoutes.root} component={UsersRouting} />
-            <PrivateRoute path={homeRoutes.root} component={HomeRouting} />
+      <Header />
+      <Switch>
+        <PrivateRoute path={usersRoutes.root} component={UsersRouting} />
+        <PrivateRoute path={homeRoutes.root} component={HomeRouting} />
 
-            <Redirect path="*" to={homeRoutes.root} />
-          </Switch>
-        </div>
-        <FooterMobile />
-      </div>
+        <Redirect path="*" to={homeRoutes.root} />
+      </Switch>
+      <FooterMobile />
     </Suspense>
   </AppLayer>
 );

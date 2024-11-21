@@ -1,15 +1,18 @@
 import styles from "./Header.module.scss";
 import logo from "../../../assets/images/icons/homeLogo.svg";
 import bell from "../../../assets/images/icons/bellIcon.svg";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import React, { useContext, useState } from "react";
 import { UserContext } from "../../../core/contexts";
-import { routes } from "../../../modules/UserManagement/routing";
+import userRoutes from "../../../modules/UserManagement/routing/routes";
+import homeRoutes from "../../../modules/Home/routing/routes";
 
 const Header: React.FC = () => {
-  const [hasNotifications, setHasNotifications] = useState(true);
-  console.log(setHasNotifications);
+  const [hasNotifications] = useState(true);
   const value = useContext(UserContext);
+  const location = useLocation(); // Получаем текущий путь
+
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <>
@@ -23,7 +26,12 @@ const Header: React.FC = () => {
           </Link>
         </div>
         <nav className={styles.headerNav}>
-          <Link to="#" className={`${styles.headerNavItem} ${styles.active}`}>
+          <Link
+            to={homeRoutes.root}
+            className={`${styles.headerNavItem} ${
+              isActive(homeRoutes.root) ? styles.active : ""
+            }`}
+          >
             <span className={styles.headerIcon}>
               <svg
                 className={styles.headerIcon}
@@ -38,7 +46,12 @@ const Header: React.FC = () => {
             </span>
             <span style={{ paddingLeft: 6 }}>Home</span>
           </Link>
-          <Link to="#" className={styles.headerNavItem}>
+          <Link
+            to="#"
+            className={`${styles.headerNavItem} ${
+              isActive("#") ? styles.active : ""
+            }`}
+          >
             <svg
               className={styles.headerIcon}
               width="19"
@@ -51,7 +64,12 @@ const Header: React.FC = () => {
             </svg>
             <span style={{ paddingLeft: 6 }}>My Bookshelf</span>
           </Link>
-          <Link to="#" className={styles.headerNavItem}>
+          <Link
+            to="#"
+            className={`${styles.headerNavItem} ${
+              isActive("#") ? styles.active : ""
+            }`}
+          >
             <svg
               className={styles.headerIcon}
               width="19"
@@ -64,7 +82,12 @@ const Header: React.FC = () => {
             </svg>
             <span style={{ paddingLeft: 6 }}>Ask a Question</span>
           </Link>
-          <Link to="#" className={styles.headerNavItem}>
+          <Link
+            to={homeRoutes.search}
+            className={`${styles.headerNavItem} ${
+              isActive(homeRoutes.search) ? styles.active : ""
+            }`}
+          >
             <span className={styles.headerIcon}>
               <svg
                 className={styles.headerIcon}
@@ -85,7 +108,7 @@ const Header: React.FC = () => {
             {hasNotifications && <div className={styles.dot} />}
             <img src={bell} alt="bell" />
           </div>
-          <Link to={routes.profile} className={styles.dropdown}>
+          <Link to={userRoutes.profile} className={styles.dropdown}>
             <div className={styles.headerAvatar}>
               <img src={value?.photo?.link} alt="avatar" />
             </div>
