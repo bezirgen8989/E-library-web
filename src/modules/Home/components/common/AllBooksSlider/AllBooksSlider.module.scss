@@ -13,7 +13,7 @@
 .newBooksList{
   display: flex;
   align-items: stretch;
-  justify-content: space-between;
+  //justify-content: space-between;
   margin: 0 -12px;
   @media (max-width: 1050px) {
     display: none;

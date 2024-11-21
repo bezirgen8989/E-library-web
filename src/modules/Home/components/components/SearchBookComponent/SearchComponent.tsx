@@ -13,10 +13,12 @@ type CategoryData = {
 
 interface SearchBooksComponentProps {
   categoriesData?: CategoryData[];
+  getBooksByCategory: (id: any) => void;
 }
 
 const SearchComponent: FC<SearchBooksComponentProps> = ({
   categoriesData = [],
+  getBooksByCategory,
 }) => {
   return (
     <div className={styles.home_page}>
@@ -27,6 +29,9 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
         <div className={styles.grid_container}>
           {categoriesData.map((category: CategoryData) => (
             <div
+              onClick={() => {
+                getBooksByCategory(category.id);
+              }}
               key={category.id}
               className={styles.grid_item}
               style={{

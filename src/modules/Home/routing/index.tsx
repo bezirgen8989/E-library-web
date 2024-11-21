@@ -6,10 +6,13 @@ import routes from "./routes";
 export { routes };
 
 export const Home = lazy(
-  () => import(/* webpackChunkName: "Home" */ "modules/Home/pages/Home")
+  () => import(/* webpackChunkName: "SearchBooks" */ "modules/Home/pages/Home")
 );
 export const SearchBooks = lazy(
-  () => import(/* webpackChunkName: "SearchBooks" */ "modules/Home/pages/Home")
+  () =>
+    import(
+      /* webpackChunkName: "SearchBooks" */ "modules/Home/pages/SearchBooks"
+    )
 );
 export const NewBooks = lazy(
   () => import(/* webpackChunkName: "NewBooks" */ "modules/Home/pages/NewBooks")
@@ -47,7 +50,7 @@ const HomeRouting = () => (
       <Route exact path={routes.newBooks} component={NewBooks} />
       <Route exact path={routes.similarBooks} component={SimilarBooks} />
       <Route exact path={routes.search} component={Search} />
-      <Route exact path={routes.searchBooks} component={SearchBooks} />
+      <Route exact path={`${routes.searchBooks}/:id`} component={SearchBooks} />
       <Route exact path={`${routes.book}/:id`} component={Book} />
       <Route exact path={`${routes.authorBooks}/:id`} component={AuthorBooks} />
       <Redirect path="*" to={routes.root} />

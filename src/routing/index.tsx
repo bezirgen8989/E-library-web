@@ -7,7 +7,8 @@ import { ErrorBoundary, ApplicationError } from "components/errors";
 import { InitializationLayer } from "core/layers";
 import authRoutes from "modules/Auth/routing/routes";
 import { useEffect } from "react";
-import routes from "../modules/UserManagement/routing/routes";
+import userRoutes from "../modules/UserManagement/routing/routes";
+import homeRoutes from "../modules/Home/routing/routes";
 
 const BackgroundUpdater = () => {
   const location = useLocation();
@@ -23,8 +24,14 @@ const BackgroundUpdater = () => {
       case location.pathname === rootRoutes.root:
         root.style.background = "#FBF1EA";
         break;
-      case location.pathname === routes.profile:
+      case location.pathname === userRoutes.profile:
         root.style.background = "linear-gradient(to bottom, #d3a271, #a46542)";
+        break;
+      case /^\/book\/\d+$/.test(location.pathname):
+        root.style.background = "#FBF1EA";
+        break;
+      case location.pathname === homeRoutes.search:
+        root.style.background = "#FBF1EA";
         break;
       default:
         root.style.background = "white";
