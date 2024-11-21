@@ -5,6 +5,7 @@ const routes = {
   similarBooks: "/similar_books",
   authorBooks: "/author_books",
   book: "/book",
-  search: "/book-search",
+  search: "/search",
+  searchBooks: "/search_books",
 };
 export default routes;
