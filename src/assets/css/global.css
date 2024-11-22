@@ -139,7 +139,7 @@ p {
   border-bottom: transparent !important;
 }
 .ant-input {
-  background: #EEF0F0 !important;
+  background: none !important;
   font-size: 21px !important;
   color: #000 !important;
 }

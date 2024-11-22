@@ -20,6 +20,7 @@ import {
   getAllTopBooks,
   getAuthorName,
   getBook,
+  getSearchBooks,
 } from "../../api/homeService";
 
 const initialState: HomeState = {
@@ -34,6 +35,7 @@ const initialState: HomeState = {
   authorsName: {},
   reviews: {},
   currentCategoryId: "",
+  searchBooks: [],
 };
 
 const homeSlice = createSlice({
@@ -122,6 +124,13 @@ const homeSlice = createSlice({
         const { content, error } = action.payload;
         state.reviews = { isLoading: false, result: content, error };
       })
+      .addCase(findBooks.pending, (state) => {
+        state.searchBooks = { isLoading: true };
+      })
+      .addCase(findBooks.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.searchBooks = { isLoading: false, result: content, error };
+      })
 
       // Clear store if 'userLoggedOut' happened
       .addCase(userLoggedOut, () => initialState);
@@ -203,6 +212,13 @@ export const getReviews = createAsyncThunk(
   "get/api/v1/reviews",
   async (params: ReviewParams) => {
     const response = await getAllReviews(params);
+    return response;
+  }
+);
+export const findBooks = createAsyncThunk(
+  "api/v1/books/suggestSearch",
+  async (text: string) => {
+    const response = await getSearchBooks(text);
     return response;
   }
 );

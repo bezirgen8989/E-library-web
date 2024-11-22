@@ -1,11 +1,11 @@
 import { useDispatch } from "react-redux";
-import SearchComponent from "../components/components/SearchBookComponent/SearchComponent";
+import SearchComponent from "../components/components/SearchComponent/SearchComponent";
 import { useCallback, useEffect } from "react";
 import { getCategories } from "../../Auth/slices/auth";
 import { useLazySelector } from "../../../hooks";
 import routes from "../routing/routes";
 import { useHistory } from "react-router-dom";
-import { setCurrentCategoryId } from "../slices/home";
+import { findBooks, setCurrentCategoryId } from "../slices/home";
 
 const SearchContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -18,6 +18,11 @@ const SearchContainer: React.FC = () => {
     };
   });
 
+  const { searchBooks } = useLazySelector(({ home }) => {
+    const { searchBooks } = home;
+    return { searchBooks };
+  });
+
   useEffect(() => {
     dispatch(getCategories());
   }, []);
@@ -27,10 +32,16 @@ const SearchContainer: React.FC = () => {
     history.push(`${routes.searchBooks}/${id}`);
   }, []);
 
+  const getSearchBooks = useCallback((text) => {
+    dispatch(findBooks(text));
+  }, []);
+
   return (
     <SearchComponent
       categoriesData={categories?.result?.data}
       getBooksByCategory={getBooksByCategory}
+      getSearchBooks={getSearchBooks}
+      searchBooks={searchBooks?.result}
     />
   );
 };

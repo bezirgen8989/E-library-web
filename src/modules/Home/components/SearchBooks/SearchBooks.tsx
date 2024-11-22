@@ -3,6 +3,8 @@ import { FC } from "react";
 import AllBooksSlider from "../common/AllBooksSlider/AllBooksSlider";
 import books from "../../../../assets/images/icons/booksIcon.png";
 import { routes } from "../../routing";
+import BackIcon from "../../../../assets/images/icons/goBackIcon.svg";
+import { useHistory } from "react-router-dom";
 
 type CategoryData = {
   id: number;
@@ -27,12 +29,17 @@ const SearchBooks: FC<HomeProps> = ({
   searchId,
   categories = [], // значение по умолчанию
 }) => {
+  const history = useHistory();
   const selectedCategory = categories.find(
     (category) => category.id.toString() === searchId
   );
 
   return (
     <div className={styles.home_page}>
+      <div onClick={() => history.goBack()} className={styles.backBtnSearch}>
+        <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
+        Back
+      </div>
       <div className={styles.title}>
         {selectedCategory ? selectedCategory.name : "Category not found"}
       </div>
