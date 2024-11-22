@@ -1,22 +1,22 @@
-
 export type HomeState = {
-  counter: number
-  books: any
-  topBooks: any
-  newBooks: any
-  suggestedBooks: any
-  currentBook: any
-  reviews: any
-  similarBooks: any
-  authorsName: any
-  authorBooks: any
-}
+  counter: number;
+  books: any;
+  topBooks: any;
+  newBooks: any;
+  suggestedBooks: any;
+  currentBook: any;
+  reviews: any;
+  similarBooks: any;
+  authorsName: any;
+  authorBooks: any;
+  currentCategoryId: any;
+};
 export type BooksParams = {
-  page: string
-  limit: string
-  filter: string | null
-  order?: string | null
-}
+  page: string;
+  limit: string;
+  filter: string | null;
+  order?: string | null;
+};
 
 export type AddBookToShelfParams = {
   user: { id: number };
@@ -35,10 +35,10 @@ export type AddReviewParams = {
   coreBook: {
     id: string;
   };
-}
+};
 
 export type ReviewParams = {
   id: number;
   limit: string;
-  page: string
-}
+  page: string;
+};

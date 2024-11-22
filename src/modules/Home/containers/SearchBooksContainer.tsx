@@ -2,7 +2,12 @@ import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "hooks";
 import { logoutUser } from "core/session/slices/session";
-import { getNewBooks, getSuggestedBooks, getTopBooks } from "../slices/home";
+import {
+  getNewBooks,
+  getSuggestedBooks,
+  getTopBooks,
+  setCurrentCategoryId,
+} from "../slices/home";
 import { useHistory, useParams } from "react-router-dom";
 import { routes } from "../routing";
 import { SearchBooks } from "../components";
@@ -28,7 +33,6 @@ const SearchBooksContainer: React.FC = () => {
       categories,
     };
   });
-  console.log("categories", categories);
 
   const handleLogout = useCallback(() => {
     dispatch(logoutUser());
@@ -75,6 +79,7 @@ const SearchBooksContainer: React.FC = () => {
 
   useEffect(() => {
     dispatch(getCategories());
+    dispatch(setCurrentCategoryId(id));
   }, []);
 
   return (

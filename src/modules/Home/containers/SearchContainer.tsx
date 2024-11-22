@@ -5,6 +5,7 @@ import { getCategories } from "../../Auth/slices/auth";
 import { useLazySelector } from "../../../hooks";
 import routes from "../routing/routes";
 import { useHistory } from "react-router-dom";
+import { setCurrentCategoryId } from "../slices/home";
 
 const SearchContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -16,14 +17,13 @@ const SearchContainer: React.FC = () => {
       categories,
     };
   });
-  console.log("categories", categories);
 
   useEffect(() => {
     dispatch(getCategories());
   }, []);
 
   const getBooksByCategory = useCallback((id) => {
-    console.log("categoryID", id);
+    dispatch(setCurrentCategoryId(id));
     history.push(`${routes.searchBooks}/${id}`);
   }, []);
 
