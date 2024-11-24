@@ -1,6 +1,7 @@
 import styles from "./Header.module.scss";
 import logo from "../../../assets/images/icons/homeLogo.svg";
 import bell from "../../../assets/images/icons/bellIcon.svg";
+import noAvatar from "../../../assets/images/icons/noUserAvatar.png";
 import { Link, useLocation } from "react-router-dom";
 import React, { useContext, useState } from "react";
 import { UserContext } from "../../../core/contexts";
@@ -110,7 +111,10 @@ const Header: React.FC = () => {
           </div>
           <Link to={userRoutes.profile} className={styles.dropdown}>
             <div className={styles.headerAvatar}>
-              <img src={value?.photo?.link} alt="avatar" />
+              <img
+                src={value?.photo?.link ? value?.photo?.link : noAvatar}
+                alt=""
+              />
             </div>
             {value?.userName ? value?.userName : value?.email}
           </Link>
@@ -118,7 +122,10 @@ const Header: React.FC = () => {
       </div>
       <div className={styles.headerMobile}>
         <div className={styles.headerAvatar}>
-          <img src={value?.photo?.link} alt="avatar" />
+          <img
+            src={value?.photo?.link ? value?.photo?.link : noAvatar}
+            alt=""
+          />
         </div>
         <div className={styles.pageTitle}>Home</div>
         <div className={styles.headerNotifications}>

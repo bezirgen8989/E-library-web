@@ -72,14 +72,19 @@ export const BackgroundUpdater = () => {
         case /^\/book\/\d+$/.test(location.pathname):
           root.style.background = "#FBF1EA";
           break;
-        case location.pathname === homeRoutes.search:
+        case location.pathname === homeRoutes.search ||
+          location.pathname === homeRoutes.newBooks ||
+          location.pathname === homeRoutes.suggestedBooks ||
+          location.pathname === homeRoutes.authorBooks ||
+          location.pathname === homeRoutes.similarBooks ||
+          location.pathname === homeRoutes.authorBooks:
           root.style.background = "#FBF1EA";
           break;
         default:
           root.style.background = "white";
       }
     }
-  }, [location, categories, currentCategoryId]); // Re-run the effect when location, categories, id, or isLoading changes
+  }, [location, categories, currentCategoryId]);
 
   return null;
 };

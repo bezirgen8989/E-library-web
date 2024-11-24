@@ -10,6 +10,7 @@ import LogOut from "../../../../assets/images/icons/logOutIcon.svg";
 import { logoutUser } from "../../../../core/session/slices/session";
 import { useDispatch } from "react-redux";
 import EditProfileModal from "../EditProfileModal";
+import noAvatar from "../../../../assets/images/icons/noUserAvatar.png";
 
 interface ProfileUserComponentProps {
   languages: LanguageType[];
@@ -38,7 +39,10 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
     <div className={styles.profile_page_wrap}>
       <div className={styles.profile_page}>
         <div className={styles.profile_logo}>
-          <img src={value?.photo?.link} alt="avatar" />
+          <img
+            src={value?.photo?.link ? value?.photo?.link : noAvatar}
+            alt=""
+          />
         </div>
         <div className={styles.profile_page_content}>
           <div className={styles.userInfo}>
