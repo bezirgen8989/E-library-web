@@ -1,5 +1,6 @@
 import styles from "./Header.module.scss";
-import logo from "../../../assets/images/icons/homeLogo.svg";
+import logo from "../../../assets/images/icons/appLogoBrown.svg";
+import logoWhite from "../../../assets/images/icons/appLogoWhite.svg";
 import bell from "../../../assets/images/icons/bellIcon.svg";
 import noAvatar from "../../../assets/images/icons/noUserAvatar.png";
 import { Link, useLocation } from "react-router-dom";
@@ -13,6 +14,12 @@ const Header: React.FC = () => {
   const value = useContext(UserContext);
   const location = useLocation(); // Получаем текущий путь
 
+  const difStyles =
+    location.pathname === userRoutes.profile ||
+    /^\/search_books\/\d+$/.test(location.pathname);
+
+  console.log("difStyles ", difStyles);
+
   const isActive = (path: string) => location.pathname === path;
 
   return (
@@ -21,14 +28,19 @@ const Header: React.FC = () => {
         <div className={styles.headerLogo}>
           <Link to="/">
             <div style={{ display: "flex", alignItems: "center" }}>
-              <img height="40px" width="40px" src={logo} alt="logo" />
-              <span>E-Library</span>
+              <img
+                height="41px"
+                width="73px"
+                src={!difStyles ? logo : logoWhite}
+                alt="logo"
+              />
             </div>
           </Link>
         </div>
         <nav className={styles.headerNav}>
           <Link
             to={homeRoutes.root}
+            style={{ color: difStyles ? "white" : "#7C8482" }}
             className={`${styles.headerNavItem} ${
               isActive(homeRoutes.root) ? styles.active : ""
             }`}
@@ -36,6 +48,7 @@ const Header: React.FC = () => {
             <span className={styles.headerIcon}>
               <svg
                 className={styles.headerIcon}
+                style={{ color: difStyles ? "white" : "#7C8482" }}
                 width="17"
                 height="18"
                 viewBox="0 0 17 18"
@@ -49,12 +62,14 @@ const Header: React.FC = () => {
           </Link>
           <Link
             to="#"
+            style={{ color: difStyles ? "white" : "#7C8482" }}
             className={`${styles.headerNavItem} ${
               isActive("#") ? styles.active : ""
             }`}
           >
             <svg
               className={styles.headerIcon}
+              style={{ color: difStyles ? "white" : "#7C8482" }}
               width="19"
               height="22"
               viewBox="0 0 19 22"
@@ -67,12 +82,14 @@ const Header: React.FC = () => {
           </Link>
           <Link
             to="#"
+            style={{ color: difStyles ? "white" : "#7C8482" }}
             className={`${styles.headerNavItem} ${
               isActive("#") ? styles.active : ""
             }`}
           >
             <svg
               className={styles.headerIcon}
+              style={{ color: difStyles ? "white" : "#7C8482" }}
               width="19"
               height="22"
               viewBox="0 0 19 22"
@@ -85,6 +102,7 @@ const Header: React.FC = () => {
           </Link>
           <Link
             to={homeRoutes.search}
+            style={{ color: difStyles ? "white" : "#7C8482" }}
             className={`${styles.headerNavItem} ${
               isActive(homeRoutes.search) ? styles.active : ""
             }`}
@@ -92,6 +110,7 @@ const Header: React.FC = () => {
             <span className={styles.headerIcon}>
               <svg
                 className={styles.headerIcon}
+                style={{ color: difStyles ? "white" : "#7C8482" }}
                 width="19"
                 height="19"
                 viewBox="0 0 19 19"
@@ -109,7 +128,11 @@ const Header: React.FC = () => {
             {hasNotifications && <div className={styles.dot} />}
             <img src={bell} alt="bell" />
           </div>
-          <Link to={userRoutes.profile} className={styles.dropdown}>
+          <Link
+            to={userRoutes.profile}
+            className={styles.dropdown}
+            style={{ color: difStyles ? "#D9A678" : "#996C42" }}
+          >
             <div className={styles.headerAvatar}>
               <img
                 src={value?.photo?.link ? value?.photo?.link : noAvatar}

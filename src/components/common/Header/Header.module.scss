@@ -19,7 +19,6 @@
 }
 .dropdown {
   padding: 3px 30px 3px 6px;
-  color: #996C42 !important;
   background-color: #EFE1D6;
   border-radius: 22px;
   display: flex;
@@ -47,19 +46,19 @@
 
   &.active,
   &:hover {
-    background-color: rgba(153, 108, 66, 0.12);
-    color: #996C42;
+    background-color: rgba(153, 108, 66, 0.12) !important;
+    color: #996C42 !important;
   }
 }
-
 .headerIcon {
   color: #AEB1B1;
   transition: color 0.3s ease;
 }
 .headerNavItem:hover .headerIcon,
 .headerNavItem.active .headerIcon {
-  color: #996C42;
+  color: #996C42 !important;
 }
+
 .headerAvatar {
   width: 38px;
   height: 38px;
