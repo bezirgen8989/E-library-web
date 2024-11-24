@@ -1,8 +1,8 @@
 import styles from "./SearchComponent.module.scss";
-import { FC, useState } from "react";
+import React, { FC, useState } from "react";
 import NoImg from "../../../../../assets/images/NoImagePlaceholder.jpg";
 import Search from "../../../../../assets/images/icons/SearchIcon.svg";
-import { Input } from "antd";
+import { Input, Skeleton } from "antd";
 
 type CategoryData = {
   id: number;
@@ -13,29 +13,63 @@ type CategoryData = {
   };
 };
 
+interface Author {
+  name: string;
+}
+
+interface Book {
+  id: string;
+  title: string;
+  bookCover: {
+    link: string;
+  };
+  author: Author[];
+}
+
 interface SearchBooksComponentProps {
   categoriesData?: CategoryData[];
   getBooksByCategory: (id: any) => void;
   getSearchBooks: (text: string) => void;
-  searchBooks: string[]; // Массив строк
+  searchBooks: string[];
+  getBooksByName: any;
+  booksByQueryName: any;
+  getBook: (id: any) => void;
+  isLoading: boolean;
 }
 
 const SearchComponent: FC<SearchBooksComponentProps> = ({
   categoriesData = [],
   getBooksByCategory,
   getSearchBooks,
-  searchBooks = [], // Устанавливаем значение по умолчанию как пустой массив
+  searchBooks = [],
+  getBooksByName,
+  booksByQueryName,
+  getBook,
+  isLoading,
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [hasSearched, setHasSearched] = useState<boolean>(false);
+  const [isDropdownVisible, setDropdownVisible] = useState<boolean>(false);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
-    getSearchBooks(value); // Запрос на поиск
+
+    if (value.trim() === "") {
+      setDropdownVisible(false); // Скрываем dropdown
+      setHasSearched(false); // Сбрасываем состояние поиска
+      getBooksByName({}); // Сбрасываем booksByQueryName
+    } else {
+      getSearchBooks(value);
+      setDropdownVisible(true); // Показываем dropdown при вводе текста
+    }
   };
 
   const handleBookSelect = (title: string) => {
     setSearchTerm(title);
+    setHasSearched(true); // Устанавливаем флаг для выполнения поиска
+    setDropdownVisible(false); // Скрыть dropdown после выбора
+    getBooksByName(title);
   };
 
   const filteredBooks = searchBooks.filter((book) =>
@@ -55,7 +89,7 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
             className={styles.searchBookInput}
             autoComplete="off"
           />
-          {filteredBooks.length > 0 && (
+          {searchTerm && isDropdownVisible && filteredBooks.length > 0 && (
             <div className={styles.dropdown}>
               {filteredBooks.map((book, index) => (
                 <div
@@ -68,33 +102,78 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
               ))}
             </div>
           )}
+          {searchTerm && filteredBooks.length === 0 && (
+            <div className={styles.noResults}>No Results</div>
+          )}
         </div>
-        <div className={styles.page_title}>
-          <span>All Genres</span>
-        </div>
-        <div className={styles.grid_container}>
-          {categoriesData.map((category: CategoryData) => (
-            <div
-              onClick={() => {
-                getBooksByCategory(category.id);
-              }}
-              key={category.id}
-              className={styles.grid_item}
-              style={{
-                backgroundColor: category.color,
-              }}
-            >
-              {category.name}
-              <div className={styles.backgroundImg}>
-                <img
-                  src={category.picture.link || NoImg}
-                  alt={category.name}
-                  className={styles.bookCoverImage}
-                />
-              </div>
+
+        {hasSearched && (
+          <div className={styles.booksList}>
+            {isLoading
+              ? Array.from({ length: 6 }).map((_, index) => (
+                  <div key={index} className={styles.newBook}>
+                    <div className={styles.imgWrap}>
+                      <Skeleton.Image
+                        style={{ width: "142px", height: "175px" }}
+                      />
+                    </div>
+                    <div className={styles.newBookTitle}>
+                      <Skeleton active paragraph={{ rows: 1 }} title={false} />
+                    </div>
+                    <div className={styles.newBookAuthor}>
+                      <Skeleton active paragraph={{ rows: 1 }} title={false} />
+                    </div>
+                  </div>
+                ))
+              : booksByQueryName.map((book: Book) => (
+                  <div
+                    key={book.id}
+                    className={styles.newBook}
+                    onClick={() => getBook(book.id)}
+                  >
+                    <div className={styles.imgWrap}>
+                      <img src={book.bookCover?.link} alt={book.title} />
+                    </div>
+                    <div className={styles.newBookTitle}>{book.title}</div>
+                    <div className={styles.newBookAuthor}>
+                      {book.author.map((author) => author.name).join(", ")}
+                    </div>
+                  </div>
+                ))}
+          </div>
+        )}
+
+        {/* Рендерим categoryFilter только если searchTerm пустое */}
+        {!searchTerm && (
+          <div className={styles.categoryFilter}>
+            <div className={styles.page_title}>
+              <span>All Genres</span>
             </div>
-          ))}
-        </div>
+            <div className={styles.grid_container}>
+              {categoriesData.map((category: CategoryData) => (
+                <div
+                  onClick={() => {
+                    getBooksByCategory(category.id);
+                  }}
+                  key={category.id}
+                  className={styles.grid_item}
+                  style={{
+                    backgroundColor: category.color,
+                  }}
+                >
+                  {category.name}
+                  <div className={styles.backgroundImg}>
+                    <img
+                      src={category.picture.link || NoImg}
+                      alt={category.name}
+                      className={styles.bookCoverImage}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

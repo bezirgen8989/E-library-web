@@ -20,6 +20,7 @@ import {
   getAllTopBooks,
   getAuthorName,
   getBook,
+  getBooksByName,
   getSearchBooks,
 } from "../../api/homeService";
 
@@ -36,6 +37,7 @@ const initialState: HomeState = {
   reviews: {},
   currentCategoryId: "",
   searchBooks: [],
+  booksByQueryName: {},
 };
 
 const homeSlice = createSlice({
@@ -92,6 +94,13 @@ const homeSlice = createSlice({
       .addCase(getSimilarBooks.fulfilled, (state, action) => {
         const { content, error } = action.payload;
         state.similarBooks = { isLoading: false, result: content, error };
+      })
+      .addCase(getBooksByQueryName.pending, (state) => {
+        state.booksByQueryName = { isLoading: true };
+      })
+      .addCase(getBooksByQueryName.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.booksByQueryName = { isLoading: false, result: content, error };
       })
 
       .addCase(getAuthorsBooks.pending, (state) => {
@@ -219,6 +228,14 @@ export const findBooks = createAsyncThunk(
   "api/v1/books/suggestSearch",
   async (text: string) => {
     const response = await getSearchBooks(text);
+    return response;
+  }
+);
+
+export const getBooksByQueryName = createAsyncThunk(
+  "query/api/v1/books",
+  async (books: BooksParams) => {
+    const response = await getBooksByName(books);
     return response;
   }
 );

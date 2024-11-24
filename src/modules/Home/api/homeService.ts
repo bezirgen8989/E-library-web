@@ -22,6 +22,11 @@ export const getAllAuthorBooks = (params: BooksParams) =>
   usingGet(
     `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
   );
+export const getBooksByName = (params: BooksParams) =>
+  usingGet(
+    `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
+  );
+
 export const addBookToShelf = (params: AddBookToShelfParams) =>
   usingPost(`/api/v1/bookshelf`, params);
 export const addBookReview = (params: AddReviewParams) =>

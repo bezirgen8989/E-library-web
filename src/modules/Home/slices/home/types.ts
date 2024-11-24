@@ -11,6 +11,7 @@ export type HomeState = {
   authorBooks: any;
   currentCategoryId: any;
   searchBooks: any;
+  booksByQueryName: any;
 };
 export type BooksParams = {
   page: string;
