@@ -1,4 +1,4 @@
-import styles from "./NewBooksComponent.module.scss";
+import styles from "./BooksComponent.module.scss";
 import React from "react";
 import commonStyles from "../../../../assets/css/commonStyles/CommonStyles.module.scss";
 import BackIcon from "../../../../assets/images/icons/backPage.svg";
@@ -21,9 +21,10 @@ interface Book {
 type HomeProps = {
   books: any;
   getBook: (id: any) => void;
+  title?: any;
 };
 
-const SuggestedBooksComponent: React.FC<HomeProps> = ({ books, getBook }) => {
+const BooksComponent: React.FC<HomeProps> = ({ books, getBook, title }) => {
   const history = useHistory();
   const isLoading = !books || books.length === 0;
 
@@ -37,7 +38,16 @@ const SuggestedBooksComponent: React.FC<HomeProps> = ({ books, getBook }) => {
         Back
       </div>
       <div className={styles.page_title}>
-        <h1>Suggested for You</h1>
+        {isLoading ? (
+          <Skeleton
+            active
+            style={{ height: 70, width: 100 }}
+            title={false}
+            paragraph={{ rows: 0 }}
+          />
+        ) : (
+          <h1>{title}</h1>
+        )}
       </div>
       <div className={styles.booksList}>
         {isLoading
@@ -74,4 +84,4 @@ const SuggestedBooksComponent: React.FC<HomeProps> = ({ books, getBook }) => {
   );
 };
 
-export default SuggestedBooksComponent;
+export default BooksComponent;
