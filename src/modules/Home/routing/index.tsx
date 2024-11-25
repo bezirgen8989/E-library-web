@@ -20,6 +20,12 @@ export const SearchTopBooks = lazy(
       /* webpackChunkName: "SearchTopBooks" */ "modules/Home/pages/SearchTopBooks"
     )
 );
+export const SearchNewBooks = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "SearchNewBooks" */ "modules/Home/pages/SearchNewBooks"
+    )
+);
 export const NewBooks = lazy(
   () => import(/* webpackChunkName: "NewBooks" */ "modules/Home/pages/NewBooks")
 );
@@ -69,6 +75,11 @@ const HomeRouting = () => (
         exact
         path={`${routes.searchTopBooks}/:id`}
         component={SearchTopBooks}
+      />
+      <Route
+        exact
+        path={`${routes.searchNewBooks}/:id`}
+        component={SearchNewBooks}
       />
       <Route exact path={`${routes.authorBooks}/:id`} component={AuthorBooks} />
       <Redirect path="*" to={routes.root} />

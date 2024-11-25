@@ -4,3 +4,4 @@ export { default as AuthorBooksContainer } from "./AuthorBooksContainer";
 export { default as BookContainer } from "./BookContainer";
 export { default as BooksShelfContainer } from "./BooksShelfContainer";
 export { default as SearchTopBooksContainer } from "./SearchTopBooksContainer";
+export { default as SearchNewBooksContainer } from "./SearchNewBooksContainer";

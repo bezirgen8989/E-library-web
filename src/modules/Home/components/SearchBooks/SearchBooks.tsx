@@ -56,7 +56,7 @@ const SearchBooks: FC<HomeProps> = ({
             books={newBooks}
             title="New Books"
             titleImage={<img src={books} alt="books" />}
-            seeAllLink={routes.newBooks}
+            seeAllLink={`${routes.searchNewBooks}/${searchId}`}
             getBook={getBook}
           />
         </div>

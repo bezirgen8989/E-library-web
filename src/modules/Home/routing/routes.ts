@@ -9,5 +9,6 @@ const routes = {
   searchBooks: "/search_genre_books",
   booksShelf: "/books_shelf",
   searchTopBooks: "/search_top_books",
+  searchNewBooks: "/search_new_books",
 };
 export default routes;
