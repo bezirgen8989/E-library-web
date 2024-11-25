@@ -22,9 +22,15 @@ type HomeProps = {
   books: any;
   getBook: (id: any) => void;
   title?: any;
+  categoryId?: string;
 };
 
-const BooksComponent: React.FC<HomeProps> = ({ books, getBook, title }) => {
+const BooksComponent: React.FC<HomeProps> = ({
+  books,
+  getBook,
+  title,
+  categoryId,
+}) => {
   const history = useHistory();
   const isLoading = !books || books.length === 0;
 

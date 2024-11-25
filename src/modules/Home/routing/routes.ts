@@ -6,6 +6,8 @@ const routes = {
   authorBooks: "/author_books",
   book: "/book",
   search: "/search",
-  searchBooks: "/search_books",
+  searchBooks: "/search_genre_books",
+  booksShelf: "/books_shelf",
+  searchTopBooks: "/search_top_books",
 };
 export default routes;

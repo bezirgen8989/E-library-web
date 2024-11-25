@@ -48,7 +48,7 @@ const SearchBooks: FC<HomeProps> = ({
           <AllBooksSlider
             books={topBooks}
             title="Top books"
-            seeAllLink={routes.newBooks}
+            seeAllLink={`${routes.searchTopBooks}/${searchId}`}
             getBook={getBook}
           />
           <div style={{ height: "1px", background: "rgba(18, 18, 18, 0.1)" }} />

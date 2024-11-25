@@ -16,7 +16,7 @@ const Header: React.FC = () => {
 
   const difStyles =
     location.pathname === userRoutes.profile ||
-    /^\/search_books\/\d+$/.test(location.pathname);
+    /^\/search_genre_books\/\d+$/.test(location.pathname);
 
   console.log("difStyles ", difStyles);
 
@@ -61,7 +61,7 @@ const Header: React.FC = () => {
             <span style={{ paddingLeft: 6 }}>Home</span>
           </Link>
           <Link
-            to="#"
+            to={homeRoutes.booksShelf}
             style={{ color: difStyles ? "white" : "#7C8482" }}
             className={`${styles.headerNavItem} ${
               isActive("#") ? styles.active : ""

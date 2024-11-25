@@ -43,7 +43,7 @@ export const BackgroundUpdater = () => {
     if (!root) return;
 
     if (
-      /^\/search_books\/\d+$/.test(location.pathname) &&
+      /^\/search_genre_books\/\d+$/.test(location.pathname) &&
       categories?.result?.data
     ) {
       const categoryId = parseInt(currentCategoryId, 10);

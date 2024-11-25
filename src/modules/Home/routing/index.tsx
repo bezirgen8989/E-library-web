@@ -6,12 +6,18 @@ import routes from "./routes";
 export { routes };
 
 export const Home = lazy(
-  () => import(/* webpackChunkName: "SearchBooks" */ "modules/Home/pages/Home")
+  () => import(/* webpackChunkName: "Home" */ "modules/Home/pages/Home")
 );
 export const SearchBooks = lazy(
   () =>
     import(
       /* webpackChunkName: "SearchBooks" */ "modules/Home/pages/SearchBooks"
+    )
+);
+export const SearchTopBooks = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "SearchTopBooks" */ "modules/Home/pages/SearchTopBooks"
     )
 );
 export const NewBooks = lazy(
@@ -27,6 +33,12 @@ export const SimilarBooks = lazy(
   () =>
     import(
       /* webpackChunkName: "SimilarBooks" */ "modules/Home/pages/SimilarBooks"
+    )
+);
+export const BooksShelf = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "BooksShelf " */ "modules/Home/pages/BooksShelfPage"
     )
 );
 export const Search = lazy(
@@ -49,9 +61,15 @@ const HomeRouting = () => (
       <Route exact path={routes.suggestedBooks} component={SuggestedBooks} />
       <Route exact path={routes.newBooks} component={NewBooks} />
       <Route exact path={routes.similarBooks} component={SimilarBooks} />
+      <Route exact path={routes.booksShelf} component={BooksShelf} />
       <Route exact path={routes.search} component={Search} />
       <Route exact path={`${routes.searchBooks}/:id`} component={SearchBooks} />
-      <Route exact path={`${routes.book}/:id`} component={Book} />
+      <Route exact path={routes.newBooks} component={NewBooks} />
+      <Route
+        exact
+        path={`${routes.searchTopBooks}/:id`}
+        component={SearchTopBooks}
+      />
       <Route exact path={`${routes.authorBooks}/:id`} component={AuthorBooks} />
       <Redirect path="*" to={routes.root} />
     </Switch>
