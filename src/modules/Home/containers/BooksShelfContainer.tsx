@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "hooks";
-import { logoutUser } from "core/session/slices/session";
+
 import { BooksShelfComponent } from "modules/Home/components";
 import { getNewBooks, getSuggestedBooks, getTopBooks } from "../slices/home";
 import { UserContext } from "../../../core/contexts";
@@ -24,10 +24,6 @@ const BookShelfContainer: React.FC = () => {
       suggestedBooks,
     };
   });
-
-  const handleLogout = useCallback(() => {
-    dispatch(logoutUser());
-  }, [dispatch]);
 
   const getBook = useCallback((id) => {
     history.push(`${routes.book}/${id}`);
@@ -74,7 +70,6 @@ const BookShelfContainer: React.FC = () => {
       topBooks={topBooks?.result?.data}
       newBooks={newBooks?.result?.data}
       suggestedBooks={suggestedBooks?.result?.data}
-      onLogout={handleLogout}
     />
   );
 };

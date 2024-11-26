@@ -64,7 +64,7 @@ const Header: React.FC = () => {
             to={homeRoutes.booksShelf}
             style={{ color: difStyles ? "white" : "#7C8482" }}
             className={`${styles.headerNavItem} ${
-              isActive("#") ? styles.active : ""
+              isActive(homeRoutes.booksShelf) ? styles.active : ""
             }`}
           >
             <svg

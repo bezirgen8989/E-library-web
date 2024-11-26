@@ -71,6 +71,7 @@ const HomeRouting = () => (
       <Route exact path={routes.search} component={Search} />
       <Route exact path={`${routes.searchBooks}/:id`} component={SearchBooks} />
       <Route exact path={routes.newBooks} component={NewBooks} />
+      <Route exact path={`${routes.book}/:id`} component={Book} />
       <Route
         exact
         path={`${routes.searchTopBooks}/:id`}
