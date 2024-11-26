@@ -4,21 +4,22 @@ import AllBooksSlider from "../common/AllBooksSlider/AllBooksSlider";
 import { routes } from "../../routing";
 
 type HomeProps = {
-  topBooks: any;
-  newBooks: any;
-  suggestedBooks: any;
+  started: any;
+  notStarted: any;
+  finished: any;
   getBook: (id: number) => void;
 };
 
 const BooksShelfComponent: React.FC<HomeProps> = ({
-  newBooks,
-  suggestedBooks,
+  started,
+  notStarted,
+  finished,
   getBook,
 }) => {
   return (
     <div className={styles.home_page}>
       <AllBooksSlider
-        books={newBooks}
+        books={started}
         title={
           <span style={{ fontSize: "44px", fontWeight: "600" }}>Started</span>
         }
@@ -26,7 +27,7 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
         getBook={getBook}
       />
       <AllBooksSlider
-        books={suggestedBooks}
+        books={notStarted}
         title={
           <span style={{ fontSize: "44px", fontWeight: "600" }}>
             Not Started
@@ -36,7 +37,7 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
         getBook={getBook}
       />
       <AllBooksSlider
-        books={suggestedBooks}
+        books={finished}
         title={
           <span style={{ fontSize: "44px", fontWeight: "600" }}>Finished</span>
         }

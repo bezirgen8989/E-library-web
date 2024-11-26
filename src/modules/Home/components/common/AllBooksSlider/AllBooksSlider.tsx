@@ -18,6 +18,7 @@ interface Book {
     link: string;
   };
   author: Author[];
+  isBookshelf?: any;
 }
 
 interface AllBooksSliderProps {
@@ -121,7 +122,10 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
                   )}
                 </div>
                 <div className={styles.newBookTitle}>{book.title}</div>
-                <div className={styles.newBookAuthor}>
+                <div
+                  style={{ color: book?.isBookshelf ? "grey" : "#996C42" }}
+                  className={styles.newBookAuthor}
+                >
                   {book.author.map((author) => author.name).join(", ")}
                 </div>
               </div>

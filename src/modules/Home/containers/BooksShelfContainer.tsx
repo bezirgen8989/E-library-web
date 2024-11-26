@@ -3,7 +3,11 @@ import { useDispatch } from "react-redux";
 import { useLazySelector } from "hooks";
 
 import { BooksShelfComponent } from "modules/Home/components";
-import { getNewBooks, getSuggestedBooks, getTopBooks } from "../slices/home";
+import {
+  getFinishedBooks,
+  getNotStartedBooks,
+  getStartedBooks,
+} from "../slices/home";
 import { UserContext } from "../../../core/contexts";
 import { useHistory } from "react-router-dom";
 import { routes } from "../routing";
@@ -12,64 +16,89 @@ const BookShelfContainer: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const value = useContext(UserContext);
-  const habitsCategories = value?.readingHabits
-    .map((genre: { id: string; name: string; colour: string }) => genre.id)
-    .join(",");
 
-  const { topBooks, newBooks, suggestedBooks } = useLazySelector(({ home }) => {
-    const { topBooks, newBooks, suggestedBooks } = home;
+  const { startedBooks, finishedBooks, notStartedBooks } = useLazySelector(
+    ({ home }) => {
+      const { startedBooks, finishedBooks, notStartedBooks } = home;
+      return {
+        startedBooks,
+        notStartedBooks,
+        finishedBooks,
+      };
+    }
+  );
+
+  const startedBooksList = startedBooks?.result?.data.map((item: any) => {
     return {
-      topBooks,
-      newBooks,
-      suggestedBooks,
+      ...item.book,
+      isBookshelf: true,
     };
   });
+  const notStartedBooksList = notStartedBooks?.result?.data.map((item: any) => {
+    return {
+      ...item.book,
+      isBookshelf: true,
+    };
+  });
+  const finishedBooksList = finishedBooks?.result?.data.map((item: any) => {
+    return {
+      ...item.book,
+      isBookshelf: true,
+    };
+  });
+
+  console.log("notStartedBooks", notStartedBooks?.result?.data);
+  console.log("notStartedBooksList", notStartedBooksList);
+
+  // console.log("notStartedBooksList", notStartedBooksList)
 
   const getBook = useCallback((id) => {
     history.push(`${routes.book}/${id}`);
   }, []);
 
-  // const topFilter = "[reviewCount][gte]=50"
-  const suggestedFilter = `[categories.id][in]=${habitsCategories}`;
-  const dateOrder = "[dateAdded]=desc";
-  const ratingOrder = "[rating]=desc";
+  const startedFilter = "[readingState][eq]=reading";
+  const favouriteFilter = "[readingState][eq]=added";
+  const finishedFilter = "[readingState][eq]=finished";
 
   useEffect(() => {
-    dispatch(
-      getTopBooks({
-        limit: "3",
-        page: "1",
-        order: "",
-        // filter: topFilter,
-        filter: "",
-      })
-    );
-    dispatch(
-      getNewBooks({
-        limit: "6",
-        page: "1",
-        order: dateOrder,
-        filter: null,
-      })
-    );
-  }, []);
-  useEffect(() => {
-    dispatch(
-      getSuggestedBooks({
-        limit: "6",
-        page: "1",
-        order: ratingOrder,
-        filter: suggestedFilter,
-      })
-    );
-  }, [suggestedFilter]);
+    if (value?.id) {
+      const userIdFilter = `[user.id][eq]=${value.id}`;
+      dispatch(
+        getStartedBooks({
+          limit: "6",
+          page: "1",
+          order: "",
+          filter: startedFilter,
+          userFilter: userIdFilter,
+        })
+      );
+      dispatch(
+        getNotStartedBooks({
+          limit: "6",
+          page: "1",
+          order: "",
+          filter: favouriteFilter,
+          userFilter: userIdFilter,
+        })
+      );
+      dispatch(
+        getFinishedBooks({
+          limit: "6",
+          page: "1",
+          order: "",
+          filter: finishedFilter,
+          userFilter: userIdFilter,
+        })
+      );
+    }
+  }, [value?.id, dispatch]);
 
   return (
     <BooksShelfComponent
       getBook={getBook}
-      topBooks={topBooks?.result?.data}
-      newBooks={newBooks?.result?.data}
-      suggestedBooks={suggestedBooks?.result?.data}
+      started={startedBooksList?.result?.data}
+      notStarted={notStartedBooksList}
+      finished={finishedBooksList?.result?.data}
     />
   );
 };

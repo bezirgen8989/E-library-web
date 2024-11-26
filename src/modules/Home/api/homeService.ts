@@ -45,3 +45,20 @@ export const deleteBookReview = (id: string) =>
   usingDelete(`/api/v1/reviews/${id}`);
 export const getSearchBooks = (text: string) =>
   usingGet(`/api/v1/books/suggestSearch/${text}`);
+export const getBookshelfBooks = (params: BooksParams) =>
+  usingGet(
+    `/api/v1/bookshelf?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
+  );
+
+export const getAllStartedBooks = (params: BooksParams) =>
+  usingGet(
+    `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
+  );
+export const getAllNotStartedBooks = (params: BooksParams) =>
+  usingGet(
+    `/api/v1/bookshelf?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.userFilter}&filter${params.filter}`
+  );
+export const getAllFinishedBooks = (params: BooksParams) =>
+  usingGet(
+    `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
+  );

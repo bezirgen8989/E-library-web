@@ -12,12 +12,17 @@ export type HomeState = {
   currentCategoryId: any;
   searchBooks: any;
   booksByQueryName: any;
+  bookshelf: any;
+  startedBooks: any;
+  notStartedBooks: any;
+  finishedBooks: any;
 };
 export type BooksParams = {
   page: string;
   limit: string;
   filter: string | null;
   order?: string | null;
+  userFilter?: string | null;
 };
 
 export type AddBookToShelfParams = {

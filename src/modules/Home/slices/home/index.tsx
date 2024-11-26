@@ -14,13 +14,17 @@ import {
   deleteBookFromShelf,
   deleteBookReview,
   getAllAuthorBooks,
+  getAllFinishedBooks,
   getAllNewBooks,
+  getAllNotStartedBooks,
   getAllReviews,
+  getAllStartedBooks,
   getAllSuggestedBooks,
   getAllTopBooks,
   getAuthorName,
   getBook,
   getBooksByName,
+  getBookshelfBooks,
   getSearchBooks,
 } from "../../api/homeService";
 
@@ -38,6 +42,10 @@ const initialState: HomeState = {
   currentCategoryId: "",
   searchBooks: [],
   booksByQueryName: {},
+  bookshelf: {},
+  startedBooks: {},
+  notStartedBooks: {},
+  finishedBooks: {},
 };
 
 const homeSlice = createSlice({
@@ -87,6 +95,14 @@ const homeSlice = createSlice({
       .addCase(getSuggestedBooks.fulfilled, (state, action) => {
         const { content, error } = action.payload;
         state.suggestedBooks = { isLoading: false, result: content, error };
+      })
+
+      .addCase(getBookShelf.pending, (state) => {
+        state.bookshelf = { isLoading: true };
+      })
+      .addCase(getBookShelf.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.bookshelf = { isLoading: false, result: content, error };
       })
       .addCase(getSimilarBooks.pending, (state) => {
         state.similarBooks = { isLoading: true };
@@ -139,6 +155,28 @@ const homeSlice = createSlice({
       .addCase(findBooks.fulfilled, (state, action) => {
         const { content, error } = action.payload;
         state.searchBooks = { isLoading: false, result: content, error };
+      })
+
+      .addCase(getStartedBooks.pending, (state) => {
+        state.startedBooks = { isLoading: true };
+      })
+      .addCase(getStartedBooks.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.startedBooks = { isLoading: false, result: content, error };
+      })
+      .addCase(getNotStartedBooks.pending, (state) => {
+        state.notStartedBooks = { isLoading: true };
+      })
+      .addCase(getNotStartedBooks.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.notStartedBooks = { isLoading: false, result: content, error };
+      })
+      .addCase(getFinishedBooks.pending, (state) => {
+        state.finishedBooks = { isLoading: true };
+      })
+      .addCase(getFinishedBooks.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.finishedBooks = { isLoading: false, result: content, error };
       })
 
       // Clear store if 'userLoggedOut' happened
@@ -209,6 +247,14 @@ export const deleteFromShelf = createAsyncThunk(
   }
 );
 
+export const getBookShelf = createAsyncThunk(
+  "get/api/v1/bookshelf",
+  async (books: BooksParams) => {
+    const response = await getBookshelfBooks(books);
+    return response;
+  }
+);
+
 export const addReview = createAsyncThunk(
   "add/api/v1/reviews",
   async (params: AddReviewParams) => {
@@ -252,6 +298,30 @@ export const getNameByAuthorId = createAsyncThunk(
   "/api/v1/authors/id",
   async (id: string) => {
     const response = await getAuthorName(id);
+    return response;
+  }
+);
+
+export const getStartedBooks = createAsyncThunk(
+  "started/api/v1/bookshelf",
+  async (books: BooksParams) => {
+    const response = await getAllStartedBooks(books);
+    return response;
+  }
+);
+
+export const getNotStartedBooks = createAsyncThunk(
+  "not-started/api/v1/bookshelf",
+  async (books: BooksParams) => {
+    const response = await getAllNotStartedBooks(books);
+    return response;
+  }
+);
+
+export const getFinishedBooks = createAsyncThunk(
+  "finished/api/v1/bookshelf",
+  async (books: BooksParams) => {
+    const response = await getAllFinishedBooks(books);
     return response;
   }
 );
