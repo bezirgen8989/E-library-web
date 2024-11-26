@@ -23,16 +23,17 @@ type HomeProps = {
   getBook: (id: any) => void;
   title?: any;
   categoryId?: string;
+  isLoading?: boolean;
 };
 
 const BooksComponent: React.FC<HomeProps> = ({
   books,
   getBook,
   title,
+  isLoading,
   categoryId,
 }) => {
   const history = useHistory();
-  const isLoading = !books || books.length === 0;
 
   return (
     <div className={styles.home_page}>
@@ -70,7 +71,7 @@ const BooksComponent: React.FC<HomeProps> = ({
                 </div>
               </div>
             ))
-          : books.map((book: Book) => (
+          : books?.map((book: Book) => (
               <div
                 key={book.id}
                 className={styles.newBook}
@@ -81,7 +82,7 @@ const BooksComponent: React.FC<HomeProps> = ({
                 </div>
                 <div className={styles.newBookTitle}>{book.title}</div>
                 <div className={styles.newBookAuthor}>
-                  {book.author.map((author) => author.name).join(", ")}
+                  {book?.author.map((author) => author.name).join(", ")}
                 </div>
               </div>
             ))}

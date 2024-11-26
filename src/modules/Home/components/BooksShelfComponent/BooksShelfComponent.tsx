@@ -8,6 +8,9 @@ type HomeProps = {
   notStarted: any;
   finished: any;
   getBook: (id: number) => void;
+  isStartedBooksLoading: boolean;
+  isNotStartedBooksLoading: boolean;
+  isFinishedBooksLoading: boolean;
 };
 
 const BooksShelfComponent: React.FC<HomeProps> = ({
@@ -15,17 +18,23 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
   notStarted,
   finished,
   getBook,
+  isStartedBooksLoading,
+  isNotStartedBooksLoading,
+  isFinishedBooksLoading,
 }) => {
   return (
     <div className={styles.home_page}>
-      <AllBooksSlider
-        books={started}
-        title={
-          <span style={{ fontSize: "44px", fontWeight: "600" }}>Started</span>
-        }
-        seeAllLink={routes.newBooks}
-        getBook={getBook}
-      />
+      {started && (
+        <AllBooksSlider
+          books={started}
+          title={
+            <span style={{ fontSize: "44px", fontWeight: "600" }}>Started</span>
+          }
+          seeAllLink={routes.newBooks}
+          getBook={getBook}
+          isLoading={isStartedBooksLoading}
+        />
+      )}
       <AllBooksSlider
         books={notStarted}
         title={
@@ -35,15 +44,21 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
         }
         seeAllLink={routes.suggestedBooks}
         getBook={getBook}
+        isLoading={isNotStartedBooksLoading}
       />
-      <AllBooksSlider
-        books={finished}
-        title={
-          <span style={{ fontSize: "44px", fontWeight: "600" }}>Finished</span>
-        }
-        seeAllLink={routes.suggestedBooks}
-        getBook={getBook}
-      />
+      {finished && (
+        <AllBooksSlider
+          books={finished}
+          title={
+            <span style={{ fontSize: "44px", fontWeight: "600" }}>
+              Finished
+            </span>
+          }
+          seeAllLink={routes.suggestedBooks}
+          getBook={getBook}
+          isLoading={isFinishedBooksLoading}
+        />
+      )}
     </div>
   );
 };

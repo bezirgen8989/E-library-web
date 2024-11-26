@@ -57,11 +57,10 @@ interface Book {
 interface TopBooksSlider {
   books: any;
   getBook: (id: number) => void;
+  isLoading?: boolean;
 }
 
-const TopBooksSlider: FC<TopBooksSlider> = ({ books, getBook }) => {
-  const isLoading = !books;
-
+const TopBooksSlider: FC<TopBooksSlider> = ({ books, getBook, isLoading }) => {
   return (
     <div className={styles.rowDesktop}>
       <div className={styles.topBooksList}>
@@ -78,7 +77,7 @@ const TopBooksSlider: FC<TopBooksSlider> = ({ books, getBook }) => {
                 </div>
               </div>
             ))
-          : books.map((book: Book) => (
+          : books?.map((book: Book) => (
               <div key={book.id} className={styles.topBook}>
                 <div>
                   <div className={styles.topBookTitle}>{book.title}</div>
@@ -126,7 +125,7 @@ const TopBooksSlider: FC<TopBooksSlider> = ({ books, getBook }) => {
                 </div>
               </div>
             ))
-          : books.map((book: Book) => (
+          : books?.map((book: Book) => (
               <div key={book.id} className={styles.sliderItemWrapper}>
                 <div className={styles.sliderBook}>
                   <div>

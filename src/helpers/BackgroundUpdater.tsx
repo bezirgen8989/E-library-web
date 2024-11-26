@@ -77,6 +77,7 @@ export const BackgroundUpdater = () => {
           location.pathname === homeRoutes.suggestedBooks ||
           location.pathname === homeRoutes.authorBooks ||
           location.pathname === homeRoutes.similarBooks ||
+          location.pathname === homeRoutes.booksShelf ||
           location.pathname === homeRoutes.authorBooks:
           root.style.background = "#FBF1EA";
           break;

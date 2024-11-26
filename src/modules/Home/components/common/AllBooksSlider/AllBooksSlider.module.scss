@@ -98,9 +98,18 @@
   font-size: 14px;
   //color: #996C42;
   font-weight: 700;
-  padding-bottom: 10px;
+  padding-bottom: 0
 }
 .rowNewBooks {
   padding-top: 25px;
   padding-bottom: 25px;
+}
+
+.startBtn {
+  color: #996C42;
+  cursor: pointer;
+  font-weight: 700;
+  &:hover {
+    opacity: 0.8;
+  }
 }

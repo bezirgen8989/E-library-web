@@ -17,15 +17,32 @@ const BookShelfContainer: React.FC = () => {
   const history = useHistory();
   const value = useContext(UserContext);
 
-  const { startedBooks, finishedBooks, notStartedBooks } = useLazySelector(
-    ({ home }) => {
-      const { startedBooks, finishedBooks, notStartedBooks } = home;
-      return {
-        startedBooks,
-        notStartedBooks,
-        finishedBooks,
-      };
-    }
+  const {
+    startedBooks,
+    finishedBooks,
+    notStartedBooks,
+    isStartedBooksLoading,
+    isNotStartedBooksLoading,
+    isFinishedBooksLoading,
+  } = useLazySelector(({ home }) => {
+    const { startedBooks, finishedBooks, notStartedBooks } = home;
+    const { isLoading: isStartedBooksLoading } = startedBooks;
+    const { isLoading: isNotStartedBooksLoading } = notStartedBooks;
+    const { isLoading: isFinishedBooksLoading } = finishedBooks;
+    return {
+      startedBooks,
+      notStartedBooks,
+      finishedBooks,
+      isStartedBooksLoading,
+      isNotStartedBooksLoading,
+      isFinishedBooksLoading,
+    };
+  });
+  console.log(
+    "allLoading",
+    isStartedBooksLoading,
+    isNotStartedBooksLoading,
+    isFinishedBooksLoading
   );
 
   const startedBooksList = startedBooks?.result?.data.map((item: any) => {
@@ -46,11 +63,6 @@ const BookShelfContainer: React.FC = () => {
       isBookshelf: true,
     };
   });
-
-  console.log("notStartedBooks", notStartedBooks?.result?.data);
-  console.log("notStartedBooksList", notStartedBooksList);
-
-  // console.log("notStartedBooksList", notStartedBooksList)
 
   const getBook = useCallback((id) => {
     history.push(`${routes.book}/${id}`);
@@ -99,6 +111,9 @@ const BookShelfContainer: React.FC = () => {
       started={startedBooksList?.result?.data}
       notStarted={notStartedBooksList}
       finished={finishedBooksList?.result?.data}
+      isStartedBooksLoading={isStartedBooksLoading}
+      isNotStartedBooksLoading={isNotStartedBooksLoading}
+      isFinishedBooksLoading={isFinishedBooksLoading}
     />
   );
 };

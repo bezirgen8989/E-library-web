@@ -27,6 +27,7 @@ interface AllBooksSliderProps {
   books?: Book[]; // null or undefined indicates loading state
   titleImage?: ReactNode | null;
   getBook: (id: number) => void;
+  isLoading?: boolean;
 }
 
 const restSliderSettings = {
@@ -61,15 +62,58 @@ const restSliderSettings = {
     },
   ],
 };
-
 const AllBooksSlider: FC<AllBooksSliderProps> = ({
   title,
   titleImage,
   books,
   seeAllLink,
   getBook,
+  isLoading,
 }) => {
-  const isLoading = !books; // Books are null or undefined during loading
+  const renderLoadingSkeletons = () =>
+    Array.from({ length: 6 }).map((_, index) => (
+      <div key={index} className={styles.newBook} style={{ height: "299px" }}>
+        <div className={styles.imgWrap}>
+          <Skeleton.Image className={styles.skeletonImage} />
+        </div>
+        <Skeleton
+          active
+          title={false}
+          paragraph={{ rows: 2, width: ["100%", "80%"] }}
+        />
+      </div>
+    ));
+
+  const renderBooks = () =>
+    books?.map((book) => (
+      <div key={book.id} className={styles.newBook}>
+        <div onClick={() => getBook(book.id)}>
+          <div className={styles.imgWrap}>
+            {book.bookCover?.link ? (
+              <img
+                src={book.bookCover?.link}
+                alt={book.title}
+                className={styles.bookCoverImage}
+              />
+            ) : (
+              <img
+                src={NoImg}
+                alt={book.title}
+                className={styles.bookCoverImage}
+              />
+            )}
+          </div>
+          <div className={styles.newBookTitle}>{book.title}</div>
+          <div
+            style={{ color: book?.isBookshelf ? "grey" : "#996C42" }}
+            className={styles.newBookAuthor}
+          >
+            {book.author.map((author) => author.name).join(", ")}
+          </div>
+        </div>
+        <div className={styles.startBtn}>Start Reading</div>
+      </div>
+    ));
 
   return (
     <div className={styles.rowNewBooks}>
@@ -78,79 +122,19 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
           <h2>{title}</h2>
           {titleImage}
         </div>
-        <Link className={styles.titleLink} to={seeAllLink}>
-          See all
-        </Link>
+        {seeAllLink && (
+          <Link className={styles.titleLink} to={seeAllLink}>
+            See all
+          </Link>
+        )}
       </div>
       <div className={styles.newBooksList}>
-        {isLoading
-          ? Array.from({ length: 6 }).map((_, index) => (
-              <div
-                key={index}
-                className={styles.newBook}
-                style={{ height: "299px" }}
-              >
-                <div className={styles.imgWrap}>
-                  <Skeleton.Image className={styles.skeletonImage} />
-                </div>
-                <Skeleton
-                  active
-                  title={false}
-                  paragraph={{ rows: 2, width: ["100%", "80%"] }}
-                />
-              </div>
-            ))
-          : books.map((book) => (
-              <div
-                key={book.id}
-                className={styles.newBook}
-                onClick={() => getBook(book.id)}
-              >
-                <div className={styles.imgWrap}>
-                  {book.bookCover?.link ? (
-                    <img
-                      src={book.bookCover?.link}
-                      alt={book.title}
-                      className={styles.bookCoverImage}
-                    />
-                  ) : (
-                    <img
-                      src={NoImg}
-                      alt={book.title}
-                      className={styles.bookCoverImage}
-                    />
-                  )}
-                </div>
-                <div className={styles.newBookTitle}>{book.title}</div>
-                <div
-                  style={{ color: book?.isBookshelf ? "grey" : "#996C42" }}
-                  className={styles.newBookAuthor}
-                >
-                  {book.author.map((author) => author.name).join(", ")}
-                </div>
-              </div>
-            ))}
+        {isLoading ? renderLoadingSkeletons() : renderBooks()}
       </div>
       <Slider className={styles.newBooksSlider} {...restSliderSettings}>
         {isLoading
-          ? Array.from({ length: 6 }).map((_, index) => (
-              <div key={index}>
-                <div
-                  className={styles.sliderNewBook}
-                  style={{ height: "299px" }}
-                >
-                  <div className={styles.imgWrap}>
-                    <Skeleton.Image className={styles.skeletonImage} />
-                  </div>
-                  <Skeleton
-                    active
-                    title={false}
-                    paragraph={{ rows: 2, width: ["100%", "80%"] }}
-                  />
-                </div>
-              </div>
-            ))
-          : books.map((book) => (
+          ? renderLoadingSkeletons()
+          : books?.map((book) => (
               <div key={book.id} onClick={() => getBook(book.id)}>
                 <div className={styles.sliderNewBook}>
                   <div className={styles.imgWrap}>

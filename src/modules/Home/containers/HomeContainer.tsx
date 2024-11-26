@@ -16,12 +16,25 @@ const HomeContainer: React.FC = () => {
     .map((genre: { id: string; name: string; colour: string }) => genre.id)
     .join(",");
 
-  const { topBooks, newBooks, suggestedBooks } = useLazySelector(({ home }) => {
+  const {
+    topBooks,
+    newBooks,
+    suggestedBooks,
+    isTopBooksLoading,
+    isNewBooksLoading,
+    isSuggestedBooksLoading,
+  } = useLazySelector(({ home }) => {
     const { topBooks, newBooks, suggestedBooks } = home;
+    const { isLoading: isTopBooksLoading } = topBooks;
+    const { isLoading: isNewBooksLoading } = newBooks;
+    const { isLoading: isSuggestedBooksLoading } = suggestedBooks;
     return {
       topBooks,
       newBooks,
       suggestedBooks,
+      isTopBooksLoading,
+      isNewBooksLoading,
+      isSuggestedBooksLoading,
     };
   });
 
@@ -75,6 +88,9 @@ const HomeContainer: React.FC = () => {
       newBooks={newBooks?.result?.data}
       suggestedBooks={suggestedBooks?.result?.data}
       onLogout={handleLogout}
+      isTopBooksLoading={isTopBooksLoading}
+      isNewBooksLoading={isNewBooksLoading}
+      isSuggestedBooksLoading={isSuggestedBooksLoading}
     />
   );
 };

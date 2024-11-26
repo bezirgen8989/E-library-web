@@ -10,10 +10,12 @@ const SimilarBooksContainer: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { newBooks } = useLazySelector(({ home }) => {
-    const { newBooks } = home;
+  const { similarBooks, isLoading } = useLazySelector(({ home }) => {
+    const { similarBooks } = home;
+    const { isLoading } = similarBooks;
     return {
-      newBooks,
+      similarBooks,
+      isLoading,
     };
   });
 
@@ -37,9 +39,10 @@ const SimilarBooksContainer: React.FC = () => {
 
   return (
     <BooksComponent
-      books={newBooks?.result?.data}
+      books={similarBooks?.result?.data}
       getBook={getBook}
       title="Similar books"
+      isLoading={isLoading}
     />
   );
 };

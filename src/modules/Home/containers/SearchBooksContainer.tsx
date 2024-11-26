@@ -19,12 +19,25 @@ const SearchBooksContainer: React.FC = () => {
 
   const { id } = useParams<{ id: string }>();
 
-  const { topBooks, newBooks, suggestedBooks } = useLazySelector(({ home }) => {
+  const {
+    topBooks,
+    newBooks,
+    suggestedBooks,
+    isTopBooksLoading,
+    isNewBooksLoading,
+    isSuggestedBooksLoading,
+  } = useLazySelector(({ home }) => {
     const { topBooks, newBooks, suggestedBooks } = home;
+    const { isLoading: isTopBooksLoading } = topBooks;
+    const { isLoading: isNewBooksLoading } = newBooks;
+    const { isLoading: isSuggestedBooksLoading } = suggestedBooks;
     return {
       topBooks,
       newBooks,
       suggestedBooks,
+      isTopBooksLoading,
+      isNewBooksLoading,
+      isSuggestedBooksLoading,
     };
   });
   const { categories } = useLazySelector(({ auth }) => {
@@ -91,6 +104,9 @@ const SearchBooksContainer: React.FC = () => {
       onLogout={handleLogout}
       searchId={id}
       categories={categories?.result?.data}
+      isTopBooksLoading={isTopBooksLoading}
+      isNewBooksLoading={isNewBooksLoading}
+      isSuggestedBooksLoading={isSuggestedBooksLoading}
     />
   );
 };

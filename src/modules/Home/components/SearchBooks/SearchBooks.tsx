@@ -19,6 +19,9 @@ type HomeProps = {
   getBook: (id: number) => void;
   searchId: string;
   categories: CategoryData[];
+  isTopBooksLoading: boolean;
+  isNewBooksLoading: boolean;
+  isSuggestedBooksLoading: boolean;
 };
 
 const SearchBooks: FC<HomeProps> = ({
@@ -27,7 +30,10 @@ const SearchBooks: FC<HomeProps> = ({
   suggestedBooks,
   getBook,
   searchId,
-  categories = [], // значение по умолчанию
+  categories = [],
+  isTopBooksLoading,
+  isNewBooksLoading,
+  isSuggestedBooksLoading,
 }) => {
   const history = useHistory();
   const selectedCategory = categories.find(
@@ -45,20 +51,26 @@ const SearchBooks: FC<HomeProps> = ({
       </div>
       <div className={styles.search_page}>
         <div className={styles.searchContainer}>
-          <AllBooksSlider
-            books={topBooks}
-            title="Top books"
-            seeAllLink={`${routes.searchTopBooks}/${searchId}`}
-            getBook={getBook}
-          />
+          {topBooks && (
+            <AllBooksSlider
+              books={topBooks}
+              title="Top books"
+              seeAllLink={`${routes.searchTopBooks}/${searchId}`}
+              getBook={getBook}
+              isLoading={isTopBooksLoading}
+            />
+          )}
           <div style={{ height: "1px", background: "rgba(18, 18, 18, 0.1)" }} />
-          <AllBooksSlider
-            books={newBooks}
-            title="New Books"
-            titleImage={<img src={books} alt="books" />}
-            seeAllLink={`${routes.searchNewBooks}/${searchId}`}
-            getBook={getBook}
-          />
+          {newBooks && (
+            <AllBooksSlider
+              books={newBooks}
+              title="New Books"
+              titleImage={<img src={books} alt="books" />}
+              seeAllLink={`${routes.searchNewBooks}/${searchId}`}
+              getBook={getBook}
+              isLoading={isNewBooksLoading}
+            />
+          )}
         </div>
       </div>
     </div>
