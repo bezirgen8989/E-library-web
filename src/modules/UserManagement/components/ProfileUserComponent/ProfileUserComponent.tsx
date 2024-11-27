@@ -18,6 +18,7 @@ interface ProfileUserComponentProps {
   handleUpload: (params: any) => void;
   photoId: string | null;
   deleteAccount: () => void;
+  handleKidsMode: (value: any) => void;
 }
 
 const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
@@ -26,14 +27,15 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
   handleUpload,
   photoId,
   deleteAccount,
+  handleKidsMode,
 }) => {
   const value = useContext(UserContext);
   const dispatch = useDispatch();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  console.log("value323232423", value);
   const onLogout = () => {
     dispatch(logoutUser());
   };
+  console.log("value", value);
 
   return (
     <div className={styles.profile_page_wrap}>
@@ -70,7 +72,12 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
               {value?.completedBooks} completed books
             </div>
           </div>
-          <ProfileUserForm languages={languages} onSubmit={onSubmit} />
+          <ProfileUserForm
+            languages={languages}
+            onSubmit={onSubmit}
+            handleKidsMode={handleKidsMode}
+            kidsMode={value?.kidsMode}
+          />
         </div>
         <div onClick={onLogout} className={styles.logOutBtn}>
           <img src={LogOut} alt="icon" />

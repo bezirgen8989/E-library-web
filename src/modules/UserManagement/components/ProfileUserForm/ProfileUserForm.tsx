@@ -17,6 +17,8 @@ export type LanguageType = {
 type RecoverProps = {
   onSubmit: (values: any) => void;
   languages: LanguageType[];
+  handleKidsMode: (value: boolean) => void;
+  kidsMode: boolean | undefined;
 };
 
 type FormValues = {
@@ -31,12 +33,15 @@ type FormValues = {
 const ProfileUserForm: React.FC<RecoverProps> = ({
   onSubmit,
   languages = [],
+  handleKidsMode,
+  kidsMode = false, // Установим значение по умолчанию для kidsMode
 }) => {
   const defaultLanguage = languages.find((lang) => lang.name === "English") || {
     id: 0,
     name: "Select Language",
     flag: { link: NoAvatar },
   };
+
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
   const [selectedBookLanguage, setSelectedBookLanguage] =
     useState(defaultLanguage);
@@ -44,12 +49,9 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   const [modalType, setModalType] = useState<"language" | "bookLanguage">(
     "language"
   );
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    // formState: { errors },
-  } = useForm<FormValues>({
+  const [userKidsMode, setUserKidsMode] = useState(kidsMode); // Используем локальный стейт
+
+  const { control, handleSubmit, setValue } = useForm<FormValues>({
     defaultValues: {
       language: defaultLanguage.name,
       bookLanguage: defaultLanguage.name,
@@ -67,6 +69,10 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
       }
     }
   }, [languages, setValue]);
+
+  useEffect(() => {
+    setUserKidsMode(kidsMode); // Синхронизируем локальное состояние с пропсом
+  }, [kidsMode]);
 
   const onLanguageSelect = (language: LanguageType) => {
     if (modalType === "language") {
@@ -99,8 +105,9 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
     onSubmit(formattedData);
   };
 
-  const onChange = (checked: boolean) => {
-    console.log(`switch to ${checked}`);
+  const kidsModeChange = (checked: boolean) => {
+    setUserKidsMode(checked); // Обновляем локальный стейт
+    handleKidsMode(checked); // Передаем новое значение в родительский компонент
   };
 
   return (
@@ -164,7 +171,7 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
         </div>
         <div className={styles.kidsSelectWrapper}>
           <span>Kids Mode</span>
-          <Switch onChange={onChange} />
+          <Switch checked={userKidsMode} onChange={kidsModeChange} />
         </div>
         <div className={styles.aiWrapper}>
           <div className={styles.aiAvatar}>
@@ -172,9 +179,6 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
           </div>
           <span>AI Librarian</span>
         </div>
-        {/*<Button variant="White" type="submit">*/}
-        {/*    Continue*/}
-        {/*</Button>*/}
       </form>
       <LanguageModal
         isModalOpen={isModalOpen}

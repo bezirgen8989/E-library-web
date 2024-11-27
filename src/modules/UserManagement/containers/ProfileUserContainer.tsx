@@ -4,6 +4,7 @@ import { useCallback, useEffect } from "react";
 import {
   deleteUserAccount,
   getLanguages,
+  setKidsMode,
   setProfile,
   uploadUserPhotoId,
 } from "../../Auth/slices/auth";
@@ -19,7 +20,6 @@ const ProfileUserContainer: React.FC = () => {
       photoId,
     };
   });
-  console.log("languages", languages?.result?.data);
 
   useEffect(() => {
     dispatch(getLanguages());
@@ -27,7 +27,6 @@ const ProfileUserContainer: React.FC = () => {
 
   const handleSubmit = useCallback(
     (values) => {
-      console.log("profile submit values", values);
       dispatch(setProfile(values));
     },
     [dispatch]
@@ -35,6 +34,10 @@ const ProfileUserContainer: React.FC = () => {
 
   const handleUpload = (values: any) => {
     dispatch(uploadUserPhotoId(values));
+  };
+  const handleKidsMode = (value: any) => {
+    dispatch(setKidsMode({ kidsMode: value }));
+    console.log("KidsModeValue", value);
   };
 
   const deleteAccount = () => {
@@ -49,6 +52,7 @@ const ProfileUserContainer: React.FC = () => {
       handleUpload={handleUpload}
       photoId={photoId?.result?.[0]?.id || null}
       deleteAccount={deleteAccount}
+      handleKidsMode={handleKidsMode}
     />
   );
 };

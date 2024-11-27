@@ -36,7 +36,7 @@ const LanguageModal: FC<LanguageModalProps> = ({
 
   const handleLanguageSelect = (lang: LanguageType) => {
     setSelectedLanguage(lang);
-    onLanguageSelect(lang); // Update selected language in ProfileUserForm
+    onLanguageSelect(lang);
     hideModal();
   };
 

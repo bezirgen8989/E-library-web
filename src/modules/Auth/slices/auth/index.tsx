@@ -50,6 +50,7 @@ const initialState: AuthState = {
   photoId: {},
   currentEmail: null,
   googleTokenId: {},
+  kidsMode: {},
 };
 
 const authSlice = createSlice({
@@ -106,6 +107,14 @@ const authSlice = createSlice({
         const { content, error } = action.payload;
         state.profileInfo = { isLoading: false, result: content, error };
       })
+      .addCase(setKidsMode.pending, (state) => {
+        state.kidsMode = { isLoading: true };
+      })
+      .addCase(setKidsMode.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.kidsMode = { isLoading: false, result: content, error };
+      })
+
       .addCase(emailConfirm.pending, (state) => {
         state.confirmEmailRequest = { isLoading: true };
       })
@@ -384,6 +393,14 @@ export const setProfile = createAsyncThunk(
       dispatch(getMe());
       history.push(homeRoutes.root);
     }
+    return response;
+  }
+);
+
+export const setKidsMode = createAsyncThunk(
+  "kidsMode/api/v1/auth/me",
+  async (userParams: any, { dispatch }) => {
+    const response = await setUserProfile(userParams);
     return response;
   }
 );

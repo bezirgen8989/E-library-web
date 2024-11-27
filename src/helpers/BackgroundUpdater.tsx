@@ -15,79 +15,65 @@ type Category = {
 
 export const BackgroundUpdater = () => {
   const dispatch = useDispatch();
-  const { categories } = useLazySelector(({ auth }) => {
-    const { categories } = auth;
-    return {
-      categories,
-    };
-  });
+  const { categories } = useLazySelector(({ auth }) => auth);
+  const { currentCategoryId } = useLazySelector(({ home }) => home);
 
-  const { currentCategoryId } = useLazySelector(({ home }) => {
-    const { currentCategoryId } = home;
-    return {
-      currentCategoryId,
-    };
-  });
+  const location = useLocation();
 
   useEffect(() => {
-    // Dispatch action to fetch categories if not already fetched
     if (!categories) {
       dispatch(getCategories());
     }
   }, [dispatch, categories]);
 
-  const location = useLocation();
+  const getCategoryBackground = (): string | undefined => {
+    if (/^\/search_genre_books\/\d+$/.test(location.pathname)) {
+      const categoryId = parseInt(currentCategoryId, 10);
+      const category = categories?.result?.data?.find(
+        (cat: Category) => cat.id === categoryId
+      );
+      return category?.color || "white";
+    }
+    return undefined;
+  };
+
+  const getRouteBackground = (): string => {
+    const routeBackgrounds: Record<string, string> = {
+      [authRoutes.root]: "linear-gradient(to bottom, #d3a271, #a46542)",
+      [rootRoutes.root]: "#FBF1EA",
+      [userRoutes.profile]: "linear-gradient(to bottom, #d3a271, #a46542)",
+      [homeRoutes.search]: "#FBF1EA",
+      [homeRoutes.newBooks]: "#FBF1EA",
+      [homeRoutes.suggestedBooks]: "#FBF1EA",
+      [homeRoutes.authorBooks]: "#FBF1EA",
+      [homeRoutes.similarBooks]: "#FBF1EA",
+      [homeRoutes.booksShelf]: "#FBF1EA",
+      [homeRoutes.startedBooks]: "#FBF1EA",
+      [homeRoutes.notStartedBooks]: "#FBF1EA",
+      [homeRoutes.finishedBooks]: "#FBF1EA",
+      [homeRoutes.searchTopBooks]: "#FBF1EA",
+      [homeRoutes.searchNewBooks]: "#FBF1EA",
+    };
+
+    if (
+      /^\/(search_top_books|search_new_books)\/\d+$/.test(location.pathname)
+    ) {
+      return "#FBF1EA";
+    }
+
+    if (/^\/book\/\d+$/.test(location.pathname)) {
+      return "#FBF1EA";
+    }
+
+    return routeBackgrounds[location.pathname] || "white";
+  };
 
   useEffect(() => {
     const root = document.getElementById("root");
     if (!root) return;
 
-    if (
-      /^\/search_genre_books\/\d+$/.test(location.pathname) &&
-      categories?.result?.data
-    ) {
-      const categoryId = parseInt(currentCategoryId, 10);
-      const category = categories.result.data.find(
-        (category: Category) => category.id === categoryId
-      );
-      if (category) {
-        root.style.background = category.color || "white"; // Use category color if found
-      } else {
-        root.style.background = "white"; // Default background if no category is found
-      }
-    } else {
-      // Handle other routes
-      switch (true) {
-        case location.pathname.startsWith(authRoutes.root):
-          root.style.background =
-            "linear-gradient(to bottom, #d3a271, #a46542)";
-          break;
-        case location.pathname === rootRoutes.root:
-          root.style.background = "#FBF1EA";
-          break;
-        case location.pathname === userRoutes.profile:
-          root.style.background =
-            "linear-gradient(to bottom, #d3a271, #a46542)";
-          break;
-        case /^\/book\/\d+$/.test(location.pathname):
-          root.style.background = "#FBF1EA";
-          break;
-        case location.pathname === homeRoutes.search ||
-          location.pathname === homeRoutes.newBooks ||
-          location.pathname === homeRoutes.suggestedBooks ||
-          location.pathname === homeRoutes.authorBooks ||
-          location.pathname === homeRoutes.similarBooks ||
-          location.pathname === homeRoutes.booksShelf ||
-          location.pathname === homeRoutes.startedBooks ||
-          location.pathname === homeRoutes.notStartedBooks ||
-          location.pathname === homeRoutes.finishedBooks ||
-          location.pathname === homeRoutes.authorBooks:
-          root.style.background = "#FBF1EA";
-          break;
-        default:
-          root.style.background = "white";
-      }
-    }
+    const categoryBackground = getCategoryBackground();
+    root.style.background = categoryBackground || getRouteBackground();
   }, [location, categories, currentCategoryId]);
 
   return null;
