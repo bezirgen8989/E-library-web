@@ -38,31 +38,28 @@ const BookShelfContainer: React.FC = () => {
       isFinishedBooksLoading,
     };
   });
-  console.log(
-    "allLoading",
-    isStartedBooksLoading,
-    isNotStartedBooksLoading,
-    isFinishedBooksLoading
-  );
 
   const startedBooksList = startedBooks?.result?.data.map((item: any) => {
     return {
       ...item.book,
-      isBookshelf: true,
+      isBookshelfStarted: true,
     };
   });
   const notStartedBooksList = notStartedBooks?.result?.data.map((item: any) => {
     return {
       ...item.book,
-      isBookshelf: true,
+      isBookshelfNotStarted: true,
     };
   });
   const finishedBooksList = finishedBooks?.result?.data.map((item: any) => {
     return {
       ...item.book,
-      isBookshelf: true,
+      dateFinished: item.dateFinished,
+      isBookshelfFinished: true,
     };
   });
+  console.log("finishedBooks", finishedBooks);
+  console.log("finishedBooksList", finishedBooksList);
 
   const getBook = useCallback((id) => {
     history.push(`${routes.book}/${id}`);
@@ -108,9 +105,9 @@ const BookShelfContainer: React.FC = () => {
   return (
     <BooksShelfComponent
       getBook={getBook}
-      started={startedBooksList?.result?.data}
+      started={startedBooksList}
       notStarted={notStartedBooksList}
-      finished={finishedBooksList?.result?.data}
+      finished={finishedBooksList}
       isStartedBooksLoading={isStartedBooksLoading}
       isNotStartedBooksLoading={isNotStartedBooksLoading}
       isFinishedBooksLoading={isFinishedBooksLoading}
