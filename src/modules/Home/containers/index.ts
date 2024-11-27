@@ -5,3 +5,6 @@ export { default as BookContainer } from "./BookContainer";
 export { default as BooksShelfContainer } from "./BooksShelfContainer";
 export { default as SearchTopBooksContainer } from "./SearchTopBooksContainer";
 export { default as SearchNewBooksContainer } from "./SearchNewBooksContainer";
+export { default as StartedBooksContainer } from "./StartedBooksContainer";
+export { default as NotStartedBooksContainer } from "./NotStartedBooksContainer";
+export { default as FinishedBooksContainer } from "./FinishedBooksContainer";

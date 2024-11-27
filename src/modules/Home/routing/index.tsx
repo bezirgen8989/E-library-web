@@ -41,6 +41,24 @@ export const SimilarBooks = lazy(
       /* webpackChunkName: "SimilarBooks" */ "modules/Home/pages/SimilarBooks"
     )
 );
+export const StartedBooks = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "StartedBooks" */ "modules/Home/pages/StartedBooks"
+    )
+);
+export const NotStartedBooks = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "NotStartedBooks" */ "modules/Home/pages/NotStartedBooks"
+    )
+);
+export const FinishedBooks = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "FinishedBooks" */ "modules/Home/pages/FinishedBooks"
+    )
+);
 export const BooksShelf = lazy(
   () =>
     import(
@@ -67,6 +85,9 @@ const HomeRouting = () => (
       <Route exact path={routes.suggestedBooks} component={SuggestedBooks} />
       <Route exact path={routes.newBooks} component={NewBooks} />
       <Route exact path={routes.similarBooks} component={SimilarBooks} />
+      <Route exact path={routes.startedBooks} component={StartedBooks} />
+      <Route exact path={routes.notStartedBooks} component={NotStartedBooks} />
+      <Route exact path={routes.finishedBooks} component={FinishedBooks} />
       <Route exact path={routes.booksShelf} component={BooksShelf} />
       <Route exact path={routes.search} component={Search} />
       <Route exact path={`${routes.searchBooks}/:id`} component={SearchBooks} />

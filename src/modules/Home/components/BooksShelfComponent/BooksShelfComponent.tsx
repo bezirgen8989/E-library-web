@@ -30,7 +30,7 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
           title={
             <span style={{ fontSize: "44px", fontWeight: "600" }}>Started</span>
           }
-          seeAllLink={routes.newBooks}
+          seeAllLink={routes.startedBooks}
           getBook={getBook}
           isLoading={isStartedBooksLoading}
         />
@@ -42,7 +42,7 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
             Not Started
           </span>
         }
-        seeAllLink={routes.suggestedBooks}
+        seeAllLink={routes.notStartedBooks}
         getBook={getBook}
         isLoading={isNotStartedBooksLoading}
       />
@@ -54,7 +54,7 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
               Finished
             </span>
           }
-          seeAllLink={routes.suggestedBooks}
+          seeAllLink={routes.finishedBooks}
           getBook={getBook}
           isLoading={isFinishedBooksLoading}
         />
