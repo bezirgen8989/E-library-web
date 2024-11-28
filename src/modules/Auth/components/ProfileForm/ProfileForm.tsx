@@ -227,6 +227,9 @@ const ProfileForm: React.FC<RecoverProps> = ({
                         format="DD MMM, YYYY"
                         suffixIcon={null}
                         allowClear={false}
+                        disabledDate={(currentDate) =>
+                          currentDate && currentDate > moment().endOf("day")
+                        }
                       />
                       <label
                         className={`${commonStyles.inputLabel} ${

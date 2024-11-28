@@ -39,7 +39,21 @@ export const BackgroundUpdater = () => {
 
   const getRouteBackground = (): string => {
     const routeBackgrounds: Record<string, string> = {
-      [authRoutes.root]: "linear-gradient(to bottom, #d3a271, #a46542)",
+      [authRoutes.login]: "linear-gradient(to bottom, #d3a271, #a46542)",
+      [authRoutes.onboarding]: "linear-gradient(to bottom, #d3a271, #a46542)",
+      [authRoutes.registration]: "linear-gradient(to bottom, #d3a271, #a46542)",
+      [authRoutes.forgot]: "linear-gradient(to bottom, #d3a271, #a46542)",
+      [authRoutes.recoverPassword]:
+        "linear-gradient(to bottom, #d3a271, #a46542)",
+      [authRoutes.changePassword]:
+        "linear-gradient(to bottom, #d3a271, #a46542)",
+      [authRoutes.verifyEmailSuccess]:
+        "linear-gradient(to bottom, #d3a271, #a46542)",
+      [authRoutes.enterCode]: "linear-gradient(to bottom, #d3a271, #a46542)",
+      [authRoutes.ProfileHabits]:
+        "linear-gradient(to bottom, #d3a271, #a46542)",
+      [authRoutes.Profile]: "linear-gradient(to bottom, #d3a271, #a46542)",
+      [authRoutes.Error404]: "linear-gradient(to bottom, #d3a271, #a46542)",
       [rootRoutes.root]: "#FBF1EA",
       [userRoutes.profile]: "linear-gradient(to bottom, #d3a271, #a46542)",
       [homeRoutes.search]: "#FBF1EA",
@@ -58,6 +72,9 @@ export const BackgroundUpdater = () => {
     if (
       /^\/(search_top_books|search_new_books)\/\d+$/.test(location.pathname)
     ) {
+      return "#FBF1EA";
+    }
+    if (/^\/author_books\/\d+$/.test(location.pathname)) {
       return "#FBF1EA";
     }
 

@@ -6,23 +6,23 @@ import {
   ReviewParams,
 } from "../slices/home/types";
 
-export const getAllTopBooks = (params: BooksParams) =>
-  usingGet(
-    `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
-  );
-export const getAllNewBooks = (params: BooksParams) =>
-  usingGet(
-    `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
-  );
-export const getAllSuggestedBooks = (params: BooksParams) =>
-  usingGet(
-    `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
-  );
-export const getAllAuthorBooks = (params: BooksParams) =>
-  usingGet(
-    `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
-  );
-export const getBooksByName = (params: BooksParams) =>
+// export const getAllTopBooks = (params: BooksParams) =>
+//   usingGet(
+//     `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
+//   );
+// export const getAllNewBooks = (params: BooksParams) =>
+//   usingGet(
+//     `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
+//   );
+// export const getAllSuggestedBooks = (params: BooksParams) =>
+//   usingGet(
+//     `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
+//   );
+// export const getAllAuthorBooks = (params: BooksParams) =>
+//   usingGet(
+//     `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
+//   );
+export const getBooks = (params: BooksParams) =>
   usingGet(
     `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
   );

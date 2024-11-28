@@ -13,17 +13,13 @@ import {
   addBookToShelf,
   deleteBookFromShelf,
   deleteBookReview,
-  getAllAuthorBooks,
   getAllFinishedBooks,
-  getAllNewBooks,
   getAllNotStartedBooks,
   getAllReviews,
   getAllStartedBooks,
-  getAllSuggestedBooks,
-  getAllTopBooks,
   getAuthorName,
   getBook,
-  getBooksByName,
+  getBooks,
   getBookshelfBooks,
   getSearchBooks,
 } from "../../api/homeService";
@@ -131,7 +127,6 @@ const homeSlice = createSlice({
       .addCase(getSuggestedBooks.fulfilled, (state, action) => {
         const { content, error } = action.payload;
 
-        // Ensure we do not lose previous books
         const existingBooks = state.suggestedBooks.result?.data || [];
         state.suggestedBooks = {
           isLoading: false,
@@ -187,7 +182,6 @@ const homeSlice = createSlice({
       .addCase(getAuthorsBooks.fulfilled, (state, action) => {
         const { content, error } = action.payload;
 
-        // Ensure we do not lose previous books
         const existingBooks = state.authorBooks.result?.data || [];
         state.authorBooks = {
           isLoading: false,
@@ -300,7 +294,7 @@ const homeSlice = createSlice({
 export const getTopBooks = createAsyncThunk(
   "top/api/v1/books",
   async (books: BooksParams) => {
-    const response = await getAllTopBooks(books);
+    const response = await getBooks(books);
     return response;
   }
 );
@@ -308,7 +302,7 @@ export const getTopBooks = createAsyncThunk(
 export const getNewBooks = createAsyncThunk(
   "new/api/v1/books",
   async (books: BooksParams) => {
-    const response = await getAllNewBooks(books);
+    const response = await getBooks(books);
     return response;
   }
 );
@@ -316,7 +310,7 @@ export const getNewBooks = createAsyncThunk(
 export const getSuggestedBooks = createAsyncThunk(
   "suggested/api/v1/books",
   async (books: BooksParams) => {
-    const response = await getAllSuggestedBooks(books);
+    const response = await getBooks(books);
     return response;
   }
 );
@@ -324,7 +318,7 @@ export const getSuggestedBooks = createAsyncThunk(
 export const getSimilarBooks = createAsyncThunk(
   "similar/api/v1/books",
   async (books: BooksParams) => {
-    const response = await getAllSuggestedBooks(books);
+    const response = await getBooks(books);
     return response;
   }
 );
@@ -332,7 +326,7 @@ export const getSimilarBooks = createAsyncThunk(
 export const getAuthorsBooks = createAsyncThunk(
   "author/api/v1/books",
   async (books: BooksParams) => {
-    const response = await getAllAuthorBooks(books);
+    const response = await getBooks(books);
     return response;
   }
 );
@@ -394,7 +388,7 @@ export const findBooks = createAsyncThunk(
 export const getBooksByQueryName = createAsyncThunk(
   "query/api/v1/books",
   async (books: BooksParams) => {
-    const response = await getBooksByName(books);
+    const response = await getBooks(books);
     return response;
   }
 );

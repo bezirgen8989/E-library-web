@@ -3,6 +3,7 @@ import { Skeleton } from "antd";
 import styles from "./BooksComponent.module.scss";
 import commonStyles from "../../../../assets/css/commonStyles/CommonStyles.module.scss";
 import BackIcon from "../../../../assets/images/icons/backPage.svg";
+import ArrowDown from "../../../../assets/images/icons/arrowProfile.svg";
 import { useHistory } from "react-router-dom";
 
 interface Author {
@@ -93,7 +94,14 @@ const BooksComponent: React.FC<HomeProps> = ({
       </div>
       {hasMoreBooks && (
         <div className={styles.loadMoreBtn} onClick={onLoadMore}>
-          {isLoadingMore ? "Loading..." : "Load more"}
+          {isLoadingMore ? (
+            "Loading..."
+          ) : (
+            <div style={{ display: "flex", alignItems: "center" }}>
+              Load more
+              <img style={{ marginLeft: 5 }} src={ArrowDown} alt="icon" />
+            </div>
+          )}
         </div>
       )}
     </div>
