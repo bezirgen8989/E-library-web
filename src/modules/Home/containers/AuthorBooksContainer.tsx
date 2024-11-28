@@ -1,10 +1,12 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "hooks";
 import {
+  clearBooks,
   getAuthorsBooks,
   getBookById,
   getNameByAuthorId,
+  getNewBooks,
 } from "../slices/home";
 import { routes } from "../routing";
 import { useHistory, useParams } from "react-router-dom";
@@ -14,16 +16,28 @@ const AuthorBooksContainer: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const [page, setPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
+
   // Extract id from URL
   const { id } = useParams<{ id: string }>();
 
-  const { authorsName, authorBooks } = useLazySelector(({ home }) => {
-    const { authorsName, authorBooks } = home;
-    return {
-      authorsName,
-      authorBooks,
-    };
-  });
+  const { authorsName, authorBooks, isLoading } = useLazySelector(
+    ({ home }) => {
+      const { authorsName, authorBooks } = home;
+      return {
+        authorsName,
+        authorBooks,
+        isLoading: authorBooks.isLoading,
+      };
+    }
+  );
+
+  const limit = 6;
+
+  const hasMoreBooks =
+    (authorBooks?.result?.total || 0) >
+    (authorBooks?.result?.data?.length || 0);
 
   const authorFilter = `[author.id][in]=${id}`;
 
@@ -36,6 +50,7 @@ const AuthorBooksContainer: React.FC = () => {
   );
 
   useEffect(() => {
+    dispatch(clearBooks());
     dispatch(
       getAuthorsBooks({
         limit: "12",
@@ -44,7 +59,28 @@ const AuthorBooksContainer: React.FC = () => {
         filter: authorFilter,
       })
     );
-  }, [dispatch]);
+  }, [dispatch, authorFilter]);
+
+  const loadMoreBooks = async () => {
+    setLoadingMore(true);
+    const nextPage = page + 1;
+
+    try {
+      await dispatch(
+        getNewBooks({
+          limit: limit.toString(),
+          page: nextPage.toString(),
+          order: null,
+          filter: authorFilter,
+        })
+      );
+      setPage(nextPage);
+    } catch (error) {
+      console.error("Failed to load more books:", error);
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   useEffect(() => {
     if (id) {
@@ -57,6 +93,10 @@ const AuthorBooksContainer: React.FC = () => {
       books={authorBooks?.result?.data}
       getBook={getBook}
       title={authorsName?.result?.name}
+      onLoadMore={hasMoreBooks ? loadMoreBooks : undefined}
+      isLoadingMore={loadingMore}
+      hasMoreBooks={hasMoreBooks}
+      isLoading={isLoading}
     />
   );
 };

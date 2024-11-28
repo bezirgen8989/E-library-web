@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useLazySelector } from "hooks";
 import { logoutUser } from "core/session/slices/session";
 import {
+  clearBooks,
   getNewBooks,
   getSuggestedBooks,
   getTopBooks,
@@ -61,6 +62,7 @@ const SearchBooksContainer: React.FC = () => {
   const ratingOrder = "[rating]=desc";
 
   useEffect(() => {
+    dispatch(clearBooks());
     dispatch(
       getTopBooks({
         limit: "6",

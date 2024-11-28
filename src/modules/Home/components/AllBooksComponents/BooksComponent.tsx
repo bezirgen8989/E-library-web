@@ -1,9 +1,9 @@
-import styles from "./BooksComponent.module.scss";
 import React from "react";
+import { Skeleton } from "antd";
+import styles from "./BooksComponent.module.scss";
 import commonStyles from "../../../../assets/css/commonStyles/CommonStyles.module.scss";
 import BackIcon from "../../../../assets/images/icons/backPage.svg";
 import { useHistory } from "react-router-dom";
-import { Skeleton } from "antd";
 
 interface Author {
   name: string;
@@ -22,8 +22,10 @@ type HomeProps = {
   books: any;
   getBook: (id: any) => void;
   title?: any;
-  categoryId?: string;
   isLoading?: boolean;
+  isLoadingMore?: boolean;
+  onLoadMore?: () => void;
+  hasMoreBooks?: boolean;
 };
 
 const BooksComponent: React.FC<HomeProps> = ({
@@ -31,7 +33,9 @@ const BooksComponent: React.FC<HomeProps> = ({
   getBook,
   title,
   isLoading,
-  categoryId,
+  isLoadingMore,
+  onLoadMore,
+  hasMoreBooks,
 }) => {
   const history = useHistory();
 
@@ -45,7 +49,7 @@ const BooksComponent: React.FC<HomeProps> = ({
         Back
       </div>
       <div className={styles.page_title}>
-        {isLoading ? (
+        {isLoading && !isLoadingMore ? (
           <Skeleton
             active
             style={{ height: 70, width: 100 }}
@@ -57,7 +61,7 @@ const BooksComponent: React.FC<HomeProps> = ({
         )}
       </div>
       <div className={styles.booksList}>
-        {isLoading
+        {isLoading && !isLoadingMore
           ? Array.from({ length: 6 }).map((_, index) => (
               <div key={index} className={styles.newBook}>
                 <div className={styles.imgWrap}>
@@ -87,6 +91,11 @@ const BooksComponent: React.FC<HomeProps> = ({
               </div>
             ))}
       </div>
+      {hasMoreBooks && (
+        <div className={styles.loadMoreBtn} onClick={onLoadMore}>
+          {isLoadingMore ? "Loading..." : "Load more"}
+        </div>
+      )}
     </div>
   );
 };

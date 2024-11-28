@@ -7,6 +7,7 @@ import { getNewBooks, getSuggestedBooks, getTopBooks } from "../slices/home";
 import { UserContext } from "../../../core/contexts";
 import { useHistory } from "react-router-dom";
 import { routes } from "../routing";
+import { clearBooks } from "../slices/home"; // Import the clearNewBooks action
 
 const HomeContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -46,18 +47,16 @@ const HomeContainer: React.FC = () => {
     history.push(`${routes.book}/${id}`);
   }, []);
 
-  // const topFilter = "[reviewCount][gte]=50"
   const suggestedFilter = `[categories.id][in]=${habitsCategories}`;
-  const dateOrder = "[dateAdded]=desc";
-  const ratingOrder = "[rating]=desc";
+  // const ratingOrder = "[rating]=desc";
 
   useEffect(() => {
+    dispatch(clearBooks());
     dispatch(
       getTopBooks({
         limit: "3",
         page: "1",
         order: "",
-        // filter: topFilter,
         filter: "",
       })
     );
@@ -65,21 +64,22 @@ const HomeContainer: React.FC = () => {
       getNewBooks({
         limit: "6",
         page: "1",
-        order: dateOrder,
+        order: "[dateAdded]=desc",
         filter: null,
       })
     );
-  }, []);
+  }, [dispatch]);
+
   useEffect(() => {
     dispatch(
       getSuggestedBooks({
         limit: "6",
         page: "1",
-        order: ratingOrder,
+        order: "",
         filter: suggestedFilter,
       })
     );
-  }, [suggestedFilter]);
+  }, [dispatch, suggestedFilter]);
 
   return (
     <Home

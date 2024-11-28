@@ -4,6 +4,7 @@ import { useLazySelector } from "hooks";
 
 import { BooksShelfComponent } from "modules/Home/components";
 import {
+  clearBooks,
   getFinishedBooks,
   getNotStartedBooks,
   getStartedBooks,
@@ -68,6 +69,9 @@ const BookShelfContainer: React.FC = () => {
   const startedFilter = "[readingState][eq]=reading";
   const favouriteFilter = "[readingState][eq]=added";
   const finishedFilter = "[readingState][eq]=finished";
+  useEffect(() => {
+    dispatch(clearBooks());
+  }, []);
 
   useEffect(() => {
     if (value?.id) {

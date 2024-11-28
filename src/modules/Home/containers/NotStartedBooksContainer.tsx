@@ -1,7 +1,7 @@
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "hooks";
-import { getNotStartedBooks } from "../slices/home";
+import { clearBooks, getNotStartedBooks } from "../slices/home";
 import BooksComponent from "../components/AllBooksComponents/BooksComponent";
 import { routes } from "../routing";
 import { useHistory } from "react-router-dom";
@@ -12,18 +12,22 @@ const NotStartedBooksContainer: React.FC = () => {
   const history = useHistory();
   const value = useContext(UserContext);
 
-  const { notStartedBooks, isNotStartedBooksLoading } = useLazySelector(
-    ({ home }) => {
-      const { startedBooks, finishedBooks, notStartedBooks } = home;
-      const { isLoading: isNotStartedBooksLoading } = notStartedBooks;
-      return {
-        startedBooks,
-        notStartedBooks,
-        finishedBooks,
-        isNotStartedBooksLoading,
-      };
-    }
-  );
+  const [page, setPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
+
+  const { notStartedBooks, isLoading } = useLazySelector(({ home }) => {
+    const { notStartedBooks } = home;
+    return {
+      notStartedBooks,
+      isLoading: notStartedBooks.isLoading,
+    };
+  });
+
+  const limit = 6;
+
+  const hasMoreBooks =
+    (notStartedBooks?.result?.total || 0) >
+    (notStartedBooks?.result?.data?.length || 0);
 
   const notStartedBooksList = notStartedBooks?.result?.data.map((item: any) => {
     return {
@@ -39,11 +43,12 @@ const NotStartedBooksContainer: React.FC = () => {
   const favouriteFilter = "[readingState][eq]=added";
 
   useEffect(() => {
+    dispatch(clearBooks());
     if (value?.id) {
       const userIdFilter = `[user.id][eq]=${value.id}`;
       dispatch(
         getNotStartedBooks({
-          limit: "12",
+          limit: limit.toString(),
           page: "1",
           order: "",
           filter: favouriteFilter,
@@ -51,14 +56,39 @@ const NotStartedBooksContainer: React.FC = () => {
         })
       );
     }
-  }, [value?.id, dispatch]);
+  }, [value?.id, dispatch, favouriteFilter]);
+
+  const loadMoreBooks = async () => {
+    setLoadingMore(true);
+    const nextPage = page + 1;
+    const userIdFilter = `[user.id][eq]=${value.id}`;
+    try {
+      await dispatch(
+        getNotStartedBooks({
+          limit: limit.toString(),
+          page: nextPage.toString(),
+          order: "",
+          filter: favouriteFilter,
+          userFilter: userIdFilter,
+        })
+      );
+      setPage(nextPage);
+    } catch (error) {
+      console.error("Failed to load more books:", error);
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   return (
     <BooksComponent
       books={notStartedBooksList}
       getBook={getBook}
       title="Not started"
-      isLoading={isNotStartedBooksLoading}
+      onLoadMore={hasMoreBooks ? loadMoreBooks : undefined}
+      isLoadingMore={loadingMore}
+      hasMoreBooks={hasMoreBooks}
+      isLoading={isLoading}
     />
   );
 };
