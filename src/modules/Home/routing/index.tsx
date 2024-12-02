@@ -75,7 +75,11 @@ export const AuthorBooks = lazy(
     )
 );
 export const Book = lazy(
-  () => import(/* webpackChunkName: "Book" */ "modules/Home/pages/BookPage")
+  () => import(/* webpackChunkName: "Reading" */ "modules/Home/pages/BookPage")
+);
+export const Reading = lazy(
+  () =>
+    import(/* webpackChunkName: "Reading" */ "modules/Home/pages/ReadingPage")
 );
 
 const HomeRouting = () => (
@@ -92,6 +96,7 @@ const HomeRouting = () => (
       <Route exact path={routes.search} component={Search} />
       <Route exact path={`${routes.searchBooks}/:id`} component={SearchBooks} />
       <Route exact path={routes.newBooks} component={NewBooks} />
+      <Route exact path={`${routes.reading}/:id`} component={Reading} />
       <Route exact path={`${routes.book}/:id`} component={Book} />
       <Route
         exact

@@ -3,6 +3,7 @@ import {
   AddBookToShelfParams,
   AddReviewParams,
   BooksParams,
+  ReadBooksParams,
   ReviewParams,
 } from "../slices/home/types";
 
@@ -61,4 +62,8 @@ export const getAllNotStartedBooks = (params: BooksParams) =>
 export const getAllFinishedBooks = (params: BooksParams) =>
   usingGet(
     `/api/v1/bookshelf?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
+  );
+export const getCurrentReadBook = (params: ReadBooksParams) =>
+  usingGet(
+    `/api/v1/books/readBook/${params.bookId}/${params.langId}/${params.page}`
   );

@@ -56,6 +56,22 @@ const BookContainer: React.FC = () => {
     dispatch(getLanguages());
   }, [dispatch]);
 
+  useEffect(() => {
+    const unlisten = history.listen((location) => {
+      if (!location.pathname.startsWith(routes.reading)) {
+        sessionStorage.removeItem("selectedLanguage");
+      }
+    });
+
+    return () => {
+      unlisten();
+    };
+  }, [history]);
+
+  useEffect(() => {
+    dispatch(getLanguages());
+  }, [dispatch]);
+
   const fetchReviews = useCallback(() => {
     if (currentBook?.result?.id) {
       dispatch(
@@ -97,7 +113,7 @@ const BookContainer: React.FC = () => {
     .map((genre: { id: string; name: string; colour: string }) => genre.id)
     .join(",");
 
-  console.log("habitsCategories Book", habitsCategories);
+  console.log("habitsCategories Reading", habitsCategories);
 
   const suggestedFilter = `[categories.id][in]=${habitsCategories}`;
   const ratingOrder = "[rating]=desc";
@@ -123,6 +139,10 @@ const BookContainer: React.FC = () => {
     [dispatch]
   );
 
+  const startRead = (value: { bookId: string }) => {
+    history.push(`${routes.reading}/${value.bookId}`);
+  };
+
   return (
     <Book
       getBook={getBook}
@@ -135,6 +155,7 @@ const BookContainer: React.FC = () => {
       similarBooks={similarBooks?.result?.data}
       deleteReview={deleteReview}
       getAuthorBooks={getAuthorBooks}
+      startRead={startRead}
     />
   );
 };

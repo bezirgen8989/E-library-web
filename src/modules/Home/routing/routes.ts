@@ -13,5 +13,6 @@ const routes = {
   booksShelf: "/books_shelf",
   searchTopBooks: "/search_top_books",
   searchNewBooks: "/search_new_books",
+  reading: "/reading",
 };
 export default routes;

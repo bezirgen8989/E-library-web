@@ -6,6 +6,7 @@ import {
   AddReviewParams,
   BooksParams,
   HomeState,
+  ReadBooksParams,
   ReviewParams,
 } from "./types";
 import {
@@ -21,6 +22,7 @@ import {
   getBook,
   getBooks,
   getBookshelfBooks,
+  getCurrentReadBook,
   getSearchBooks,
 } from "../../api/homeService";
 
@@ -429,6 +431,14 @@ export const getFinishedBooks = createAsyncThunk(
   "finished/api/v1/bookshelf",
   async (books: BooksParams) => {
     const response = await getAllFinishedBooks(books);
+    return response;
+  }
+);
+
+export const getReadBook = createAsyncThunk(
+  "/api/v1/books/readBook",
+  async (books: ReadBooksParams) => {
+    const response = await getCurrentReadBook(books);
     return response;
   }
 );

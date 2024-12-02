@@ -8,3 +8,4 @@ export { default as SearchNewBooksContainer } from "./SearchNewBooksContainer";
 export { default as StartedBooksContainer } from "./StartedBooksContainer";
 export { default as NotStartedBooksContainer } from "./NotStartedBooksContainer";
 export { default as FinishedBooksContainer } from "./FinishedBooksContainer";
+export { default as ReadingContainer } from "./ReadingContainer";

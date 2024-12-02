@@ -24,6 +24,11 @@ export type BooksParams = {
   order?: string | null;
   userFilter?: string | null;
 };
+export type ReadBooksParams = {
+  page: string;
+  bookId?: string | null;
+  langId?: string | null;
+};
 
 export type AddBookToShelfParams = {
   user: { id: number };

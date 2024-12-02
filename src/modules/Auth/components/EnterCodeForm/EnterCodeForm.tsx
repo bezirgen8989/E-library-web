@@ -24,9 +24,30 @@ const EnterCodeForm: React.FC<RecoverProps> = ({ onSubmit, currentEmail }) => {
     "digit6",
   ]);
 
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const currentField = e.target as HTMLInputElement;
+
+    if (e.key === "Backspace") {
+      if (currentField.value === "") {
+        const prevField = document.querySelector<HTMLInputElement>(
+          `input[name=digit${index - 1}]`
+        );
+        if (prevField) {
+          prevField.focus();
+          setValue(`digit${index - 1}`, "");
+        }
+      } else {
+        setValue(`digit${index}`, "");
+      }
+    }
+  };
+
   const onSubmitForm = () => {
-    const codeValue = code.join(""); // Convert array to string
-    onSubmit({ codeOrHash: codeValue }); // Pass the code as `codeOrHash`
+    const codeValue = code.join("");
+    onSubmit({ codeOrHash: codeValue });
   };
 
   const handleInput = (e: React.FormEvent<HTMLInputElement>, index: number) => {
@@ -41,11 +62,10 @@ const EnterCodeForm: React.FC<RecoverProps> = ({ onSubmit, currentEmail }) => {
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     const pastedValue = e.clipboardData.getData("Text");
     if (/^\d{6}$/.test(pastedValue)) {
-      // Ensure it matches a six-digit pattern
       pastedValue.split("").forEach((digit, index) => {
-        setValue(`digit${index + 1}`, digit); // Update each input value
+        setValue(`digit${index + 1}`, digit);
       });
-      e.preventDefault(); // Prevent default paste behavior
+      e.preventDefault();
     }
   };
 
@@ -90,10 +110,12 @@ const EnterCodeForm: React.FC<RecoverProps> = ({ onSubmit, currentEmail }) => {
                     pattern: /^[0-9]$/,
                   })}
                   onInput={(e) => handleInput(e, i)}
-                  onPaste={i === 0 ? handlePaste : undefined} // Add onPaste handler only to the first input
+                  onKeyDown={(e) => handleKeyDown(e, i + 1)}
+                  onPaste={i === 0 ? handlePaste : undefined}
                   className={styles.codeInput}
                   autoComplete="off"
                   inputMode="numeric"
+                  name={`digit${i + 1}`}
                 />
               ))}
             </div>
