@@ -20,6 +20,7 @@ interface EditProfileModalProps {
   handleUpload: (params: any) => void;
   photoId: string | null;
   deleteAccount: () => void;
+  bookLanguage: any;
 }
 
 interface FormValues {
@@ -45,6 +46,7 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
   handleUpload,
   photoId,
   deleteAccount,
+  bookLanguage,
 }) => {
   const {
     control,
@@ -127,7 +129,6 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
     >
       <form onSubmit={handleSubmit(onSubmitForm)}>
         <div className={styles.uploadWrap}>
-          {/*<div style={{ position: "relative" }}>*/}
           <div className={styles.uploadIcon} onClick={handleUploadIconClick}>
             <img src={EditUpload} alt="" />
           </div>
@@ -166,7 +167,6 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
               </>
             )}
           />
-          {/*</div>*/}
         </div>
         <div style={{ marginTop: 15 }}>
           <div className={styles.inputWrapper}>

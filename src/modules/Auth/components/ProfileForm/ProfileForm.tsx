@@ -295,7 +295,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
                     )}
                   />
                   <label className={commonStyles.inputLabel}>
-                    Preferred Language
+                    Book Language
                   </label>
                 </div>
               )}

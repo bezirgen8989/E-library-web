@@ -25,6 +25,7 @@ export type RegisterUserParams = {
   photo_url?: string;
   readingHabits?: any;
   language?: any;
+  bookLanguage?: any;
   dateBirth?: string;
   photo?: any;
 };

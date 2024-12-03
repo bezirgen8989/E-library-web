@@ -77,6 +77,7 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
             onSubmit={onSubmit}
             handleKidsMode={handleKidsMode}
             kidsMode={value?.kidsMode}
+            bookLanguage={value?.bookLanguage}
           />
         </div>
         <div onClick={onLogout} className={styles.logOutBtn}>
@@ -92,6 +93,7 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
         userName={value?.userName}
         gender={value?.gender}
         userPhoto={value?.photo?.link}
+        bookLanguage={value?.bookLanguage}
         handleUpload={handleUpload}
         photoId={photoId}
         deleteAccount={deleteAccount}

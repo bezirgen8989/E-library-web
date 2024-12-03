@@ -19,6 +19,7 @@ type RecoverProps = {
   languages: LanguageType[];
   handleKidsMode: (value: boolean) => void;
   kidsMode: boolean | undefined;
+  bookLanguage?: LanguageType;
 };
 
 type FormValues = {
@@ -34,44 +35,51 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   onSubmit,
   languages = [],
   handleKidsMode,
-  kidsMode = false, // Установим значение по умолчанию для kidsMode
+  kidsMode = false,
+  bookLanguage,
 }) => {
   const defaultLanguage = languages.find((lang) => lang.name === "English") || {
     id: 0,
-    name: "Select Language",
+    name: "English",
     flag: { link: NoAvatar },
   };
 
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
-  const [selectedBookLanguage, setSelectedBookLanguage] =
-    useState(defaultLanguage);
+  const [selectedBookLanguage, setSelectedBookLanguage] = useState(
+    bookLanguage || defaultLanguage
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<"language" | "bookLanguage">(
     "language"
   );
-  const [userKidsMode, setUserKidsMode] = useState(kidsMode); // Используем локальный стейт
+  const [userKidsMode, setUserKidsMode] = useState(kidsMode);
 
   const { control, handleSubmit, setValue } = useForm<FormValues>({
     defaultValues: {
       language: defaultLanguage.name,
-      bookLanguage: defaultLanguage.name,
+      bookLanguage: bookLanguage?.name || defaultLanguage.name,
     },
   });
 
   useEffect(() => {
     if (languages.length > 0) {
-      const englishLanguage = languages.find((lang) => lang.name === "English");
-      if (englishLanguage) {
-        setSelectedLanguage(englishLanguage);
-        setSelectedBookLanguage(englishLanguage);
-        setValue("language", englishLanguage.name);
-        setValue("bookLanguage", englishLanguage.name);
-      }
+      const initialLanguage =
+        languages.find((lang) => lang.name === "English") || defaultLanguage;
+      setSelectedLanguage(initialLanguage);
+      setValue("language", initialLanguage.name);
     }
   }, [languages, setValue]);
 
   useEffect(() => {
-    setUserKidsMode(kidsMode); // Синхронизируем локальное состояние с пропсом
+    if (languages.length > 0) {
+      const initialBookLanguage = bookLanguage || defaultLanguage;
+      setSelectedBookLanguage(initialBookLanguage);
+      setValue("bookLanguage", initialBookLanguage.name);
+    }
+  }, [languages, setValue, bookLanguage]);
+
+  useEffect(() => {
+    setUserKidsMode(kidsMode);
   }, [kidsMode]);
 
   const onLanguageSelect = (language: LanguageType) => {
@@ -106,8 +114,8 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   };
 
   const kidsModeChange = (checked: boolean) => {
-    setUserKidsMode(checked); // Обновляем локальный стейт
-    handleKidsMode(checked); // Передаем новое значение в родительский компонент
+    setUserKidsMode(checked);
+    handleKidsMode(checked);
   };
 
   return (
