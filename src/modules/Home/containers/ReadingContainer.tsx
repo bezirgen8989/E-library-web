@@ -10,9 +10,10 @@ const ReadingContainer: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { currentReadBook } = useLazySelector(({ home }) => {
+  const { currentReadBook, isLoading } = useLazySelector(({ home }) => {
     const { currentReadBook } = home;
-    return { currentReadBook };
+    const { isLoading } = currentReadBook;
+    return { currentReadBook, isLoading };
   });
 
   console.log("currentReadBook", currentReadBook);
@@ -34,7 +35,7 @@ const ReadingContainer: React.FC = () => {
     dispatch(getReadBook({ bookId: id, langId: langId, page: "5" }));
   }, [id]);
 
-  return <Reading currentReadBook={currentReadBook} />;
+  return <Reading currentReadBook={currentReadBook} isLoading={isLoading} />;
 };
 
 export default ReadingContainer;

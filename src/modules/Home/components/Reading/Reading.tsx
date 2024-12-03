@@ -2,13 +2,19 @@ import React from "react";
 import styles from "./Reading.module.scss";
 import BackIcon from "../../../../assets/images/icons/backPage.svg";
 import { useHistory } from "react-router-dom";
+import SpinnerBrown from "../../../../components/common/SpinnerBrown";
 
 interface ReadingProps {
   currentReadBook: any;
+  isLoading: boolean;
 }
 
-const Reading: React.FC<ReadingProps> = ({ currentReadBook }) => {
+const Reading: React.FC<ReadingProps> = ({ currentReadBook, isLoading }) => {
   const history = useHistory();
+
+  if (isLoading) {
+    return <SpinnerBrown />;
+  }
 
   return (
     <div>

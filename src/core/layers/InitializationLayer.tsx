@@ -1,12 +1,12 @@
-import { Spinner } from 'components/common'
+import { Spinner } from "components/common";
 
 // Initialization layer
 // common setup for whole Application
 const InitializationLayer: React.FC = ({ children }) => {
-  // Show Spinner during Application loading
-  if (false) return <Spinner />
+  // Show SpinnerBrown during Application loading
+  if (false) return <Spinner />;
 
-  return <>{children}</>
-}
+  return <>{children}</>;
+};
 
-export default InitializationLayer
+export default InitializationLayer;

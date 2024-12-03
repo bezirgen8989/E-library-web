@@ -35,7 +35,7 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   onSubmit,
   languages = [],
   handleKidsMode,
-  kidsMode = false,
+  kidsMode = true,
   bookLanguage,
 }) => {
   const defaultLanguage = languages.find((lang) => lang.name === "English") || {

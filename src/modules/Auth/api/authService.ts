@@ -26,7 +26,7 @@ export const authConfirm = (codeParams: ConfirmParams) =>
 export const getHabitsCategory = () =>
   usingGet("/api/v1/category?limit=10&page=1");
 export const getAllLanguages = () =>
-  usingGet("/api/v1/auth/languageOptions?limit=10&page=1");
+  usingGet("/api/v1/auth/languageOptions?limit=30&page=1");
 export const addUserHabits = (userParams: any) =>
   usingPatch("/api/v1/auth/me", userParams);
 export const setUserProfile = (userParams: any) =>

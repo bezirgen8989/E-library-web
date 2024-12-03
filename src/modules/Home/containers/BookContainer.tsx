@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Book } from "../components";
 import { useLazySelector } from "../../../hooks";
@@ -19,7 +19,6 @@ import { useHistory } from "react-router-dom";
 const BookContainer: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  // const value = useContext(UserContext);
 
   const { languages } = useLazySelector(({ auth }) => {
     const { languages, photoId } = auth;
@@ -68,8 +67,9 @@ const BookContainer: React.FC = () => {
     };
   }, [history]);
 
+  // Clear books every time the component mounts
   useEffect(() => {
-    dispatch(getLanguages());
+    dispatch(clearBooks());
   }, [dispatch]);
 
   const fetchReviews = useCallback(() => {
@@ -113,13 +113,8 @@ const BookContainer: React.FC = () => {
     .map((genre: { id: string; name: string; colour: string }) => genre.id)
     .join(",");
 
-  console.log("habitsCategories Reading", habitsCategories);
-
   const suggestedFilter = `[categories.id][in]=${habitsCategories}`;
   const ratingOrder = "[rating]=desc";
-  useEffect(() => {
-    dispatch(clearBooks());
-  }, []);
 
   useEffect(() => {
     dispatch(
@@ -136,7 +131,7 @@ const BookContainer: React.FC = () => {
     (id) => {
       history.push(`${routes.authorBooks}/${id}`);
     },
-    [dispatch]
+    [history]
   );
 
   const startRead = (value: { bookId: string }) => {

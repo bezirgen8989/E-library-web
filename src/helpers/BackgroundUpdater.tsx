@@ -57,6 +57,7 @@ export const BackgroundUpdater = () => {
       [rootRoutes.root]: "#FBF1EA",
       [userRoutes.profile]: "linear-gradient(to bottom, #d3a271, #a46542)",
       [homeRoutes.search]: "#FBF1EA",
+      [homeRoutes.reading]: "#FBF1EA",
       [homeRoutes.newBooks]: "#FBF1EA",
       [homeRoutes.suggestedBooks]: "#FBF1EA",
       [homeRoutes.authorBooks]: "#FBF1EA",
@@ -72,6 +73,9 @@ export const BackgroundUpdater = () => {
     if (
       /^\/(search_top_books|search_new_books)\/\d+$/.test(location.pathname)
     ) {
+      return "#FBF1EA";
+    }
+    if (/^\/(reading)\/\d+$/.test(location.pathname)) {
       return "#FBF1EA";
     }
     if (/^\/author_books\/\d+$/.test(location.pathname)) {
