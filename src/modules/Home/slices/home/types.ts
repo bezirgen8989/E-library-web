@@ -16,6 +16,7 @@ export type HomeState = {
   startedBooks: any;
   notStartedBooks: any;
   finishedBooks: any;
+  currentReadBook: any;
 };
 export type BooksParams = {
   page: string;

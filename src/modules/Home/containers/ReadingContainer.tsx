@@ -3,11 +3,19 @@ import { useParams, useHistory } from "react-router-dom";
 import { Reading } from "../components";
 import { getReadBook } from "../slices/home";
 import { useDispatch } from "react-redux";
+import { useLazySelector } from "../../../hooks";
 
 const ReadingContainer: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
   const dispatch = useDispatch();
+
+  const { currentReadBook } = useLazySelector(({ home }) => {
+    const { currentReadBook } = home;
+    return { currentReadBook };
+  });
+
+  console.log("currentReadBook", currentReadBook);
 
   useEffect(() => {
     const unlisten = history.listen((location) => {
@@ -23,12 +31,10 @@ const ReadingContainer: React.FC = () => {
 
   useEffect(() => {
     const langId = sessionStorage.getItem("selectedLanguage");
-    console.log("BOOK_ID", id);
-    console.log("LANG_ID", langId);
-    dispatch(getReadBook({ bookId: id, langId: langId, page: "1" }));
+    dispatch(getReadBook({ bookId: id, langId: langId, page: "5" }));
   }, [id]);
 
-  return <Reading />;
+  return <Reading currentReadBook={currentReadBook} />;
 };
 
 export default ReadingContainer;
