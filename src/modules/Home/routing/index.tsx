@@ -81,6 +81,12 @@ export const Reading = lazy(
   () =>
     import(/* webpackChunkName: "Reading" */ "modules/Home/pages/ReadingPage")
 );
+export const AskQuestion = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "AskQuestion" */ "modules/Home/pages/AskQuestionPage"
+    )
+);
 
 const HomeRouting = () => (
   <Suspense fallback={<Spinner />}>
@@ -98,6 +104,7 @@ const HomeRouting = () => (
       <Route exact path={routes.newBooks} component={NewBooks} />
       <Route exact path={`${routes.reading}/:id`} component={Reading} />
       <Route exact path={`${routes.book}/:id`} component={Book} />
+      <Route exact path={routes.askQuestion} component={AskQuestion} />
       <Route
         exact
         path={`${routes.searchTopBooks}/:id`}

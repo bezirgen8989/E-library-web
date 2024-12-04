@@ -68,6 +68,7 @@ export const BackgroundUpdater = () => {
       [homeRoutes.finishedBooks]: "#FBF1EA",
       [homeRoutes.searchTopBooks]: "#FBF1EA",
       [homeRoutes.searchNewBooks]: "#FBF1EA",
+      [homeRoutes.askQuestion]: "#00191e",
     };
 
     if (

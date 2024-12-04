@@ -392,6 +392,7 @@ const Book: React.FC<HomeProps> = ({
               <div className={styles.divider} />
               <Button
                 className={styles.questionBtn}
+                to={routes.askQuestion}
                 style={{
                   color: "#996C42",
                   border: "2px solid rgba(153, 108, 66, 0.2)",

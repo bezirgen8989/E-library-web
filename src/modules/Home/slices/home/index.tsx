@@ -12,6 +12,7 @@ import {
 import {
   addBookReview,
   addBookToShelf,
+  askQuestion,
   deleteBookFromShelf,
   deleteBookReview,
   getAllFinishedBooks,
@@ -45,6 +46,7 @@ const initialState: HomeState = {
   notStartedBooks: {},
   finishedBooks: {},
   currentReadBook: {},
+  currentUserAnswer: {},
 };
 
 const homeSlice = createSlice({
@@ -297,6 +299,15 @@ const homeSlice = createSlice({
         state.currentReadBook = { isLoading: false, result: content, error };
       })
 
+      .addCase(setUserQuestion.pending, (state) => {
+        state.currentUserAnswer = { isLoading: true };
+      })
+      .addCase(setUserQuestion.fulfilled, (state, action) => {
+        console.log("Action payload:", action.payload);
+        const { content, error } = action.payload;
+        state.currentUserAnswer = { isLoading: false, result: content, error };
+      })
+
       // Clear store if 'userLoggedOut' happened
       .addCase(userLoggedOut, () => initialState);
   },
@@ -448,6 +459,14 @@ export const getReadBook = createAsyncThunk(
   "/api/v1/books/readBook",
   async (books: ReadBooksParams) => {
     const response = await getCurrentReadBook(books);
+    return response;
+  }
+);
+
+export const setUserQuestion = createAsyncThunk(
+  "/api/v1/vectors/ask",
+  async (books: any) => {
+    const response = await askQuestion(books);
     return response;
   }
 );

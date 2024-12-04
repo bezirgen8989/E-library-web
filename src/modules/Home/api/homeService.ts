@@ -67,3 +67,5 @@ export const getCurrentReadBook = (params: ReadBooksParams) =>
   usingGet(
     `/api/v1/books/readBook/${params.bookId}/${params.langId}/${params.page}`
   );
+export const askQuestion = (payload: ReadBooksParams) =>
+  usingPost(`/api/v1/vectors/ask`, payload);
