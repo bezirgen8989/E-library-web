@@ -174,3 +174,65 @@
     opacity: 0.8;
   }
 }
+
+.askQuestionPage {
+  display: flex;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.avatarSide {
+  margin-right: 15px;
+}
+
+.chatContainer {
+  flex: 1;
+}
+
+.chatContent {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.chatInputSection {
+  display: flex;
+  align-items: center;
+}
+
+.chatInput {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.submitButton {
+  background: none;
+  border: none;
+  margin-left: 10px;
+}
+
+.messageSystem {
+  margin-bottom: 15px;
+}
+
+.messageSystemContent {
+  background: #f8f8f8;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.messageSystemContent strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+pre {
+  background: #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
