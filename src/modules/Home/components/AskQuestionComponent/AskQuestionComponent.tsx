@@ -1,26 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styles from "./AskQuestionComponent.module.scss";
 import Avatar from "../../../../assets/images/tempAvatar.png";
 import Send from "../../../../assets/images/icons/sendIcon.svg";
-import SSEComponent from "../common/SSEComponent/SSEComponent";
 
 type FormValues = {
   question: string;
 };
 
 type AskQuestionComponentProps = {
-  // onSubmitQuestion: (text: string) => void;
+  setQuestion: (text: string) => void;
+  messages: any;
+  isLoading: boolean;
 };
 
-const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({}) => {
+const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
+  setQuestion,
+  messages,
+}) => {
   const { register, handleSubmit, reset } = useForm<FormValues>();
-  const [question, setQuestion] = useState("");
+  const [userMessage, setUserMessage] = useState<string | null>(null);
+  const [messageClass, setMessageClass] = useState(styles.messageSystemChange);
+  const [messageTime, setMessageTime] = useState<string>(""); // Время отправки
+  // const [receivedTime, setReceivedTime] = useState<string>(""); // Время получения
+
+  const getCurrentTime = (): string => {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, "0");
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+  };
 
   const onSubmit: SubmitHandler<FormValues> = (text) => {
+    const currentTime = getCurrentTime(); // Время отправки
     setQuestion(text.question);
+    setUserMessage(text.question);
+    setMessageClass(styles.messageSystem);
+    setMessageTime(currentTime);
     reset();
   };
+
+  useEffect(() => {
+    if (messages) {
+      // const currentTime = getCurrentTime(); // Время получения
+      // setReceivedTime(currentTime);
+    }
+  }, [messages]);
 
   return (
     <div className={styles.askQuestionPage}>
@@ -29,31 +54,26 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({}) => {
       </div>
       <div className={styles.chatContainer}>
         <div className={styles.chatContent}>
-          <div className={styles.messageSystem}>
-            <div className={styles.messageSystemContent}>
-              <SSEComponent question={question} />
-              <div className={styles.messageSystemBottom}>
-                <div className={styles.readMoreBtn}>Read More</div>
-                <span className={styles.messageTime}>11:45</span>
+          {userMessage && (
+            <div className={styles.messageUser}>
+              <div className={styles.userMessage}>
+                <strong>Question:</strong> {userMessage}
+                <div className={styles.messageSystemBottom}>
+                  <span className={styles.messageTime}>{messageTime}</span>
+                </div>
               </div>
             </div>
-          </div>
-
-          <div className={styles.messageUser}>
-            <div className={styles.userMessage}>
-              <strong>One Thousand and One Nights (Arabian Nights):</strong>{" "}
-              This is perhaps the most famous collection of Middle Eastern folk
-              tales. It includes stories like Aladdin, Ali Baba and the Forty
-              Thieves, and Sinbad the Sailor...
-              <div className={styles.messageSystemBottom}>
-                <div className={styles.readMoreBtn}>Read More</div>
-                <span className={styles.messageTime}>11:45</span>
-              </div>
+          )}
+          <div className={messageClass}>
+            <div className={styles.messageSystemContent}>
+              {messages}
+              {/*<div className={styles.messageSystemBottom}>*/}
+              {/*    <span className={styles.messageTime}>{receivedTime}</span>*/}
+              {/*</div>*/}
             </div>
           </div>
         </div>
 
-        {/* Form for question submission */}
         <form
           className={styles.chatInputSection}
           onSubmit={handleSubmit(onSubmit)}

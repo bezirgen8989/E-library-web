@@ -23,10 +23,10 @@ const SSEComponent: React.FC<SSEComponentProps> = ({ question }) => {
           await fetchEventSource(
             "https://elib.plavno.io:8080/api/v1/vectors/ask",
             {
-              method: "POST", // Устанавливаем метод POST
+              method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`, // Добавляем токен в заголовок
+                Authorization: `Bearer ${token}`,
               },
               body: JSON.stringify({
                 query: question,
