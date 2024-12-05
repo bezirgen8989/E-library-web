@@ -177,7 +177,9 @@
   border-radius: 22px;
   padding: 3px 30px 3px 6px;
   color: #996C42 !important;
-  //background-image: url('../../../images/icons/arrowDown.svg');
+  background-image: url('../../../../assets/images/icons/arrowProfile.svg');
+  background-repeat: no-repeat;
+  background-position: calc(100% - 8px) center;
   font-size: 14px;
   box-sizing: border-box;
   outline: none;

@@ -60,7 +60,6 @@ const SimilarBooksContainer: React.FC = () => {
   const loadMoreBooks = async () => {
     setLoadingMore(true);
     const nextPage = page + 1;
-
     try {
       await dispatch(
         getSimilarBooks({

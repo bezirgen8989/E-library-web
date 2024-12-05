@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import styles from "./AskQuestionComponent.module.scss";
 import Avatar from "../../../../assets/images/tempAvatar.png";
 import Send from "../../../../assets/images/icons/sendIcon.svg";
-import { Spinner } from "../../../../components/common";
+import ChatSpinner from "../../../../components/common/ChatSpinner";
 
 type FormValues = {
   question: string;
@@ -48,11 +48,11 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   return (
     <div className={styles.askQuestionPage}>
-      {isLoading && (
-        <div className={styles.spinnerContainer}>
-          <Spinner />
-        </div>
-      )}
+      {/*{isLoading && (*/}
+      {/*  <div className={styles.spinnerContainer}>*/}
+      {/*    <Spinner />*/}
+      {/*  </div>*/}
+      {/*)}*/}
       <div className={styles.avatarSide}>
         <div className={styles.bookTitle}>{title}</div>
         <img src={Avatar} alt="avatar" />
@@ -62,7 +62,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
           {userMessage && (
             <div className={styles.messageUser}>
               <div className={styles.userMessage}>
-                <strong>Question:</strong> {userMessage}
+                {userMessage}
                 <div className={styles.messageSystemBottom}>
                   <span className={styles.messageTime}>{messageTime}</span>
                 </div>
@@ -75,6 +75,11 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
             </div>
           )}
         </div>
+        {isLoading && (
+          <div className={styles.spinnerContainer}>
+            <ChatSpinner />
+          </div>
+        )}
         <form
           className={styles.chatInputSection}
           onSubmit={handleSubmit(onSubmit)}

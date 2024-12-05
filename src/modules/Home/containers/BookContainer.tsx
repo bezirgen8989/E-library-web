@@ -36,6 +36,9 @@ const BookContainer: React.FC = () => {
     },
     [dispatch]
   );
+  useEffect(() => {
+    dispatch(clearBooks());
+  }, []);
 
   const addToBookShelf = useCallback(
     (params) => {
@@ -66,11 +69,6 @@ const BookContainer: React.FC = () => {
       unlisten();
     };
   }, [history]);
-
-  // Clear books every time the component mounts
-  useEffect(() => {
-    dispatch(clearBooks());
-  }, [dispatch]);
 
   const fetchReviews = useCallback(() => {
     if (currentBook?.result?.id) {

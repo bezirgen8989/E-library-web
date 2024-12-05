@@ -2,13 +2,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px; // Расстояние между точками
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .dot {
   width: 8px;
   height: 8px;
-  background-color: #007bff; // Цвет точек
+  background-color: #996C42; // Цвет точек
   border-radius: 50%;
   animation: blink 1.5s infinite ease-in-out;
 }

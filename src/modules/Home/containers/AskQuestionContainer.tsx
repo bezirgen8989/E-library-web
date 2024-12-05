@@ -5,7 +5,7 @@ import {
   fetchEventSource,
 } from "@microsoft/fetch-event-source";
 import { useParams } from "react-router-dom";
-import { getBookById } from "../slices/home";
+import { clearBooks, getBookById } from "../slices/home";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../hooks";
 
@@ -26,13 +26,18 @@ const AskQuestionContainer: React.FC = () => {
   });
 
   console.log("currentBookQuestion", currentBook);
+  console.log("currentBookIndexName", currentBook?.result?.indexName);
+
+  useEffect(() => {
+    dispatch(clearBooks());
+  }, []);
 
   useEffect(() => {
     if (question) {
       const token = sessionStorage.getItem("SESSION_TOKEN");
 
       const fetchData = async () => {
-        setIsLoading(true); // Устанавливаем isLoading в true перед запросом
+        setIsLoading(true);
         try {
           await fetchEventSource(
             "https://elib.plavno.io:8080/api/v1/vectors/ask",
@@ -44,22 +49,22 @@ const AskQuestionContainer: React.FC = () => {
               },
               body: JSON.stringify({
                 query: question,
-                indexName: "Seagull112233",
+                indexName: currentBook?.result?.indexName,
               }),
 
               onmessage(event: EventSourceMessage) {
                 try {
                   const data = JSON.parse(event.data);
                   if (data.chunk) {
-                    setMessages((prev) => [...prev, data.chunk]); // Добавляем новый фрагмент
+                    setMessages((prev) => [...prev, data.chunk]);
                   }
                 } catch (error) {
-                  console.error("Ошибка обработки MESSAGE события:", error);
+                  console.error("Error processing MESSAGE event:", error);
                 }
               },
 
               onopen() {
-                console.log("SSE соединение открыто");
+                console.log("SSE open chanel");
                 return Promise.resolve();
               },
 
@@ -69,7 +74,7 @@ const AskQuestionContainer: React.FC = () => {
             }
           );
         } catch (error) {
-          console.error("Ошибка при отправке POST запроса:", error);
+          console.error("Error sending POST request:", error);
         } finally {
           setIsLoading(false);
         }
