@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { Collapse } from "antd"; // Import Collapse from Ant Design
 import styles from "./AskQuestionComponent.module.scss";
 import Avatar from "../../../../assets/images/tempAvatar.png";
 import Send from "../../../../assets/images/icons/sendIcon.svg";
@@ -15,7 +16,10 @@ type AskQuestionComponentProps = {
   messages: any; // Предполагаем, что messages — строка
   isLoading: boolean;
   title: string;
+  metaData: any;
 };
+
+const { Panel } = Collapse; // For Collapse component
 
 const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   setQuestion,
@@ -23,6 +27,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   messages,
   title,
   isLoading,
+  metaData,
 }) => {
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const [userMessage, setUserMessage] = useState<string | null>(null);
@@ -46,16 +51,38 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     reset();
   };
 
+  const renderMetaData = () => {
+    if (metaData && metaData.length > 0) {
+      return metaData.map((item: any, index: number) => (
+        <Panel header={`Page ${item.meta.loc.pageNumber}`} key={index}>
+          <div>
+            <p>
+              <strong>Author:</strong> {item.meta.pdf.info.Author}
+            </p>
+            <p>
+              <strong>PDF Version:</strong> {item.meta.pdf.version}
+            </p>
+            <p>
+              <strong>Location:</strong> Page {item.meta.loc.pageNumber}, Lines{" "}
+              {item.meta.loc.lines.from}-{item.meta.loc.lines.to}
+            </p>
+            <p>
+              <strong>Content Excerpt:</strong> {item.content.substring(0, 300)}
+              ...
+            </p>
+          </div>
+        </Panel>
+      ));
+    }
+    return null;
+  };
+
   return (
     <div className={styles.askQuestionPage}>
-      {/*{isLoading && (*/}
-      {/*  <div className={styles.spinnerContainer}>*/}
-      {/*    <Spinner />*/}
-      {/*  </div>*/}
-      {/*)}*/}
       <div className={styles.avatarSide}>
         <div className={styles.bookTitle}>{title}</div>
         <img src={Avatar} alt="avatar" />
+        <Collapse>{renderMetaData()}</Collapse>
       </div>
       <div className={styles.chatContainer}>
         <div className={styles.chatContent}>

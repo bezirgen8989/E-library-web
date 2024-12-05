@@ -12,6 +12,7 @@ import { useLazySelector } from "../../../hooks";
 const AskQuestionContainer: React.FC = () => {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState<string[]>([]);
+  const [meta, setMeta] = useState<any>(null); // New state for metadata
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch();
@@ -55,8 +56,13 @@ const AskQuestionContainer: React.FC = () => {
               onmessage(event: EventSourceMessage) {
                 try {
                   const data = JSON.parse(event.data);
-                  if (data.chunk) {
+
+                  if (event.event === "MESSAGE" && data.chunk) {
                     setMessages((prev) => [...prev, data.chunk]);
+                  }
+
+                  if (event.event === "META") {
+                    setMeta(data); // Save metadata from event:META
                   }
                 } catch (error) {
                   console.error("Error processing MESSAGE event:", error);
@@ -64,12 +70,12 @@ const AskQuestionContainer: React.FC = () => {
               },
 
               onopen() {
-                console.log("SSE open chanel");
+                console.log("SSE open channel");
                 return Promise.resolve();
               },
 
               onerror(error: Event) {
-                console.error("Ошибка SSE:", error);
+                console.error("SSE error:", error);
               },
             }
           );
@@ -95,6 +101,7 @@ const AskQuestionContainer: React.FC = () => {
       messages={messages}
       isLoading={isLoading}
       title={currentBook?.result?.title}
+      metaData={meta}
     />
   );
 };
