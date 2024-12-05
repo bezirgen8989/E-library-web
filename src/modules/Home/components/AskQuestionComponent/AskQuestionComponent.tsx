@@ -5,6 +5,7 @@ import styles from "./AskQuestionComponent.module.scss";
 import Avatar from "../../../../assets/images/tempAvatar.png";
 import Send from "../../../../assets/images/icons/sendIcon.svg";
 import ChatSpinner from "../../../../components/common/ChatSpinner";
+import Button from "../../../../components/common/Buttons/Button";
 
 type FormValues = {
   question: string;
@@ -33,6 +34,8 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [userMessage, setUserMessage] = useState<string | null>(null);
   const [messageClass, setMessageClass] = useState(styles.messageSystemChange);
   const [messageTime, setMessageTime] = useState<string>("");
+  const [isCollapseVisible, setIsCollapseVisible] = useState(false); // State to toggle Collapse visibility
+  const [isSending, setIsSending] = useState(false); // State to manage sending status
 
   const getCurrentTime = (): string => {
     const now = new Date();
@@ -48,7 +51,13 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     setUserMessage(data.question);
     setMessageClass(styles.messageSystem);
     setMessageTime(currentTime);
+    setIsSending(true);
     reset();
+
+    // Simulate the sending process
+    setTimeout(() => {
+      setIsSending(false);
+    }, 2000);
   };
 
   const renderMetaData = () => {
@@ -56,12 +65,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       return metaData.map((item: any, index: number) => (
         <Panel header={`Page ${item.meta.loc.pageNumber}`} key={index}>
           <div>
-            <p>
-              <strong>Author:</strong> {item.meta.pdf.info.Author}
-            </p>
-            <p>
-              <strong>PDF Version:</strong> {item.meta.pdf.version}
-            </p>
             <p>
               <strong>Location:</strong> Page {item.meta.loc.pageNumber}, Lines{" "}
               {item.meta.loc.lines.from}-{item.meta.loc.lines.to}
@@ -77,12 +80,22 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     return null;
   };
 
+  const toggleCollapse = () => {
+    setIsCollapseVisible(!isCollapseVisible);
+  };
+
   return (
     <div className={styles.askQuestionPage}>
       <div className={styles.avatarSide}>
         <div className={styles.bookTitle}>{title}</div>
         <img src={Avatar} alt="avatar" />
-        <Collapse>{renderMetaData()}</Collapse>
+        {metaData && metaData.length > 0 && !isLoading && !isSending && (
+          <Button variant="Brown" onClick={toggleCollapse}>
+            {isCollapseVisible ? "Hide details" : "Show details"}
+          </Button>
+        )}
+        {isSending && <ChatSpinner />}
+        {isCollapseVisible && <Collapse>{renderMetaData()}</Collapse>}
       </div>
       <div className={styles.chatContainer}>
         <div className={styles.chatContent}>
@@ -118,8 +131,12 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
             placeholder="Your question..."
             autoComplete="off"
           />
-          <button type="submit" className={styles.submitButton}>
-            <img src={Send} alt="btn" />
+          <button
+            type="submit"
+            className={styles.submitButton}
+            disabled={isSending}
+          >
+            {isSending ? <ChatSpinner /> : <img src={Send} alt="btn" />}
           </button>
         </form>
       </div>

@@ -10,9 +10,10 @@
   width: 50%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  //justify-content: center;
+  margin-top: 100px;
   img {
-    margin-bottom: 100px;
+    margin-bottom: 20px;
   }
 }
 .desktopView {
