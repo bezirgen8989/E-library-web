@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styles from "./AskQuestionComponent.module.scss";
 import Avatar from "../../../../assets/images/tempAvatar.png";
@@ -11,13 +11,15 @@ type FormValues = {
 
 type AskQuestionComponentProps = {
   setQuestion: (text: string) => void;
-  messages: any;
+  clearMessages: () => void; // Новый проп
+  messages: any; // Предполагаем, что messages — строка
   isLoading: boolean;
   title: string;
 };
 
 const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   setQuestion,
+  clearMessages,
   messages,
   title,
   isLoading,
@@ -25,8 +27,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const [userMessage, setUserMessage] = useState<string | null>(null);
   const [messageClass, setMessageClass] = useState(styles.messageSystemChange);
-  const [messageTime, setMessageTime] = useState<string>(""); // Время отправки
-  // const [receivedTime, setReceivedTime] = useState<string>(""); // Время получения
+  const [messageTime, setMessageTime] = useState<string>("");
 
   const getCurrentTime = (): string => {
     const now = new Date();
@@ -35,21 +36,15 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     return `${hours}:${minutes}`;
   };
 
-  const onSubmit: SubmitHandler<FormValues> = (text) => {
-    const currentTime = getCurrentTime(); // Время отправки
-    setQuestion(text.question);
-    setUserMessage(text.question);
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    const currentTime = getCurrentTime();
+    setQuestion(data.question);
+    clearMessages(); // Очистка messages
+    setUserMessage(data.question);
     setMessageClass(styles.messageSystem);
     setMessageTime(currentTime);
     reset();
   };
-
-  useEffect(() => {
-    if (messages) {
-      // const currentTime = getCurrentTime(); // Время получения
-      // setReceivedTime(currentTime);
-    }
-  }, [messages]);
 
   return (
     <div className={styles.askQuestionPage}>
@@ -74,14 +69,11 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
               </div>
             </div>
           )}
-          <div className={messageClass}>
-            <div className={styles.messageSystemContent}>
-              {messages}
-              {/*<div className={styles.messageSystemBottom}>*/}
-              {/*    <span className={styles.messageTime}>{receivedTime}</span>*/}
-              {/*</div>*/}
+          {messages && (
+            <div className={messageClass}>
+              <div className={styles.messageSystemContent}>{messages}</div>
             </div>
-          </div>
+          )}
         </div>
         <form
           className={styles.chatInputSection}

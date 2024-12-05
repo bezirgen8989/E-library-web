@@ -79,8 +79,13 @@ const AskQuestionContainer: React.FC = () => {
     }
   }, [question]);
 
+  const clearMessages = () => {
+    setMessages([]);
+  };
+
   return (
     <AskQuestionComponent
+      clearMessages={clearMessages}
       setQuestion={setQuestion}
       messages={messages}
       isLoading={isLoading}
