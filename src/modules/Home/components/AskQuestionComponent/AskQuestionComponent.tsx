@@ -136,7 +136,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
             className={styles.submitButton}
             disabled={isSending}
           >
-            {isSending ? <ChatSpinner /> : <img src={Send} alt="btn" />}
+            <img src={Send} alt="btn" />
           </button>
         </form>
       </div>
