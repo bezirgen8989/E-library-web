@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import styles from "./AskQuestionComponent.module.scss";
 import Avatar from "../../../../assets/images/tempAvatar.png";
 import Send from "../../../../assets/images/icons/sendIcon.svg";
+import { Spinner } from "../../../../components/common";
 
 type FormValues = {
   question: string;
@@ -19,6 +20,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   setQuestion,
   messages,
   title,
+  isLoading,
 }) => {
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const [userMessage, setUserMessage] = useState<string | null>(null);
@@ -51,6 +53,11 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   return (
     <div className={styles.askQuestionPage}>
+      {isLoading && (
+        <div className={styles.spinnerContainer}>
+          <Spinner />
+        </div>
+      )}
       <div className={styles.avatarSide}>
         <div className={styles.bookTitle}>{title}</div>
         <img src={Avatar} alt="avatar" />
