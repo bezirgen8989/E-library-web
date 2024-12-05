@@ -68,7 +68,6 @@ export const BackgroundUpdater = () => {
       [homeRoutes.finishedBooks]: "#FBF1EA",
       [homeRoutes.searchTopBooks]: "#FBF1EA",
       [homeRoutes.searchNewBooks]: "#FBF1EA",
-      [homeRoutes.askQuestion]: "#00191e",
     };
 
     if (
@@ -78,6 +77,9 @@ export const BackgroundUpdater = () => {
     }
     if (/^\/(reading)\/\d+$/.test(location.pathname)) {
       return "#FBF1EA";
+    }
+    if (/^\/(ask_question)\/\d+$/.test(location.pathname)) {
+      return "#00191e";
     }
     if (/^\/author_books\/\d+$/.test(location.pathname)) {
       return "#FBF1EA";

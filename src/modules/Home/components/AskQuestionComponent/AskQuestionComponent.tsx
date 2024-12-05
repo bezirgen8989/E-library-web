@@ -12,11 +12,13 @@ type AskQuestionComponentProps = {
   setQuestion: (text: string) => void;
   messages: any;
   isLoading: boolean;
+  title: string;
 };
 
 const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   setQuestion,
   messages,
+  title,
 }) => {
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const [userMessage, setUserMessage] = useState<string | null>(null);
@@ -50,6 +52,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   return (
     <div className={styles.askQuestionPage}>
       <div className={styles.avatarSide}>
+        <div className={styles.bookTitle}>{title}</div>
         <img src={Avatar} alt="avatar" />
       </div>
       <div className={styles.chatContainer}>
@@ -73,7 +76,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
             </div>
           </div>
         </div>
-
         <form
           className={styles.chatInputSection}
           onSubmit={handleSubmit(onSubmit)}

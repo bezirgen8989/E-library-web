@@ -4,11 +4,28 @@ import {
   EventSourceMessage,
   fetchEventSource,
 } from "@microsoft/fetch-event-source";
+import { useParams } from "react-router-dom";
+import { getBookById } from "../slices/home";
+import { useDispatch } from "react-redux";
+import { useLazySelector } from "../../../hooks";
 
 const AskQuestionContainer: React.FC = () => {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false); // Состояние для загрузки
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { id } = useParams<{ id: string }>();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getBookById(id));
+  }, []);
+
+  const { currentBook } = useLazySelector(({ home }) => {
+    const { currentBook } = home;
+    return { currentBook };
+  });
+
+  console.log("currentBookQuestion", currentBook);
 
   useEffect(() => {
     if (question) {
@@ -54,7 +71,7 @@ const AskQuestionContainer: React.FC = () => {
         } catch (error) {
           console.error("Ошибка при отправке POST запроса:", error);
         } finally {
-          setIsLoading(false); // Устанавливаем isLoading в false после завершения запроса
+          setIsLoading(false);
         }
       };
 
@@ -66,7 +83,8 @@ const AskQuestionContainer: React.FC = () => {
     <AskQuestionComponent
       setQuestion={setQuestion}
       messages={messages}
-      isLoading={isLoading} // Передаем isLoading в компонент
+      isLoading={isLoading}
+      title={currentBook?.result?.title}
     />
   );
 };
