@@ -246,10 +246,6 @@
   margin-left: 8px;
 }
 
-//.bookShelfButton img {
-//  transition: filter 0.3s ease;
-//}
-
 .likedIcon {
   filter: invert(21%) sepia(83%) saturate(4953%) hue-rotate(338deg) brightness(95%) contrast(107%);
 }
@@ -267,4 +263,38 @@
   &:hover {
     opacity: 0.8;
   }
+}
+.progressContent {
+  position: absolute;
+  bottom: 70px;
+  right: 70px
+}
+
+.progressLine {
+  width: 100%;
+  height: 10px;
+  border: none;
+  background-color: #f3f3f3;
+}
+
+.progressLine::-webkit-progress-bar {
+  background-color: rgba(120, 120, 120, 0.32);
+}
+
+.progressLine::-webkit-progress-value {
+  background-color: #996C42;
+}
+
+.progressLine::-moz-progress-bar {
+  background-color: #996C42;
+}
+
+.progressLine {
+  transition: width 0.3s ease;
+}
+.content {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }

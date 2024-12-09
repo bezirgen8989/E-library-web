@@ -9,6 +9,7 @@ interface ReadingProps {
   isLoading: boolean;
   onNext: () => void;
   onPrev: () => void;
+  totalPages: number;
 }
 
 const Reading: React.FC<ReadingProps> = ({
@@ -16,6 +17,7 @@ const Reading: React.FC<ReadingProps> = ({
   isLoading,
   onNext,
   onPrev,
+  totalPages,
 }) => {
   const history = useHistory();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -33,15 +35,17 @@ const Reading: React.FC<ReadingProps> = ({
 
       const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
 
+      // Прокрутка вниз
       if (scrollTop + clientHeight >= scrollHeight - 10 && !isLoading) {
         onNext();
-        setCurrentPage((prev) => prev + 1);
+        setCurrentPage((prev) => Math.min(prev + 1, totalPages));
       }
 
-      if (scrollTop <= 10 && !isLoading) {
-        onPrev();
-        setCurrentPage((prev) => (prev > 1 ? prev - 1 : 1));
-      }
+      // // Прокрутка вверх, но не на первую страницу
+      // if (scrollTop <= 10 && !isLoading && currentPage > 1) {
+      //     onPrev();
+      //     setCurrentPage((prev) => prev - 1);
+      // }
     };
 
     const currentContainer = containerRef.current;
@@ -54,7 +58,7 @@ const Reading: React.FC<ReadingProps> = ({
         currentContainer.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [onNext, onPrev, isLoading]);
+  }, [onNext, onPrev, isLoading, currentPage, totalPages]);
 
   return (
     <div>
@@ -96,6 +100,17 @@ const Reading: React.FC<ReadingProps> = ({
             <SpinnerBrown />
           </div>
         )}
+      </div>
+
+      <div className={styles.progressContent}>
+        <div style={{ textAlign: "center" }}>
+          Page {currentPage} of {totalPages}
+        </div>
+        <progress
+          className={styles.progressLine}
+          value={currentPage}
+          max={totalPages}
+        ></progress>
       </div>
     </div>
   );
