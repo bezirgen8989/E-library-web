@@ -24,12 +24,25 @@ const Reading: React.FC<ReadingProps> = ({
   const history = useHistory();
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState<number>(featurePageFromServer);
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true); // Состояние для отслеживания первой загрузки страницы
 
   // Функция для получения номера страницы из HTML-контента
   const getPageNumberFromHTML = (html: string) => {
     const match = html.match(/<title>Page (\d+)<\/title>/);
     return match ? parseInt(match[1], 10) : null;
   };
+
+  // Устанавливаем скролл в центр после загрузки данных, только для первой загрузки
+  useEffect(() => {
+    if (pagesContent.length > 0 && containerRef.current && isFirstLoad) {
+      setTimeout(() => {
+        // Отступ 50px для первой загрузки
+        const scrollPosition = (containerRef.current!.scrollTop = 50);
+        containerRef.current!.scrollTop = scrollPosition; // Устанавливаем скролл в центр
+        setIsFirstLoad(false); // Обновляем флаг, что первая загрузка завершена
+      }, 500); // Можно настроить задержку, если необходимо
+    }
+  }, [pagesContent, isFirstLoad]); // Эффект сработает, когда изменится pagesContent или isFirstLoad
 
   // Обработка прокрутки
   useEffect(() => {
@@ -48,10 +61,17 @@ const Reading: React.FC<ReadingProps> = ({
         setCurrentPage((prev) => Math.min(prev + 1, totalPages));
       }
 
-      // Прокрутка вверх: загрузка предыдущей страницы
+      // Прокрутка вверх: загрузка предыдущей страницы с отступом
       if (scrollTop <= 10 && !isLoading && currentPage > 1) {
         onPrev();
         setCurrentPage((prev) => Math.max(prev - 1, 1));
+
+        // Отступ для прокрутки вверх с задержкой
+        if (scrollTop <= 10 && !isFirstLoad) {
+          setTimeout(() => {
+            containerRef.current!.scrollTop = 50; // Устанавливаем отступ при прокрутке вверх с задержкой
+          }, 300); // Задержка 300 мс (можно настроить)
+        }
       }
     };
 
@@ -65,7 +85,7 @@ const Reading: React.FC<ReadingProps> = ({
         currentContainer.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [onNext, onPrev, isLoading, currentPage, totalPages]);
+  }, [onNext, onPrev, isLoading, currentPage, totalPages, isFirstLoad]);
 
   return (
     <div>
