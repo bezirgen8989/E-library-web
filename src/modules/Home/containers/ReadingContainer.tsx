@@ -10,6 +10,7 @@ const ReadingContainer: React.FC = () => {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1); // Начальная страница для загрузки
   const [pagesContent, setPagesContent] = useState<string[]>([]); // Массив для хранения страниц
+  const [loadedPages, setLoadedPages] = useState<Set<number>>(new Set()); // Множество загруженных страниц
 
   const { currentReadBook, isLoading } = useLazySelector(({ home }) => {
     return {
@@ -21,18 +22,27 @@ const ReadingContainer: React.FC = () => {
   useEffect(() => {
     dispatch(clearBooks());
     setPagesContent([]);
+    setLoadedPages(new Set()); // Сброс множества загруженных страниц
   }, [dispatch, id]);
 
   useEffect(() => {
     const langId = sessionStorage.getItem("selectedLanguage") || "7";
-    dispatch(getReadBook({ bookId: id, langId, page: page.toString() }));
-  }, [id, dispatch, page]);
+
+    // Если страница еще не загружена, делаем запрос
+    if (!loadedPages.has(page)) {
+      dispatch(getReadBook({ bookId: id, langId, page: page.toString() }));
+    }
+  }, [id, dispatch, page, loadedPages]);
 
   useEffect(() => {
     if (currentReadBook?.result?.html) {
-      setPagesContent((prev) => [...prev, currentReadBook.result.html]);
+      // Проверяем, не добавлен ли уже контент для текущей страницы
+      if (!pagesContent.includes(currentReadBook.result.html)) {
+        setPagesContent((prev) => [...prev, currentReadBook.result.html]);
+        setLoadedPages((prev) => new Set(prev.add(page))); // Добавляем текущую страницу в множество загруженных страниц
+      }
     }
-  }, [currentReadBook]);
+  }, [currentReadBook, page, pagesContent]);
 
   const handleNext = () => {
     setPage((prevPage) => prevPage + 1);

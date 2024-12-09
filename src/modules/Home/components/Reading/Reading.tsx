@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./Reading.module.scss";
 import BackIcon from "../../../../assets/images/icons/backPage.svg";
 import { useHistory } from "react-router-dom";
@@ -19,22 +19,28 @@ const Reading: React.FC<ReadingProps> = ({
 }) => {
   const history = useHistory();
   const containerRef = useRef<HTMLDivElement>(null);
+  const [currentPage, setCurrentPage] = useState(1); // Текущее состояние страницы
+  console.log(currentPage);
 
-  // Обработчик скролла для загрузки следующей страницы при достижении конца
+  const getPageNumberFromHTML = (html: string) => {
+    const match = html.match(/<title>Page (\d+)<\/title>/);
+    return match ? parseInt(match[1], 10) : null;
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       if (!containerRef.current) return;
 
       const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
 
-      // Если скроллим вниз, загружаем следующую страницу
       if (scrollTop + clientHeight >= scrollHeight - 10 && !isLoading) {
         onNext();
+        setCurrentPage((prev) => prev + 1);
       }
 
-      // Если скроллим вверх, загружаем предыдущую страницу
       if (scrollTop <= 10 && !isLoading) {
         onPrev();
+        setCurrentPage((prev) => (prev > 1 ? prev - 1 : 1));
       }
     };
 
@@ -65,13 +71,24 @@ const Reading: React.FC<ReadingProps> = ({
         style={{ maxHeight: "90vh", overflowY: "auto" }}
       >
         <div className={styles.content}>
-          {pagesContent.map((pageHtml, index) => (
-            <div
-              style={{ marginBottom: "30px" }}
-              key={index}
-              dangerouslySetInnerHTML={{ __html: pageHtml }}
-            />
-          ))}
+          {pagesContent.map((pageHtml, index) => {
+            const pageNumber = getPageNumberFromHTML(pageHtml);
+
+            return (
+              <div key={index}>
+                <div
+                  style={{ marginBottom: "30px" }}
+                  dangerouslySetInnerHTML={{ __html: pageHtml }}
+                />
+                {/* Отображение номера страницы, если найден */}
+                {pageNumber !== null && (
+                  <div style={{ textAlign: "center", marginTop: "10px" }}>
+                    Page {pageNumber}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {isLoading && (
