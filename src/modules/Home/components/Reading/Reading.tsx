@@ -6,46 +6,53 @@ import SpinnerBrown from "../../../../components/common/SpinnerBrown";
 
 interface ReadingProps {
   pagesContent: string[];
+  totalPages: number;
   isLoading: boolean;
   onNext: () => void;
   onPrev: () => void;
-  totalPages: number;
+  featurePageFromServer: number;
 }
 
 const Reading: React.FC<ReadingProps> = ({
   pagesContent,
+  totalPages,
   isLoading,
   onNext,
   onPrev,
-  totalPages,
+  featurePageFromServer,
 }) => {
   const history = useHistory();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [currentPage, setCurrentPage] = useState(1); // Текущее состояние страницы
-  console.log(currentPage);
+  const [currentPage, setCurrentPage] = useState<number>(featurePageFromServer);
 
+  // Функция для получения номера страницы из HTML-контента
   const getPageNumberFromHTML = (html: string) => {
     const match = html.match(/<title>Page (\d+)<\/title>/);
     return match ? parseInt(match[1], 10) : null;
   };
 
+  // Обработка прокрутки
   useEffect(() => {
     const handleScroll = () => {
       if (!containerRef.current) return;
 
       const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
 
-      // Прокрутка вниз
-      if (scrollTop + clientHeight >= scrollHeight - 10 && !isLoading) {
+      // Прокрутка вниз: загрузка следующей страницы
+      if (
+        scrollTop + clientHeight >= scrollHeight - 10 &&
+        !isLoading &&
+        currentPage < totalPages
+      ) {
         onNext();
         setCurrentPage((prev) => Math.min(prev + 1, totalPages));
       }
 
-      // // Прокрутка вверх, но не на первую страницу
-      // if (scrollTop <= 10 && !isLoading && currentPage > 1) {
-      //     onPrev();
-      //     setCurrentPage((prev) => prev - 1);
-      // }
+      // Прокрутка вверх: загрузка предыдущей страницы
+      if (scrollTop <= 10 && !isLoading && currentPage > 1) {
+        onPrev();
+        setCurrentPage((prev) => Math.max(prev - 1, 1));
+      }
     };
 
     const currentContainer = containerRef.current;
@@ -69,6 +76,7 @@ const Reading: React.FC<ReadingProps> = ({
         <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
         Back
       </div>
+
       <div
         ref={containerRef}
         className={styles.home_page}
@@ -77,14 +85,12 @@ const Reading: React.FC<ReadingProps> = ({
         <div className={styles.content}>
           {pagesContent.map((pageHtml, index) => {
             const pageNumber = getPageNumberFromHTML(pageHtml);
-
             return (
               <div key={index}>
                 <div
                   style={{ marginBottom: "30px" }}
                   dangerouslySetInnerHTML={{ __html: pageHtml }}
                 />
-                {/* Отображение номера страницы, если найден */}
                 {pageNumber !== null && (
                   <div style={{ textAlign: "center", marginTop: "10px" }}>
                     Page {pageNumber}

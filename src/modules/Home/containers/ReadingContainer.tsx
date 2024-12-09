@@ -8,31 +8,36 @@ import { useLazySelector } from "../../../hooks";
 const ReadingContainer: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch();
-  const [page, setPage] = useState(1);
+
+  // Состояние для текущей страницы
+  const [page, setPage] = useState<number | null>(null);
   const [pagesContent, setPagesContent] = useState<string[]>([]);
   const [loadedPages, setLoadedPages] = useState<Set<number>>(new Set());
-  const [totalPages, setTotalPages] = useState<number>(0); // State for totalPages
-  const prevTotalPages = useRef<number>(0); // To track the previous value of totalPages
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const prevTotalPages = useRef<number>(0);
 
-  const { currentReadBook, isLoading } = useLazySelector(({ home }) => {
-    return {
-      currentReadBook: home.currentReadBook,
-      isLoading: home.currentReadBook.isLoading,
-    };
-  });
+  // Значение страницы по умолчанию, приходящее с сервера
+  const featurePageFromServer = 5; // Это значение может изменяться в зависимости от данных сервера
+
+  const { currentReadBook, isLoading } = useLazySelector(({ home }) => ({
+    currentReadBook: home.currentReadBook,
+    isLoading: home.currentReadBook.isLoading,
+  }));
 
   useEffect(() => {
     dispatch(clearBooks());
     setPagesContent([]);
     setLoadedPages(new Set());
-    setTotalPages(0); // Reset totalPages when the id changes
-    prevTotalPages.current = 0; // Reset previous totalPages
-  }, [dispatch, id]);
+    setTotalPages(0);
+    prevTotalPages.current = 0;
+
+    setPage(featurePageFromServer);
+  }, [dispatch, id, featurePageFromServer]);
 
   useEffect(() => {
     const langId = sessionStorage.getItem("selectedLanguage") || "7";
 
-    if (!loadedPages.has(page)) {
+    if (page !== null && !loadedPages.has(page)) {
       dispatch(getReadBook({ bookId: id, langId, page: page.toString() }));
     }
   }, [id, dispatch, page, loadedPages]);
@@ -40,24 +45,31 @@ const ReadingContainer: React.FC = () => {
   useEffect(() => {
     if (currentReadBook?.result?.html) {
       if (!pagesContent.includes(currentReadBook.result.html)) {
-        setPagesContent((prev) => [...prev, currentReadBook.result.html]);
-        setLoadedPages((prev) => new Set(prev.add(page)));
+        setPagesContent((prev) => {
+          if (page && page < featurePageFromServer) {
+            return [currentReadBook.result.html, ...prev]; // Добавляем страницу перед текущим содержимым
+          }
+          return [...prev, currentReadBook.result.html]; // Добавляем страницу в конец
+        });
+        setLoadedPages((prev) => new Set(prev.add(page!)));
       }
 
-      // Only update totalPages if it has changed
+      // Обновляем totalPages, если оно изменилось
       if (currentReadBook.result.totalPages !== prevTotalPages.current) {
         setTotalPages(currentReadBook.result.totalPages);
-        prevTotalPages.current = currentReadBook.result.totalPages; // Update the ref
+        prevTotalPages.current = currentReadBook.result.totalPages;
       }
     }
   }, [currentReadBook, page, pagesContent]);
 
   const handleNext = () => {
-    setPage((prevPage) => prevPage + 1);
+    setPage((prevPage) => (prevPage !== null ? prevPage + 1 : 1));
   };
 
   const handlePrev = () => {
-    setPage((prevPage) => (prevPage > 1 ? prevPage - 1 : 1));
+    setPage((prevPage) =>
+      prevPage !== null && prevPage > 1 ? prevPage - 1 : 1
+    );
   };
 
   return (
@@ -68,6 +80,7 @@ const ReadingContainer: React.FC = () => {
         isLoading={isLoading}
         onNext={handleNext}
         onPrev={handlePrev}
+        featurePageFromServer={featurePageFromServer}
       />
     </div>
   );
