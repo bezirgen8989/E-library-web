@@ -25,33 +25,42 @@ const Reading: React.FC<ReadingProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState<number>(featurePageFromServer);
   const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true); // Состояние для отслеживания первой загрузки страницы
+  const [maxLoadPage, setMaxLoadPage] = useState<number>(0); // Состояние для максимальной загруженной страницы
 
-  // Функция для получения номера страницы из HTML-контента
   const getPageNumberFromHTML = (html: string) => {
     const match = html.match(/<title>Page (\d+)<\/title>/);
     return match ? parseInt(match[1], 10) : null;
   };
 
-  // Устанавливаем скролл в центр после загрузки данных, только для первой загрузки
   useEffect(() => {
     if (pagesContent.length > 0 && containerRef.current && isFirstLoad) {
       setTimeout(() => {
-        // Отступ 50px для первой загрузки
         const scrollPosition = (containerRef.current!.scrollTop = 50);
-        containerRef.current!.scrollTop = scrollPosition; // Устанавливаем скролл в центр
-        setIsFirstLoad(false); // Обновляем флаг, что первая загрузка завершена
-      }, 500); // Можно настроить задержку, если необходимо
+        containerRef.current!.scrollTop = scrollPosition;
+        setIsFirstLoad(false);
+      }, 300);
     }
-  }, [pagesContent, isFirstLoad]); // Эффект сработает, когда изменится pagesContent или isFirstLoad
+  }, [pagesContent, isFirstLoad]);
 
-  // Обработка прокрутки
+  useEffect(() => {
+    if (pagesContent.length > 0) {
+      const pageNumbers = pagesContent
+        .map(getPageNumberFromHTML)
+        .filter((num) => num !== null) as number[];
+
+      if (pageNumbers.length > 0) {
+        const maxPage = Math.max(...pageNumbers);
+        setMaxLoadPage(maxPage);
+      }
+    }
+  }, [pagesContent]);
+
   useEffect(() => {
     const handleScroll = () => {
       if (!containerRef.current) return;
 
       const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
 
-      // Прокрутка вниз: загрузка следующей страницы
       if (
         scrollTop + clientHeight >= scrollHeight - 10 &&
         !isLoading &&
@@ -61,16 +70,14 @@ const Reading: React.FC<ReadingProps> = ({
         setCurrentPage((prev) => Math.min(prev + 1, totalPages));
       }
 
-      // Прокрутка вверх: загрузка предыдущей страницы с отступом
       if (scrollTop <= 10 && !isLoading && currentPage > 1) {
         onPrev();
         setCurrentPage((prev) => Math.max(prev - 1, 1));
 
-        // Отступ для прокрутки вверх с задержкой
         if (scrollTop <= 10 && !isFirstLoad) {
           setTimeout(() => {
-            containerRef.current!.scrollTop = 50; // Устанавливаем отступ при прокрутке вверх с задержкой
-          }, 300); // Задержка 300 мс (можно настроить)
+            containerRef.current!.scrollTop = 100;
+          }, 300);
         }
       }
     };
@@ -100,7 +107,7 @@ const Reading: React.FC<ReadingProps> = ({
       <div
         ref={containerRef}
         className={styles.home_page}
-        style={{ maxHeight: "90vh", overflowY: "auto" }}
+        style={{ maxHeight: "calc(100vh - 155px)", overflowY: "auto" }}
       >
         <div className={styles.content}>
           {pagesContent.map((pageHtml, index) => {
@@ -130,11 +137,11 @@ const Reading: React.FC<ReadingProps> = ({
 
       <div className={styles.progressContent}>
         <div style={{ textAlign: "center" }}>
-          Page {currentPage} of {totalPages}
+          Page {maxLoadPage} of {totalPages}
         </div>
         <progress
           className={styles.progressLine}
-          value={currentPage}
+          value={maxLoadPage}
           max={totalPages}
         ></progress>
       </div>

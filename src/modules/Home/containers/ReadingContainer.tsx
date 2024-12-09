@@ -73,7 +73,8 @@ const ReadingContainer: React.FC = () => {
   };
 
   return (
-    <div style={{ maxHeight: "90vh", overflowY: "auto" }}>
+    // <div style={{ maxHeight: "calc(100vh - 100px)", overflowY: "auto" }}>
+    <div style={{ maxHeight: "calc(100vh - 100px)", overflowY: "auto" }}>
       <Reading
         pagesContent={pagesContent}
         totalPages={totalPages}
