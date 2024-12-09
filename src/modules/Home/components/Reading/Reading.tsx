@@ -1,28 +1,54 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./Reading.module.scss";
 import BackIcon from "../../../../assets/images/icons/backPage.svg";
 import { useHistory } from "react-router-dom";
 import SpinnerBrown from "../../../../components/common/SpinnerBrown";
-import Button from "../../../../components/common/Buttons/Button";
 
 interface ReadingProps {
-  currentReadBook: any;
+  pagesContent: string[];
   isLoading: boolean;
   onNext: () => void;
   onPrev: () => void;
 }
 
 const Reading: React.FC<ReadingProps> = ({
-  currentReadBook,
+  pagesContent,
   isLoading,
   onNext,
   onPrev,
 }) => {
   const history = useHistory();
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  if (isLoading) {
-    return <SpinnerBrown />;
-  }
+  // Обработчик скролла для загрузки следующей страницы при достижении конца
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+
+      const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+
+      // Если скроллим вниз, загружаем следующую страницу
+      if (scrollTop + clientHeight >= scrollHeight - 10 && !isLoading) {
+        onNext();
+      }
+
+      // Если скроллим вверх, загружаем предыдущую страницу
+      if (scrollTop <= 10 && !isLoading) {
+        onPrev();
+      }
+    };
+
+    const currentContainer = containerRef.current;
+    if (currentContainer) {
+      currentContainer.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (currentContainer) {
+        currentContainer.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [onNext, onPrev, isLoading]);
 
   return (
     <div>
@@ -33,46 +59,26 @@ const Reading: React.FC<ReadingProps> = ({
         <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
         Back
       </div>
-      <div className={styles.home_page}>
-        <div
-          style={{ display: "flex", width: "100%", justifyContent: "center" }}
-        >
-          <Button
-            style={{ width: "35px", height: "35px", borderRadius: "50%" }}
-            variant="White"
-            onClick={onPrev}
-          >
-            <img
-              style={{ transform: "rotate(90deg)" }}
-              src={BackIcon}
-              alt="Back arrow"
+      <div
+        ref={containerRef}
+        className={styles.home_page}
+        style={{ maxHeight: "90vh", overflowY: "auto" }}
+      >
+        <div className={styles.content}>
+          {pagesContent.map((pageHtml, index) => (
+            <div
+              style={{ marginBottom: "30px" }}
+              key={index}
+              dangerouslySetInnerHTML={{ __html: pageHtml }}
             />
-          </Button>
+          ))}
         </div>
-        <div
-          className={styles.content}
-          dangerouslySetInnerHTML={{ __html: currentReadBook?.result?.html }}
-        />
-        <div
-          style={{
-            display: "flex",
-            width: "100%",
-            justifyContent: "center",
-            paddingTop: "10px",
-          }}
-        >
-          <Button
-            style={{ width: "35px", height: "35px", borderRadius: "50%" }}
-            variant="White"
-            onClick={onNext}
-          >
-            <img
-              style={{ transform: "rotate(270deg)" }}
-              src={BackIcon}
-              alt="Back arrow"
-            />
-          </Button>
-        </div>
+
+        {isLoading && (
+          <div style={{ textAlign: "center", padding: "10px" }}>
+            <SpinnerBrown />
+          </div>
+        )}
       </div>
     </div>
   );

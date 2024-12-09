@@ -9,6 +9,7 @@ const ReadingContainer: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch();
   const [page, setPage] = useState(1); // Начальная страница для загрузки
+  const [pagesContent, setPagesContent] = useState<string[]>([]); // Массив для хранения страниц
 
   const { currentReadBook, isLoading } = useLazySelector(({ home }) => {
     return {
@@ -19,19 +20,24 @@ const ReadingContainer: React.FC = () => {
 
   useEffect(() => {
     dispatch(clearBooks());
-  }, [dispatch]);
+    setPagesContent([]);
+  }, [dispatch, id]);
 
   useEffect(() => {
     const langId = sessionStorage.getItem("selectedLanguage") || "7";
     dispatch(getReadBook({ bookId: id, langId, page: page.toString() }));
   }, [id, dispatch, page]);
 
-  // Обработчик для загрузки следующей страницы
+  useEffect(() => {
+    if (currentReadBook?.result?.html) {
+      setPagesContent((prev) => [...prev, currentReadBook.result.html]);
+    }
+  }, [currentReadBook]);
+
   const handleNext = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  // Обработчик для загрузки предыдущей страницы
   const handlePrev = () => {
     setPage((prevPage) => (prevPage > 1 ? prevPage - 1 : 1));
   };
@@ -39,7 +45,7 @@ const ReadingContainer: React.FC = () => {
   return (
     <div style={{ maxHeight: "90vh", overflowY: "auto" }}>
       <Reading
-        currentReadBook={currentReadBook}
+        pagesContent={pagesContent}
         isLoading={isLoading}
         onNext={handleNext}
         onPrev={handlePrev}
