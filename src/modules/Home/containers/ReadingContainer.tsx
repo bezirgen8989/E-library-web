@@ -25,7 +25,9 @@ const ReadingContainer: React.FC = () => {
   const prevTotalPages = useRef<number>(0);
   const [maxLoadPage, setMaxLoadPage] = useState<number>(0);
 
-  const featurePageFromServer = 11;
+  // State for featurePageFromServer
+  const [featurePageFromServer, setFeaturePageFromServer] =
+    useState<number>(11);
 
   const { currentReadBook, isLoading, currentBookshelfBook } = useLazySelector(
     ({ home }) => ({
@@ -36,7 +38,10 @@ const ReadingContainer: React.FC = () => {
   );
 
   console.log("currentReadBook", currentReadBook);
-  console.log("currentBookshelfBook", currentBookshelfBook);
+  console.log(
+    "currentBookshelfBookLastPage",
+    currentBookshelfBook?.result?.lastPage
+  );
 
   useEffect(() => {
     if (value?.id && id) {
@@ -47,7 +52,7 @@ const ReadingContainer: React.FC = () => {
         })
       );
     }
-  }, []);
+  }, [dispatch, id, value?.id]);
 
   useEffect(() => {
     if (value?.id) {
@@ -61,6 +66,12 @@ const ReadingContainer: React.FC = () => {
       );
     }
   }, [dispatch, value?.id, id]);
+
+  useEffect(() => {
+    if (currentBookshelfBook?.result?.lastPage) {
+      setFeaturePageFromServer(currentBookshelfBook.result.lastPage);
+    }
+  }, [currentBookshelfBook]);
 
   useEffect(() => {
     dispatch(clearBooks());
@@ -97,7 +108,7 @@ const ReadingContainer: React.FC = () => {
         prevTotalPages.current = currentReadBook.result.totalPages;
       }
     }
-  }, [currentReadBook, page, pagesContent]);
+  }, [currentReadBook, page, pagesContent, featurePageFromServer]);
 
   const handleNext = () => {
     setPage((prevPage) => (prevPage !== null ? prevPage + 1 : 1));
