@@ -1,28 +1,66 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Reading } from "../components";
-import { clearBooks, getReadBook } from "../slices/home";
+import {
+  addToShelf,
+  clearBooks,
+  getBookshelfById,
+  getReadBook,
+  setReadingBook,
+} from "../slices/home";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../hooks";
+import { UserContext } from "../../../core/contexts";
+import { SetReadingBookPayload } from "../slices/home/types";
 
 const ReadingContainer: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const value = useContext(UserContext);
   const dispatch = useDispatch();
 
-  // Состояние для текущей страницы
   const [page, setPage] = useState<number | null>(null);
   const [pagesContent, setPagesContent] = useState<string[]>([]);
   const [loadedPages, setLoadedPages] = useState<Set<number>>(new Set());
   const [totalPages, setTotalPages] = useState<number>(0);
   const prevTotalPages = useRef<number>(0);
+  const [maxLoadPage, setMaxLoadPage] = useState<number>(0);
 
-  // Значение страницы по умолчанию, приходящее с сервера
-  const featurePageFromServer = 5; // Это значение может изменяться в зависимости от данных сервера
+  const featurePageFromServer = 11;
 
-  const { currentReadBook, isLoading } = useLazySelector(({ home }) => ({
-    currentReadBook: home.currentReadBook,
-    isLoading: home.currentReadBook.isLoading,
-  }));
+  const { currentReadBook, isLoading, currentBookshelfBook } = useLazySelector(
+    ({ home }) => ({
+      currentReadBook: home.currentReadBook,
+      isLoading: home.currentReadBook.isLoading,
+      currentBookshelfBook: home.currentBookshelfBook,
+    })
+  );
+
+  console.log("currentReadBook", currentReadBook);
+  console.log("currentBookshelfBook", currentBookshelfBook);
+
+  useEffect(() => {
+    if (value?.id && id) {
+      dispatch(
+        getBookshelfById({
+          userId: +value?.id,
+          bookId: +id,
+        })
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (value?.id) {
+      dispatch(
+        addToShelf({
+          user: { id: +value.id },
+          book: { id: +id },
+          isFavourited: true,
+          readingState: "added",
+        })
+      );
+    }
+  }, [dispatch, value?.id, id]);
 
   useEffect(() => {
     dispatch(clearBooks());
@@ -47,14 +85,13 @@ const ReadingContainer: React.FC = () => {
       if (!pagesContent.includes(currentReadBook.result.html)) {
         setPagesContent((prev) => {
           if (page && page < featurePageFromServer) {
-            return [currentReadBook.result.html, ...prev]; // Добавляем страницу перед текущим содержимым
+            return [currentReadBook.result.html, ...prev];
           }
-          return [...prev, currentReadBook.result.html]; // Добавляем страницу в конец
+          return [...prev, currentReadBook.result.html];
         });
         setLoadedPages((prev) => new Set(prev.add(page!)));
       }
 
-      // Обновляем totalPages, если оно изменилось
       if (currentReadBook.result.totalPages !== prevTotalPages.current) {
         setTotalPages(currentReadBook.result.totalPages);
         prevTotalPages.current = currentReadBook.result.totalPages;
@@ -72,8 +109,22 @@ const ReadingContainer: React.FC = () => {
     );
   };
 
+  useEffect(() => {
+    return () => {
+      if (value?.id && id) {
+        const payload: SetReadingBookPayload = {
+          user: { id: +value.id },
+          book: { id: +id },
+          lastPage: maxLoadPage,
+          progress: totalPages > 0 ? (maxLoadPage / totalPages) * 100 : 0,
+        };
+
+        dispatch(setReadingBook(payload));
+      }
+    };
+  }, [dispatch, maxLoadPage, totalPages, id, value?.id]);
+
   return (
-    // <div style={{ maxHeight: "calc(100vh - 100px)", overflowY: "auto" }}>
     <div style={{ maxHeight: "calc(100vh - 100px)", overflowY: "auto" }}>
       <Reading
         pagesContent={pagesContent}
@@ -82,6 +133,8 @@ const ReadingContainer: React.FC = () => {
         onNext={handleNext}
         onPrev={handlePrev}
         featurePageFromServer={featurePageFromServer}
+        maxLoadPage={maxLoadPage}
+        setMaxLoadPage={setMaxLoadPage}
       />
     </div>
   );

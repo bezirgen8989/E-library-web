@@ -240,3 +240,10 @@ p {
   }
 .ant-collapse-content p {color: white !important;}
 
+.ant-progress-inner {
+  background-color: rgba(120, 120, 120, 0.32) !important;
+  border-radius: 0 !important;
+}
+.ant-progress-bg {
+  background-color: #996C42 !important;
+}

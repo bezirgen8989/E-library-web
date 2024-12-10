@@ -3,6 +3,7 @@ import styles from "./Reading.module.scss";
 import BackIcon from "../../../../assets/images/icons/backPage.svg";
 import { useHistory } from "react-router-dom";
 import SpinnerBrown from "../../../../components/common/SpinnerBrown";
+import { Progress } from "antd"; // Import Ant Design's Progress component
 
 interface ReadingProps {
   pagesContent: string[];
@@ -11,6 +12,8 @@ interface ReadingProps {
   onNext: () => void;
   onPrev: () => void;
   featurePageFromServer: number;
+  maxLoadPage: number;
+  setMaxLoadPage: (num: number) => void;
 }
 
 const Reading: React.FC<ReadingProps> = ({
@@ -20,12 +23,13 @@ const Reading: React.FC<ReadingProps> = ({
   onNext,
   onPrev,
   featurePageFromServer,
+  maxLoadPage,
+  setMaxLoadPage,
 }) => {
   const history = useHistory();
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState<number>(featurePageFromServer);
-  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true); // Состояние для отслеживания первой загрузки страницы
-  const [maxLoadPage, setMaxLoadPage] = useState<number>(0); // Состояние для максимальной загруженной страницы
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
 
   const getPageNumberFromHTML = (html: string) => {
     const match = html.match(/<title>Page (\d+)<\/title>/);
@@ -35,8 +39,7 @@ const Reading: React.FC<ReadingProps> = ({
   useEffect(() => {
     if (pagesContent.length > 0 && containerRef.current && isFirstLoad) {
       setTimeout(() => {
-        const scrollPosition = (containerRef.current!.scrollTop = 50);
-        containerRef.current!.scrollTop = scrollPosition;
+        containerRef.current!.scrollTop = 50;
         setIsFirstLoad(false);
       }, 300);
     }
@@ -53,7 +56,7 @@ const Reading: React.FC<ReadingProps> = ({
         setMaxLoadPage(maxPage);
       }
     }
-  }, [pagesContent]);
+  }, [pagesContent, setMaxLoadPage]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -115,7 +118,7 @@ const Reading: React.FC<ReadingProps> = ({
             return (
               <div key={index}>
                 <div
-                  style={{ marginBottom: "30px" }}
+                  className={styles.contentWrap}
                   dangerouslySetInnerHTML={{ __html: pageHtml }}
                 />
                 {pageNumber !== null && (
@@ -135,15 +138,16 @@ const Reading: React.FC<ReadingProps> = ({
         )}
       </div>
 
-      <div className={styles.progressContent}>
+      <div className={styles.progressContent} style={{ marginTop: "20px" }}>
         <div style={{ textAlign: "center" }}>
-          Page {maxLoadPage} of {totalPages}
+          {maxLoadPage} of {totalPages}
         </div>
-        <progress
-          className={styles.progressLine}
-          value={maxLoadPage}
-          max={totalPages}
-        ></progress>
+        <Progress
+          percent={(maxLoadPage / totalPages) * 100}
+          status="active"
+          showInfo={false}
+          strokeColor="#1890ff" // Customize the progress bar color if needed
+        />
       </div>
     </div>
   );

@@ -1,33 +1,17 @@
-import { usingDelete, usingGet, usingPost } from "api/apiHelpers";
+import { usingDelete, usingGet, usingPatch, usingPost } from "api/apiHelpers";
 import {
   AddBookToShelfParams,
   AddReviewParams,
   BooksParams,
   ReadBooksParams,
   ReviewParams,
+  SetReadingBookPayload,
 } from "../slices/home/types";
 
-// export const getAllTopBooks = (params: BooksParams) =>
-//   usingGet(
-//     `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
-//   );
-// export const getAllNewBooks = (params: BooksParams) =>
-//   usingGet(
-//     `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
-//   );
-// export const getAllSuggestedBooks = (params: BooksParams) =>
-//   usingGet(
-//     `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
-//   );
-// export const getAllAuthorBooks = (params: BooksParams) =>
-//   usingGet(
-//     `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
-//   );
 export const getBooks = (params: BooksParams) =>
   usingGet(
     `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
   );
-
 export const addBookToShelf = (params: AddBookToShelfParams) =>
   usingPost(`/api/v1/bookshelf`, params);
 export const addBookReview = (params: AddReviewParams) =>
@@ -50,7 +34,6 @@ export const getBookshelfBooks = (params: BooksParams) =>
   usingGet(
     `/api/v1/bookshelf?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
   );
-
 export const getAllStartedBooks = (params: BooksParams) =>
   usingGet(
     `/api/v1/bookshelf?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
@@ -69,3 +52,9 @@ export const getCurrentReadBook = (params: ReadBooksParams) =>
   );
 export const askQuestion = (payload: ReadBooksParams) =>
   usingPost(`/api/v1/vectors/ask`, payload);
+export const setReadingBookParams = (payload: SetReadingBookPayload) =>
+  usingPatch(`/api/v1/bookshelf`, payload);
+export const getCurrentBookshelfBookById = (payload: {
+  userId: number;
+  bookId: number;
+}) => usingGet(`/api/v1/bookshelf/${payload.userId}/${payload.bookId}`);

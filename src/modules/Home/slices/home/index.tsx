@@ -8,6 +8,7 @@ import {
   HomeState,
   ReadBooksParams,
   ReviewParams,
+  SetReadingBookPayload,
 } from "./types";
 import {
   addBookReview,
@@ -23,8 +24,10 @@ import {
   getBook,
   getBooks,
   getBookshelfBooks,
+  getCurrentBookshelfBookById,
   getCurrentReadBook,
   getSearchBooks,
+  setReadingBookParams,
 } from "../../api/homeService";
 
 const initialState: HomeState = {
@@ -47,6 +50,7 @@ const initialState: HomeState = {
   finishedBooks: {},
   currentReadBook: {},
   currentUserAnswer: {},
+  currentBookshelfBook: {},
 };
 
 const homeSlice = createSlice({
@@ -299,6 +303,18 @@ const homeSlice = createSlice({
         state.currentReadBook = { isLoading: false, result: content, error };
       })
 
+      .addCase(getBookshelfById.pending, (state) => {
+        state.currentBookshelfBook = { isLoading: true };
+      })
+      .addCase(getBookshelfById.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.currentBookshelfBook = {
+          isLoading: false,
+          result: content,
+          error,
+        };
+      })
+
       .addCase(setUserQuestion.pending, (state) => {
         state.currentUserAnswer = { isLoading: true };
       })
@@ -467,6 +483,22 @@ export const setUserQuestion = createAsyncThunk(
   "/api/v1/vectors/ask",
   async (books: any) => {
     const response = await askQuestion(books);
+    return response;
+  }
+);
+
+export const setReadingBook = createAsyncThunk(
+  "setBookProgress/api/v1/bookshelf",
+  async (params: SetReadingBookPayload) => {
+    const response = await setReadingBookParams(params);
+    return response;
+  }
+);
+
+export const getBookshelfById = createAsyncThunk(
+  "getBookFromBookshelf/api/v1/bookshelf",
+  async (params: { userId: number; bookId: number }) => {
+    const response = await getCurrentBookshelfBookById(params);
     return response;
   }
 );

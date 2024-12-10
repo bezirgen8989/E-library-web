@@ -18,7 +18,18 @@ export type HomeState = {
   finishedBooks: any;
   currentReadBook: any;
   currentUserAnswer: any;
+  currentBookshelfBook: any;
 };
+export interface SetReadingBookPayload {
+  user: {
+    id: number;
+  };
+  book: {
+    id: number;
+  };
+  lastPage: number;
+  progress: number;
+}
 export type BooksParams = {
   page: string;
   limit: string;
@@ -33,11 +44,11 @@ export type ReadBooksParams = {
 };
 
 export type AddBookToShelfParams = {
-  user: { id: number };
+  user: { id: number } | undefined;
   book: { id: number };
-  isDownloaded: boolean;
+  isDownloaded?: boolean;
   isFavourited: boolean;
-  readingState: string;
+  readingState?: string;
 };
 
 export type AddReviewParams = {
