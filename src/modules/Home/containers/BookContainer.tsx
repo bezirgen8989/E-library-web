@@ -42,6 +42,7 @@ const BookContainer: React.FC = () => {
 
   const addToBookShelf = useCallback(
     (params) => {
+      console.log("params", params);
       dispatch(addToShelf(params));
     },
     [dispatch]

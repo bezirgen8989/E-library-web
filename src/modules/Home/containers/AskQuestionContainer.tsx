@@ -26,9 +26,6 @@ const AskQuestionContainer: React.FC = () => {
     return { currentBook };
   });
 
-  console.log("currentBookQuestion", currentBook);
-  console.log("currentBookIndexName", currentBook?.result?.indexName);
-
   useEffect(() => {
     dispatch(clearBooks());
   }, []);
@@ -50,7 +47,7 @@ const AskQuestionContainer: React.FC = () => {
               },
               body: JSON.stringify({
                 query: question,
-                indexName: currentBook?.result?.indexName,
+                indexName: currentBook?.result?.vectorEntity?.indexName,
               }),
 
               onmessage(event: EventSourceMessage) {
@@ -62,7 +59,7 @@ const AskQuestionContainer: React.FC = () => {
                   }
 
                   if (event.event === "META") {
-                    setMeta(data); // Save metadata from event:META
+                    setMeta(data);
                   }
                 } catch (error) {
                   console.error("Error processing MESSAGE event:", error);
