@@ -8,6 +8,7 @@ type HomeProps = {
   notStarted: any;
   finished: any;
   getBook: (id: number) => void;
+  continueReadingBook: (id: number) => void;
   isStartedBooksLoading: boolean;
   isNotStartedBooksLoading: boolean;
   isFinishedBooksLoading: boolean;
@@ -18,10 +19,12 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
   notStarted,
   finished,
   getBook,
+  continueReadingBook,
   isStartedBooksLoading,
   isNotStartedBooksLoading,
   isFinishedBooksLoading,
 }) => {
+  console.log("started", started);
   return (
     <div className={styles.home_page}>
       {started && (
@@ -32,6 +35,7 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
           }
           seeAllLink={routes.startedBooks}
           getBook={getBook}
+          continueReadingBook={continueReadingBook}
           isLoading={isStartedBooksLoading}
         />
       )}
@@ -45,6 +49,7 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
         seeAllLink={routes.notStartedBooks}
         getBook={getBook}
         isLoading={isNotStartedBooksLoading}
+        continueReadingBook={continueReadingBook}
       />
       {finished && (
         <AllBooksSlider

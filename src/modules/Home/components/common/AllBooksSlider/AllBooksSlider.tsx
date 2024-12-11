@@ -4,8 +4,14 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import NoImg from "../../../../../assets/images/NoImagePlaceholder.jpg";
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useContext, useEffect, useState } from "react";
 import { Skeleton } from "antd";
+import { getBookshelfById } from "../../../slices/home";
+import { useDispatch } from "react-redux";
+import { useLazySelector } from "../../../../../hooks";
+import { UserContext } from "../../../../../core/contexts";
+import { useRef } from "react";
+import { log } from "@craco/craco/dist/lib/logger";
 
 interface Author {
   name: string;
@@ -18,19 +24,20 @@ interface Book {
     link: string;
   };
   author: Author[];
-  isBookshelfStarted?: any;
-  isBookshelfNotStarted?: any;
-  isBookshelfFinished?: any;
+  isBookshelfStarted?: boolean;
+  isBookshelfNotStarted?: boolean;
+  isBookshelfFinished?: boolean;
   dateFinished?: string | null;
 }
 
 interface AllBooksSliderProps {
-  title: any;
-  seeAllLink?: any;
+  title: string;
+  seeAllLink?: string;
   books?: Book[]; // null or undefined indicates loading state
   titleImage?: ReactNode | null;
   getBook: (id: number) => void;
   isLoading?: boolean;
+  continueReadingBook?: (id: number) => void;
 }
 
 const restSliderSettings = {
@@ -49,13 +56,6 @@ const restSliderSettings = {
         variableWidth: true,
       },
     },
-    // {
-    //   breakpoint: 768,
-    //   settings: {
-    //     slidesToShow: 5,
-    //     centerMode: false,
-    //   },
-    // },
     {
       breakpoint: 1050,
       settings: {
@@ -67,6 +67,7 @@ const restSliderSettings = {
     },
   ],
 };
+
 const AllBooksSlider: FC<AllBooksSliderProps> = ({
   title,
   titleImage,
@@ -74,7 +75,50 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
   seeAllLink,
   getBook,
   isLoading,
+  continueReadingBook,
 }) => {
+  const value = useContext(UserContext);
+  const dispatch = useDispatch();
+
+  const { currentBookshelfBook } = useLazySelector(({ home }) => ({
+    currentBookshelfBook: home.currentBookshelfBook,
+  }));
+
+  const [bookProgress, setBookProgress] = useState<Record<number, number>>({});
+  const processedBooks = useRef<Set<number>>(new Set()); // Track processed books
+
+  log("bookProgress", bookProgress);
+
+  useEffect(() => {
+    if (books && value?.id) {
+      books.forEach((book) => {
+        if (book.isBookshelfStarted) {
+          // Check if bookshelf data for the book is already available
+          const bookshelfBook = currentBookshelfBook[book.id];
+
+          if (bookshelfBook) {
+            // If bookshelf data is available, update the progress
+            if (bookshelfBook.lastPage) {
+              setBookProgress((prev) => ({
+                ...prev,
+                [book.id]: bookshelfBook.lastPage,
+              }));
+            }
+          } else if (!processedBooks.current.has(book.id)) {
+            // Only dispatch if bookshelf data is not yet available and the book hasn't been processed
+            processedBooks.current.add(book.id); // Mark as processed
+            dispatch(
+              getBookshelfById({
+                userId: +value.id,
+                bookId: book.id,
+              })
+            );
+          }
+        }
+      });
+    }
+  }, [books, dispatch, value, currentBookshelfBook]);
+
   const formatDate = (isoDate: string): string => {
     const date = new Date(isoDate);
     return new Intl.DateTimeFormat("en-US", {
@@ -104,7 +148,7 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
           <div className={styles.imgWrap}>
             {book.bookCover?.link ? (
               <img
-                src={book.bookCover?.link}
+                src={book.bookCover.link}
                 alt={book.title}
                 className={styles.bookCoverImage}
               />
@@ -134,11 +178,30 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
             {book.author.map((author) => author.name).join(", ")}
           </div>
         </div>
+
         {book?.isBookshelfNotStarted && (
-          <div className={styles.startBtn}>Start Reading</div>
+          <div
+            onClick={() => continueReadingBook?.(book.id)}
+            className={styles.startBtn}
+          >
+            Start Reading
+          </div>
         )}
+
         {book?.isBookshelfStarted && (
-          <div className={styles.startBtn}>Continue Reading</div>
+          <div>
+            <span>Progress: </span>
+            {bookProgress[book.id] ?? "Loading..."}
+          </div>
+        )}
+
+        {book?.isBookshelfStarted && (
+          <div
+            onClick={() => continueReadingBook?.(book.id)}
+            className={styles.startBtn}
+          >
+            Continue Reading
+          </div>
         )}
       </div>
     ));

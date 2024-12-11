@@ -66,6 +66,10 @@ const BookShelfContainer: React.FC = () => {
     history.push(`${routes.book}/${id}`);
   }, []);
 
+  const continueReadingBook = useCallback((id) => {
+    history.push(`${routes.reading}/${id}`);
+  }, []);
+
   const startedFilter = "[readingState][eq]=reading";
   const favouriteFilter = "[readingState][eq]=added";
   const finishedFilter = "[readingState][eq]=finished";
@@ -109,6 +113,7 @@ const BookShelfContainer: React.FC = () => {
   return (
     <BooksShelfComponent
       getBook={getBook}
+      continueReadingBook={continueReadingBook}
       started={startedBooksList}
       notStarted={notStartedBooksList}
       finished={finishedBooksList}
