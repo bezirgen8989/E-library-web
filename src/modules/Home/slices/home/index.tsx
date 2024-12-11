@@ -82,6 +82,7 @@ const homeSlice = createSlice({
       state.startedBooks = {};
       state.notStartedBooks = {};
       state.finishedBooks = {};
+      state.currentBookshelfBook = {};
     },
   },
   extraReducers: (builder) => {

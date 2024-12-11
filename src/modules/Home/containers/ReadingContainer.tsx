@@ -25,31 +25,22 @@ const ReadingContainer: React.FC = () => {
   const [maxLoadPage, setMaxLoadPage] = useState<number>(0);
 
   // State for featurePageFromServer
-  const [featurePageFromServer, setFeaturePageFromServer] =
-    useState<number>(11);
+  const [featurePageFromServer, setFeaturePageFromServer] = useState<number>(5);
 
-  const {
-    currentReadBook,
-    isLoading,
-    currentBookshelfBook,
-    testCurrentBookshelfBook,
-  } = useLazySelector(({ home }) => ({
-    currentReadBook: home.currentReadBook,
-    isLoading: home.currentReadBook.isLoading,
-    currentBookshelfBook: home.currentBookshelfBook,
-    testCurrentBookshelfBook: home.testCurrentBookshelfBook,
-  }));
+  const { currentReadBook, isLoading, currentBookshelfBook } = useLazySelector(
+    ({ home }) => ({
+      currentReadBook: home.currentReadBook,
+      isLoading: home.currentReadBook.isLoading,
+      currentBookshelfBook: home.currentBookshelfBook,
+    })
+  );
 
   console.log("currentReadBook", currentReadBook);
   console.log(
     "currentBookshelfBookLastPage",
     currentBookshelfBook?.result?.lastPage
   );
-  console.log(
-    "testCurrentBookshelfBook",
-    testCurrentBookshelfBook?.result?.lastPage
-  );
-
+  //currentBookshelfBook
   useEffect(() => {
     if (value?.id && id) {
       dispatch(
@@ -127,21 +118,30 @@ const ReadingContainer: React.FC = () => {
     );
   };
 
-  //возвращает currentBookshelfBook
+  console.log("maxLoadPage", maxLoadPage);
+
+  const saveProgress = () => {
+    if (value?.id && id) {
+      const payload: SetReadingBookPayload = {
+        user: { id: +value.id },
+        book: { id: +id },
+        lastPage: maxLoadPage,
+        progress: totalPages > 0 ? (maxLoadPage / totalPages) * 100 : 0,
+      };
+
+      dispatch(setReadingBook(payload));
+    }
+  };
+
   useEffect(() => {
-    return () => {
-      if (value?.id && id) {
-        const payload: SetReadingBookPayload = {
-          user: { id: +value.id },
-          book: { id: +id },
-          lastPage: maxLoadPage,
-          progress: totalPages > 0 ? (maxLoadPage / totalPages) * 100 : 0,
-        };
-        console.log(33333333333);
-        dispatch(setReadingBook(payload));
+    const unlisten = () => {
+      if (!location.pathname.includes("reading")) {
+        saveProgress();
       }
     };
-  }, [dispatch, maxLoadPage]);
+
+    return unlisten;
+  }, [location.pathname, maxLoadPage]);
 
   return (
     <div style={{ maxHeight: "calc(100vh - 100px)", overflowY: "auto" }}>
