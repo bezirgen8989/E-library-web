@@ -51,6 +51,7 @@ const initialState: HomeState = {
   currentReadBook: {},
   currentUserAnswer: {},
   currentBookshelfBook: {},
+  testCurrentBookshelfBook: {},
 };
 
 const homeSlice = createSlice({
@@ -322,6 +323,18 @@ const homeSlice = createSlice({
         console.log("Action payload:", action.payload);
         const { content, error } = action.payload;
         state.currentUserAnswer = { isLoading: false, result: content, error };
+      })
+
+      .addCase(setReadingBook.pending, (state) => {
+        state.testCurrentBookshelfBook = { isLoading: true };
+      })
+      .addCase(setReadingBook.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.testCurrentBookshelfBook = {
+          isLoading: false,
+          result: content,
+          error,
+        };
       })
 
       // Clear store if 'userLoggedOut' happened

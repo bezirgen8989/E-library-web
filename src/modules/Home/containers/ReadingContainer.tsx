@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Reading } from "../components";
 import {
-  addToShelf,
   clearBooks,
   getBookshelfById,
   getReadBook,
@@ -29,18 +28,26 @@ const ReadingContainer: React.FC = () => {
   const [featurePageFromServer, setFeaturePageFromServer] =
     useState<number>(11);
 
-  const { currentReadBook, isLoading, currentBookshelfBook } = useLazySelector(
-    ({ home }) => ({
-      currentReadBook: home.currentReadBook,
-      isLoading: home.currentReadBook.isLoading,
-      currentBookshelfBook: home.currentBookshelfBook,
-    })
-  );
+  const {
+    currentReadBook,
+    isLoading,
+    currentBookshelfBook,
+    testCurrentBookshelfBook,
+  } = useLazySelector(({ home }) => ({
+    currentReadBook: home.currentReadBook,
+    isLoading: home.currentReadBook.isLoading,
+    currentBookshelfBook: home.currentBookshelfBook,
+    testCurrentBookshelfBook: home.testCurrentBookshelfBook,
+  }));
 
   console.log("currentReadBook", currentReadBook);
   console.log(
     "currentBookshelfBookLastPage",
     currentBookshelfBook?.result?.lastPage
+  );
+  console.log(
+    "testCurrentBookshelfBook",
+    testCurrentBookshelfBook?.result?.lastPage
   );
 
   useEffect(() => {
@@ -54,18 +61,18 @@ const ReadingContainer: React.FC = () => {
     }
   }, [dispatch, id, value?.id]);
 
-  useEffect(() => {
-    if (value?.id) {
-      dispatch(
-        addToShelf({
-          user: { id: +value.id },
-          book: { id: +id },
-          isFavourited: true,
-          readingState: "added",
-        })
-      );
-    }
-  }, [dispatch, value?.id, id]);
+  // useEffect(() => {
+  //   if (value?.id) {
+  //     dispatch(
+  //       addToShelf({
+  //         user: { id: +value.id },
+  //         book: { id: +id },
+  //         isFavourited: true,
+  //         readingState: "added",
+  //       })
+  //     );
+  //   }
+  // }, [dispatch, value?.id, id]);
 
   useEffect(() => {
     if (currentBookshelfBook?.result?.lastPage) {
@@ -120,6 +127,7 @@ const ReadingContainer: React.FC = () => {
     );
   };
 
+  //возвращает currentBookshelfBook
   useEffect(() => {
     return () => {
       if (value?.id && id) {
@@ -129,11 +137,11 @@ const ReadingContainer: React.FC = () => {
           lastPage: maxLoadPage,
           progress: totalPages > 0 ? (maxLoadPage / totalPages) * 100 : 0,
         };
-
+        console.log(33333333333);
         dispatch(setReadingBook(payload));
       }
     };
-  }, [dispatch, maxLoadPage, totalPages, id, value?.id]);
+  }, [dispatch, maxLoadPage]);
 
   return (
     <div style={{ maxHeight: "calc(100vh - 100px)", overflowY: "auto" }}>

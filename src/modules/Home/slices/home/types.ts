@@ -19,6 +19,7 @@ export type HomeState = {
   currentReadBook: any;
   currentUserAnswer: any;
   currentBookshelfBook: any;
+  testCurrentBookshelfBook: any;
 };
 export interface SetReadingBookPayload {
   user: {
