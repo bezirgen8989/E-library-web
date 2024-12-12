@@ -39,6 +39,8 @@ const BookShelfContainer: React.FC = () => {
       isFinishedBooksLoading,
     };
   });
+  console.log("startedBooks", startedBooks);
+  console.log("notstartedBooks", notStartedBooks);
 
   const startedBooksList = startedBooks?.result?.data.map((item: any) => {
     return {
@@ -59,8 +61,6 @@ const BookShelfContainer: React.FC = () => {
       isBookshelfFinished: true,
     };
   });
-  console.log("finishedBooks", finishedBooks);
-  console.log("finishedBooksList", finishedBooksList);
 
   const getBook = useCallback((id) => {
     history.push(`${routes.book}/${id}`);

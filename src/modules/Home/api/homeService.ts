@@ -36,15 +36,16 @@ export const getBookshelfBooks = (params: BooksParams) =>
   );
 export const getAllStartedBooks = (params: BooksParams) =>
   usingGet(
-    `/api/v1/bookshelf?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
+    `/api/v1/bookshelf?page=${params.page}&limit=${params.limit}&filter${params.userFilter}&order${params.order}&filter${params.filter}`
   );
+
 export const getAllNotStartedBooks = (params: BooksParams) =>
   usingGet(
     `/api/v1/bookshelf?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.userFilter}&filter${params.filter}`
   );
 export const getAllFinishedBooks = (params: BooksParams) =>
   usingGet(
-    `/api/v1/bookshelf?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
+    `/api/v1/bookshelf?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}&filter${params.userFilter}`
   );
 export const getCurrentReadBook = (params: ReadBooksParams) =>
   usingGet(

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Reading } from "../components";
 import {
+  // addToShelf,
   clearBooks,
   getBookshelfById,
   getReadBook,
@@ -59,7 +60,7 @@ const ReadingContainer: React.FC = () => {
   //         user: { id: +value.id },
   //         book: { id: +id },
   //         isFavourited: true,
-  //         readingState: "added",
+  //         readingState: "reading",
   //       })
   //     );
   //   }
@@ -127,6 +128,7 @@ const ReadingContainer: React.FC = () => {
         book: { id: +id },
         lastPage: maxLoadPage,
         progress: totalPages > 0 ? (maxLoadPage / totalPages) * 100 : 0,
+        readingState: "reading",
       };
 
       dispatch(setReadingBook(payload));

@@ -30,6 +30,7 @@ export interface SetReadingBookPayload {
   };
   lastPage: number;
   progress: number;
+  readingState: string;
 }
 export type BooksParams = {
   page: string;

@@ -31,7 +31,7 @@ interface Book {
 }
 
 interface AllBooksSliderProps {
-  title: string;
+  title: any;
   seeAllLink?: string;
   books?: Book[]; // null or undefined indicates loading state
   titleImage?: ReactNode | null;
