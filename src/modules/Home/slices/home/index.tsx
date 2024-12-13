@@ -77,7 +77,6 @@ const homeSlice = createSlice({
     clearBooks: (state) => {
       state.newBooks = {};
       state.topBooks = {};
-      state.newBooks = {};
       state.suggestedBooks = {};
       state.similarBooks = {};
       state.authorBooks = {};
