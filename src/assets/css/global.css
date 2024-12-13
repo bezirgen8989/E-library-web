@@ -164,10 +164,14 @@ p {
 }
 .ant-notification-notice-close {
   color: white !important;
-  svg {
-    height: 16px !important;
-    width: 16px !important;
-  }
+  /*svg {*/
+  /*  height: 16px !important;*/
+  /*  width: 16px !important;*/
+  /*}*/
+}
+.ant-notification-notice-close svg {
+  height: 16px !important;
+  width: 16px !important;
 }
 .ant-picker-panel-container {
   border-radius: 16px !important;
@@ -246,4 +250,15 @@ p {
 }
 .ant-progress-bg {
   background-color: #996C42 !important;
+}
+.shelf-progress {
+  background: rgba(226, 217, 211, 0.5) !important;
+  padding: 0 5px !important;
+  border-radius: 18px !important;
+}
+.shelf-progress .ant-progress-outer{
+  padding: 0 !important;
+}
+.shelf-progress .ant-progress-inner {
+  height: 3px !important;
 }

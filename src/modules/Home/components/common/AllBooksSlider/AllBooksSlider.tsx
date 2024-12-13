@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import NoImg from "../../../../../assets/images/NoImagePlaceholder.jpg";
 import { FC, ReactNode, useContext, useEffect, useState } from "react";
-import { Skeleton } from "antd";
+import { Progress, Skeleton } from "antd";
 import { getBookshelfById } from "../../../slices/home";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../../../hooks";
@@ -88,25 +88,23 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
   const processedBooks = useRef<Set<number>>(new Set()); // Track processed books
 
   log("bookProgress", bookProgress);
+  console.log("currentBookshelfBook", currentBookshelfBook);
 
   useEffect(() => {
     if (books && value?.id) {
       books.forEach((book) => {
         if (book.isBookshelfStarted) {
-          // Check if bookshelf data for the book is already available
-          const bookshelfBook = currentBookshelfBook[book.id];
+          const bookshelfBook = currentBookshelfBook?.result?.book;
 
-          if (bookshelfBook) {
-            // If bookshelf data is available, update the progress
-            if (bookshelfBook.lastPage) {
+          if (bookshelfBook && bookshelfBook.id === book.id) {
+            if (currentBookshelfBook?.result?.progress !== undefined) {
               setBookProgress((prev) => ({
                 ...prev,
-                [book.id]: bookshelfBook.lastPage,
+                [book.id]: currentBookshelfBook.result.progress,
               }));
             }
           } else if (!processedBooks.current.has(book.id)) {
-            // Only dispatch if bookshelf data is not yet available and the book hasn't been processed
-            processedBooks.current.add(book.id); // Mark as processed
+            processedBooks.current.add(book.id);
             dispatch(
               getBookshelfById({
                 userId: +value.id,
@@ -189,9 +187,20 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
         )}
 
         {book?.isBookshelfStarted && (
-          <div>
-            <span>Progress: </span>
-            {bookProgress[book.id] ?? "Loading..."}
+          <div
+            className="shelf-progress"
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            <Progress
+              percent={bookProgress[book.id]}
+              style={{ padding: 0, flex: 1 }}
+              status="active"
+              showInfo={false}
+              strokeColor="#1890ff"
+            />
+            <span style={{ marginLeft: "8px", whiteSpace: "nowrap" }}>
+              {Math.round(bookProgress[book.id])}%
+            </span>
           </div>
         )}
 
@@ -230,3 +239,8 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
 };
 
 export default AllBooksSlider;
+
+// I Finished tasks with bugs and improvements and now continue working. Today a am on work on Yaroslavs
+// comments after review
+// task 355 build a reusable table component.
+// I postponed this task earlier w
