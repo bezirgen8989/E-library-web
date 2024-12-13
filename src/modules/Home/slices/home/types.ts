@@ -1,5 +1,6 @@
 export type HomeState = {
   counter: number;
+  isDrawerOpen: boolean;
   books: any;
   topBooks: any;
   newBooks: any;

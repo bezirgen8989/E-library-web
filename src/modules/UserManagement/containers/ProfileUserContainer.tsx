@@ -37,11 +37,9 @@ const ProfileUserContainer: React.FC = () => {
   };
   const handleKidsMode = (value: any) => {
     dispatch(setKidsMode({ kidsMode: value }));
-    console.log("KidsModeValue", value);
   };
 
   const deleteAccount = () => {
-    console.log();
     dispatch(deleteUserAccount());
   };
 

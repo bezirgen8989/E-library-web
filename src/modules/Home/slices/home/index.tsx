@@ -32,6 +32,7 @@ import {
 
 const initialState: HomeState = {
   counter: 0,
+  isDrawerOpen: false,
   books: {},
   topBooks: {},
   newBooks: {},
@@ -60,6 +61,9 @@ const homeSlice = createSlice({
   reducers: {
     updateCounter(state, action: PayloadAction<number>) {
       state.counter += action.payload;
+    },
+    setDrawerOpen(state, action: PayloadAction<boolean>) {
+      state.isDrawerOpen = action.payload;
     },
     setCurrentCategoryId(state, action: PayloadAction<string>) {
       state.currentCategoryId = action.payload;
@@ -518,6 +522,11 @@ export const getBookshelfById = createAsyncThunk(
   }
 );
 
-export const { updateCounter, resetCounter, setCurrentCategoryId, clearBooks } =
-  homeSlice.actions;
+export const {
+  updateCounter,
+  resetCounter,
+  setCurrentCategoryId,
+  clearBooks,
+  setDrawerOpen,
+} = homeSlice.actions;
 export default homeSlice.reducer;

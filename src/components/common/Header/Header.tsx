@@ -8,11 +8,28 @@ import React, { useContext, useState } from "react";
 import { UserContext } from "../../../core/contexts";
 import userRoutes from "../../../modules/UserManagement/routing/routes";
 import homeRoutes from "../../../modules/Home/routing/routes";
+import { setDrawerOpen } from "../../../modules/Home/slices/home";
+import { useDispatch } from "react-redux";
+import { useLazySelector } from "../../../hooks";
 
 const Header: React.FC = () => {
   const [hasNotifications] = useState(true);
   const value = useContext(UserContext);
   const location = useLocation(); // Получаем текущий путь
+  const dispatch = useDispatch();
+
+  const { isDrawerOpen } = useLazySelector(({ home }) => {
+    const { isDrawerOpen } = home;
+    return {
+      isDrawerOpen,
+    };
+  });
+
+  console.log("isDrawerOpen", isDrawerOpen);
+
+  const showDrawer = () => {
+    dispatch(setDrawerOpen(true));
+  };
 
   const difStyles =
     location.pathname === userRoutes.profile ||
@@ -124,7 +141,7 @@ const Header: React.FC = () => {
           </Link>
         </nav>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <div className={styles.headerNotifications}>
+          <div className={styles.headerNotifications} onClick={showDrawer}>
             {hasNotifications && <div className={styles.dot} />}
             <img src={bell} alt="bell" />
           </div>
@@ -151,7 +168,7 @@ const Header: React.FC = () => {
           />
         </div>
         <div className={styles.pageTitle}>Home</div>
-        <div className={styles.headerNotifications}>
+        <div className={styles.headerNotifications} onClick={showDrawer}>
           {hasNotifications && <div className={styles.dot} />}
           <img src={bell} alt="bell" />
         </div>

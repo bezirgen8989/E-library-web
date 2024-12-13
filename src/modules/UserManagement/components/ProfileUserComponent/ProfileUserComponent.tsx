@@ -35,7 +35,6 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
   const onLogout = () => {
     dispatch(logoutUser());
   };
-  console.log("value", value);
 
   return (
     <div className={styles.profile_page_wrap}>
