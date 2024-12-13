@@ -39,8 +39,6 @@ const BookShelfContainer: React.FC = () => {
       isFinishedBooksLoading,
     };
   });
-  console.log("startedBooks", startedBooks);
-  console.log("notstartedBooks", notStartedBooks);
 
   const startedBooksList = startedBooks?.result?.data.map((item: any) => {
     return {

@@ -512,7 +512,7 @@ export const setReadingBook = createAsyncThunk(
 
 export const getBookshelfById = createAsyncThunk(
   "getBookFromBookshelf/api/v1/bookshelf",
-  async (params: { userId: number; bookId: number }) => {
+  async (params: { userId: any; bookId: number }) => {
     const response = await getCurrentBookshelfBookById(params);
     return response;
   }

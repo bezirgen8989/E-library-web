@@ -24,7 +24,7 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
   isNotStartedBooksLoading,
   isFinishedBooksLoading,
 }) => {
-  console.log("started", started);
+  console.log("started", notStarted);
   return (
     <div className={styles.home_page}>
       {started && (
@@ -39,19 +39,21 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
           isLoading={isStartedBooksLoading}
         />
       )}
-      <AllBooksSlider
-        books={notStarted}
-        title={
-          <span style={{ fontSize: "44px", fontWeight: "600" }}>
-            Not Started
-          </span>
-        }
-        seeAllLink={routes.notStartedBooks}
-        getBook={getBook}
-        isLoading={isNotStartedBooksLoading}
-        continueReadingBook={continueReadingBook}
-      />
-      {finished && (
+      {notStarted && notStarted.length > 0 && (
+        <AllBooksSlider
+          books={notStarted}
+          title={
+            <span style={{ fontSize: "44px", fontWeight: "600" }}>
+              Not Started
+            </span>
+          }
+          seeAllLink={routes.notStartedBooks}
+          getBook={getBook}
+          isLoading={isNotStartedBooksLoading}
+          continueReadingBook={continueReadingBook}
+        />
+      )}
+      {finished && finished.length > 0 && (
         <AllBooksSlider
           books={finished}
           title={

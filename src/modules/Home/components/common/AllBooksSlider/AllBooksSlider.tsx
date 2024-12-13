@@ -11,7 +11,6 @@ import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../../../hooks";
 import { UserContext } from "../../../../../core/contexts";
 import { useRef } from "react";
-import { log } from "@craco/craco/dist/lib/logger";
 
 interface Author {
   name: string;
@@ -85,10 +84,7 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
   }));
 
   const [bookProgress, setBookProgress] = useState<Record<number, number>>({});
-  const processedBooks = useRef<Set<number>>(new Set()); // Track processed books
-
-  log("bookProgress", bookProgress);
-  console.log("currentBookshelfBook", currentBookshelfBook);
+  const processedBooks = useRef<Set<number>>(new Set());
 
   useEffect(() => {
     if (books && value?.id) {
@@ -107,6 +103,7 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
             processedBooks.current.add(book.id);
             dispatch(
               getBookshelfById({
+                // @ts-ignore
                 userId: +value.id,
                 bookId: book.id,
               })
@@ -198,7 +195,13 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
               showInfo={false}
               strokeColor="#1890ff"
             />
-            <span style={{ marginLeft: "8px", whiteSpace: "nowrap" }}>
+            <span
+              style={{
+                marginLeft: "8px",
+                whiteSpace: "nowrap",
+                color: "#996C42",
+              }}
+            >
               {Math.round(bookProgress[book.id])}%
             </span>
           </div>
@@ -239,8 +242,3 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
 };
 
 export default AllBooksSlider;
-
-// I Finished tasks with bugs and improvements and now continue working. Today a am on work on Yaroslavs
-// comments after review
-// task 355 build a reusable table component.
-// I postponed this task earlier w

@@ -1,22 +1,35 @@
-import React from "react";
-import { Skeleton } from "antd";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { Progress, Skeleton } from "antd";
 import styles from "./BooksComponent.module.scss";
 import commonStyles from "../../../../assets/css/commonStyles/CommonStyles.module.scss";
 import BackIcon from "../../../../assets/images/icons/backPage.svg";
 import ArrowDown from "../../../../assets/images/icons/arrowProfile.svg";
 import { useHistory } from "react-router-dom";
+import { useLazySelector } from "../../../../hooks";
+import { getBookshelfById } from "../../slices/home";
+import { UserContext } from "../../../../core/contexts";
+import { useDispatch } from "react-redux";
+import { routes } from "../../routing";
 
 interface Author {
   name: string;
 }
 
 interface Book {
-  id: string;
+  id: number;
   title: string;
   bookCover: {
     link: string;
   };
   author: Author[];
+  isBookshelfStarted?: boolean;
+  isBookshelfNotStarted?: boolean;
 }
 
 type HomeProps = {
@@ -39,6 +52,45 @@ const BooksComponent: React.FC<HomeProps> = ({
   hasMoreBooks,
 }) => {
   const history = useHistory();
+  const value = useContext(UserContext);
+  const { currentBookshelfBook } = useLazySelector(({ home }) => ({
+    currentBookshelfBook: home.currentBookshelfBook,
+  }));
+  const [bookProgress, setBookProgress] = useState<Record<number, number>>({});
+  const processedBooks = useRef<Set<number>>(new Set());
+  const dispatch = useDispatch();
+
+  const continueReadingBook = useCallback((id) => {
+    history.push(`${routes.reading}/${id}`);
+  }, []);
+
+  useEffect(() => {
+    if (books && value?.id) {
+      books.forEach((book: Book) => {
+        if (book.isBookshelfStarted) {
+          const bookshelfBook = currentBookshelfBook?.result?.book;
+
+          if (bookshelfBook && bookshelfBook.id === book.id) {
+            if (currentBookshelfBook?.result?.progress !== undefined) {
+              setBookProgress((prev) => ({
+                ...prev,
+                [book.id]: currentBookshelfBook.result.progress,
+              }));
+            }
+          } else if (!processedBooks.current.has(book.id)) {
+            processedBooks.current.add(book.id);
+            dispatch(
+              getBookshelfById({
+                // @ts-ignore
+                userId: +value.id,
+                bookId: book.id,
+              })
+            );
+          }
+        }
+      });
+    }
+  }, [books, dispatch, value, currentBookshelfBook]);
 
   return (
     <div className={styles.home_page}>
@@ -77,18 +129,60 @@ const BooksComponent: React.FC<HomeProps> = ({
               </div>
             ))
           : books?.map((book: Book) => (
-              <div
-                key={book.id}
-                className={styles.newBook}
-                onClick={() => getBook(book.id)}
-              >
-                <div className={styles.imgWrap}>
-                  <img src={book.bookCover?.link} alt={book.title} />
+              <div>
+                <div
+                  key={book.id}
+                  className={styles.newBook}
+                  onClick={() => getBook(book.id)}
+                >
+                  <div className={styles.imgWrap}>
+                    <img src={book.bookCover?.link} alt={book.title} />
+                  </div>
+                  <div className={styles.newBookTitle}>{book.title}</div>
+                  <div
+                    style={{
+                      color:
+                        book?.isBookshelfNotStarted || book?.isBookshelfStarted
+                          ? "grey"
+                          : "#996C42",
+                    }}
+                    className={styles.newBookAuthor}
+                  >
+                    {book.author.map((author) => author.name).join(", ")}
+                  </div>
+
+                  {book?.isBookshelfStarted && (
+                    <div
+                      className="shelf-progress"
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      <Progress
+                        percent={bookProgress[book.id]}
+                        style={{ padding: 0, flex: 1 }}
+                        status="active"
+                        showInfo={false}
+                        strokeColor="#1890ff"
+                      />
+                      <span
+                        style={{
+                          marginLeft: "8px",
+                          whiteSpace: "nowrap",
+                          color: "#996C42",
+                        }}
+                      >
+                        {Math.round(bookProgress[book.id])}%
+                      </span>
+                    </div>
+                  )}
                 </div>
-                <div className={styles.newBookTitle}>{book.title}</div>
-                <div className={styles.newBookAuthor}>
-                  {book?.author.map((author) => author.name).join(", ")}
-                </div>
+                {book?.isBookshelfStarted && (
+                  <div
+                    onClick={() => continueReadingBook?.(book.id)}
+                    className={styles.startBtn}
+                  >
+                    Continue Reading
+                  </div>
+                )}
               </div>
             ))}
       </div>

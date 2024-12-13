@@ -116,3 +116,12 @@
   margin: 10px auto 0;
   background: rgba(153, 108, 66, 0.12);
 }
+.startBtn {
+  color: #996C42;
+  cursor: pointer;
+  font-weight: 700;
+  margin-left: 10px;
+  &:hover {
+    opacity: 0.8;
+  }
+}
