@@ -59,3 +59,10 @@ export const getCurrentBookshelfBookById = (payload: {
   userId: number;
   bookId: number;
 }) => usingGet(`/api/v1/bookshelf/${payload.userId}/${payload.bookId}`);
+
+export const getAllUserNotifications = (params: any) =>
+  usingGet(
+    `/api/v1/notifications?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
+  );
+export const markNotificationAsRead = (params: any) =>
+  usingPatch(`/api/v1/notifications/markAsRead`, params);

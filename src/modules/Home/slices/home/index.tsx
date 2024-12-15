@@ -20,6 +20,7 @@ import {
   getAllNotStartedBooks,
   getAllReviews,
   getAllStartedBooks,
+  getAllUserNotifications,
   getAuthorName,
   getBook,
   getBooks,
@@ -27,6 +28,7 @@ import {
   getCurrentBookshelfBookById,
   getCurrentReadBook,
   getSearchBooks,
+  markNotificationAsRead,
   setReadingBookParams,
 } from "../../api/homeService";
 
@@ -53,6 +55,7 @@ const initialState: HomeState = {
   currentUserAnswer: {},
   currentBookshelfBook: {},
   testCurrentBookshelfBook: {},
+  notifications: {},
 };
 
 const homeSlice = createSlice({
@@ -309,6 +312,14 @@ const homeSlice = createSlice({
         state.currentReadBook = { isLoading: false, result: content, error };
       })
 
+      .addCase(getAllNotifications.pending, (state) => {
+        state.notifications = { isLoading: true };
+      })
+      .addCase(getAllNotifications.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.notifications = { isLoading: false, result: content, error };
+      })
+
       .addCase(getBookshelfById.pending, (state) => {
         state.currentBookshelfBook = { isLoading: true };
       })
@@ -517,6 +528,21 @@ export const getBookshelfById = createAsyncThunk(
   "getBookFromBookshelf/api/v1/bookshelf",
   async (params: { userId: any; bookId: number }) => {
     const response = await getCurrentBookshelfBookById(params);
+    return response;
+  }
+);
+
+export const getAllNotifications = createAsyncThunk(
+  "getNotifications/api/v1/notifications",
+  async (params: any) => {
+    const response = await getAllUserNotifications(params);
+    return response;
+  }
+);
+export const markAsRead = createAsyncThunk(
+  "markNotifications/api/v1/notifications",
+  async (params: any) => {
+    const response = await markNotificationAsRead(params);
     return response;
   }
 );
