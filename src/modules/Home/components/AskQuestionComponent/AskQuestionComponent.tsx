@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Collapse } from "antd"; // Import Collapse from Ant Design
+import { Collapse } from "antd";
 import styles from "./AskQuestionComponent.module.scss";
 import Avatar from "../../../../assets/images/tempAvatar.png";
 import Send from "../../../../assets/images/icons/sendIcon.svg";
 import ChatSpinner from "../../../../components/common/ChatSpinner";
 import Button from "../../../../components/common/Buttons/Button";
+// import WebRTCChat from "../../../../components/common/WebRTCChat/WebRTCChat";
+// import { SrsPlayer } from "../../../../components/common/SrsPlayer";
+import WebRTCStream from "../../../../components/common/WebRTCStream/WebRTCStream";
 
 type FormValues = {
   question: string;
@@ -20,7 +23,7 @@ type AskQuestionComponentProps = {
   metaData: any;
 };
 
-const { Panel } = Collapse; // For Collapse component
+const { Panel } = Collapse;
 
 const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   setQuestion,
@@ -54,7 +57,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     setIsSending(true);
     reset();
 
-    // Simulate the sending process
     setTimeout(() => {
       setIsSending(false);
     }, 2000);
@@ -89,6 +91,13 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       <div className={styles.avatarSide}>
         <div className={styles.bookTitle}>{title}</div>
         <img src={Avatar} alt="avatar" />
+        {/*<WebRTCChat />*/}
+        <WebRTCStream />
+        {/*<SrsPlayer*/}
+        {/*  url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream"*/}
+        {/*  width={300}*/}
+        {/*  height={100}*/}
+        {/*/>*/}
         {metaData && metaData.length > 0 && !isLoading && !isSending && (
           <Button variant="Brown" onClick={toggleCollapse}>
             {isCollapseVisible ? "Hide details" : "Show details"}
