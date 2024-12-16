@@ -1,0 +1,91 @@
+.languageList {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-top: 16px;
+  padding-bottom: 10px;
+  padding-right: 20px;
+  scrollbar-width: thin;
+  scrollbar-color: lightgrey transparent;
+}
+
+/* WebKit Browsers (Chrome, Safari) */
+.languageList::-webkit-scrollbar {
+  width: 5px;
+}
+
+.languageList::-webkit-scrollbar-thumb {
+  background-color: lightgrey;
+  border-radius: 10px;
+}
+
+.languageList::-webkit-scrollbar-track {
+  background: transparent;
+  margin-right: 20px; /* Additional offset for scrollbar */
+}
+
+.languageSelectWrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: start;
+  height: 68px;
+  border-radius: 14px;
+  padding: 25px 16px 0;
+  color: #fff;
+  font-size: 21px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  outline: none;
+  background: rgba(255, 255, 255, 0.14);
+  font-weight: 700;
+  img {
+    width: 18px;
+    height: 18px;
+    margin-right: 7px;
+    margin-top: -3px;
+  }
+}
+.languageSelect {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 140%;
+  margin-right: 7px;
+}
+.inputWrapperLang {
+  position: relative;
+  margin-bottom: 16px;
+  //background-image: url('../../images/icons/arrowDown.svg') !important;
+  //background-image: url('../../') !important;
+  background-repeat: no-repeat;
+  background-position: top 50% right 31px;
+}
+.flagIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+.modalCloseIcon {
+  margin-top: 40px;
+  margin-right: 15px;
+}
+.recover_name {
+  font-size: 40px;
+  line-height: 40px;
+  color: white;
+  font-weight: 700;
+  padding-bottom: 10px;
+
+}
+.recover_subtitle {
+  font-size: 18px;
+  color: white;
+  padding-bottom: 40px;
+}
+.success_subtitle {
+  font-size: 18px;
+  color: white;
+  padding-bottom: 25px;
+}

@@ -22,6 +22,7 @@ export type HomeState = {
   currentBookshelfBook: any;
   testCurrentBookshelfBook: any;
   notifications: any;
+  notificationsSettings: any;
 };
 export interface SetReadingBookPayload {
   user: {
@@ -34,6 +35,11 @@ export interface SetReadingBookPayload {
   progress: number;
   readingState: string;
   isFavourited?: boolean;
+}
+export interface NotificationSettings {
+  startReading: boolean;
+  continueReading: boolean;
+  newBooks: boolean;
 }
 export type BooksParams = {
   page: string;

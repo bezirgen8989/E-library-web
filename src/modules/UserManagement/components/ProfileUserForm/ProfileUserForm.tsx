@@ -5,6 +5,7 @@ import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
 import tempAi from "../../../../assets/images/testAiImg.png";
 import LanguageModal from "../../../Auth/components/LanguageModal";
 import { Switch } from "antd";
+import NotificationsModal from "../common/NotificationModal/NotificationsModal";
 
 export type LanguageType = {
   id: number;
@@ -49,6 +50,8 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
     bookLanguage || defaultLanguage
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isNotificationsModalOpen, setIsNotificationsModalOpen] =
+    useState(false);
   const [modalType, setModalType] = useState<"language" | "bookLanguage">(
     "language"
   );
@@ -181,6 +184,15 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
           <span>Kids Mode</span>
           <Switch checked={userKidsMode} onChange={kidsModeChange} />
         </div>
+        <div
+          style={{ marginBottom: "16px" }}
+          className={styles.aiWrapper}
+          onClick={() => {
+            setIsNotificationsModalOpen(true);
+          }}
+        >
+          <span>Notification Settings</span>
+        </div>
         <div className={styles.aiWrapper}>
           <div className={styles.aiAvatar}>
             <img src={tempAi} alt="avatar" />
@@ -196,6 +208,10 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
           modalType === "language" ? selectedLanguage : selectedBookLanguage
         }
         onLanguageSelect={onLanguageSelect}
+      />
+      <NotificationsModal
+        isModalOpen={isNotificationsModalOpen}
+        setIsModalOpen={setIsNotificationsModalOpen}
       />
     </div>
   );

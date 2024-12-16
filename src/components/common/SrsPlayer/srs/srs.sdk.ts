@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 //
 // Copyright (c) 2013-2021 Winlin
@@ -321,29 +319,6 @@ export function SrsRtcPublisherAsync() {
 function SrsRtcPlayerAsync() {
   const self = {};
 
-  // @see https://github.com/rtcdn/rtcdn-draft
-  // @url The WebRTC url to play with, for example:
-  //      webrtc://r.ossrs.net/live/livestream
-  // or specifies the API port:
-  //      webrtc://r.ossrs.net:11985/live/livestream
-  //      webrtc://r.ossrs.net:80/live/livestream
-  // or autostart the play:
-  //      webrtc://r.ossrs.net/live/livestream?autostart=true
-  // or change the app from live to myapp:
-  //      webrtc://r.ossrs.net:11985/myapp/livestream
-  // or change the stream from livestream to mystream:
-  //      webrtc://r.ossrs.net:11985/live/mystream
-  // or set the api server to myapi.domain.com:
-  //      webrtc://myapi.domain.com/live/livestream
-  // or set the candidate(eip) of answer:
-  //      webrtc://r.ossrs.net/live/livestream?candidate=39.107.238.185
-  // or force to access https API:
-  //      webrtc://r.ossrs.net/live/livestream?schema=https
-  // or use plaintext, without SRTP:
-  //      webrtc://r.ossrs.net/live/livestream?encrypt=false
-  // or any other information, will pass-by in the query:
-  //      webrtc://r.ossrs.net/live/livestream?vhost=xxx
-  //      webrtc://r.ossrs.net/live/livestream?token=xxx
   self.play = async function (url) {
     const conf = self.__internal.prepareUrl(url);
     self.pc.addTransceiver("audio", { direction: "recvonly" });

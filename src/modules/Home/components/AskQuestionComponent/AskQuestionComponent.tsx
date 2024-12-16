@@ -98,6 +98,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
         {/*<WebRTCStream />*/}
         <SrsPlayer
           url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream"
+          // url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream-a"
           width={300}
           height={100}
           videoRef={videoRef}

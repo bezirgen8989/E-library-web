@@ -6,6 +6,7 @@ import {
   AddReviewParams,
   BooksParams,
   HomeState,
+  NotificationSettings,
   ReadBooksParams,
   ReviewParams,
   SetReadingBookPayload,
@@ -28,8 +29,10 @@ import {
   getCurrentBookshelfBookById,
   getCurrentReadBook,
   getSearchBooks,
+  getUserNotifications,
   markNotificationAsRead,
   setReadingBookParams,
+  setUserNotifications,
 } from "../../api/homeService";
 
 const initialState: HomeState = {
@@ -56,6 +59,7 @@ const initialState: HomeState = {
   currentBookshelfBook: {},
   testCurrentBookshelfBook: {},
   notifications: {},
+  notificationsSettings: {},
 };
 
 const homeSlice = createSlice({
@@ -319,6 +323,17 @@ const homeSlice = createSlice({
         const { content, error } = action.payload;
         state.notifications = { isLoading: false, result: content, error };
       })
+      .addCase(getNotificationsSettings.pending, (state) => {
+        state.notificationsSettings = { isLoading: true };
+      })
+      .addCase(getNotificationsSettings.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.notificationsSettings = {
+          isLoading: false,
+          result: content,
+          error,
+        };
+      })
 
       .addCase(getBookshelfById.pending, (state) => {
         state.currentBookshelfBook = { isLoading: true };
@@ -543,6 +558,22 @@ export const markAsRead = createAsyncThunk(
   "markNotifications/api/v1/notifications",
   async (params: any) => {
     const response = await markNotificationAsRead(params);
+    return response;
+  }
+);
+
+export const setNotificationsSettings = createAsyncThunk(
+  "set/api/v1/notifications/settings",
+  async (payload: NotificationSettings) => {
+    const response = await setUserNotifications(payload);
+    return response;
+  }
+);
+
+export const getNotificationsSettings = createAsyncThunk(
+  "get/api/v1/notifications/settings",
+  async () => {
+    const response = await getUserNotifications();
     return response;
   }
 );

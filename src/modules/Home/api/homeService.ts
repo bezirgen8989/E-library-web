@@ -66,3 +66,8 @@ export const getAllUserNotifications = (params: any) =>
   );
 export const markNotificationAsRead = (params: any) =>
   usingPatch(`/api/v1/notifications/markAsRead`, params);
+export const setUserNotifications = (payload: any) =>
+  usingPatch(`/api/v1/notifications/settings`, payload);
+
+export const getUserNotifications = () =>
+  usingGet(`/api/v1/notifications/settings`);

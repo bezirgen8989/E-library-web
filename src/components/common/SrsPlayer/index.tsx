@@ -1,9 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-// import cn from "classnames";
-
 import { defaultVideoOptions, getIdFromUrl } from "./helpers";
 import { SrsRtcWhipWhepAsync } from "./srs/srs.sdk";
-// import styles from "./styles.module.scss";
 
 export enum PlayerStatus {
   Loading = "loading",
@@ -38,7 +35,6 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
   const [status, setStatus] = useState(PlayerStatus.Loading);
 
   const startPlay = async () => {
-    // eslint-disable-next-line
     // @ts-ignore
     srsSdkRef.current = new SrsRtcWhipWhepAsync();
     try {
@@ -47,7 +43,6 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
 
       if (videoRef.current) {
         videoRef.current.srcObject = srsSdkRef.current.stream;
-        // handlePlay();
       }
     } catch (e) {
       console.error(`SrsWhepPlayer error happens on ${id}`, e);
@@ -71,28 +66,20 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
     return () => {
       cleanup();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [url, status]);
 
   const displayedWidth = width;
   const displayedHeight = height;
 
   return (
-    <div
-    // className={styles.player_container}
-    >
+    <div>
       {status === PlayerStatus.Loading ? (
-        <div
-        // className={styles.player_mask}
-        >
+        <div>
           <span>Loading...</span>
         </div>
       ) : (
         <video
-          // className={cn( styles.player_video)}
           ref={videoRef}
-          // onClick={handleVideoClick}
-          // onMouseMove={handleMouseMove}
           style={{
             width: `${displayedWidth}px`,
             height: `${displayedHeight}px`,
