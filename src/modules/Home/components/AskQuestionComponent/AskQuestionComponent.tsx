@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Collapse } from "antd";
 import styles from "./AskQuestionComponent.module.scss";
@@ -8,7 +8,9 @@ import ChatSpinner from "../../../../components/common/ChatSpinner";
 import Button from "../../../../components/common/Buttons/Button";
 // import WebRTCChat from "../../../../components/common/WebRTCChat/WebRTCChat";
 // import { SrsPlayer } from "../../../../components/common/SrsPlayer";
-import WebRTCStream from "../../../../components/common/WebRTCStream/WebRTCStream";
+// import WebRTCStream from "../../../../components/common/WebRTCStream/WebRTCStream";
+// import WebRTCChat from "../../../../components/common/WebRTCChat/WebRTCChat";
+import { SrsPlayer } from "../../../../components/common/SrsPlayer";
 
 type FormValues = {
   question: string;
@@ -39,6 +41,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [messageTime, setMessageTime] = useState<string>("");
   const [isCollapseVisible, setIsCollapseVisible] = useState(false); // State to toggle Collapse visibility
   const [isSending, setIsSending] = useState(false); // State to manage sending status
+  const videoRef = useRef<HTMLVideoElement | any>(null);
 
   const getCurrentTime = (): string => {
     const now = new Date();
@@ -92,12 +95,24 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
         <div className={styles.bookTitle}>{title}</div>
         <img src={Avatar} alt="avatar" />
         {/*<WebRTCChat />*/}
-        <WebRTCStream />
-        {/*<SrsPlayer*/}
-        {/*  url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream"*/}
-        {/*  width={300}*/}
-        {/*  height={100}*/}
-        {/*/>*/}
+        {/*<WebRTCStream />*/}
+        <SrsPlayer
+          url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream"
+          width={300}
+          height={100}
+          videoRef={videoRef}
+          options={{
+            autoPlay: true,
+            playsInline: true,
+            muted: false,
+            controls: true,
+          }}
+          rtcOpts={{
+            audio: {
+              enable: true,
+            },
+          }}
+        />
         {metaData && metaData.length > 0 && !isLoading && !isSending && (
           <Button variant="Brown" onClick={toggleCollapse}>
             {isCollapseVisible ? "Hide details" : "Show details"}

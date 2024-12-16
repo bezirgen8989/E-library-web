@@ -9,6 +9,9 @@ const WebRTCChat = () => {
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
   const connectionRef = useRef<HTMLTextAreaElement>(null);
 
+  const serverUrl =
+    "https://avatars.plavno.app:1990/rtc/v1/whip/?app=live&stream=livestream";
+
   useEffect(() => {
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
@@ -45,12 +48,34 @@ const WebRTCChat = () => {
       .catch((err) => console.error("Error accessing media devices:", err));
   }, []);
 
-  // Обработчик для подключения по сигналу
   const connectToPeer = () => {
     const signal = connectionRef.current?.value;
     if (signal && peer) {
       peer.signal(JSON.parse(signal));
     }
+  };
+
+  const startPublishing = () => {
+    const publishSignal = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        app: "live",
+        stream: "livestream",
+        signal: connectionRef.current?.value,
+      }),
+    };
+
+    fetch(serverUrl, publishSignal)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Successfully published stream", data);
+      })
+      .catch((error) => {
+        console.error("Error publishing to WHIP server:", error);
+      });
   };
 
   return (
@@ -87,6 +112,9 @@ const WebRTCChat = () => {
         <br />
         <button onClick={connectToPeer} disabled={!peer || isConnected}>
           Connect
+        </button>
+        <button onClick={startPublishing} disabled={!peer}>
+          Publish Stream
         </button>
       </div>
     </div>

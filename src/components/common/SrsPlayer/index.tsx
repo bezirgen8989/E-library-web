@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import cn from "classnames";
-
-// @ts-ignore
-import { PlayerStatus } from "@constants";
+// import cn from "classnames";
 
 import { defaultVideoOptions, getIdFromUrl } from "./helpers";
 import { SrsRtcWhipWhepAsync } from "./srs/srs.sdk";
-import styles from "./styles.module.scss";
+// import styles from "./styles.module.scss";
+
+export enum PlayerStatus {
+  Loading = "loading",
+  Playing = "playing",
+  Pause = "pause",
+}
 
 export interface SrsWhepPlayerProps {
   url: string;
@@ -14,14 +17,7 @@ export interface SrsWhepPlayerProps {
   rtcOpts?: any;
   width: number;
   height: number;
-  classname?: string;
-  reductionFactor: number;
-  coordinates: { x: number; y: number };
   videoRef: React.MutableRefObject<any>;
-
-  setCoordinates: (coordinates: { x: number; y: number }) => void;
-  savedCoordinatesCallback: (x: number, y: number) => void;
-  handlePlay: () => void;
 }
 
 export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
@@ -30,12 +26,7 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
   rtcOpts,
   width,
   height,
-  classname,
-  reductionFactor,
-  setCoordinates,
-  savedCoordinatesCallback,
   videoRef,
-  handlePlay,
 }) => {
   const videoOptions = {
     ...defaultVideoOptions,
@@ -56,7 +47,7 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
 
       if (videoRef.current) {
         videoRef.current.srcObject = srsSdkRef.current.stream;
-        handlePlay();
+        // handlePlay();
       }
     } catch (e) {
       console.error(`SrsWhepPlayer error happens on ${id}`, e);
@@ -74,60 +65,6 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
     }
   };
 
-  const handleVideoClick = (e: React.MouseEvent<HTMLVideoElement>) => {
-    const rect = videoRef.current.getBoundingClientRect();
-    const videoWidth = videoRef.current.clientWidth;
-    const videoHeight = videoRef.current.clientHeight;
-
-    let x = ((e.clientX - rect.left) / videoWidth) * width;
-    let y = ((e.clientY - rect.top) / videoHeight) * height;
-
-    if (x > width) {
-      x = width;
-    }
-
-    if (x < 0) {
-      x = 0;
-    }
-
-    if (y > height) {
-      y = height;
-    }
-
-    if (y < 0) {
-      y = 0;
-    }
-
-    savedCoordinatesCallback(+x.toFixed(), +y.toFixed());
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLVideoElement>) => {
-    const rect = videoRef.current.getBoundingClientRect();
-    const videoWidth = videoRef.current.clientWidth;
-    const videoHeight = videoRef.current.clientHeight;
-
-    let x = ((e.clientX - rect.left) / videoWidth) * width;
-    let y = ((e.clientY - rect.top) / videoHeight) * height;
-
-    if (x > width) {
-      x = width;
-    }
-
-    if (x < 0) {
-      x = 0;
-    }
-
-    if (y > height) {
-      y = height;
-    }
-
-    if (y < 0) {
-      y = 0;
-    }
-
-    setCoordinates({ x, y });
-  };
-
   useEffect(() => {
     startPlay();
 
@@ -137,27 +74,31 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [url, status]);
 
-  const displayedWidth = width / reductionFactor;
-  const displayedHeight = height / reductionFactor;
+  const displayedWidth = width;
+  const displayedHeight = height;
 
   return (
-    <div className={styles.player_container}>
+    <div
+    // className={styles.player_container}
+    >
       {status === PlayerStatus.Loading ? (
-        <div className={styles.player_mask}>
+        <div
+        // className={styles.player_mask}
+        >
           <span>Loading...</span>
         </div>
       ) : (
         <video
-          className={cn(classname, styles.player_video)}
+          // className={cn( styles.player_video)}
           ref={videoRef}
-          onClick={handleVideoClick}
-          onMouseMove={handleMouseMove}
+          // onClick={handleVideoClick}
+          // onMouseMove={handleMouseMove}
           style={{
             width: `${displayedWidth}px`,
             height: `${displayedHeight}px`,
           }}
           {...videoOptions}
-          controls={false}
+          controls={true}
         />
       )}
     </div>

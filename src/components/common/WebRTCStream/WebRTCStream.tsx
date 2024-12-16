@@ -6,7 +6,7 @@ const WebRTCStreamPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   const serverUrl =
-    "http://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream";
+    "https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream";
 
   const startStream = () => {
     if (isPlaying) return;
