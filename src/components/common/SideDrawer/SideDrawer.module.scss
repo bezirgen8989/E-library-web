@@ -4,9 +4,14 @@
   border-bottom: 1px solid rgba(153,108,66, 0.2);
   padding-bottom: 10px;
 }
+.header {
+  display: flex;
+  justify-content: space-between;
+}
 .notificationsTitle {
   font-size: 27px;
   font-weight: 700;
+  align-items: center;
 }
 .notificationsBottom {
   display: flex;

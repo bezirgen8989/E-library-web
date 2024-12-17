@@ -71,3 +71,5 @@ export const setUserNotifications = (payload: any) =>
 
 export const getUserNotifications = () =>
   usingGet(`/api/v1/notifications/settings`);
+export const checkUserNotifications = () =>
+  usingGet(`/api/v1/notifications/checkNew`);

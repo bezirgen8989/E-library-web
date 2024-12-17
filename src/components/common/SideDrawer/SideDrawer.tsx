@@ -8,7 +8,7 @@ import {
   markAsRead,
   setDrawerOpen,
 } from "../../../modules/Home/slices/home";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { formatDistanceToNow } from "date-fns";
 import ChatSpinner from "../ChatSpinner";
 
@@ -23,15 +23,14 @@ interface Notification {
   notificationType: string;
   sentAt: string;
   content: string;
+  isRead: boolean;
 }
 
-const NotificationTime = ({ sentAt }: NotificationTimeProps) => {
-  return (
-    <div className={styles.timeSent}>
-      {formatDistanceToNow(new Date(sentAt), { addSuffix: true })}
-    </div>
-  );
-};
+const NotificationTime = ({ sentAt }: NotificationTimeProps) => (
+  <div className={styles.timeSent}>
+    {formatDistanceToNow(new Date(sentAt), { addSuffix: true })}
+  </div>
+);
 
 const SideDrawer = () => {
   const dispatch = useDispatch();
@@ -46,24 +45,16 @@ const SideDrawer = () => {
       };
     }
   );
+  console.log("notifications", notifications?.result?.data);
 
-  console.log("notifications", notifications);
-
-  // Состояние для хранения прочитанных уведомлений
-  const [readNotifications, setReadNotifications] = useState<
-    Record<string, boolean>
-  >({});
   const [readNotificationIds, setReadNotificationIds] = useState<string[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const notificationListRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
-  // Функция для обработки прочтения уведомлений
-  const handleIsRead = (id: string) => {
-    if (!readNotifications[id]) {
-      setReadNotifications((prev) => ({ ...prev, [id]: true }));
-      setReadNotificationIds((prev) => [...prev, id]);
-    }
-  };
-
+  // Закрытие боковой панели
   const onClose = () => {
+    console.log("readNotificationIds", readNotificationIds);
     if (readNotificationIds.length > 0) {
       dispatch(markAsRead({ ids: readNotificationIds }));
     }
@@ -71,30 +62,82 @@ const SideDrawer = () => {
     setReadNotificationIds([]);
   };
 
+  // Загрузка уведомлений при открытии панели
   useEffect(() => {
+    console.log("readNotificationIds", readNotificationIds);
     if (isDrawerOpen) {
+      setPage(1);
       dispatch(
-        getAllNotifications({
-          limit: "10",
-          page: "1",
-          order: "",
-          filter: "",
-        })
+        getAllNotifications({ limit: "10", page: "1", order: "", filter: "" })
       );
     }
   }, [dispatch, isDrawerOpen]);
+
+  // Загрузка следующих 10 уведомлений при прокрутке вниз
+  const handleScroll = () => {
+    const list = notificationListRef.current;
+    if (
+      list &&
+      list.scrollHeight - list.scrollTop <= list.clientHeight + 50 &&
+      !isLoading
+    ) {
+      setPage((prevPage) => {
+        const nextPage = prevPage + 1;
+        dispatch(
+          getAllNotifications({
+            limit: "10",
+            page: String(nextPage),
+            order: "",
+            filter: "",
+          })
+        );
+        return nextPage;
+      });
+    }
+  };
+
+  // Callback для IntersectionObserver
+  const markAsReadIfVisible = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute("data-id");
+          if (id && !readNotificationIds.includes(id)) {
+            setReadNotificationIds((prev) => [...prev, id]);
+          }
+        }
+      });
+    },
+    [readNotificationIds]
+  );
+
+  // Инициализация IntersectionObserver
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(markAsReadIfVisible, {
+      root: notificationListRef.current,
+      threshold: 0.5, // Считать элемент видимым, если он наполовину в зоне видимости
+    });
+
+    return () => {
+      observerRef.current?.disconnect();
+    };
+  }, [markAsReadIfVisible]);
+
+  // Подключение наблюдателя к уведомлениям
+  useEffect(() => {
+    if (notificationListRef.current) {
+      const items = notificationListRef.current.querySelectorAll(
+        `.${styles.notificationWrap}`
+      );
+      items.forEach((item) => observerRef.current?.observe(item));
+    }
+  }, [notifications]);
 
   return (
     <div className="site-drawer-render-in-current-wrapper">
       <Drawer
         title={
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <div className={styles.header}>
             <span className={styles.notificationsTitle}>
               Notifications
               <span style={{ color: "#996C42", paddingLeft: 5 }}>
@@ -102,7 +145,7 @@ const SideDrawer = () => {
               </span>
             </span>
             <span style={{ cursor: "pointer" }} onClick={onClose}>
-              <img src={Close} alt="X" />
+              <img src={Close} alt="Close" />
             </span>
           </div>
         }
@@ -114,24 +157,29 @@ const SideDrawer = () => {
         style={{ position: "absolute" }}
         width={486}
       >
-        {isLoading ? (
+        {isLoading && page === 1 ? (
           <ChatSpinner />
         ) : (
-          <div className={styles.notificationList}>
+          <div
+            className={styles.notificationList}
+            onScroll={handleScroll}
+            ref={notificationListRef}
+          >
             {notifications?.result?.data?.length > 0 ? (
               notifications.result.data.map((notification: Notification) => (
                 <div
                   key={notification.id}
+                  data-id={notification.id}
                   className={styles.notificationWrap}
-                  onClick={() => handleIsRead(notification.id)}
                 >
                   <div className={styles.notificationImage}>
-                    {!readNotifications[notification.id] && (
+                    {/*{!readNotificationIds.includes(notification.id) && <div className={styles.readMarker} />}*/}
+                    {!notification.isRead && (
                       <div className={styles.readMarker} />
                     )}
                     <img src={notification.imageUrl} alt={notification.title} />
                   </div>
-                  <div style={{ width: "100%" }}>
+                  <div className={styles.notificationContent}>
                     <div className={styles.infoTitle}>
                       {notification.content}
                     </div>
@@ -141,11 +189,7 @@ const SideDrawer = () => {
                           ? "Continue Reading"
                           : "Start Reading"}
                       </div>
-                      <div className={styles.timeSent}>
-                        <NotificationTime
-                          sentAt={new Date(notification.sentAt)}
-                        />
-                      </div>
+                      <NotificationTime sentAt={notification.sentAt} />
                     </div>
                   </div>
                 </div>

@@ -140,7 +140,7 @@ p {
   border-radius: 20px !important;
   overflow: hidden;
   padding: 24px 20px !important;
-  background: #FBF1EA !important;
+  /*background: #FBF1EA !important;*/
 }
 .ant-modal-header {
   border-bottom: transparent !important;

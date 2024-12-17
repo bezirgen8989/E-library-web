@@ -15,6 +15,7 @@ import {
   addBookReview,
   addBookToShelf,
   askQuestion,
+  checkUserNotifications,
   deleteBookFromShelf,
   deleteBookReview,
   getAllFinishedBooks,
@@ -60,6 +61,7 @@ const initialState: HomeState = {
   testCurrentBookshelfBook: {},
   notifications: {},
   notificationsSettings: {},
+  hasNew: false,
 };
 
 const homeSlice = createSlice({
@@ -314,6 +316,14 @@ const homeSlice = createSlice({
       .addCase(getReadBook.fulfilled, (state, action) => {
         const { content, error } = action.payload;
         state.currentReadBook = { isLoading: false, result: content, error };
+      })
+
+      .addCase(checkNewNotifications.pending, (state) => {
+        state.hasNew = { isLoading: true };
+      })
+      .addCase(checkNewNotifications.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.hasNew = { isLoading: false, result: content, error };
       })
 
       .addCase(getAllNotifications.pending, (state) => {
@@ -574,6 +584,13 @@ export const getNotificationsSettings = createAsyncThunk(
   "get/api/v1/notifications/settings",
   async () => {
     const response = await getUserNotifications();
+    return response;
+  }
+);
+export const checkNewNotifications = createAsyncThunk(
+  "check/api/v1/notifications/checkNew",
+  async () => {
+    const response = await checkUserNotifications();
     return response;
   }
 );

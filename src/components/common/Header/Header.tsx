@@ -4,11 +4,14 @@ import logoWhite from "../../../assets/images/icons/appLogoWhite.svg";
 import bell from "../../../assets/images/icons/bellIcon.svg";
 import noAvatar from "../../../assets/images/icons/noUserAvatar.png";
 import { Link, useLocation } from "react-router-dom";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../core/contexts";
 import userRoutes from "../../../modules/UserManagement/routing/routes";
 import homeRoutes from "../../../modules/Home/routing/routes";
-import { setDrawerOpen } from "../../../modules/Home/slices/home";
+import {
+  checkNewNotifications,
+  setDrawerOpen,
+} from "../../../modules/Home/slices/home";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../hooks";
 
@@ -18,14 +21,20 @@ const Header: React.FC = () => {
   const location = useLocation(); // Получаем текущий путь
   const dispatch = useDispatch();
 
-  const { isDrawerOpen } = useLazySelector(({ home }) => {
-    const { isDrawerOpen } = home;
+  const { isDrawerOpen, hasNew } = useLazySelector(({ home }) => {
+    const { isDrawerOpen, hasNew } = home;
     return {
       isDrawerOpen,
+      hasNew,
     };
   });
 
+  console.log("hasNew", hasNew);
   console.log("isDrawerOpen", isDrawerOpen);
+
+  useEffect(() => {
+    dispatch(checkNewNotifications());
+  }, []);
 
   const showDrawer = () => {
     dispatch(setDrawerOpen(true));

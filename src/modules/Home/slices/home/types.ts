@@ -23,6 +23,7 @@ export type HomeState = {
   testCurrentBookshelfBook: any;
   notifications: any;
   notificationsSettings: any;
+  hasNew: boolean;
 };
 export interface SetReadingBookPayload {
   user: {
