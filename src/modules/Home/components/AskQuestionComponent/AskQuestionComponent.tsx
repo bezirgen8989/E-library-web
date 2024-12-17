@@ -6,11 +6,8 @@ import Avatar from "../../../../assets/images/tempAvatar.png";
 import Send from "../../../../assets/images/icons/sendIcon.svg";
 import ChatSpinner from "../../../../components/common/ChatSpinner";
 import Button from "../../../../components/common/Buttons/Button";
-// import WebRTCChat from "../../../../components/common/WebRTCChat/WebRTCChat";
-// import { SrsPlayer } from "../../../../components/common/SrsPlayer";
-// import WebRTCStream from "../../../../components/common/WebRTCStream/WebRTCStream";
-// import WebRTCChat from "../../../../components/common/WebRTCChat/WebRTCChat";
 import { SrsPlayer } from "../../../../components/common/SrsPlayer";
+import ChoseAvatar from "../common/ChoseAvatar/ChoseAvatar";
 
 type FormValues = {
   question: string;
@@ -42,6 +39,8 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [isCollapseVisible, setIsCollapseVisible] = useState(false); // State to toggle Collapse visibility
   const [isSending, setIsSending] = useState(false); // State to manage sending status
   const videoRef = useRef<HTMLVideoElement | any>(null);
+  const [showAvatar, setShowAvatar] = useState(false);
+  console.log(setShowAvatar);
 
   const getCurrentTime = (): string => {
     const now = new Date();
@@ -90,82 +89,87 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   };
 
   return (
-    <div className={styles.askQuestionPage}>
-      <div className={styles.avatarSide}>
-        <div className={styles.bookTitle}>{title}</div>
-        <img src={Avatar} alt="avatar" />
-        {/*<WebRTCChat />*/}
-        {/*<WebRTCStream />*/}
-        <SrsPlayer
-          url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream"
-          // url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream-a"
-          width={300}
-          height={100}
-          videoRef={videoRef}
-          options={{
-            autoPlay: true,
-            playsInline: true,
-            muted: false,
-            controls: true,
-          }}
-          rtcOpts={{
-            audio: {
-              enable: true,
-            },
-          }}
-        />
-        {metaData && metaData.length > 0 && !isLoading && !isSending && (
-          <Button variant="Brown" onClick={toggleCollapse}>
-            {isCollapseVisible ? "Hide details" : "Show details"}
-          </Button>
-        )}
-        {isSending && <ChatSpinner />}
-        {isCollapseVisible && <Collapse>{renderMetaData()}</Collapse>}
+    <>
+      <div className={styles.askQuestionAvatar}>
+        <ChoseAvatar />
       </div>
-      <div className={styles.chatContainer}>
-        <div className={styles.chatContent}>
-          {userMessage && (
-            <div className={styles.messageUser}>
-              <div className={styles.userMessage}>
-                {userMessage}
-                <div className={styles.messageSystemBottom}>
-                  <span className={styles.messageTime}>{messageTime}</span>
-                </div>
-              </div>
-            </div>
-          )}
-          {messages && (
-            <div className={messageClass}>
-              <div className={styles.messageSystemContent}>{messages}</div>
-            </div>
-          )}
-        </div>
-        {isLoading && (
-          <div className={styles.spinnerContainer}>
-            <ChatSpinner />
+      {showAvatar && (
+        <div className={styles.askQuestionPage}>
+          <div className={styles.avatarSide}>
+            <div className={styles.bookTitle}>{title}</div>
+            <img src={Avatar} alt="avatar" />
+            <SrsPlayer
+              url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream"
+              // url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream-a"
+              width={300}
+              height={100}
+              videoRef={videoRef}
+              options={{
+                autoPlay: true,
+                playsInline: true,
+                muted: false,
+                controls: true,
+              }}
+              rtcOpts={{
+                audio: {
+                  enable: true,
+                },
+              }}
+            />
+            {metaData && metaData.length > 0 && !isLoading && !isSending && (
+              <Button variant="Brown" onClick={toggleCollapse}>
+                {isCollapseVisible ? "Hide details" : "Show details"}
+              </Button>
+            )}
+            {isSending && <ChatSpinner />}
+            {isCollapseVisible && <Collapse>{renderMetaData()}</Collapse>}
           </div>
-        )}
-        <form
-          className={styles.chatInputSection}
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <input
-            {...register("question", { required: true })}
-            type="text"
-            className={styles.chatInput}
-            placeholder="Your question..."
-            autoComplete="off"
-          />
-          <button
-            type="submit"
-            className={styles.submitButton}
-            disabled={isSending}
-          >
-            <img src={Send} alt="btn" />
-          </button>
-        </form>
-      </div>
-    </div>
+          <div className={styles.chatContainer}>
+            <div className={styles.chatContent}>
+              {userMessage && (
+                <div className={styles.messageUser}>
+                  <div className={styles.userMessage}>
+                    {userMessage}
+                    <div className={styles.messageSystemBottom}>
+                      <span className={styles.messageTime}>{messageTime}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {messages && (
+                <div className={messageClass}>
+                  <div className={styles.messageSystemContent}>{messages}</div>
+                </div>
+              )}
+            </div>
+            {isLoading && (
+              <div className={styles.spinnerContainer}>
+                <ChatSpinner />
+              </div>
+            )}
+            <form
+              className={styles.chatInputSection}
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <input
+                {...register("question", { required: true })}
+                type="text"
+                className={styles.chatInput}
+                placeholder="Your question..."
+                autoComplete="off"
+              />
+              <button
+                type="submit"
+                className={styles.submitButton}
+                disabled={isSending}
+              >
+                <img src={Send} alt="btn" />
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
