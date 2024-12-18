@@ -1,5 +1,5 @@
 import styles from "./ChoseAvatar.module.scss";
-import Slider from "react-slick"; // Import Slider from react-slick
+import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Avatar from "../../../../../assets/images/tempAvatar.png";
@@ -7,7 +7,14 @@ import Avatar2 from "../../../../../assets/images/tempAvatar2.png";
 import Avatar3 from "../../../../../assets/images/tempAvatar3.png";
 import { useState } from "react";
 
-const avatars = [Avatar, Avatar2, Avatar3, Avatar, Avatar2, Avatar3];
+const avatars = [
+  { avatar: Avatar, name: "Umar" },
+  { avatar: Avatar2, name: "Kevin" },
+  { avatar: Avatar3, name: "Li" },
+  { avatar: Avatar, name: "Umar" },
+  { avatar: Avatar2, name: "Kevin" },
+  { avatar: Avatar3, name: "Li" },
+];
 
 const ChoseAvatar = () => {
   const [currentImage, setCurrentImage] = useState(avatars[0]);
@@ -31,16 +38,18 @@ const ChoseAvatar = () => {
     <div className={styles.avatarSliderWrap}>
       <div
         className={styles.sliderBackground}
-        style={{ backgroundImage: `url(${currentImage})` }}
-      >
-        <Slider {...settings} className="avatarCarousel">
-          {avatars.map((avatar, index) => (
-            <div className="slideItem" key={index}>
-              <img src={avatar} alt={`Avatar ${index + 1}`} />
+        style={{ backgroundImage: `url(${currentImage.avatar})` }}
+      ></div>
+      <Slider {...settings} className="avatarCarousel">
+        {avatars.map((avatar, index) => (
+          <div className="slideItem" key={index}>
+            <div>
+              <img src={avatar.avatar} alt={`Avatar ${index + 1}`} />
+              <div className="avatarName">{avatar.name}</div>
             </div>
-          ))}
-        </Slider>
-      </div>
+          </div>
+        ))}
+      </Slider>
     </div>
   );
 };
