@@ -1,0 +1,36 @@
+.avatarSliderWrap {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.sliderBackground {
+  padding-top: 400px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 50%;
+  opacity: 0.5;
+}
+.gratisBlock {
+  padding-top: 30px;
+  color: rgba(251,241,234, 0.8);
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 25px;
+}
+.subTitle {
+  font-size: 21px;
+  color: rgba(251,241,234, 0.5);
+  text-align: center;
+}
+.askQuestionAvatar {
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 0 10px 10px;
+  min-height: calc(100vh - 74px);
+  background-image: url('../../../../../../assets/images/AvatarBg.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 90%;
+}
+

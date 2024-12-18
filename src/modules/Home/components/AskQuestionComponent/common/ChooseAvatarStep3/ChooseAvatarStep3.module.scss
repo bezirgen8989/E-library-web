@@ -1,0 +1,74 @@
+.avatarSliderWrap {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.sliderBackground {
+  padding-top: 400px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 50%;
+  opacity: 0.5;
+}
+
+.askQuestionAvatar {
+  position: relative;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 0 10px 10px;
+  min-height: calc(100vh - 74px);
+  background-image: url('../../../../../../assets/images/AvatarBg.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 90%;
+}
+
+.messageSystemContent {
+  background: rgba(2, 20, 24, 0.6);
+  font-size: 18px;
+  line-height: 24px;
+  color: #fff;
+  padding: 20px 20px 20px 30px;
+  border-radius: 20px;
+  width: 341px;
+  margin: 0 auto;
+  border: 1px solid rgba(181, 202, 221, 0.24);
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li {
+      position: relative;
+      background-image: url('../../../../../../assets/images/icons/listCheckIcon.svg');
+      background-repeat: no-repeat;
+      background-position: 0 5px;
+      padding-left: 30px;
+      margin-bottom: 5px;
+    }
+  }
+}
+.avatarSettings {
+  color: #fff;
+  font-size: 27px;
+  font-weight: 700;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+}
+.settingsIcon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(181, 202, 221, 0.24);
+  background: rgba(181, 202, 221, 0.1);
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+

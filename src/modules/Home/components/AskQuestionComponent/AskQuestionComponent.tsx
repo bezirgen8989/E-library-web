@@ -7,7 +7,10 @@ import Send from "../../../../assets/images/icons/sendIcon.svg";
 import ChatSpinner from "../../../../components/common/ChatSpinner";
 import Button from "../../../../components/common/Buttons/Button";
 import { SrsPlayer } from "../../../../components/common/SrsPlayer";
-import ChoseAvatar from "../common/ChoseAvatar/ChoseAvatar";
+import ChooseAvatar from "./common/ChooseAvatar/ChooseAvatar";
+import ChooseAvatarStep2 from "./common/ChooseAvatarStep2/ChooseAvatarStep2";
+import ChooseAvatarStep3 from "./common/ChooseAvatarStep3/ChooseAvatarStep3";
+import ChooseAvatarStep4 from "./common/ChooseAvatarStep4/ChooseAvatarStep4";
 
 type FormValues = {
   question: string;
@@ -15,8 +18,8 @@ type FormValues = {
 
 type AskQuestionComponentProps = {
   setQuestion: (text: string) => void;
-  clearMessages: () => void; // Новый проп
-  messages: any; // Предполагаем, что messages — строка
+  clearMessages: () => void;
+  messages: any;
   isLoading: boolean;
   title: string;
   metaData: any;
@@ -36,11 +39,10 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [userMessage, setUserMessage] = useState<string | null>(null);
   const [messageClass, setMessageClass] = useState(styles.messageSystemChange);
   const [messageTime, setMessageTime] = useState<string>("");
-  const [isCollapseVisible, setIsCollapseVisible] = useState(false); // State to toggle Collapse visibility
-  const [isSending, setIsSending] = useState(false); // State to manage sending status
+  const [isCollapseVisible, setIsCollapseVisible] = useState(false);
+  const [isSending, setIsSending] = useState(false);
   const videoRef = useRef<HTMLVideoElement | any>(null);
-  const [showAvatar, setShowAvatar] = useState(false);
-  console.log(setShowAvatar);
+  const [currentStep, setCurrentStep] = useState(1);
 
   const getCurrentTime = (): string => {
     const now = new Date();
@@ -52,7 +54,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     const currentTime = getCurrentTime();
     setQuestion(data.question);
-    clearMessages(); // Очистка messages
+    clearMessages();
     setUserMessage(data.question);
     setMessageClass(styles.messageSystem);
     setMessageTime(currentTime);
@@ -90,10 +92,17 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   return (
     <>
-      <div className={styles.askQuestionAvatar}>
-        <ChoseAvatar />
-      </div>
-      {showAvatar && (
+      {currentStep === 1 && <ChooseAvatar setCurrentStep={setCurrentStep} />}
+      {currentStep === 2 && (
+        <ChooseAvatarStep2 setCurrentStep={setCurrentStep} />
+      )}
+      {currentStep === 3 && (
+        <ChooseAvatarStep3 setCurrentStep={setCurrentStep} />
+      )}
+      {currentStep === 4 && (
+        <ChooseAvatarStep4 setCurrentStep={setCurrentStep} />
+      )}
+      {currentStep === 5 && (
         <div className={styles.askQuestionPage}>
           <div className={styles.avatarSide}>
             <div className={styles.bookTitle}>{title}</div>

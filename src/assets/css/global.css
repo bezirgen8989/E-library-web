@@ -277,41 +277,45 @@ p {
 
 
 .avatarCarousel {
-  margin-top: -100px;
+  margin-top: -130px;
+  perspective: 800px; /* Добавляем перспективу для 3D эффекта */
 }
 
 .slideItem {
   width: 71px;
   height: 101px;
-  margin-top: 70px;
   overflow: hidden;
   object-fit: cover;
   padding: 0 10px;
   justify-content: center;
   align-items: center;
   display: flex !important;
-  opacity: 0.5
+  opacity: 0.5;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  transform: translateY(50px) rotateX(30deg); /* Полукруглый эффект */
 }
 
-.slideItem img{
+.slideItem img {
   width: 71px;
-  height: 71px;
+  height: 81px;
   border-radius: 50%;
 }
 
-.slick-center .slideItem{
+.slick-center .slideItem {
   width: 118px;
   height: 158px;
   margin-top: 0;
-  opacity: 1
+  opacity: 1;
+  transform: translateY(0) rotateX(0); /* Центрируем активный элемент */
 }
 
-.slick-center .slideItem img{
+.slick-center .slideItem img {
   width: 118px;
   height: 118px;
 }
 
-.slick-prev, .slick-next {
+.slick-prev,
+.slick-next {
   background-color: #fff;
   border: none;
   padding: 10px;
@@ -326,11 +330,16 @@ p {
 .slick-next {
   right: 10px;
 }
+
 .avatarName {
   color: #fff;
   text-align: center;
+  font-size: 14px;
+  transition: font-size 0.5s ease;
 }
+
 .slick-center .avatarName {
   font-size: 25px;
 }
+
 
