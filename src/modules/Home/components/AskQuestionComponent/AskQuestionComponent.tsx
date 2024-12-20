@@ -1,12 +1,11 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Collapse } from "antd";
 import styles from "./AskQuestionComponent.module.scss";
-import Avatar from "../../../../assets/images/tempAvatar.png";
 import Send from "../../../../assets/images/icons/sendIcon.svg";
 import ChatSpinner from "../../../../components/common/ChatSpinner";
 import Button from "../../../../components/common/Buttons/Button";
-import { SrsPlayer } from "../../../../components/common/SrsPlayer";
+// import { SrsPlayer } from "../../../../components/common/SrsPlayer";
 import ChooseAvatar from "./common/ChooseAvatar/ChooseAvatar";
 import ChooseAvatarStep2 from "./common/ChooseAvatarStep2/ChooseAvatarStep2";
 import ChooseAvatarStep3 from "./common/ChooseAvatarStep3/ChooseAvatarStep3";
@@ -43,8 +42,9 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [messageTime, setMessageTime] = useState<string>("");
   const [isCollapseVisible, setIsCollapseVisible] = useState(false);
   const [isSending, setIsSending] = useState(false);
-  const videoRef = useRef<HTMLVideoElement | any>(null);
+  // const videoRef = useRef<HTMLVideoElement | any>(null);
   const [currentStep, setCurrentStep] = useState(1);
+  const [selectedAvatar, setSelectedAvatar] = useState<string>("");
 
   const getCurrentTime = (): string => {
     const now = new Date();
@@ -98,40 +98,53 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
         <ChooseAvatar
           avatars={avatars.result}
           setCurrentStep={setCurrentStep}
+          setSelectedAvatar={setSelectedAvatar}
         />
       )}
       {currentStep === 2 && (
-        <ChooseAvatarStep2 setCurrentStep={setCurrentStep} />
+        <ChooseAvatarStep2
+          setCurrentStep={setCurrentStep}
+          selectedAvatar={selectedAvatar}
+        />
       )}
       {currentStep === 3 && (
-        <ChooseAvatarStep3 setCurrentStep={setCurrentStep} />
+        <ChooseAvatarStep3
+          setCurrentStep={setCurrentStep}
+          selectedAvatar={selectedAvatar}
+        />
       )}
       {currentStep === 4 && (
-        <ChooseAvatarStep4 setCurrentStep={setCurrentStep} />
+        <ChooseAvatarStep4
+          setCurrentStep={setCurrentStep}
+          selectedAvatar={selectedAvatar}
+        />
       )}
       {currentStep === 5 && (
         <div className={styles.askQuestionPage}>
           <div className={styles.avatarSide}>
             <div className={styles.bookTitle}>{title}</div>
-            <img src={Avatar} alt="avatar" />
-            <SrsPlayer
-              url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream"
-              // url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream-a"
-              width={300}
-              height={100}
-              videoRef={videoRef}
-              options={{
-                autoPlay: true,
-                playsInline: true,
-                muted: false,
-                controls: true,
-              }}
-              rtcOpts={{
-                audio: {
-                  enable: true,
-                },
-              }}
+            <div
+              className={styles.avatarFace}
+              style={{ backgroundImage: `url(${selectedAvatar})` }}
             />
+            {/*<SrsPlayer*/}
+            {/*    url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream"*/}
+            {/*  // url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream-a"*/}
+            {/*  width={300}*/}
+            {/*  height={100}*/}
+            {/*  videoRef={videoRef}*/}
+            {/*  options={{*/}
+            {/*    autoPlay: true,*/}
+            {/*    playsInline: true,*/}
+            {/*    muted: false,*/}
+            {/*    controls: true,*/}
+            {/*  }}*/}
+            {/*  rtcOpts={{*/}
+            {/*    audio: {*/}
+            {/*      enable: true,*/}
+            {/*    },*/}
+            {/*  }}*/}
+            {/*/>*/}
             {metaData && metaData.length > 0 && !isLoading && !isSending && (
               <Button variant="Brown" onClick={toggleCollapse}>
                 {isCollapseVisible ? "Hide details" : "Show details"}

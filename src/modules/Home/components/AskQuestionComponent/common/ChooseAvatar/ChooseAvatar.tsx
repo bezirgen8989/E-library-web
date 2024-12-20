@@ -19,19 +19,22 @@ interface AvatarData {
 interface ChooseAvatarProps {
   setCurrentStep: (value: number) => void;
   avatars: { data: AvatarData[] };
+  setSelectedAvatar: (link: string) => void; // Новая функция для установки выбранного аватара
 }
 
 const ChooseAvatar: FC<ChooseAvatarProps> = ({
   setCurrentStep,
   avatars = { data: [] },
+  setSelectedAvatar,
 }) => {
   const [currentImage, setCurrentImage] = useState<AvatarData | null>(null);
 
   useEffect(() => {
     if (avatars?.data?.length) {
       setCurrentImage(avatars.data[0]);
+      setSelectedAvatar(avatars.data[0].avatarPicture.link); // Устанавливаем начальный аватар
     }
-  }, [avatars]);
+  }, [avatars, setSelectedAvatar]);
 
   const settings = {
     infinite: true,
@@ -45,7 +48,9 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
     centerPadding: "0",
     afterChange: (current: number) => {
       if (avatars?.data?.length) {
-        setCurrentImage(avatars.data[current % avatars.data.length]);
+        const selected = avatars.data[current % avatars.data.length];
+        setCurrentImage(selected);
+        setSelectedAvatar(selected.avatarPicture.link); // Обновляем выбранный аватар
       }
     },
   };

@@ -241,3 +241,11 @@
     transform: rotate(360deg);
   }
 }
+.avatarFace {
+  height: 60vh;
+  opacity: 0.4;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  margin-bottom: 20px;
+}

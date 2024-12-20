@@ -4,11 +4,12 @@
 }
 
 .sliderBackground {
-  padding-top: 400px;
+  margin-top: 20px;
+  padding-top: 495px;
   background-repeat: no-repeat;
-  background-position: center center;
-  background-size: 50%;
-  opacity: 0.5;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.4;
 }
 
 .askQuestionAvatar {
