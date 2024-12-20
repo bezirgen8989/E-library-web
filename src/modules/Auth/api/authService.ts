@@ -31,6 +31,10 @@ export const addUserHabits = (userParams: any) =>
   usingPatch("/api/v1/auth/me", userParams);
 export const setUserProfile = (userParams: any) =>
   usingPatch("/api/v1/auth/me", userParams);
+
+export const setUserAvatar = (userParams: any) =>
+  usingPatch("/api/v1/auth/me", userParams);
+
 export const uploadUserAvatar = (userParams: any) =>
   usingPost("/api/v1/media/upload", userParams);
 export const authMe = () => usingGet("/api/v1/auth/me");

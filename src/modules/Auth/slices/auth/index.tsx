@@ -19,6 +19,7 @@ import {
   authGoogleLogin,
   resetUserPassword,
   deleteAccount,
+  setUserAvatar,
 } from "../../api/authService";
 import {
   EditUserParams,
@@ -428,6 +429,15 @@ export const uploadUserPhotoId = createAsyncThunk(
     return response;
   }
 );
+
+export const setAvatar = createAsyncThunk(
+  "avatar/api/v1/auth/me",
+  async (userParams: any, { dispatch }) => {
+    const response = await setUserAvatar(userParams);
+    return response;
+  }
+);
+setAvatar;
 
 export const recoverPassword = createAsyncThunk(
   "api/v1/auth/forgot/password",

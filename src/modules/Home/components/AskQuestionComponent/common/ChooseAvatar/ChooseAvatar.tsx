@@ -2,8 +2,9 @@ import styles from "./ChooseAvatar.module.scss";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useContext } from "react";
 import Button from "../../../../../../components/common/Buttons/Button";
+import { UserContext } from "../../../../../../core/contexts";
 
 interface AvatarData {
   id: number;
@@ -19,22 +20,35 @@ interface AvatarData {
 interface ChooseAvatarProps {
   setCurrentStep: (value: number) => void;
   avatars: { data: AvatarData[] };
-  setSelectedAvatar: (link: string) => void; // Новая функция для установки выбранного аватара
+  setSelectedAvatar: (link: string) => void;
+  setUserAvatar: (id: number) => void;
 }
 
 const ChooseAvatar: FC<ChooseAvatarProps> = ({
   setCurrentStep,
   avatars = { data: [] },
   setSelectedAvatar,
+  setUserAvatar,
 }) => {
+  const value = useContext(UserContext); // Assuming the context provides user data
+  const defaultAvatarId = value?.avatarSettings?.id || 1;
   const [currentImage, setCurrentImage] = useState<AvatarData | null>(null);
+  const [initialSlide, setInitialSlide] = useState<number>(0);
 
   useEffect(() => {
     if (avatars?.data?.length) {
-      setCurrentImage(avatars.data[0]);
-      setSelectedAvatar(avatars.data[0].avatarPicture.link); // Устанавливаем начальный аватар
+      // Find the avatar with the ID from avatarSettings or fall back to the first avatar
+      const initialAvatarIndex = avatars.data.findIndex(
+        (avatar) => avatar.id === defaultAvatarId
+      );
+      const foundIndex = initialAvatarIndex !== -1 ? initialAvatarIndex : 0;
+      setInitialSlide(foundIndex);
+
+      const initialAvatar = avatars.data[foundIndex];
+      setCurrentImage(initialAvatar);
+      setSelectedAvatar(initialAvatar.avatarPicture.link);
     }
-  }, [avatars, setSelectedAvatar]);
+  }, [avatars, defaultAvatarId, setSelectedAvatar]);
 
   const settings = {
     infinite: true,
@@ -46,16 +60,22 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
     centerMode: true,
     focusOnSelect: true,
     centerPadding: "0",
+    initialSlide: initialSlide, // Set the initial slide dynamically
     afterChange: (current: number) => {
       if (avatars?.data?.length) {
         const selected = avatars.data[current % avatars.data.length];
         setCurrentImage(selected);
-        setSelectedAvatar(selected.avatarPicture.link); // Обновляем выбранный аватар
+        setSelectedAvatar(selected.avatarPicture.link);
       }
     },
   };
 
   if (!currentImage) return <div>Loading avatars...</div>;
+
+  const handleNextStep = () => {
+    setCurrentStep(2);
+    setUserAvatar(currentImage.id);
+  };
 
   return (
     <div className={styles.askQuestionAvatar}>
@@ -82,7 +102,7 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
           Please choose how I will look like.
         </div>
         <Button
-          onClick={() => setCurrentStep(2)}
+          onClick={handleNextStep}
           style={{ width: "341px", margin: "20px auto 20px" }}
           variant="Brown"
         >

@@ -4,10 +4,11 @@ import {
   EventSourceMessage,
   fetchEventSource,
 } from "@microsoft/fetch-event-source";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { clearBooks, getAvatars, getBookById } from "../slices/home";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../hooks";
+import { getMe, setAvatar } from "../../Auth/slices/auth";
 
 const AskQuestionContainer: React.FC = () => {
   const [question, setQuestion] = useState("");
@@ -16,10 +17,15 @@ const AskQuestionContainer: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     dispatch(getBookById(id));
-  }, []);
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    dispatch(getMe());
+  }, [dispatch]);
 
   const { currentBook, avatars } = useLazySelector(({ home }) => {
     const { currentBook, avatars } = home;
@@ -28,7 +34,7 @@ const AskQuestionContainer: React.FC = () => {
 
   useEffect(() => {
     dispatch(clearBooks());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(
@@ -37,7 +43,18 @@ const AskQuestionContainer: React.FC = () => {
         page: "1",
       })
     );
-  }, []);
+  }, [dispatch]);
+
+  const setUserAvatar = (avatarId: number) => {
+    console.log("AVATARID", avatarId);
+    dispatch(
+      setAvatar({
+        avatarSettings: {
+          id: avatarId,
+        },
+      })
+    );
+  };
 
   useEffect(() => {
     if (question) {
@@ -94,7 +111,20 @@ const AskQuestionContainer: React.FC = () => {
 
       fetchData();
     }
-  }, [question]);
+  }, [question, currentBook]);
+
+  // Dispatch getMe() when leaving the "ask_question" route
+  useEffect(() => {
+    const unlisten = history.listen((location) => {
+      if (!location.pathname.includes("ask_question")) {
+        dispatch(getMe());
+      }
+    });
+
+    return () => {
+      unlisten();
+    };
+  }, [dispatch, history]);
 
   const clearMessages = () => {
     setMessages([]);
@@ -109,6 +139,7 @@ const AskQuestionContainer: React.FC = () => {
       title={currentBook?.result?.title}
       metaData={meta}
       avatars={avatars}
+      setUserAvatar={setUserAvatar}
     />
   );
 };

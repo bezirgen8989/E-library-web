@@ -5,6 +5,7 @@ export type User = {
   photo_url?: string;
 };
 export type RegisterUserParams = {
+  avatarSettings?: any;
   kidsMode?: boolean;
   userId?: any;
   gender?: string;

@@ -23,6 +23,7 @@ type AskQuestionComponentProps = {
   title: string;
   metaData: any;
   avatars: any;
+  setUserAvatar: (id: number) => void;
 };
 
 const { Panel } = Collapse;
@@ -35,6 +36,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   isLoading,
   metaData,
   avatars,
+  setUserAvatar,
 }) => {
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const [userMessage, setUserMessage] = useState<string | null>(null);
@@ -99,6 +101,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
           avatars={avatars.result}
           setCurrentStep={setCurrentStep}
           setSelectedAvatar={setSelectedAvatar}
+          setUserAvatar={setUserAvatar}
         />
       )}
       {currentStep === 2 && (
