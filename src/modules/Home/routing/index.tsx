@@ -105,6 +105,7 @@ const HomeRouting = () => (
       <Route exact path={`${routes.reading}/:id`} component={Reading} />
       <Route exact path={`${routes.book}/:id`} component={Book} />
       <Route exact path={`${routes.askQuestion}/:id`} component={AskQuestion} />
+      <Route exact path={routes.askQuestionAll} component={AskQuestion} />
       <Route
         exact
         path={`${routes.searchTopBooks}/:id`}

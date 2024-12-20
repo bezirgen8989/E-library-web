@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { FC, useState, useEffect, useContext } from "react";
 import Button from "../../../../../../components/common/Buttons/Button";
 import { UserContext } from "../../../../../../core/contexts";
+import Spinner from "../../../../../../components/common/Spinner";
 
 interface AvatarData {
   id: number;
@@ -70,7 +71,7 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
     },
   };
 
-  if (!currentImage) return <div>Loading avatars...</div>;
+  if (!currentImage) return <Spinner />;
 
   const handleNextStep = () => {
     setCurrentStep(2);

@@ -14,6 +14,7 @@ import {
 } from "../../../modules/Home/slices/home";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../hooks";
+import { routes } from "../../../modules/Home/routing";
 
 const Header: React.FC = () => {
   const [hasNotifications] = useState(true);
@@ -107,7 +108,7 @@ const Header: React.FC = () => {
             <span style={{ paddingLeft: 6 }}>My Bookshelf</span>
           </Link>
           <Link
-            to="#"
+            to={routes.askQuestionAll}
             style={{ color: difStyles ? "white" : "#7C8482" }}
             className={`${styles.headerNavItem} ${
               isActive("#") ? styles.active : ""

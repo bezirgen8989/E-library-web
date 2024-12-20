@@ -15,5 +15,6 @@ const routes = {
   searchNewBooks: "/search_new_books",
   reading: "/reading",
   askQuestion: "/ask_question",
+  askQuestionAll: "/ask_global_question",
 };
 export default routes;
