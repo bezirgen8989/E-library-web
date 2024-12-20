@@ -5,7 +5,7 @@ import {
   fetchEventSource,
 } from "@microsoft/fetch-event-source";
 import { useParams } from "react-router-dom";
-import { clearBooks, getBookById } from "../slices/home";
+import { clearBooks, getAvatars, getBookById } from "../slices/home";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../hooks";
 
@@ -21,13 +21,22 @@ const AskQuestionContainer: React.FC = () => {
     dispatch(getBookById(id));
   }, []);
 
-  const { currentBook } = useLazySelector(({ home }) => {
-    const { currentBook } = home;
-    return { currentBook };
+  const { currentBook, avatars } = useLazySelector(({ home }) => {
+    const { currentBook, avatars } = home;
+    return { currentBook, avatars };
   });
 
   useEffect(() => {
     dispatch(clearBooks());
+  }, []);
+
+  useEffect(() => {
+    dispatch(
+      getAvatars({
+        limit: "12",
+        page: "1",
+      })
+    );
   }, []);
 
   useEffect(() => {
@@ -99,6 +108,7 @@ const AskQuestionContainer: React.FC = () => {
       isLoading={isLoading}
       title={currentBook?.result?.title}
       metaData={meta}
+      avatars={avatars}
     />
   );
 };

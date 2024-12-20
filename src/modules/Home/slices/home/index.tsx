@@ -18,6 +18,7 @@ import {
   checkUserNotifications,
   deleteBookFromShelf,
   deleteBookReview,
+  getAllAvatars,
   getAllFinishedBooks,
   getAllNotStartedBooks,
   getAllReviews,
@@ -62,6 +63,7 @@ const initialState: HomeState = {
   notifications: {},
   notificationsSettings: {},
   hasNew: false,
+  avatars: {},
 };
 
 const homeSlice = createSlice({
@@ -278,7 +280,6 @@ const homeSlice = createSlice({
         const { content, error } = action.payload;
 
         const existingBooks = state.notStartedBooks.result?.data || [];
-        console.log(1111111111, existingBooks);
         state.notStartedBooks = {
           isLoading: false,
           result: {
@@ -324,6 +325,14 @@ const homeSlice = createSlice({
       .addCase(checkNewNotifications.fulfilled, (state, action) => {
         const { content, error } = action.payload;
         state.hasNew = { isLoading: false, result: content, error };
+      })
+
+      .addCase(getAvatars.pending, (state) => {
+        state.avatars = { isLoading: true };
+      })
+      .addCase(getAvatars.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.avatars = { isLoading: false, result: content, error };
       })
 
       .addCase(getAllNotifications.pending, (state) => {
@@ -591,6 +600,14 @@ export const checkNewNotifications = createAsyncThunk(
   "check/api/v1/notifications/checkNew",
   async () => {
     const response = await checkUserNotifications();
+    return response;
+  }
+);
+
+export const getAvatars = createAsyncThunk(
+  "get/api/v1/avatars",
+  async (params: { limit: string; page: string }) => {
+    const response = await getAllAvatars(params);
     return response;
   }
 );

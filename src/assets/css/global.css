@@ -277,7 +277,7 @@ p {
 
 
 .avatarCarousel {
-  margin-top: -130px;
+  margin-top: -120px;
   perspective: 800px; /* Добавляем перспективу для 3D эффекта */
 }
 

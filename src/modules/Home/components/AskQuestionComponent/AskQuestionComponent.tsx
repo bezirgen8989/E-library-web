@@ -23,6 +23,7 @@ type AskQuestionComponentProps = {
   isLoading: boolean;
   title: string;
   metaData: any;
+  avatars: any;
 };
 
 const { Panel } = Collapse;
@@ -34,6 +35,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   title,
   isLoading,
   metaData,
+  avatars,
 }) => {
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const [userMessage, setUserMessage] = useState<string | null>(null);
@@ -92,7 +94,12 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   return (
     <>
-      {currentStep === 1 && <ChooseAvatar setCurrentStep={setCurrentStep} />}
+      {currentStep === 1 && (
+        <ChooseAvatar
+          avatars={avatars.result}
+          setCurrentStep={setCurrentStep}
+        />
+      )}
       {currentStep === 2 && (
         <ChooseAvatarStep2 setCurrentStep={setCurrentStep} />
       )}
