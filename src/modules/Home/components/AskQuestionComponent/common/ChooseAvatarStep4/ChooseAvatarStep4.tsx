@@ -2,8 +2,9 @@ import styles from "./ChooseAvatarStep4.module.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Button from "../../../../../../components/common/Buttons/Button";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useLocation } from "react-router-dom";
+import SearchBookModal from "../../../common/SearchBookModal/SearchBookModal";
 
 interface ChooseAvatarStep2Props {
   setCurrentStep: (value: number) => void;
@@ -15,6 +16,7 @@ const ChooseAvatarStep4: FC<ChooseAvatarStep2Props> = ({
   selectedAvatar,
 }) => {
   const location = useLocation();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const isGlobalQuestion = location.pathname.includes("ask_global_question");
 
   return (
@@ -35,7 +37,9 @@ const ChooseAvatarStep4: FC<ChooseAvatarStep2Props> = ({
         {isGlobalQuestion ? (
           <>
             <Button
-              onClick={() => {}}
+              onClick={() => {
+                setIsModalOpen(true);
+              }}
               style={{ width: "341px", margin: "30px auto 20px" }}
               variant="Brown"
             >
@@ -63,6 +67,10 @@ const ChooseAvatarStep4: FC<ChooseAvatarStep2Props> = ({
           </Button>
         )}
       </div>
+      <SearchBookModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
     </div>
   );
 };
