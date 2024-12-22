@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import SearchComponent from "../components/components/SearchComponent/SearchComponent";
+import SearchComponent from "../components/SearchComponent/SearchComponent";
 import { useCallback, useEffect } from "react";
 import { getCategories } from "../../Auth/slices/auth";
 import { useLazySelector } from "../../../hooks";

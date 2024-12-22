@@ -1,7 +1,7 @@
 import styles from "./SearchComponent.module.scss";
 import React, { FC, useState } from "react";
-import NoImg from "../../../../../assets/images/NoImagePlaceholder.jpg";
-import Search from "../../../../../assets/images/icons/SearchIcon.svg";
+import NoImg from "../../../../assets/images/NoImagePlaceholder.jpg";
+import Search from "../../../../assets/images/icons/SearchIcon.svg";
 import { Input, Skeleton } from "antd";
 
 type CategoryData = {

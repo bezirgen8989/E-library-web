@@ -1,65 +1,95 @@
-import { FC, useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { Modal, Switch } from "antd";
-import { useDispatch } from "react-redux";
-import {
-  getNotificationsSettings,
-  setNotificationsSettings,
-} from "../../../../Home/slices/home";
-
-import Button from "../../../../../components/common/Buttons/Button";
+import React, { FC, useState } from "react";
+import { Input, Modal, Skeleton } from "antd";
 import commonStyles from "../../../../../assets/css/commonStyles/CommonStyles.module.scss";
-import styles from "./SearchBookModal.module.scss";
 import Close from "../../../../../assets/images/icons/Close.svg";
+import styles from "./SearchBookModal.module.scss";
+import Search from "../../../../../assets/images/icons/SearchIcon.svg";
+import { routes } from "../../../routing";
+import { Link } from "react-router-dom";
 
-import SpinnerBrown from "../../../../../components/common/SpinnerBrown";
+interface Author {
+  name: string;
+}
+
+interface Book {
+  id: string;
+  title: string;
+  bookCover: {
+    link: string;
+  };
+  author: Author[];
+}
 
 interface NotificationsModalProps {
   isModalOpen: boolean;
   setIsModalOpen: (open: boolean) => void;
-}
-
-interface NotificationFormData {
-  startReading: boolean;
-  continueReading: boolean;
-  newBooks: boolean;
+  getSearchBooks: (text: string) => void;
+  searchBooks: string[];
+  getBooksByName: any;
+  booksByQueryName: any;
+  isLoading: boolean;
 }
 
 const SearchBookModal: FC<NotificationsModalProps> = ({
   isModalOpen,
   setIsModalOpen,
+  getSearchBooks,
+  searchBooks = [],
+  getBooksByName,
+  booksByQueryName,
+  isLoading,
 }) => {
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [hasSearched, setHasSearched] = useState<boolean>(false);
+  const [isDropdownVisible, setDropdownVisible] = useState<boolean>(false);
 
-  const { handleSubmit, control } = useForm<NotificationFormData>({
-    defaultValues: {
-      startReading: false,
-      continueReading: false,
-      newBooks: false,
-    },
-  });
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
 
-  useEffect(() => {
-    if (isModalOpen) {
-      setLoading(true);
-      dispatch(getNotificationsSettings());
+    if (value.trim() === "") {
+      setDropdownVisible(false); // Скрываем dropdown
+      setHasSearched(false); // Сбрасываем состояние поиска
+      getBooksByName({}); // Сбрасываем booksByQueryName
+    } else {
+      getSearchBooks(value);
+      setDropdownVisible(true); // Показываем dropdown при вводе текста
     }
-  }, [isModalOpen, dispatch]);
+  };
+
+  const handleBookSelect = (title: string) => {
+    setSearchTerm(title);
+    setHasSearched(true); // Устанавливаем флаг для выполнения поиска
+    setDropdownVisible(false); // Скрыть dropdown после выбора
+    getBooksByName(title);
+  };
+
+  const filteredBooks = searchBooks.filter((book) =>
+    book.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const hideModal = () => {
     setIsModalOpen(false);
   };
 
-  const onSubmit = (data: NotificationFormData) => {
-    console.log("data", data);
-    dispatch(setNotificationsSettings(data));
-    hideModal();
-  };
-
   return (
     <Modal
-      title={<div className="custom-modal-title">Notifications</div>}
+      title={
+        <div>
+          <div className="custom-modal-title">Select a book</div>
+          <div style={{ marginTop: "20px" }}>
+            <Input
+              placeholder="Search by place or influencer"
+              prefix={<img src={Search} alt="search" />}
+              id="search-input"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className={styles.searchBookInput}
+              autoComplete="off"
+            />
+          </div>
+        </div>
+      }
       visible={isModalOpen}
       onCancel={hideModal}
       className="custom-modal-settings"
@@ -72,52 +102,65 @@ const SearchBookModal: FC<NotificationsModalProps> = ({
         />
       }
     >
-      {loading ? (
-        <div className={styles.spinnerWrapper}>
-          <SpinnerBrown />
+      <div className={styles.modalContent}>
+        <div className={styles.searchWrapper}>
+          {searchTerm && isDropdownVisible && filteredBooks.length > 0 && (
+            <div className={styles.dropdown}>
+              {filteredBooks.map((book, index) => (
+                <div
+                  key={index}
+                  className={styles.dropdownItem}
+                  onClick={() => handleBookSelect(book)}
+                >
+                  <img src={Search} alt="search" /> {book}
+                </div>
+              ))}
+            </div>
+          )}
+          {searchTerm && filteredBooks.length === 0 && (
+            <div className={styles.noResults}>No Results</div>
+          )}
         </div>
-      ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className={styles.kidsSelectWrapper}>
-            <span>Your Reading Progress</span>
-            <Controller
-              name="startReading"
-              control={control}
-              render={({ field }) => (
-                <Switch checked={field.value} onChange={field.onChange} />
-              )}
-            />
-          </div>
 
-          <div className={styles.kidsSelectWrapper}>
-            <span>New Book on Your BookShelf</span>
-            <Controller
-              name="continueReading"
-              control={control}
-              render={({ field }) => (
-                <Switch checked={field.value} onChange={field.onChange} />
-              )}
-            />
+        {hasSearched && (
+          <div className={styles.booksList}>
+            {isLoading
+              ? Array.from({ length: 6 }).map((_, index) => (
+                  <div key={index} className={styles.newBook}>
+                    <div className={styles.imgWrap}>
+                      <Skeleton.Image
+                        style={{ width: "125px", height: "175px" }}
+                      />
+                    </div>
+                    <div className={styles.newBookTitle}>
+                      <Skeleton active paragraph={{ rows: 1 }} title={false} />
+                    </div>
+                    <div className={styles.newBookAuthor}>
+                      <Skeleton active paragraph={{ rows: 1 }} title={false} />
+                    </div>
+                  </div>
+                ))
+              : booksByQueryName.map((book: Book) => (
+                  <Link
+                    key={book.id}
+                    className={styles.newBook}
+                    to={`${routes.askQuestion}/${book.id}`}
+                    onClick={() => {
+                      setIsModalOpen(false);
+                    }}
+                  >
+                    <div className={styles.imgWrap}>
+                      <img src={book.bookCover?.link} alt={book.title} />
+                    </div>
+                    <div className={styles.newBookTitle}>{book.title}</div>
+                    <div className={styles.newBookAuthor}>
+                      {book.author.map((author) => author.name).join(", ")}
+                    </div>
+                  </Link>
+                ))}
           </div>
-
-          <div className={styles.kidsSelectWrapper}>
-            <span>New Books in Your Favorite Category</span>
-            <Controller
-              name="newBooks"
-              control={control}
-              render={({ field }) => (
-                <Switch checked={field.value} onChange={field.onChange} />
-              )}
-            />
-          </div>
-
-          <div style={{ textAlign: "right", marginTop: "30px" }}>
-            <Button variant="Brown" type="submit">
-              Save
-            </Button>
-          </div>
-        </form>
-      )}
+        )}
+      </div>
     </Modal>
   );
 };
