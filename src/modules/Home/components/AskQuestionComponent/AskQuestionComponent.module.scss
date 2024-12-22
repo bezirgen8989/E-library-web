@@ -249,3 +249,36 @@
   background-size: contain;
   margin-bottom: 20px;
 }
+.collapseButton {
+  color: #996C42;
+  padding: 15px 0;
+  font-size: 14px;
+  font-weight: 600;
+  &:hover {
+    opacity: 0.8;
+    cursor: pointer;
+  }
+}
+.collapseContent {
+  max-height: 300px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  margin-bottom: 10px;
+  scrollbar-color: #8E8E93 rgba(255, 255, 255, 0.1); /* Цвет ползунка */
+  scrollbar-width: thin; /* Узкий скроллбар */
+  ::-webkit-scrollbar {
+    width: 8px; /* Ширина скроллбара */
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #8E8E93; /* Цвет ползунка */
+    border-radius: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1); /* Цвет трека */
+  }
+}
+.panelHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Расстояние между иконкой и текстом */
+}

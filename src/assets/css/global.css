@@ -232,16 +232,19 @@ p {
 
 .ant-collapse {
   border: none !important;
+  background: none !important;
 }
 
 .ant-collapse-item {
   /*border: 1px solid rgba(181, 202, 221, 0.24) !important;*/
-  border: 1px solid #182724 !important;
+  border: none !important;
 }
   .ant-collapse-header {
-    background-color: rgba(1, 21, 27, 1) !important;
+    background-color: #112425 !important;
     color: white !important; /* White text color for contrast */
     border: none !important;
+    border-radius: 6px !important;
+    margin-bottom: 3px !important;
   }
 
   .ant-collapse-content {

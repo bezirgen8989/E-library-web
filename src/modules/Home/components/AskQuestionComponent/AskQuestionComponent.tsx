@@ -3,8 +3,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Collapse } from "antd";
 import styles from "./AskQuestionComponent.module.scss";
 import Send from "../../../../assets/images/icons/sendIcon.svg";
+import CollapseIcon from "../../../../assets/images/icons/CollapseIcon.svg";
+import DocumentIcon from "../../../../assets/images/icons/document.svg";
+import ArrowDown from "../../../../assets/images/icons/arrowProfile.svg";
 import ChatSpinner from "../../../../components/common/ChatSpinner";
-import Button from "../../../../components/common/Buttons/Button";
 // import { SrsPlayer } from "../../../../components/common/SrsPlayer";
 import ChooseAvatar from "./common/ChooseAvatar/ChooseAvatar";
 import ChooseAvatarStep2 from "./common/ChooseAvatarStep2/ChooseAvatarStep2";
@@ -73,7 +75,20 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const renderMetaData = () => {
     if (metaData && metaData.length > 0) {
       return metaData.map((item: any, index: number) => (
-        <Panel header={`Page ${item.meta.loc.pageNumber}`} key={index}>
+        <Panel
+          key={index}
+          header={
+            <div className={styles.panelHeader}>
+              <img
+                src={DocumentIcon}
+                alt="Document Icon"
+                className={styles.documentIcon}
+              />
+              <span>Page {item.meta.loc.pageNumber}</span>
+            </div>
+          }
+          showArrow={false} // Убираем стандартный значок разворачивания
+        >
           <div>
             <p>
               <strong>Location:</strong> Page {item.meta.loc.pageNumber}, Lines{" "}
@@ -148,13 +163,13 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
             {/*    },*/}
             {/*  }}*/}
             {/*/>*/}
-            {metaData && metaData.length > 0 && !isLoading && !isSending && (
-              <Button variant="Brown" onClick={toggleCollapse}>
-                {isCollapseVisible ? "Hide details" : "Show details"}
-              </Button>
-            )}
-            {isSending && <ChatSpinner />}
-            {isCollapseVisible && <Collapse>{renderMetaData()}</Collapse>}
+            {/*{metaData && metaData.length > 0 && !isLoading && !isSending && (*/}
+            {/*  <div onClick={toggleCollapse}>*/}
+            {/*    {isCollapseVisible ? "Hide used resources" : "Show used resources"}*/}
+            {/*  </div>*/}
+            {/*)}*/}
+            {/*{isSending && <ChatSpinner />}*/}
+            {/*{isCollapseVisible && <Collapse>{renderMetaData()}</Collapse>}*/}
           </div>
           <div className={styles.chatContainer}>
             <div className={styles.chatContent}>
@@ -174,11 +189,32 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                 </div>
               )}
             </div>
-            {isLoading && (
-              <div className={styles.spinnerContainer}>
-                <ChatSpinner />
+            {/*{isLoading && (*/}
+            {/*  <div className={styles.spinnerContainer}>*/}
+            {/*    <ChatSpinner />*/}
+            {/*  </div>*/}
+            {/*)}*/}
+
+            {isSending && <ChatSpinner />}
+            {metaData && metaData.length > 0 && !isLoading && !isSending && (
+              <div className={styles.collapseButton} onClick={toggleCollapse}>
+                <span style={{ paddingRight: 10 }}>
+                  {isCollapseVisible
+                    ? "Hide used resources"
+                    : "Show used resources"}
+                </span>
+                <img
+                  style={{
+                    transform: `rotate(${isCollapseVisible ? 180 : 0}deg)`,
+                  }}
+                  src={isCollapseVisible ? ArrowDown : CollapseIcon}
+                  alt="icon"
+                />
               </div>
             )}
+            <div className={styles.collapseContent}>
+              {isCollapseVisible && <Collapse>{renderMetaData()}</Collapse>}
+            </div>
             <form
               className={styles.chatInputSection}
               onSubmit={handleSubmit(onSubmit)}
