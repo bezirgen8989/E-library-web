@@ -140,7 +140,11 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       {currentStep === 5 && (
         <div className={styles.askQuestionPage}>
           <div className={styles.avatarSide}>
-            <div className={styles.bookTitle}>{title}</div>
+            <div className={styles.bookTitle}>
+              {location.pathname.includes("ask_global_question")
+                ? "Global Library Collection"
+                : title}
+            </div>
             <div
               className={styles.avatarFace}
               style={{ backgroundImage: `url(${selectedAvatar})` }}

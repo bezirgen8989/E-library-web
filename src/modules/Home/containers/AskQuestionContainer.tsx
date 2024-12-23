@@ -63,6 +63,9 @@ const AskQuestionContainer: React.FC = () => {
       const fetchData = async () => {
         setIsLoading(true);
         try {
+          const indexName = location.pathname.includes("ask_global_question")
+            ? "GlobalLibraryCollection"
+            : currentBook?.result?.vectorEntity?.indexName;
           await fetchEventSource(
             "https://elib.plavno.io:8080/api/v1/vectors/ask",
             {
@@ -73,7 +76,7 @@ const AskQuestionContainer: React.FC = () => {
               },
               body: JSON.stringify({
                 query: question,
-                indexName: currentBook?.result?.vectorEntity?.indexName,
+                indexName,
               }),
 
               onmessage(event: EventSourceMessage) {
