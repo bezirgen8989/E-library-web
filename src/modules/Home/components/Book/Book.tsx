@@ -106,8 +106,7 @@ const Book: React.FC<HomeProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  console.log("isLiked", book?.isFavourite);
-  console.log("selectedLanguage", selectedLanguage);
+  console.log("currentBook", currentBook?.result?.isFavourite);
 
   useEffect(() => {
     if (id) {

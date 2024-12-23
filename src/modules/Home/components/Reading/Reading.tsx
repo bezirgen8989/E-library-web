@@ -11,7 +11,7 @@ interface ReadingProps {
   isLoading: boolean;
   onNext: () => void;
   onPrev: () => void;
-  featurePageFromServer: number;
+  featurePageFromServer: any;
   maxLoadPage: number;
   setMaxLoadPage: (num: number) => void;
 }
@@ -28,7 +28,7 @@ const Reading: React.FC<ReadingProps> = ({
 }) => {
   const history = useHistory();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [currentPage, setCurrentPage] = useState<number>(featurePageFromServer);
+  const [currentPage, setCurrentPage] = useState<number>(10);
   const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
 
   const getPageNumberFromHTML = (html: string) => {

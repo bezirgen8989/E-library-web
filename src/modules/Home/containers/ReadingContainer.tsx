@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { Reading } from "../components";
 import {
   addToShelf,
-  // addToShelf,
   clearBooks,
   getBookshelfById,
   getReadBook,
@@ -25,9 +24,9 @@ const ReadingContainer: React.FC = () => {
   const [totalPages, setTotalPages] = useState<number>(0);
   const prevTotalPages = useRef<number>(0);
   const [maxLoadPage, setMaxLoadPage] = useState<number>(0);
-
-  // State for featurePageFromServer
-  const [featurePageFromServer, setFeaturePageFromServer] = useState<number>(5);
+  const [featurePageFromServer, setFeaturePageFromServer] = useState<
+    number | null
+  >(null);
 
   const { currentReadBook, isLoading, currentBookshelfBook } = useLazySelector(
     ({ home }) => ({
@@ -37,39 +36,45 @@ const ReadingContainer: React.FC = () => {
     })
   );
 
-  console.log("currentReadBook", currentReadBook);
-  console.log(
-    "currentBookshelfBookLastPage",
-    currentBookshelfBook?.result?.lastPage
-  );
-  //currentBookshelfBook
   useEffect(() => {
-    if (value?.id && id) {
-      dispatch(
-        getBookshelfById({
-          userId: +value?.id,
-          bookId: +id,
-        })
-      );
-    }
-  }, [dispatch, id, value?.id]);
+    const fetchBookshelfData = async () => {
+      if (value?.id && id) {
+        try {
+          await dispatch(
+            addToShelf({
+              user: { id: +value.id },
+              book: { id: +id },
+              isFavourited: true,
+              readingState: "added",
+            })
+          );
+          await dispatch(
+            getBookshelfById({
+              userId: +value.id,
+              bookId: +id,
+            })
+          );
+        } catch (error) {
+          console.error(
+            "Error adding to shelf or fetching bookshelf data:",
+            error
+          );
+        }
+      }
+    };
 
-  useEffect(() => {
-    if (value?.id) {
-      dispatch(
-        addToShelf({
-          user: { id: +value.id },
-          book: { id: +id },
-          isFavourited: true,
-          readingState: "added",
-        })
-      );
-    }
+    fetchBookshelfData();
   }, [dispatch, value?.id, id]);
 
   useEffect(() => {
-    if (currentBookshelfBook?.result?.lastPage) {
-      setFeaturePageFromServer(currentBookshelfBook.result.lastPage);
+    if (currentBookshelfBook?.result) {
+      const { readingState, lastPage } = currentBookshelfBook.result;
+
+      if (readingState === "added") {
+        setFeaturePageFromServer(1);
+      } else if (readingState === "reading" && lastPage) {
+        setFeaturePageFromServer(lastPage);
+      }
     }
   }, [currentBookshelfBook]);
 
@@ -95,7 +100,7 @@ const ReadingContainer: React.FC = () => {
     if (currentReadBook?.result?.html) {
       if (!pagesContent.includes(currentReadBook.result.html)) {
         setPagesContent((prev) => {
-          if (page && page < featurePageFromServer) {
+          if (page && page < featurePageFromServer!) {
             return [currentReadBook.result.html, ...prev];
           }
           return [...prev, currentReadBook.result.html];
@@ -120,8 +125,6 @@ const ReadingContainer: React.FC = () => {
     );
   };
 
-  console.log("maxLoadPage", maxLoadPage);
-
   const saveProgress = () => {
     if (value?.id && id) {
       const payload: SetReadingBookPayload = {
@@ -130,7 +133,6 @@ const ReadingContainer: React.FC = () => {
         lastPage: maxLoadPage,
         progress: totalPages > 0 ? (maxLoadPage / totalPages) * 100 : 0,
         readingState: "reading",
-        // isFavourited: true,
       };
 
       dispatch(setReadingBook(payload));
@@ -138,13 +140,15 @@ const ReadingContainer: React.FC = () => {
   };
 
   useEffect(() => {
-    const unlisten = () => {
+    const handleLeave = () => {
       if (!location.pathname.includes("reading")) {
         saveProgress();
+        setFeaturePageFromServer(null);
+        dispatch(clearBooks());
       }
     };
 
-    return unlisten;
+    return handleLeave;
   }, [location.pathname, maxLoadPage]);
 
   return (
