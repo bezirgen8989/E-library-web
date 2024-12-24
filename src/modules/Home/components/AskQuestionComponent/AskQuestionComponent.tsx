@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Collapse } from "antd";
 import styles from "./AskQuestionComponent.module.scss";
@@ -8,10 +8,12 @@ import DocumentIcon from "../../../../assets/images/icons/document.svg";
 import ArrowDown from "../../../../assets/images/icons/arrowProfile.svg";
 import ChatSpinner from "../../../../components/common/ChatSpinner";
 // import { SrsPlayer } from "../../../../components/common/SrsPlayer";
+import ReactQuill from "react-quill";
 import ChooseAvatar from "./common/ChooseAvatar/ChooseAvatar";
 import ChooseAvatarStep2 from "./common/ChooseAvatarStep2/ChooseAvatarStep2";
 import ChooseAvatarStep3 from "./common/ChooseAvatarStep3/ChooseAvatarStep3";
 import ChooseAvatarStep4 from "./common/ChooseAvatarStep4/ChooseAvatarStep4";
+import VoiceRecorder from "../../../../components/Voice/VoiceRecorder/VoiceRecorder";
 
 type FormValues = {
   question: string;
@@ -49,6 +51,39 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   // const videoRef = useRef<HTMLVideoElement | any>(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
+  const [isRecordingInProcess, setIsRecordingInProcess] = useState(false);
+  const [formData, setFormData] = useState<FormData | undefined>();
+  const quillRef = useRef<ReactQuill>(null);
+  const cursorPositionRef = useRef<null | number>(null);
+  console.log("formData", formData);
+  console.log("isRecordingInProcess", isRecordingInProcess);
+
+  const addTextWithDelay = async (res: string) => {
+    const quillEditor = quillRef?.current?.getEditor();
+
+    if (res !== undefined) {
+      if (cursorPositionRef.current !== null) {
+        const position = cursorPositionRef.current;
+
+        if (quillEditor) {
+          quillEditor?.insertText(position, res);
+          const result: any = position + res?.length;
+          // Move cursor after inserted text
+          quillEditor?.setSelection(result);
+        }
+      }
+    }
+  };
+
+  const clickCursor = () => {
+    if (cursorPositionRef.current === null) {
+      const quillEditor = quillRef?.current?.getEditor();
+      cursorPositionRef.current =
+        quillEditor?.getText()?.length === 1
+          ? 0
+          : quillEditor?.getText()?.length || 0;
+    }
+  };
 
   const getCurrentTime = (): string => {
     const now = new Date();
@@ -219,6 +254,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
             <div className={styles.collapseContent}>
               {isCollapseVisible && <Collapse>{renderMetaData()}</Collapse>}
             </div>
+
             <form
               className={styles.chatInputSection}
               onSubmit={handleSubmit(onSubmit)}
@@ -238,6 +274,17 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                 <img src={Send} alt="btn" />
               </button>
             </form>
+            <VoiceRecorder
+              setIsRecordingInProcess={setIsRecordingInProcess}
+              addTextWithDelay={addTextWithDelay}
+              selectedLanguage=""
+              clickCursor={clickCursor}
+              setFormData={setFormData}
+              // isLoadingData={!isCreate && queryResult?.isLoading}
+              isLoadingData={false}
+              // link={formProps?.initialValues?.audioFile?.link}
+              link=""
+            />
           </div>
         </div>
       )}

@@ -1,0 +1,109 @@
+////@import "src/styles/mixins";
+////@import "src/styles/variables.module";
+//
+//.custom_buttonDark {
+//  background-color: var(--button-primary) !important;
+//  color: var(--button-primary-text) !important;
+//  .icon {
+//    color: var(--button-primary-icon-color);
+//  }
+//  &:hover {
+//    background-color: $blue-primary !important;
+//    color: var(--button-primary-text-hover) !important;
+//  }
+//  &:disabled {
+//    background-color: var(--button-primary) !important;
+//    color: var(--button-primary-text) !important;
+//    opacity: 48%;
+//  }
+//}
+//
+//.custom_buttonLight {
+//  border: 1px solid var(--button-light-border-color) !important;
+//  color: var(--button-light-text) !important;
+//  background-color: var(--button-light) !important;
+//  box-shadow: none !important;
+//
+//  &:hover {
+//    background-color: none !important;
+//    color: var(--button-light-hover-text) !important;
+//  }
+//  &:disabled {
+//    border: 1px solid var(--button-light-border-color) !important;
+//    color: var(--button-light-disabled-color)!important;
+//    background-color: var(--button-light) !important;
+//    opacity: 48%;
+//  }
+//}
+//
+//.custom_buttonRed {
+//  color: var(--white) !important;
+//  background-color: var(--button-red) !important;
+//  &:hover {
+//    background-color: var(--button-red-hover) !important;
+//  }
+//  &:disabled {
+//    color: var(--button-red-disabled-text) !important;
+//    background-color: var(--button-red-disabled) !important;
+//  }
+//}
+//
+//.custom_buttonGray {
+//  color: var(--text-header) !important;
+//  background-color: var(--button-gray-bg) !important;
+//  &:hover {
+//    color: $blue-primary !important;
+//  }
+//  &:disabled {
+//    opacity: 0.5;
+//  }
+//}
+//
+//.custom_buttonLink {
+//  color: $blue-primary !important;
+//  &:hover {
+//    text-decoration: underline;
+//  }
+//}
+//
+//.custom_buttonLink_error {
+//  color: $red-primary !important;
+//  &:hover {
+//    text-decoration: underline;
+//  }
+//}
+//
+//.custom_button  {
+//  padding: 0 20px !important;
+//  background: none;
+//
+//  :global(.ant-btn) {
+//    height: 48px !important;
+//  }
+//
+//  &_children {
+//    width: 100%;
+//    @include flex(row, center, center, nowrap);
+//    :global(.ant-spin) {
+//      margin-left: 10px ;
+//    }
+//  }
+//}
+//
+//.icon_before {
+//  svg {
+//    margin-right: 9px;
+//  }
+//}
+//.icon_after {
+//  svg {
+//    margin-left: 8px;
+//  }
+//}
+//
+//.icon {
+//  display: flex;
+//  align-items: center;
+//  justify-content: center;
+//  height: fit-content;
+//}

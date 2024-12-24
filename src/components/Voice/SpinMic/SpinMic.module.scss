@@ -1,0 +1,41 @@
+.loaderMic,
+.loaderMicSmall {
+  border-radius: 50%;
+  position: relative;
+  animation: rotate 1s linear infinite
+}
+.loaderMic {
+  width: 22px;
+  height: 22px;
+}
+.loaderMicSmall {
+  width: 16px;
+  height: 16px;
+}
+.loaderMic::before,
+.loaderMicSmall::before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: prixClipFix 3s linear infinite ;
+}
+.loaderMic::before {
+  border: 2px solid #DCF1F2;
+}
+.loaderMicSmall::before {
+  border: 2px solid #9AA6B6;
+}
+
+@keyframes rotate {
+  100%   {transform: rotate(360deg)}
+}
+
+@keyframes prixClipFix {
+  0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+  25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+  50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+  75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
+  100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
+}

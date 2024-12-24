@@ -1,0 +1,109 @@
+
+//@import "src/styles/variables.module";
+.wrapper {
+  background: linear-gradient(45deg, #70DDE3 0%, #9FF8E1 50.5%, #B8FFC6 100%);
+  padding: 24px;
+  border-radius: 24px;
+  margin-bottom: 24px;
+  position:relative;
+  .initialBlock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .text {
+      color: grey;
+      font-size: 16px;
+      font-weight: 600;
+
+      div:nth-child(2) {
+        margin-top: 8px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+    }
+
+    .btnMic {
+      button {
+        padding: 0;
+      }
+    }
+  }
+
+  .voiceBlock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    p {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+    .recording {
+      display: flex;
+      align-items: center;
+      // width: 248px;
+      // min-width: 160px
+    }
+  }
+}
+
+.btnPause {
+  width: 48px !important;
+}
+
+.stopBtnIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  .progressBlock {
+    margin: 0 !important;
+    margin-left: 4px !important;
+    font-size: 12px;
+  }
+}
+
+.stopBtnIconWrapperPaused {
+  color:#FF0032;
+}
+.stopBtn {
+  display: flex;
+  align-items: center;
+
+}
+.stopRecording {
+  margin: 0 8px 0 16px;
+}
+.readyRecordingWrapper {
+  display: flex;
+  min-width: 160px;
+  align-items: center;
+}
+.hiddenPlayBtn {
+  position: absolute !important;
+  visibility: hidden;
+}
+.deleteBtn {
+  margin-left: 8px;
+  width: 48px !important;
+}
+.playBtn {
+  width: 48px !important;
+  margin-left: 30px;
+  margin-right: 12px;
+}
+.name {
+  min-width: 95px;
+  font-size: 1rem;
+  color: var(--text-header);
+  font-weight: 600;
+}
+
+.playBtnForReadyAudio {
+  position: absolute;
+  left: 41%;
+  top: 16px;
+}
+.blockForReadyAudio  {
+  padding: 6px;
+}
