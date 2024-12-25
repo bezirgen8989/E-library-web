@@ -10,6 +10,11 @@ import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../hooks";
 import { getMe, setAvatar } from "../../Auth/slices/auth";
 
+type Chat = {
+  type: "user" | "response";
+  message: string;
+};
+
 const AskQuestionContainer: React.FC = () => {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState<string[]>([]);
@@ -18,6 +23,8 @@ const AskQuestionContainer: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch();
   const history = useHistory();
+  const [chatHistory, setChatHistory] = useState<Chat[]>([]);
+  console.log("chatHistory", chatHistory);
 
   useEffect(() => {
     dispatch(getBookById(id));
@@ -62,10 +69,19 @@ const AskQuestionContainer: React.FC = () => {
 
       const fetchData = async () => {
         setIsLoading(true);
+        setMessages([]); // Очищаем сообщения для нового запроса
+
         try {
           const indexName = location.pathname.includes("ask_global_question")
             ? "GlobalLibraryCollection"
             : currentBook?.result?.vectorEntity?.indexName;
+
+          setChatHistory((prev) => [
+            ...prev,
+            { type: "user", message: question }, // Добавляем вопрос
+            { type: "response", message: "" }, // Добавляем место для ответа
+          ]);
+
           await fetchEventSource(
             "https://elib.plavno.io:8080/api/v1/vectors/ask",
             {
@@ -85,6 +101,18 @@ const AskQuestionContainer: React.FC = () => {
 
                   if (event.event === "MESSAGE" && data.chunk) {
                     setMessages((prev) => [...prev, data.chunk]);
+
+                    // Обновляем последний ответ в истории
+                    setChatHistory((prev) => {
+                      const updatedHistory = [...prev];
+                      const lastIndex = updatedHistory.length - 1;
+
+                      if (updatedHistory[lastIndex].type === "response") {
+                        updatedHistory[lastIndex].message += data.chunk;
+                      }
+
+                      return updatedHistory;
+                    });
                   }
 
                   if (event.event === "META") {
@@ -143,6 +171,7 @@ const AskQuestionContainer: React.FC = () => {
       metaData={meta}
       avatars={avatars}
       setUserAvatar={setUserAvatar}
+      chatHistory={chatHistory}
     />
   );
 };

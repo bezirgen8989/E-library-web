@@ -15,6 +15,11 @@ import ChooseAvatarStep3 from "./common/ChooseAvatarStep3/ChooseAvatarStep3";
 import ChooseAvatarStep4 from "./common/ChooseAvatarStep4/ChooseAvatarStep4";
 import VoiceRecorder from "../../../../components/Voice/VoiceRecorder/VoiceRecorder";
 
+type Chat = {
+  type: "user" | "system"; // Assuming 'user' or 'system' are the only types of messages
+  message: string;
+};
+
 type FormValues = {
   question: string;
 };
@@ -28,6 +33,7 @@ type AskQuestionComponentProps = {
   metaData: any;
   avatars: any;
   setUserAvatar: (id: number) => void;
+  chatHistory: any;
 };
 
 const { Panel } = Collapse;
@@ -35,15 +41,14 @@ const { Panel } = Collapse;
 const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   setQuestion,
   clearMessages,
-  messages,
   title,
   isLoading,
   metaData,
   avatars,
   setUserAvatar,
+  chatHistory,
 }) => {
   const { register, handleSubmit, reset } = useForm<FormValues>();
-  const [userMessage, setUserMessage] = useState<string | null>(null);
   const [messageClass, setMessageClass] = useState(styles.messageSystemChange);
   const [messageTime, setMessageTime] = useState<string>("");
   const [isCollapseVisible, setIsCollapseVisible] = useState(false);
@@ -96,7 +101,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     const currentTime = getCurrentTime();
     setQuestion(data.question);
     clearMessages();
-    setUserMessage(data.question);
+    // setUserMessage(data.question);
     setMessageClass(styles.messageSystem);
     setMessageTime(currentTime);
     setIsSending(true);
@@ -212,22 +217,33 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
           </div>
           <div className={styles.chatContainer}>
             <div className={styles.chatContent}>
-              {userMessage && (
-                <div className={styles.messageUser}>
-                  <div className={styles.userMessage}>
-                    {userMessage}
-                    <div className={styles.messageSystemBottom}>
-                      <span className={styles.messageTime}>{messageTime}</span>
-                    </div>
+              {chatHistory.map((chat: Chat, index: number) => (
+                <div
+                  key={index}
+                  className={
+                    chat.type === "user" ? styles.messageUser : messageClass // Use `messageClass` for system messages
+                  }
+                >
+                  <div
+                    className={
+                      chat.type === "user"
+                        ? styles.userMessage
+                        : styles.messageSystemContent
+                    }
+                  >
+                    {chat.message}
+                    {chat.type === "user" && (
+                      <div className={styles.messageSystemBottom}>
+                        <span className={styles.messageTime}>
+                          {messageTime}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
-              )}
-              {messages && (
-                <div className={messageClass}>
-                  <div className={styles.messageSystemContent}>{messages}</div>
-                </div>
-              )}
+              ))}
             </div>
+
             {/*{isLoading && (*/}
             {/*  <div className={styles.spinnerContainer}>*/}
             {/*    <ChatSpinner />*/}
