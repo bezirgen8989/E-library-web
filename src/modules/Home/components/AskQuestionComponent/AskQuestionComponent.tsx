@@ -6,6 +6,7 @@ import Send from "../../../../assets/images/icons/sendIcon.svg";
 import CollapseIcon from "../../../../assets/images/icons/CollapseIcon.svg";
 import DocumentIcon from "../../../../assets/images/icons/document.svg";
 import ArrowDown from "../../../../assets/images/icons/arrowProfile.svg";
+import Mic from "../../../../assets/images/icons/MicIcon.svg";
 import ChatSpinner from "../../../../components/common/ChatSpinner";
 // import { SrsPlayer } from "../../../../components/common/SrsPlayer";
 import ReactQuill from "react-quill";
@@ -60,6 +61,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [formData, setFormData] = useState<FormData | undefined>();
   const quillRef = useRef<ReactQuill>(null);
   const cursorPositionRef = useRef<null | number>(null);
+  const [isTextMode, setIsTextMode] = useState(false);
   console.log("formData", formData);
   console.log("isRecordingInProcess", isRecordingInProcess);
 
@@ -110,6 +112,18 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     setTimeout(() => {
       setIsSending(false);
     }, 2000);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsTextMode(e.target.value.length > 0); // Switch to text mode if there is any input
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && !isSending) {
+      // Prevent default form submission behavior
+      e.preventDefault();
+      handleSubmit(onSubmit)();
+    }
   };
 
   const renderMetaData = () => {
@@ -221,7 +235,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                 <div
                   key={index}
                   className={
-                    chat.type === "user" ? styles.messageUser : messageClass // Use `messageClass` for system messages
+                    chat.type === "user" ? styles.messageUser : messageClass // Use messageClass for system messages
                   }
                 >
                   <div
@@ -271,25 +285,31 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
               {isCollapseVisible && <Collapse>{renderMetaData()}</Collapse>}
             </div>
 
-            <form
-              className={styles.chatInputSection}
-              onSubmit={handleSubmit(onSubmit)}
-            >
+            <div className={styles.chatInputSection}>
               <input
                 {...register("question", { required: true })}
                 type="text"
                 className={styles.chatInput}
                 placeholder="Your question..."
                 autoComplete="off"
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
               />
-              <button
-                type="submit"
-                className={styles.submitButton}
-                disabled={isSending}
-              >
-                <img src={Send} alt="btn" />
-              </button>
-            </form>
+              {isTextMode ? (
+                <button
+                  type="button"
+                  className={styles.submitButton}
+                  disabled={isSending}
+                  onClick={handleSubmit(onSubmit)}
+                >
+                  <img src={Send} alt="btn" />
+                </button>
+              ) : (
+                <button className={styles.micButton} disabled={isSending}>
+                  <img src={Mic} alt="btn" />
+                </button>
+              )}
+            </div>
             <VoiceRecorder
               setIsRecordingInProcess={setIsRecordingInProcess}
               addTextWithDelay={addTextWithDelay}
