@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Collapse } from "antd";
 import styles from "./AskQuestionComponent.module.scss";
@@ -6,7 +6,6 @@ import Send from "../../../../assets/images/icons/sendIcon.svg";
 import CollapseIcon from "../../../../assets/images/icons/CollapseIcon.svg";
 import DocumentIcon from "../../../../assets/images/icons/document.svg";
 import ArrowDown from "../../../../assets/images/icons/arrowProfile.svg";
-import Mic from "../../../../assets/images/icons/MicIcon.svg";
 import ChatSpinner from "../../../../components/common/ChatSpinner";
 // import { SrsPlayer } from "../../../../components/common/SrsPlayer";
 import ReactQuill from "react-quill";
@@ -61,9 +60,10 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [formData, setFormData] = useState<FormData | undefined>();
   const quillRef = useRef<ReactQuill>(null);
   const cursorPositionRef = useRef<null | number>(null);
-  const [isTextMode, setIsTextMode] = useState(false);
+  const [url, setUrl] = useState<any>();
   console.log("formData", formData);
   console.log("isRecordingInProcess", isRecordingInProcess);
+  console.log("URL", url);
 
   const addTextWithDelay = async (res: string) => {
     const quillEditor = quillRef?.current?.getEditor();
@@ -81,6 +81,35 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       }
     }
   };
+
+  useEffect(() => {
+    const fetchStreamUrl = async () => {
+      const token = sessionStorage.getItem("SESSION_TOKEN");
+      try {
+        const response = await fetch(
+          "https://elib.plavno.io:8080/api/v1/srs/url",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const text = await response.text();
+        console.log("Response text (URL):", text);
+
+        setUrl(text);
+      } catch (error) {
+        console.error("Error fetching stream URL:", error);
+      }
+    };
+    fetchStreamUrl();
+  }, [url]);
 
   const clickCursor = () => {
     if (cursorPositionRef.current === null) {
@@ -114,10 +143,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     }, 2000);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsTextMode(e.target.value.length > 0); // Switch to text mode if there is any input
-  };
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !isSending) {
       // Prevent default form submission behavior
@@ -141,7 +166,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
               <span>Page {item.meta.loc.pageNumber}</span>
             </div>
           }
-          showArrow={false} // Убираем стандартный значок разворачивания
+          showArrow={false}
         >
           <div>
             <p>
@@ -202,32 +227,49 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
             <div
               className={styles.avatarFace}
               style={{ backgroundImage: `url(${selectedAvatar})` }}
-            />
-            {/*<SrsPlayer*/}
-            {/*    url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream"*/}
-            {/*  // url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream-a"*/}
-            {/*  width={300}*/}
-            {/*  height={100}*/}
-            {/*  videoRef={videoRef}*/}
-            {/*  options={{*/}
-            {/*    autoPlay: true,*/}
-            {/*    playsInline: true,*/}
-            {/*    muted: false,*/}
-            {/*    controls: true,*/}
-            {/*  }}*/}
-            {/*  rtcOpts={{*/}
-            {/*    audio: {*/}
-            {/*      enable: true,*/}
-            {/*    },*/}
-            {/*  }}*/}
-            {/*/>*/}
-            {/*{metaData && metaData.length > 0 && !isLoading && !isSending && (*/}
-            {/*  <div onClick={toggleCollapse}>*/}
-            {/*    {isCollapseVisible ? "Hide used resources" : "Show used resources"}*/}
-            {/*  </div>*/}
+            ></div>
+            <div style={{ margin: "0 auto" }}>
+              <VoiceRecorder
+                setIsRecordingInProcess={setIsRecordingInProcess}
+                addTextWithDelay={addTextWithDelay}
+                selectedLanguage=""
+                clickCursor={clickCursor}
+                setFormData={setFormData}
+                // isLoadingData={!isCreate && queryResult?.isLoading}
+                isLoadingData={false}
+                // link={formProps?.initialValues?.audioFile?.link}
+                link=""
+              />
+            </div>
+            {/*{url && (*/}
+            {/*  <SrsPlayer*/}
+            {/*    // url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream-258"*/}
+            {/*    url={url}*/}
+            {/*    width={300}*/}
+            {/*    height={100}*/}
+            {/*    videoRef={videoRef}*/}
+            {/*    options={{*/}
+            {/*      autoPlay: true,*/}
+            {/*      playsInline: true,*/}
+            {/*      muted: false,*/}
+            {/*      controls: true,*/}
+            {/*    }}*/}
+            {/*    rtcOpts={{*/}
+            {/*      audio: {*/}
+            {/*        enable: true,*/}
+            {/*      },*/}
+            {/*    }}*/}
+            {/*  />*/}
             {/*)}*/}
-            {/*{isSending && <ChatSpinner />}*/}
-            {/*{isCollapseVisible && <Collapse>{renderMetaData()}</Collapse>}*/}
+            {metaData && metaData.length > 0 && !isLoading && !isSending && (
+              <div onClick={toggleCollapse}>
+                {isCollapseVisible
+                  ? "Hide used resources"
+                  : "Show used resources"}
+              </div>
+            )}
+            {isSending && <ChatSpinner />}
+            {isCollapseVisible && <Collapse>{renderMetaData()}</Collapse>}
           </div>
           <div className={styles.chatContainer}>
             <div className={styles.chatContent}>
@@ -235,7 +277,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                 <div
                   key={index}
                   className={
-                    chat.type === "user" ? styles.messageUser : messageClass // Use messageClass for system messages
+                    chat.type === "user" ? styles.messageUser : messageClass
                   }
                 >
                   <div
@@ -292,35 +334,17 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                 className={styles.chatInput}
                 placeholder="Your question..."
                 autoComplete="off"
-                onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
               />
-              {isTextMode ? (
-                <button
-                  type="button"
-                  className={styles.submitButton}
-                  disabled={isSending}
-                  onClick={handleSubmit(onSubmit)}
-                >
-                  <img src={Send} alt="btn" />
-                </button>
-              ) : (
-                <button className={styles.micButton} disabled={isSending}>
-                  <img src={Mic} alt="btn" />
-                </button>
-              )}
+              <button
+                type="button"
+                className={styles.submitButton}
+                disabled={isSending}
+                onClick={handleSubmit(onSubmit)}
+              >
+                <img src={Send} alt="btn" />
+              </button>
             </div>
-            <VoiceRecorder
-              setIsRecordingInProcess={setIsRecordingInProcess}
-              addTextWithDelay={addTextWithDelay}
-              selectedLanguage=""
-              clickCursor={clickCursor}
-              setFormData={setFormData}
-              // isLoadingData={!isCreate && queryResult?.isLoading}
-              isLoadingData={false}
-              // link={formProps?.initialValues?.audioFile?.link}
-              link=""
-            />
           </div>
         </div>
       )}

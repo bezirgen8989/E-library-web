@@ -188,7 +188,8 @@ export const LoginUser = createAsyncThunk(
   async (formParams: LoginUserParams) => {
     const response = await authLogin(formParams);
     const { success, status, error, content } = response;
-    console.log("response", response);
+
+    console.log("response", success, status, error, content);
 
     if (!success) {
       if (status === 401) {

@@ -25,6 +25,7 @@ export type HomeState = {
   notificationsSettings: any;
   hasNew: any;
   avatars: any;
+  streamUrl: any;
 };
 export interface SetReadingBookPayload {
   user: {

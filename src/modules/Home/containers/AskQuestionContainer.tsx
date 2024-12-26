@@ -24,7 +24,6 @@ const AskQuestionContainer: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [chatHistory, setChatHistory] = useState<Chat[]>([]);
-  console.log("chatHistory", chatHistory);
 
   useEffect(() => {
     dispatch(getBookById(id));
@@ -53,7 +52,6 @@ const AskQuestionContainer: React.FC = () => {
   }, [dispatch]);
 
   const setUserAvatar = (avatarId: number) => {
-    console.log("AVATARID", avatarId);
     dispatch(
       setAvatar({
         avatarSettings: {
@@ -93,6 +91,7 @@ const AskQuestionContainer: React.FC = () => {
               body: JSON.stringify({
                 query: question,
                 indexName,
+                language: { id: 19 },
               }),
 
               onmessage(event: EventSourceMessage) {

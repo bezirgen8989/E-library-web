@@ -75,3 +75,4 @@ export const checkUserNotifications = () =>
   usingGet(`/api/v1/notifications/checkNew`);
 export const getAllAvatars = (params: { limit: string; page: string }) =>
   usingGet(`/api/v1/avatars?limit=${params.limit}&page=${params.page}`);
+export const getStreamUrl = () => usingPost(`/api/v1/srs/url`, {});

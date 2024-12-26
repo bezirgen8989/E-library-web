@@ -31,6 +31,7 @@ import {
   getCurrentBookshelfBookById,
   getCurrentReadBook,
   getSearchBooks,
+  getStreamUrl,
   getUserNotifications,
   markNotificationAsRead,
   setReadingBookParams,
@@ -64,6 +65,7 @@ const initialState: HomeState = {
   notificationsSettings: {},
   hasNew: false,
   avatars: {},
+  streamUrl: {},
 };
 
 const homeSlice = createSlice({
@@ -198,6 +200,14 @@ const homeSlice = createSlice({
         const { content, error } = action.payload;
         state.booksByQueryName = { isLoading: false, result: content, error };
       })
+      .addCase(setStreamUrl.pending, (state) => {
+        state.streamUrl = { isLoading: true };
+      })
+      .addCase(setStreamUrl.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.streamUrl = { isLoading: false, result: content, error };
+      })
+
       .addCase(getAuthorsBooks.pending, (state) => {
         if (!state.authorBooks.result) {
           state.authorBooks = { isLoading: true };
@@ -612,6 +622,10 @@ export const getAvatars = createAsyncThunk(
     return response;
   }
 );
+export const setStreamUrl = createAsyncThunk("/api/v1/srs/url", async () => {
+  const response = await getStreamUrl();
+  return response;
+});
 
 export const {
   updateCounter,

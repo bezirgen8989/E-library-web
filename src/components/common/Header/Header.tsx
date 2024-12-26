@@ -13,7 +13,7 @@ import {
   setDrawerOpen,
 } from "../../../modules/Home/slices/home";
 import { useDispatch } from "react-redux";
-import { useLazySelector } from "../../../hooks";
+// import { useLazySelector } from "../../../hooks";
 import { routes } from "../../../modules/Home/routing";
 
 const Header: React.FC = () => {
@@ -22,16 +22,16 @@ const Header: React.FC = () => {
   const location = useLocation(); // Получаем текущий путь
   const dispatch = useDispatch();
 
-  const { isDrawerOpen, hasNew } = useLazySelector(({ home }) => {
-    const { isDrawerOpen, hasNew } = home;
-    return {
-      isDrawerOpen,
-      hasNew,
-    };
-  });
+  // const { isDrawerOpen, hasNew } = useLazySelector(({ home }) => {
+  //   const { isDrawerOpen, hasNew } = home;
+  //   return {
+  //     isDrawerOpen,
+  //     hasNew,
+  //   };
+  // });
 
-  console.log("hasNew", hasNew);
-  console.log("isDrawerOpen", isDrawerOpen);
+  // console.log("hasNew", hasNew);
+  // console.log("isDrawerOpen", isDrawerOpen);
 
   useEffect(() => {
     dispatch(checkNewNotifications());
@@ -45,7 +45,7 @@ const Header: React.FC = () => {
     location.pathname === userRoutes.profile ||
     /^\/search_genre_books\/\d+$/.test(location.pathname);
 
-  console.log("difStyles ", difStyles);
+  // console.log("difStyles ", difStyles);
 
   const isActive = (path: string) => location.pathname === path;
 
