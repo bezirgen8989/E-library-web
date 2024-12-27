@@ -7,7 +7,7 @@ import CollapseIcon from "../../../../assets/images/icons/CollapseIcon.svg";
 import DocumentIcon from "../../../../assets/images/icons/document.svg";
 import ArrowDown from "../../../../assets/images/icons/arrowProfile.svg";
 import ChatSpinner from "../../../../components/common/ChatSpinner";
-// import { SrsPlayer } from "../../../../components/common/SrsPlayer";
+import { SrsPlayer } from "../../../../components/common/SrsPlayer";
 import ReactQuill from "react-quill";
 import ChooseAvatar from "./common/ChooseAvatar/ChooseAvatar";
 import ChooseAvatarStep2 from "./common/ChooseAvatarStep2/ChooseAvatarStep2";
@@ -53,7 +53,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [messageTime, setMessageTime] = useState<string>("");
   const [isCollapseVisible, setIsCollapseVisible] = useState(false);
   const [isSending, setIsSending] = useState(false);
-  // const videoRef = useRef<HTMLVideoElement | any>(null);
+  const videoRef = useRef<HTMLVideoElement | any>(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const [isRecordingInProcess, setIsRecordingInProcess] = useState(false);
@@ -109,7 +109,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       }
     };
     fetchStreamUrl();
-  }, [url]);
+  }, []);
 
   const clickCursor = () => {
     if (cursorPositionRef.current === null) {
@@ -228,48 +228,26 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
               className={styles.avatarFace}
               style={{ backgroundImage: `url(${selectedAvatar})` }}
             ></div>
-            <div style={{ margin: "0 auto" }}>
-              <VoiceRecorder
-                setIsRecordingInProcess={setIsRecordingInProcess}
-                addTextWithDelay={addTextWithDelay}
-                selectedLanguage=""
-                clickCursor={clickCursor}
-                setFormData={setFormData}
-                // isLoadingData={!isCreate && queryResult?.isLoading}
-                isLoadingData={false}
-                // link={formProps?.initialValues?.audioFile?.link}
-                link=""
+            {url && (
+              <SrsPlayer
+                // url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream-258"
+                url={url}
+                width={300}
+                height={100}
+                videoRef={videoRef}
+                options={{
+                  autoPlay: true,
+                  playsInline: true,
+                  muted: false,
+                  controls: true,
+                }}
+                rtcOpts={{
+                  audio: {
+                    enable: true,
+                  },
+                }}
               />
-            </div>
-            {/*{url && (*/}
-            {/*  <SrsPlayer*/}
-            {/*    // url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream-258"*/}
-            {/*    url={url}*/}
-            {/*    width={300}*/}
-            {/*    height={100}*/}
-            {/*    videoRef={videoRef}*/}
-            {/*    options={{*/}
-            {/*      autoPlay: true,*/}
-            {/*      playsInline: true,*/}
-            {/*      muted: false,*/}
-            {/*      controls: true,*/}
-            {/*    }}*/}
-            {/*    rtcOpts={{*/}
-            {/*      audio: {*/}
-            {/*        enable: true,*/}
-            {/*      },*/}
-            {/*    }}*/}
-            {/*  />*/}
-            {/*)}*/}
-            {metaData && metaData.length > 0 && !isLoading && !isSending && (
-              <div onClick={toggleCollapse}>
-                {isCollapseVisible
-                  ? "Hide used resources"
-                  : "Show used resources"}
-              </div>
             )}
-            {isSending && <ChatSpinner />}
-            {isCollapseVisible && <Collapse>{renderMetaData()}</Collapse>}
           </div>
           <div className={styles.chatContainer}>
             <div className={styles.chatContent}>
@@ -326,24 +304,36 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
             <div className={styles.collapseContent}>
               {isCollapseVisible && <Collapse>{renderMetaData()}</Collapse>}
             </div>
-
-            <div className={styles.chatInputSection}>
-              <input
-                {...register("question", { required: true })}
-                type="text"
-                className={styles.chatInput}
-                placeholder="Your question..."
-                autoComplete="off"
-                onKeyDown={handleKeyDown}
+            <div className={styles.chatWrap}>
+              <VoiceRecorder
+                setIsRecordingInProcess={setIsRecordingInProcess}
+                addTextWithDelay={addTextWithDelay}
+                selectedLanguage=""
+                clickCursor={clickCursor}
+                setFormData={setFormData}
+                // isLoadingData={!isCreate && queryResult?.isLoading}
+                isLoadingData={false}
+                // link={formProps?.initialValues?.audioFile?.link}
+                link=""
               />
-              <button
-                type="button"
-                className={styles.submitButton}
-                disabled={isSending}
-                onClick={handleSubmit(onSubmit)}
-              >
-                <img src={Send} alt="btn" />
-              </button>
+              <div className={styles.chatInputSection}>
+                <input
+                  {...register("question", { required: true })}
+                  type="text"
+                  className={styles.chatInput}
+                  placeholder="Your question..."
+                  autoComplete="off"
+                  onKeyDown={handleKeyDown}
+                />
+                <button
+                  type="button"
+                  className={styles.submitButton}
+                  disabled={isSending}
+                  onClick={handleSubmit(onSubmit)}
+                >
+                  <img src={Send} alt="btn" />
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -7,7 +7,7 @@
   align-items: stretch
 }
 .avatarSide {
-  width: 50%;
+  width: 40%;
   display: flex;
   flex-direction: column;
   //justify-content: center;
@@ -39,7 +39,7 @@
 .chatContainer {
   min-height: calc(100vh - 94px);
   max-height: calc(100vh - 94px);
-  width: 50%;
+  width: 60%;
   max-width: 450px;
   color: #ffffff;
   font-family: Arial, sans-serif;
@@ -173,6 +173,7 @@
   }
 
   .chatInputSection {
+    width: 100%;
     display: flex;
     align-items: center;
     background-color: #1a2e3f;
@@ -256,6 +257,7 @@
   position: relative;
 }
 .collapseButton {
+  margin-left: 15px;
   color: #996C42;
   padding: 15px 0;
   font-size: 14px;
@@ -266,6 +268,7 @@
   }
 }
 .collapseContent {
+
   max-height: 300px;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -287,4 +290,8 @@
   display: flex;
   align-items: center;
   gap: 10px; /* Расстояние между иконкой и текстом */
+}
+.chatWrap {
+  display: flex;
+  align-items: center;
 }

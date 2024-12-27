@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import WaveSurfer from "wavesurfer.js";
-import { Mic } from "lucide-react";
+// import { Mic } from "lucide-react";
 import RecordPlugin from "wavesurfer.js/dist/plugins/record";
 // import { useNotification } from '@refinedev/core';
 import { Spin, Tooltip } from "antd";
@@ -296,11 +296,15 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
           <div className={styles.btnMic}>
             <Button
               variant="Brown"
+              style={{ marginBottom: 0, minHeight: 62 }}
               onClick={() => {
                 setIsConnecting(true);
               }}
             >
-              {isConnecting ? <SpinMic /> : <Mic size={24} />}
+              {
+                isConnecting ? <SpinMic /> : <span>Talk to avatar</span>
+                // <Mic size={24} />
+              }
             </Button>
           </div>
         </div>
