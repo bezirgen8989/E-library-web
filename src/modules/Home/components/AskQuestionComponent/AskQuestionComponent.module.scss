@@ -4,13 +4,16 @@
   padding: 0 10px 10px;
   min-height: calc(100vh - 74px);
   display: flex;
-  align-items: stretch
+  align-items: stretch;
+  width: 100%;
 }
 .avatarSide {
+  align-items: center;
   flex-grow: 0;
   width: 40%;
   display: flex;
   flex-direction: column;
+  min-height: 500px;
   //justify-content: center;
   margin-top: 20px;
   img {
@@ -178,7 +181,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    background-color: #1a2e3f;
+    //background-color: #1a2e3f;
     padding: 10px;
     border-radius: 12px;
     background-color: rgba(199,204,205, 0.2);
@@ -210,6 +213,7 @@
   border: none;
   height: 28px;
   width: 28px;
+  margin-top: 0;
   background: #996C42;
   border-radius: 50%;
   display: flex;
@@ -226,6 +230,12 @@
   margin-right: 10px;
 }
 .bookTitle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  max-width: 1050px;
+  margin: 0 auto;
   font-size: 19px;
   font-weight: 700;
   color: rgba(255, 255, 255, 1);
@@ -252,6 +262,7 @@
 .avatarFace {
   height: 60vh;
   opacity: 0.4;
+  width: 100%;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -296,4 +307,38 @@
 .chatWrap {
   display: flex;
   align-items: center;
+}
+
+.languageSelectWrapper {
+  cursor: pointer;
+  display: flex;
+  height: 39px;
+  align-items: center;
+  text-align: start;
+  border-radius: 22px;
+  padding: 3px 30px 3px 6px;
+  color: #996C42 !important;
+  background-image: url('../../../../assets/images/icons/arrowProfile.svg');
+  background-repeat: no-repeat;
+  background-position: calc(100% - 8px) center;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+  background-color: rgba(199, 204, 205, 0.2);
+  font-weight: 700;
+  img {
+    width: 25px;
+    height: 25px;
+    margin-right: 7px;
+    margin-top: -3px;
+  }
+}
+.languageSelect {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 140%;
+  margin-right: 7px;
 }

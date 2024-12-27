@@ -8,7 +8,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { clearBooks, getAvatars, getBookById } from "../slices/home";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../hooks";
-import { getMe, setAvatar } from "../../Auth/slices/auth";
+import { getLanguages, getMe, setAvatar } from "../../Auth/slices/auth";
 
 type Chat = {
   type: "user" | "response";
@@ -33,9 +33,18 @@ const AskQuestionContainer: React.FC = () => {
     dispatch(getMe());
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(getLanguages());
+  }, [dispatch]);
+
   const { currentBook, avatars } = useLazySelector(({ home }) => {
     const { currentBook, avatars } = home;
     return { currentBook, avatars };
+  });
+
+  const { languages } = useLazySelector(({ auth }) => {
+    const { languages } = auth;
+    return { languages };
   });
 
   useEffect(() => {
@@ -171,6 +180,7 @@ const AskQuestionContainer: React.FC = () => {
       avatars={avatars}
       setUserAvatar={setUserAvatar}
       chatHistory={chatHistory}
+      languages={languages?.result?.data}
     />
   );
 };

@@ -296,7 +296,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
           <div className={styles.btnMic}>
             <Button
               variant="Brown"
-              style={{ marginBottom: 0, minHeight: 62 }}
+              style={{ marginBottom: 0, minHeight: 62, marginTop: 0 }}
               onClick={() => {
                 setIsConnecting(true);
               }}

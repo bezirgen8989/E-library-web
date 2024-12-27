@@ -14,10 +14,20 @@ import ChooseAvatarStep2 from "./common/ChooseAvatarStep2/ChooseAvatarStep2";
 import ChooseAvatarStep3 from "./common/ChooseAvatarStep3/ChooseAvatarStep3";
 import ChooseAvatarStep4 from "./common/ChooseAvatarStep4/ChooseAvatarStep4";
 import VoiceRecorder from "../../../../components/Voice/VoiceRecorder/VoiceRecorder";
+import LanguageModal from "../../../Auth/components/LanguageModal";
+import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
 
 type Chat = {
   type: "user" | "system"; // Assuming 'user' or 'system' are the only types of messages
   message: string;
+};
+
+type LanguageType = {
+  id: number;
+  name: string;
+  flag: {
+    link: string;
+  };
 };
 
 type FormValues = {
@@ -34,6 +44,7 @@ type AskQuestionComponentProps = {
   avatars: any;
   setUserAvatar: (id: number) => void;
   chatHistory: any;
+  languages: LanguageType[];
 };
 
 const { Panel } = Collapse;
@@ -47,6 +58,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   avatars,
   setUserAvatar,
   chatHistory,
+  languages,
 }) => {
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const [messageClass, setMessageClass] = useState(styles.messageSystemChange);
@@ -61,10 +73,46 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const quillRef = useRef<ReactQuill>(null);
   const cursorPositionRef = useRef<null | number>(null);
   const [url, setUrl] = useState<any>();
-  // const [isStreamConnect, setIsStreamConnect] = useState()
+  const [isStreamConnect, setIsStreamConnect] = useState(false);
+  const chatContentRef = useRef<HTMLDivElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   console.log("formData", formData);
   console.log("isRecordingInProcess", isRecordingInProcess);
-  console.log("URL", url);
+
+  const defaultLanguage = (languages || []).find(
+    (lang) => lang.name === "English"
+  ) || {
+    id: 0,
+    name: "Select Language",
+    flag: { link: NoAvatar },
+  };
+
+  useEffect(() => {
+    if (languages && languages.length > 0) {
+      const englishLanguage = languages.find((lang) => lang.name === "English");
+      if (englishLanguage) {
+        setSelectedLanguage(englishLanguage);
+      }
+    }
+  }, [languages]);
+
+  const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
+  console.log("Select Language", selectedLanguage);
+
+  useEffect(() => {
+    if (chatContentRef.current) {
+      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
+    }
+  }, [chatHistory, isSending]);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const onLanguageSelect = (language: LanguageType) => {
+    setSelectedLanguage(language);
+    sessionStorage.setItem("selectedLanguage", JSON.stringify(language.id));
+  };
 
   const addTextWithDelay = async (res: string) => {
     const quillEditor = quillRef?.current?.getEditor();
@@ -133,11 +181,12 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     const currentTime = getCurrentTime();
     setQuestion(data.question);
     clearMessages();
-    // setUserMessage(data.question);
     setMessageClass(styles.messageSystem);
     setMessageTime(currentTime);
     setIsSending(true);
+    setIsStreamConnect(true);
     reset();
+    setFormData(undefined);
 
     setTimeout(() => {
       setIsSending(false);
@@ -220,17 +269,36 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       {currentStep === 5 && (
         <div className={styles.askQuestionWrap}>
           <div className={styles.bookTitle}>
-            {location.pathname.includes("ask_global_question")
-              ? "Global Library Collection"
-              : title}
+            <div style={{ marginRight: 10 }}>
+              {location.pathname.includes("ask_global_question")
+                ? "Global Library Collection"
+                : title}
+            </div>
+            <div
+              onMouseDown={(e) => {
+                e.preventDefault();
+                showModal();
+              }}
+              className={styles.languageSelectWrapper}
+            >
+              <div
+                className={styles.languageSelect}
+                style={{
+                  backgroundImage: `url(${selectedLanguage.flag.link})`,
+                }}
+              ></div>
+              <span>{selectedLanguage.name}</span>
+            </div>
           </div>
           <div className={styles.askQuestionPage}>
             <div className={styles.avatarSide}>
-              <div
-                className={styles.avatarFace}
-                style={{ backgroundImage: `url(${selectedAvatar})` }}
-              ></div>
-              {url && (
+              {!isStreamConnect && (
+                <div
+                  className={styles.avatarFace}
+                  style={{ backgroundImage: `url(${selectedAvatar})` }}
+                />
+              )}
+              {isStreamConnect && (
                 <SrsPlayer
                   url={url}
                   width={300}
@@ -251,7 +319,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
               )}
             </div>
             <div className={styles.chatContainer}>
-              <div className={styles.chatContent}>
+              <div className={styles.chatContent} ref={chatContentRef}>
                 {chatHistory.map((chat: Chat, index: number) => (
                   <div
                     key={index}
@@ -306,9 +374,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                   selectedLanguage=""
                   clickCursor={clickCursor}
                   setFormData={setFormData}
-                  // isLoadingData={!isCreate && queryResult?.isLoading}
                   isLoadingData={false}
-                  // link={formProps?.initialValues?.audioFile?.link}
                   link=""
                 />
                 <div className={styles.chatInputSection}>
@@ -324,7 +390,12 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                     type="button"
                     className={styles.submitButton}
                     disabled={isSending}
-                    onClick={handleSubmit(onSubmit)}
+                    onClick={() => {
+                      handleSubmit((data) => {
+                        onSubmit(data);
+                        setIsStreamConnect(true);
+                      })();
+                    }}
                   >
                     <img src={Send} alt="btn" />
                   </button>
@@ -332,6 +403,13 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
               </div>
             </div>
           </div>
+          <LanguageModal
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            languages={languages}
+            defaultLanguage={defaultLanguage}
+            onLanguageSelect={onLanguageSelect}
+          />
         </div>
       )}
     </>

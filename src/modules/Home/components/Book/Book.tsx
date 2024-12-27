@@ -380,6 +380,7 @@ const Book: React.FC<HomeProps> = ({
             <div className={styles.btns_block}>
               <Button
                 className={styles.readBtn}
+                style={{ marginTop: 0 }}
                 onClick={() => {
                   startRead({ bookId: id });
                 }}
