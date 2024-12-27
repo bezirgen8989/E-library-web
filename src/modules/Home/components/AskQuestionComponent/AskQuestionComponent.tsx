@@ -61,6 +61,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const quillRef = useRef<ReactQuill>(null);
   const cursorPositionRef = useRef<null | number>(null);
   const [url, setUrl] = useState<any>();
+  // const [isStreamConnect, setIsStreamConnect] = useState()
   console.log("formData", formData);
   console.log("isRecordingInProcess", isRecordingInProcess);
   console.log("URL", url);
@@ -217,122 +218,117 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
         />
       )}
       {currentStep === 5 && (
-        <div className={styles.askQuestionPage}>
-          <div className={styles.avatarSide}>
-            <div className={styles.bookTitle}>
-              {location.pathname.includes("ask_global_question")
-                ? "Global Library Collection"
-                : title}
-            </div>
-            <div
-              className={styles.avatarFace}
-              style={{ backgroundImage: `url(${selectedAvatar})` }}
-            ></div>
-            {url && (
-              <SrsPlayer
-                // url="https://avatars.plavno.app:1990/rtc/v1/whep/?app=live&stream=livestream-258"
-                url={url}
-                width={300}
-                height={100}
-                videoRef={videoRef}
-                options={{
-                  autoPlay: true,
-                  playsInline: true,
-                  muted: false,
-                  controls: true,
-                }}
-                rtcOpts={{
-                  audio: {
-                    enable: true,
-                  },
-                }}
-              />
-            )}
+        <div className={styles.askQuestionWrap}>
+          <div className={styles.bookTitle}>
+            {location.pathname.includes("ask_global_question")
+              ? "Global Library Collection"
+              : title}
           </div>
-          <div className={styles.chatContainer}>
-            <div className={styles.chatContent}>
-              {chatHistory.map((chat: Chat, index: number) => (
-                <div
-                  key={index}
-                  className={
-                    chat.type === "user" ? styles.messageUser : messageClass
-                  }
-                >
+          <div className={styles.askQuestionPage}>
+            <div className={styles.avatarSide}>
+              <div
+                className={styles.avatarFace}
+                style={{ backgroundImage: `url(${selectedAvatar})` }}
+              ></div>
+              {url && (
+                <SrsPlayer
+                  url={url}
+                  width={300}
+                  height={300}
+                  videoRef={videoRef}
+                  options={{
+                    autoPlay: true,
+                    playsInline: true,
+                    muted: false,
+                    controls: true,
+                  }}
+                  rtcOpts={{
+                    audio: {
+                      enable: true,
+                    },
+                  }}
+                />
+              )}
+            </div>
+            <div className={styles.chatContainer}>
+              <div className={styles.chatContent}>
+                {chatHistory.map((chat: Chat, index: number) => (
                   <div
+                    key={index}
                     className={
-                      chat.type === "user"
-                        ? styles.userMessage
-                        : styles.messageSystemContent
+                      chat.type === "user" ? styles.messageUser : messageClass
                     }
                   >
-                    {chat.message}
-                    {chat.type === "user" && (
-                      <div className={styles.messageSystemBottom}>
-                        <span className={styles.messageTime}>
-                          {messageTime}
-                        </span>
-                      </div>
-                    )}
+                    <div
+                      className={
+                        chat.type === "user"
+                          ? styles.userMessage
+                          : styles.messageSystemContent
+                      }
+                    >
+                      {chat.message}
+                      {chat.type === "user" && (
+                        <div className={styles.messageSystemBottom}>
+                          <span className={styles.messageTime}>
+                            {messageTime}
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-
-            {/*{isLoading && (*/}
-            {/*  <div className={styles.spinnerContainer}>*/}
-            {/*    <ChatSpinner />*/}
-            {/*  </div>*/}
-            {/*)}*/}
-
-            {isSending && <ChatSpinner />}
-            {metaData && metaData.length > 0 && !isLoading && !isSending && (
-              <div className={styles.collapseButton} onClick={toggleCollapse}>
-                <span style={{ paddingRight: 10 }}>
-                  {isCollapseVisible
-                    ? "Hide used resources"
-                    : "Show used resources"}
-                </span>
-                <img
-                  style={{
-                    transform: `rotate(${isCollapseVisible ? 180 : 0}deg)`,
-                  }}
-                  src={isCollapseVisible ? ArrowDown : CollapseIcon}
-                  alt="icon"
-                />
+                ))}
               </div>
-            )}
-            <div className={styles.collapseContent}>
-              {isCollapseVisible && <Collapse>{renderMetaData()}</Collapse>}
-            </div>
-            <div className={styles.chatWrap}>
-              <VoiceRecorder
-                setIsRecordingInProcess={setIsRecordingInProcess}
-                addTextWithDelay={addTextWithDelay}
-                selectedLanguage=""
-                clickCursor={clickCursor}
-                setFormData={setFormData}
-                // isLoadingData={!isCreate && queryResult?.isLoading}
-                isLoadingData={false}
-                // link={formProps?.initialValues?.audioFile?.link}
-                link=""
-              />
-              <div className={styles.chatInputSection}>
-                <input
-                  {...register("question", { required: true })}
-                  type="text"
-                  className={styles.chatInput}
-                  placeholder="Your question..."
-                  autoComplete="off"
-                  onKeyDown={handleKeyDown}
+
+              {isSending && <ChatSpinner />}
+              {metaData && metaData.length > 0 && !isLoading && !isSending && (
+                <div className={styles.collapseButton} onClick={toggleCollapse}>
+                  <span style={{ paddingRight: 10 }}>
+                    {isCollapseVisible
+                      ? "Hide used resources"
+                      : "Show used resources"}
+                  </span>
+                  <img
+                    style={{
+                      transform: `rotate(${isCollapseVisible ? 180 : 0}deg)`,
+                    }}
+                    src={isCollapseVisible ? ArrowDown : CollapseIcon}
+                    alt="icon"
+                  />
+                </div>
+              )}
+              <div className={styles.collapseContent}>
+                {isCollapseVisible && <Collapse>{renderMetaData()}</Collapse>}
+              </div>
+              <div className={styles.chatWrap}>
+                <VoiceRecorder
+                  setIsRecordingInProcess={setIsRecordingInProcess}
+                  addTextWithDelay={addTextWithDelay}
+                  selectedLanguage=""
+                  clickCursor={clickCursor}
+                  setFormData={setFormData}
+                  // isLoadingData={!isCreate && queryResult?.isLoading}
+                  isLoadingData={false}
+                  // link={formProps?.initialValues?.audioFile?.link}
+                  link=""
                 />
-                <button
-                  type="button"
-                  className={styles.submitButton}
-                  disabled={isSending}
-                  onClick={handleSubmit(onSubmit)}
-                >
-                  <img src={Send} alt="btn" />
-                </button>
+                <div className={styles.chatInputSection}>
+                  <input
+                    {...register("question", { required: true })}
+                    type="text"
+                    className={styles.chatInput}
+                    placeholder="Your question..."
+                    autoComplete="off"
+                    onKeyDown={handleKeyDown}
+                  />
+                  <button
+                    type="button"
+                    className={styles.submitButton}
+                    disabled={isSending}
+                    onClick={handleSubmit(onSubmit)}
+                  >
+                    <img src={Send} alt="btn" />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
