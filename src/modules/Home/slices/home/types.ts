@@ -26,6 +26,7 @@ export type HomeState = {
   hasNew: any;
   avatars: any;
   streamUrl: any;
+  avatarLanguage: any;
 };
 export interface SetReadingBookPayload {
   user: {

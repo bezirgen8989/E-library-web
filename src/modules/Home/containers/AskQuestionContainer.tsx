@@ -37,15 +37,19 @@ const AskQuestionContainer: React.FC = () => {
     dispatch(getLanguages());
   }, [dispatch]);
 
-  const { currentBook, avatars } = useLazySelector(({ home }) => {
-    const { currentBook, avatars } = home;
-    return { currentBook, avatars };
-  });
+  const { currentBook, avatars, avatarLanguage } = useLazySelector(
+    ({ home }) => {
+      const { currentBook, avatars, avatarLanguage } = home;
+      return { currentBook, avatars, avatarLanguage };
+    }
+  );
+  console.log("avatarLanguage", avatarLanguage.id);
 
   const { languages } = useLazySelector(({ auth }) => {
     const { languages } = auth;
     return { languages };
   });
+  console.log("languages", languages);
 
   useEffect(() => {
     dispatch(clearBooks());
@@ -100,7 +104,7 @@ const AskQuestionContainer: React.FC = () => {
               body: JSON.stringify({
                 query: question,
                 indexName,
-                language: { id: 19 },
+                language: { id: avatarLanguage?.id || 7 },
               }),
 
               onmessage(event: EventSourceMessage) {

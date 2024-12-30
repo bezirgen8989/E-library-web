@@ -16,6 +16,8 @@ import ChooseAvatarStep4 from "./common/ChooseAvatarStep4/ChooseAvatarStep4";
 import VoiceRecorder from "../../../../components/Voice/VoiceRecorder/VoiceRecorder";
 import LanguageModal from "../../../Auth/components/LanguageModal";
 import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
+import { useDispatch } from "react-redux";
+import { selectAvatarLanguage } from "../../slices/home";
 
 type Chat = {
   type: "user" | "system"; // Assuming 'user' or 'system' are the only types of messages
@@ -60,6 +62,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   chatHistory,
   languages,
 }) => {
+  const dispatch = useDispatch();
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const [messageClass, setMessageClass] = useState(styles.messageSystemChange);
   const [messageTime, setMessageTime] = useState<string>("");
@@ -111,6 +114,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   const onLanguageSelect = (language: LanguageType) => {
     setSelectedLanguage(language);
+    dispatch(selectAvatarLanguage(language));
     sessionStorage.setItem("selectedLanguage", JSON.stringify(language.id));
   };
 

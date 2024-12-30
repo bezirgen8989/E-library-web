@@ -40,7 +40,7 @@ const LanguageModal: FC<LanguageModalProps> = ({
     hideModal();
   };
 
-  const filteredLanguages = languages.filter((lang: LanguageType) =>
+  const filteredLanguages = languages?.filter((lang: LanguageType) =>
     lang.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 

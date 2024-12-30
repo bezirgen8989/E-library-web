@@ -66,6 +66,7 @@ const initialState: HomeState = {
   hasNew: false,
   avatars: {},
   streamUrl: {},
+  avatarLanguage: {},
 };
 
 const homeSlice = createSlice({
@@ -77,6 +78,9 @@ const homeSlice = createSlice({
     },
     setDrawerOpen(state, action: PayloadAction<boolean>) {
       state.isDrawerOpen = action.payload;
+    },
+    selectAvatarLanguage(state, action: PayloadAction<any>) {
+      state.avatarLanguage = action.payload;
     },
     setCurrentCategoryId(state, action: PayloadAction<string>) {
       state.currentCategoryId = action.payload;
@@ -633,5 +637,6 @@ export const {
   setCurrentCategoryId,
   clearBooks,
   setDrawerOpen,
+  selectAvatarLanguage,
 } = homeSlice.actions;
 export default homeSlice.reducer;
