@@ -41,8 +41,6 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
   return (
     <div className={styles.profile_page_wrap}>
       <div className={styles.profile_page}>
-        <h1>{t("welcome")}</h1>
-
         <div className={styles.profile_logo}>
           <img
             src={value?.photo?.link ? value?.photo?.link : noAvatar}
@@ -72,7 +70,7 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
               style={{ marginLeft: 14, display: "flex", alignItems: "center" }}
             >
               <img style={{ marginRight: 4 }} src={SmallBook} alt="book" />
-              {value?.completedBooks} completed books
+              {value?.completedBooks} {t("completedBooks")}
             </div>
           </div>
           <ProfileUserForm
@@ -85,7 +83,7 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
         </div>
         <div onClick={onLogout} className={styles.logOutBtn}>
           <img src={LogOut} alt="icon" />
-          Log Out
+          {t("logOut")}
         </div>
       </div>
       <EditProfileModal

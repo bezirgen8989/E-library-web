@@ -14,6 +14,7 @@ export type LanguageType = {
   flag: {
     link: string;
   };
+  isoCode2char: string;
 };
 
 type RecoverProps = {
@@ -40,11 +41,12 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   kidsMode = true,
   bookLanguage,
 }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const defaultLanguage = languages.find((lang) => lang.name === "English") || {
     id: 0,
     name: "English",
     flag: { link: NoAvatar },
+    isoCode2char: "en",
   };
 
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
@@ -67,13 +69,16 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   });
 
   useEffect(() => {
-    if (languages.length > 0) {
-      const initialLanguage =
-        languages.find((lang) => lang.name === "English") || defaultLanguage;
-      setSelectedLanguage(initialLanguage);
-      setValue("language", initialLanguage.name);
+    if (languages.length > 0 && modalType === "language") {
+      const currentLang = i18n.language.toLowerCase(); // Текущий язык из i18n
+      const matchedLanguage =
+        languages.find(
+          (lang) => lang.isoCode2char.toLowerCase() === currentLang
+        ) || defaultLanguage; // Используем defaultLanguage, если язык не найден
+      setSelectedLanguage(matchedLanguage);
+      setValue("language", matchedLanguage.name); // Устанавливаем в форму
     }
-  }, [languages, setValue]);
+  }, [i18n.language, languages, modalType, setValue]);
 
   useEffect(() => {
     if (languages.length > 0) {
@@ -87,10 +92,11 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
     setUserKidsMode(kidsMode);
   }, [kidsMode]);
 
-  const onLanguageSelect = (language: LanguageType) => {
+  const handleLanguageChange = (language: LanguageType) => {
     if (modalType === "language") {
       setSelectedLanguage(language);
       setValue("language", language.name);
+      i18n.changeLanguage(language.isoCode2char.toLowerCase()); // Меняем язык приложения
     } else if (modalType === "bookLanguage") {
       setSelectedBookLanguage(language);
       setValue("bookLanguage", language.name);
@@ -122,15 +128,12 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
     setUserKidsMode(checked);
     handleKidsMode(checked);
   };
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng); // Переключение языка
-  };
+  console.log("languages", languages);
 
   return (
     <div>
-      <button onClick={() => changeLanguage("en")}>English</button>
-      <button onClick={() => changeLanguage("fr")}>Français</button>
       <form style={{ marginBottom: 40 }} onSubmit={handleSubmit(onSubmitForm)}>
+        {/* App Language */}
         <div style={{ marginTop: 15 }}>
           {languages.length > 0 && (
             <div className={styles.inputWrapperLang}>
@@ -155,10 +158,12 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
                   </div>
                 )}
               />
-              <label className={styles.inputLabel}>App Language</label>
+              <label className={styles.inputLabel}>{t("appLanguage")}</label>
             </div>
           )}
         </div>
+
+        {/* Book Language */}
         <div style={{ marginTop: 15 }}>
           {languages.length > 0 && (
             <div className={styles.inputWrapperLang}>
@@ -183,14 +188,18 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
                   </div>
                 )}
               />
-              <label className={styles.inputLabel}>Book Language</label>
+              <label className={styles.inputLabel}>{t("bookLanguage")}</label>
             </div>
           )}
         </div>
+
+        {/* Kids Mode */}
         <div className={styles.kidsSelectWrapper}>
-          <span>Kids Mode</span>
+          <span>{t("kidsMode")}</span>
           <Switch checked={userKidsMode} onChange={kidsModeChange} />
         </div>
+
+        {/* Notification Settings */}
         <div
           style={{ marginBottom: "16px" }}
           className={styles.aiWrapper}
@@ -198,15 +207,19 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
             setIsNotificationsModalOpen(true);
           }}
         >
-          <span>Notification Settings</span>
+          <span>{t("notificationSettings")}</span>
         </div>
+
+        {/* AI Librarian */}
         <div className={styles.aiWrapper}>
           <div className={styles.aiAvatar}>
             <img src={tempAi} alt="avatar" />
           </div>
-          <span>AI Librarian</span>
+          <span>{t("aILibrarian")}</span>
         </div>
       </form>
+
+      {/* Language Modal */}
       <LanguageModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
@@ -214,8 +227,12 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
         defaultLanguage={
           modalType === "language" ? selectedLanguage : selectedBookLanguage
         }
-        onLanguageSelect={onLanguageSelect}
+        onLanguageSelect={(language: LanguageType) =>
+          handleLanguageChange(language)
+        }
       />
+
+      {/* Notifications Modal */}
       <NotificationsModal
         isModalOpen={isNotificationsModalOpen}
         setIsModalOpen={setIsNotificationsModalOpen}
