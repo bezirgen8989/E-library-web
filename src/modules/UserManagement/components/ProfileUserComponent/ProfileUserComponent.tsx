@@ -11,6 +11,7 @@ import { logoutUser } from "../../../../core/session/slices/session";
 import { useDispatch } from "react-redux";
 import EditProfileModal from "../EditProfileModal";
 import noAvatar from "../../../../assets/images/icons/noUserAvatar.png";
+import { useTranslation } from "react-i18next";
 
 interface ProfileUserComponentProps {
   languages: LanguageType[];
@@ -29,6 +30,7 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
   deleteAccount,
   handleKidsMode,
 }) => {
+  const { t } = useTranslation();
   const value = useContext(UserContext);
   const dispatch = useDispatch();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -39,6 +41,8 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
   return (
     <div className={styles.profile_page_wrap}>
       <div className={styles.profile_page}>
+        <h1>{t("welcome")}</h1>
+
         <div className={styles.profile_logo}>
           <img
             src={value?.photo?.link ? value?.photo?.link : noAvatar}

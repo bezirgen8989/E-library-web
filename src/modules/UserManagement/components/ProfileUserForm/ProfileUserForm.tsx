@@ -6,6 +6,7 @@ import tempAi from "../../../../assets/images/testAiImg.png";
 import LanguageModal from "../../../Auth/components/LanguageModal";
 import { Switch } from "antd";
 import NotificationsModal from "../common/NotificationModal/NotificationsModal";
+import { useTranslation } from "react-i18next";
 
 export type LanguageType = {
   id: number;
@@ -39,6 +40,7 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   kidsMode = true,
   bookLanguage,
 }) => {
+  const { i18n } = useTranslation();
   const defaultLanguage = languages.find((lang) => lang.name === "English") || {
     id: 0,
     name: "English",
@@ -120,9 +122,14 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
     setUserKidsMode(checked);
     handleKidsMode(checked);
   };
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng); // Переключение языка
+  };
 
   return (
     <div>
+      <button onClick={() => changeLanguage("en")}>English</button>
+      <button onClick={() => changeLanguage("fr")}>Français</button>
       <form style={{ marginBottom: 40 }} onSubmit={handleSubmit(onSubmitForm)}>
         <div style={{ marginTop: 15 }}>
           {languages.length > 0 && (
