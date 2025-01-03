@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Book } from "../components";
 import { useLazySelector } from "../../../hooks";
@@ -109,22 +109,23 @@ const BookContainer: React.FC = () => {
   );
 
   const habitsCategories = currentBook?.result?.categories
-    .map((genre: { id: string; name: string; colour: string }) => genre.id)
+    ?.map((genre: { id: string; name: string; colour: string }) => genre.id)
     .join(",");
-
-  const suggestedFilter = `[categories.id][in]=${habitsCategories}`;
-  const ratingOrder = "[rating]=desc";
+  const [similarBooksFetched, setSimilarBooksFetched] = useState(false);
 
   useEffect(() => {
-    dispatch(
-      getSimilarBooks({
-        limit: "3",
-        page: "1",
-        order: ratingOrder,
-        filter: suggestedFilter,
-      })
-    );
-  }, [dispatch, suggestedFilter, ratingOrder]);
+    if (habitsCategories && !similarBooksFetched) {
+      dispatch(
+        getSimilarBooks({
+          limit: "3",
+          page: "1",
+          order: "[rating]=desc",
+          filter: `[categories.id][in]=${habitsCategories}`,
+        })
+      );
+      setSimilarBooksFetched(true);
+    }
+  }, [dispatch, habitsCategories, similarBooksFetched]);
 
   const getAuthorBooks = useCallback(
     (id) => {
