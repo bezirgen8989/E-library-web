@@ -3,6 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Button from "../../../../../../components/common/Buttons/Button";
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 interface ChooseAvatarStep2Props {
   setCurrentStep: (value: number) => void;
@@ -12,6 +13,7 @@ const ChooseAvatarStep2: FC<ChooseAvatarStep2Props> = ({
   setCurrentStep,
   selectedAvatar,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className={styles.askQuestionAvatar}>
       {/*<div className={styles.avatarSettings}>*/}
@@ -26,9 +28,11 @@ const ChooseAvatarStep2: FC<ChooseAvatarStep2Props> = ({
           style={{ backgroundImage: `url(${selectedAvatar})` }}
         ></div>
         <div className={styles.messageSystemContent}>
-          You can ask me any question
-          <br /> you want – and I’ll give you
-          <br /> an answer in 10 seconds.
+          {t("avatarDescription1")}
+          <br />
+          {t("avatarDescription2")}
+          <br />
+          {t("avatarDescription3")}
         </div>
         <Button
           onClick={() => {
@@ -37,7 +41,7 @@ const ChooseAvatarStep2: FC<ChooseAvatarStep2Props> = ({
           style={{ width: "341px", margin: "30px auto 20px" }}
           variant="Brown"
         >
-          Continue
+          {t("continueBtn")}
         </Button>
       </div>
     </div>

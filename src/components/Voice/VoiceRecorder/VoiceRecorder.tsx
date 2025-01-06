@@ -21,6 +21,7 @@ import { CustomButton } from "../Button";
 import SpinMic from "../SpinMic";
 import CustomIcon, { ICON_TYPES } from "../CustomIcon";
 import Button from "../../common/Buttons/Button";
+import { useTranslation } from "react-i18next";
 
 interface IVoiceRecorder {
   isNonHealth?: boolean;
@@ -44,6 +45,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   link,
 }) => {
   // const { open } = useNotification();
+  const { t } = useTranslation();
   const [recording, setRecording] = useState(false);
   const [paused, setPaused] = useState(false);
   const [recordingUrl] = useState<string | null>(null);
@@ -302,7 +304,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
               }}
             >
               {
-                isConnecting ? <SpinMic /> : <span>Talk to avatar</span>
+                isConnecting ? <SpinMic /> : <span>{t("talkToAvatar")}</span>
                 // <Mic size={24} />
               }
             </Button>

@@ -192,7 +192,7 @@ const BooksComponent: React.FC<HomeProps> = ({
       {hasMoreBooks && (
         <div className={styles.loadMoreBtn} onClick={onLoadMore}>
           {isLoadingMore ? (
-            "Loading..."
+            t("loading")
           ) : (
             <div style={{ display: "flex", alignItems: "center" }}>
               {t("loadMoreBtn")}

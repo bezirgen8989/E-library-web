@@ -6,6 +6,7 @@ import { routes } from "../routing";
 import { useHistory } from "react-router-dom";
 import BooksComponent from "../components/AllBooksComponents/BooksComponent";
 import { UserContext } from "../../../core/contexts";
+import { useTranslation } from "react-i18next";
 
 const SuggestedBooksContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const SuggestedBooksContainer: React.FC = () => {
 
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
+  const { t } = useTranslation();
 
   const value = useContext(UserContext);
   const habitsCategories = value?.readingHabits
@@ -90,7 +92,7 @@ const SuggestedBooksContainer: React.FC = () => {
     <BooksComponent
       books={suggestedBooks?.result?.data}
       getBook={getBook}
-      title="Suggested for You"
+      title={t("titleSuggestedForYou")}
       onLoadMore={hasMoreBooks ? loadMoreBooks : undefined}
       isLoadingMore={loadingMore}
       hasMoreBooks={hasMoreBooks}

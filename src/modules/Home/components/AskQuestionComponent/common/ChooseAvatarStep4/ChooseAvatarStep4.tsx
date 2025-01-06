@@ -9,6 +9,7 @@ import { useLazySelector } from "../../../../../../hooks";
 import { getCategories } from "../../../../../Auth/slices/auth";
 import { findBooks, getBooksByQueryName } from "../../../../slices/home";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 interface ChooseAvatarStep2Props {
   setCurrentStep: (value: number) => void;
@@ -20,6 +21,7 @@ const ChooseAvatarStep4: FC<ChooseAvatarStep2Props> = ({
   selectedAvatar,
 }) => {
   const location = useLocation();
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isGlobalQuestion = location.pathname.includes("ask_global_question");
 
@@ -63,11 +65,13 @@ const ChooseAvatarStep4: FC<ChooseAvatarStep2Props> = ({
           style={{ backgroundImage: `url(${selectedAvatar})` }}
         ></div>
         <div className={styles.messageSystemContent}>
-          <strong style={{ color: "#fff" }}>Examples</strong>
+          <strong style={{ color: "#fff" }}>{t("avatarExamples1")}</strong>
           <br />
-          What's the name of Hercule
-          <br /> Poirot's friend and assistant
-          <br /> in Agatha Christie's books?
+          {t("avatarExamples2")}
+          <br />
+          {t("avatarExamples3")}
+          <br />
+          {t("avatarExamples4")}
         </div>
 
         {isGlobalQuestion ? (
@@ -79,7 +83,7 @@ const ChooseAvatarStep4: FC<ChooseAvatarStep2Props> = ({
               style={{ width: "341px", margin: "30px auto 20px" }}
               variant="Brown"
             >
-              Select a Book
+              {t("selectBookBtn")}
             </Button>
             <Button
               onClick={() => {
@@ -88,7 +92,7 @@ const ChooseAvatarStep4: FC<ChooseAvatarStep2Props> = ({
               style={{ width: "341px", margin: "30px auto 20px" }}
               variant="White"
             >
-              Search in All Books
+              {t("searchInAllBooksBtn")}
             </Button>
           </>
         ) : (

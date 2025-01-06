@@ -5,10 +5,12 @@ import { clearBooks, getBookById, getNewBooks } from "../slices/home";
 import BooksComponent from "../components/AllBooksComponents/BooksComponent";
 import { routes } from "../routing";
 import { useHistory, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const SearchNewBooksContainer: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
 
   const [page, setPage] = useState(1);
@@ -72,7 +74,7 @@ const SearchNewBooksContainer: React.FC = () => {
     <BooksComponent
       books={newBooks?.result?.data}
       getBook={getBook}
-      title="Top Books"
+      title={t("titleTopBooks")}
       onLoadMore={hasMoreBooks ? loadMoreBooks : undefined}
       isLoadingMore={loadingMore}
       hasMoreBooks={hasMoreBooks}

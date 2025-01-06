@@ -24,8 +24,6 @@
   "categoryDetective": "Detective",
   "categoryNarrative": "Narrative",
   "categoryCookbooks": "Cookbooks",
-
-
   "readNowBtn": "Read Now",
   "backBtn": "Back",
   "AskQuestionBtn": "Ask a Question",
@@ -51,5 +49,27 @@
   "submit": "Submit",
   "rating": "Rating",
   "placeholderYourReview": "Your review",
-  "reviews": "Reviews"
+  "reviews": "Reviews",
+  "loading": "Loading...",
+  "searchPlaceholder": "Search by place or influencer",
+  "helloAvatar1": "Hi! I'm your assistant in the ",
+  "helloAvatar2": " magic world of books.",
+  "avatarLook": "Please choose how I will look like.",
+  "chooseBtn": "Choose",
+  "selectBookBtn": "Select a Book",
+  "searchInAllBooksBtn": "Search in All Books",
+  "avatarDescription1": "You can ask me any question",
+  "avatarDescription2": "you want – and I’ll give you",
+  "avatarDescription3": "an answer in 10 seconds.",
+  "avatarListItem1": "I understand text messages and audio messages",
+  "avatarListItem2": "You can use any language you want – I will find an answer and translate it to your language.",
+  "avatarListItem3": "You should mention the book and author in your question -- it will help me to find an answer for you.",
+  "continueBtn": "Continue",
+  "avatarExamples1": "Examples",
+  "avatarExamples2": "What's the name of Hercule",
+  "avatarExamples3": "Poirot's friend and assistant",
+  "avatarExamples4": "in Agatha Christie's books?",
+  "askGlobalTitle": "Global Library Collection",
+  "talkToAvatar": "Talk to avatar",
+  "questionPlaceholder": "Your question..."
 }

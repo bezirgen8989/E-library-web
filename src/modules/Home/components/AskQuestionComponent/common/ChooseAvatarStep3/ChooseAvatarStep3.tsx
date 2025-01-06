@@ -3,6 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Button from "../../../../../../components/common/Buttons/Button";
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 interface ChooseAvatarStep2Props {
   setCurrentStep: (value: number) => void;
@@ -12,6 +13,7 @@ const ChooseAvatarStep3: FC<ChooseAvatarStep2Props> = ({
   setCurrentStep,
   selectedAvatar,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className={styles.askQuestionAvatar}>
       {/*<div className={styles.avatarSettings}>*/}
@@ -28,15 +30,9 @@ const ChooseAvatarStep3: FC<ChooseAvatarStep2Props> = ({
         ></div>
         <div className={styles.messageSystemContent}>
           <ul>
-            <li>I understand text messages and audio messages</li>
-            <li>
-              You can use any language you want – I will find an answer and
-              translate it to your language.
-            </li>
-            <li>
-              You should mention the book and author in your question -- it will
-              help me to find an answer for you.
-            </li>
+            <li>{t("avatarListItem1")}</li>
+            <li>{t("avatarListItem2")}</li>
+            <li>{t("avatarListItem3")}</li>
           </ul>
         </div>
         <Button
@@ -46,7 +42,7 @@ const ChooseAvatarStep3: FC<ChooseAvatarStep2Props> = ({
           style={{ width: "341px", margin: "30px auto 20px" }}
           variant="Brown"
         >
-          Continue
+          {t("continueBtn")}
         </Button>
       </div>
     </div>

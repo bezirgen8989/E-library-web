@@ -6,6 +6,7 @@ import styles from "./SearchBookModal.module.scss";
 import Search from "../../../../../assets/images/icons/SearchIcon.svg";
 import { routes } from "../../../routing";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface Author {
   name: string;
@@ -39,6 +40,7 @@ const SearchBookModal: FC<NotificationsModalProps> = ({
   booksByQueryName,
   isLoading,
 }) => {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [hasSearched, setHasSearched] = useState<boolean>(false);
   const [isDropdownVisible, setDropdownVisible] = useState<boolean>(false);
@@ -76,10 +78,10 @@ const SearchBookModal: FC<NotificationsModalProps> = ({
     <Modal
       title={
         <div>
-          <div className="custom-modal-title">Select a book</div>
+          <div className="custom-modal-title">{t("selectBookBtn")}</div>
           <div style={{ marginTop: "20px" }}>
             <Input
-              placeholder="Search by place or influencer"
+              placeholder={t("searchPlaceholder")}
               prefix={<img src={Search} alt="search" />}
               id="search-input"
               value={searchTerm}

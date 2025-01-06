@@ -83,7 +83,7 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
       <div className={styles.habit_wrap}>
         <div className={styles.searchWrapper}>
           <Input
-            placeholder="Search by place or influencer"
+            placeholder={t("searchPlaceholder")}
             prefix={<img src={Search} alt="search" />}
             id="search-input"
             value={searchTerm}

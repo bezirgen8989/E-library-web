@@ -290,7 +290,7 @@ const Book: React.FC<HomeProps> = ({
                       src={HabitIcon}
                       alt="icon"
                     />
-                    {category.name}
+                    {t(`category${category.name}`)}
                   </div>
                 ))}
               </div>
@@ -440,7 +440,7 @@ const Book: React.FC<HomeProps> = ({
                         src={HabitIcon}
                         alt="icon"
                       />
-                      {category.name}
+                      {t(`category${category.name}`)}
                     </div>
                   ))}
                 </div>

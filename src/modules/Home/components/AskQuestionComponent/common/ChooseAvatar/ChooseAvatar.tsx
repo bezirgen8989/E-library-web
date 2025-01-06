@@ -6,6 +6,7 @@ import { FC, useState, useEffect, useContext } from "react";
 import Button from "../../../../../../components/common/Buttons/Button";
 import { UserContext } from "../../../../../../core/contexts";
 import Spinner from "../../../../../../components/common/Spinner";
+import { useTranslation } from "react-i18next";
 
 interface AvatarData {
   id: number;
@@ -35,6 +36,7 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
   const defaultAvatarId = value?.avatarSettings?.id || 1;
   const [currentImage, setCurrentImage] = useState<AvatarData | null>(null);
   const [initialSlide, setInitialSlide] = useState<number>(0);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (avatars?.data?.length) {
@@ -96,18 +98,16 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
           ))}
         </Slider>
         <div className={styles.gratisBlock}>
-          Hi! I'm your assistant in the
-          <br /> magic world of books.
+          {t("helloAvatar1")}
+          <br /> {t("helloAvatar2")}
         </div>
-        <div className={styles.subTitle}>
-          Please choose how I will look like.
-        </div>
+        <div className={styles.subTitle}>{t("avatarLook")}</div>
         <Button
           onClick={handleNextStep}
           style={{ width: "341px", margin: "20px auto 20px" }}
           variant="Brown"
         >
-          Choose {currentImage.name}
+          {t("chooseBtn")} {currentImage.name}
         </Button>
       </div>
     </div>

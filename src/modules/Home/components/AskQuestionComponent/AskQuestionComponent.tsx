@@ -18,6 +18,7 @@ import LanguageModal from "../../../Auth/components/LanguageModal";
 import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
 import { useDispatch } from "react-redux";
 import { selectAvatarLanguage } from "../../slices/home";
+import { useTranslation } from "react-i18next";
 
 type Chat = {
   type: "user" | "system"; // Assuming 'user' or 'system' are the only types of messages
@@ -79,6 +80,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [isStreamConnect, setIsStreamConnect] = useState(false);
   const chatContentRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { t } = useTranslation();
   console.log("formData", formData);
   console.log("isRecordingInProcess", isRecordingInProcess);
 
@@ -275,7 +277,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
           <div className={styles.bookTitle}>
             <div style={{ marginRight: 10 }}>
               {location.pathname.includes("ask_global_question")
-                ? "Global Library Collection"
+                ? t("askGlobalTitle")
                 : title}
             </div>
             <div
@@ -386,7 +388,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                     {...register("question", { required: true })}
                     type="text"
                     className={styles.chatInput}
-                    placeholder="Your question..."
+                    placeholder={t("questionPlaceholder")}
                     autoComplete="off"
                     onKeyDown={handleKeyDown}
                   />

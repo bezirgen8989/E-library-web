@@ -49,7 +49,10 @@ const SearchBooks: FC<HomeProps> = ({
         {t("backBtn")}
       </div>
       <div className={styles.title}>
-        {selectedCategory ? selectedCategory.name : t("categoryNotFound")}
+        {/* Use the category name as a key for translation */}
+        {selectedCategory
+          ? t(`category${selectedCategory.name}`) // Translate using category name
+          : t("categoryNotFound")}
       </div>
       <div className={styles.search_page}>
         <div className={styles.searchContainer}>
