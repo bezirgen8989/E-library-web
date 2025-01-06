@@ -2,6 +2,7 @@ import styles from "./Home.module.scss";
 import React from "react";
 import AllBooksSlider from "../common/AllBooksSlider/AllBooksSlider";
 import { routes } from "../../routing";
+import { useTranslation } from "react-i18next";
 
 type HomeProps = {
   started: any;
@@ -24,6 +25,7 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
   isNotStartedBooksLoading,
   isFinishedBooksLoading,
 }) => {
+  const { t } = useTranslation();
   console.log("started", notStarted);
   return (
     <div className={styles.home_page}>
@@ -31,7 +33,9 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
         <AllBooksSlider
           books={started}
           title={
-            <span style={{ fontSize: "44px", fontWeight: "600" }}>Started</span>
+            <span style={{ fontSize: "44px", fontWeight: "600" }}>
+              {t("started")}
+            </span>
           }
           seeAllLink={routes.startedBooks}
           getBook={getBook}
@@ -44,7 +48,7 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
           books={notStarted}
           title={
             <span style={{ fontSize: "44px", fontWeight: "600" }}>
-              Not Started
+              {t("notStarted")}
             </span>
           }
           seeAllLink={routes.notStartedBooks}
@@ -58,7 +62,7 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
           books={finished}
           title={
             <span style={{ fontSize: "44px", fontWeight: "600" }}>
-              Finished
+              {t("finished")}
             </span>
           }
           seeAllLink={routes.finishedBooks}

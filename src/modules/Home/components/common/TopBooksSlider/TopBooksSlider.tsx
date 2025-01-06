@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { FC } from "react";
 import NoImg from "../../../../../assets/images/NoImagePlaceholder.jpg";
 import { Skeleton } from "antd";
+import { useTranslation } from "react-i18next";
 
 const topSliderSettings = {
   dots: true,
@@ -61,6 +62,7 @@ interface TopBooksSlider {
 }
 
 const TopBooksSlider: FC<TopBooksSlider> = ({ books, getBook, isLoading }) => {
+  const { t } = useTranslation();
   return (
     <div className={styles.rowDesktop}>
       <div className={styles.topBooksList}>
@@ -106,7 +108,7 @@ const TopBooksSlider: FC<TopBooksSlider> = ({ books, getBook, isLoading }) => {
                     getBook(book.id);
                   }}
                 >
-                  Read
+                  {t("readLink")}
                 </div>
               </div>
             ))}
@@ -147,7 +149,7 @@ const TopBooksSlider: FC<TopBooksSlider> = ({ books, getBook, isLoading }) => {
                       getBook(book.id);
                     }}
                   >
-                    Read
+                    {t("readLink")}
                   </div>
                 </div>
               </div>

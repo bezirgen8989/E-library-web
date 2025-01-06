@@ -179,7 +179,7 @@ const Header: React.FC = () => {
             alt=""
           />
         </div>
-        <div className={styles.pageTitle}>Home</div>
+        <div className={styles.pageTitle}>{t("menuItemHome")}</div>
         <div className={styles.headerNotifications} onClick={showDrawer}>
           {hasNotifications && <div className={styles.dot} />}
           <img src={bell} alt="bell" />

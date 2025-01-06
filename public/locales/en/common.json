@@ -10,10 +10,6 @@
   "notificationSettings": "Notification Settings",
   "aILibrarian": "AI Librarian",
   "logOut": "Log Out",
-
-
-
-
   "titleNewBooks": "New Books",
   "titleSuggestedForYou": "Suggested for You",
   "titleSimilarBooks": "Similar Books",
@@ -28,6 +24,8 @@
   "categoryDetective": "Detective",
   "categoryNarrative": "Narrative",
   "categoryCookbooks": "Cookbooks",
+
+
   "readNowBtn": "Read Now",
   "backBtn": "Back",
   "AskQuestionBtn": "Ask a Question",
@@ -43,5 +41,15 @@
   "email": "Email",
   "password": "Password",
   "confirmPassword": "Confirm Password",
-  "dateOfBirth": "Date of Birth"
+  "dateOfBirth": "Date of Birth",
+
+
+  "titleTopBooks": "Top Books",
+  "categoryNotFound": "Category not found",
+  "readLink": "Read",
+  "ageLimit": "For Ages 16 and Up",
+  "submit": "Submit",
+  "rating": "Rating",
+  "placeholderYourReview": "Your review",
+  "reviews": "Reviews"
 }

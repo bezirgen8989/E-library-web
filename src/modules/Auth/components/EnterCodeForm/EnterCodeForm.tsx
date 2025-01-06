@@ -6,6 +6,7 @@ import Onboarding from "../../../../assets/images/Onboarding-img.png";
 import { useForm } from "react-hook-form";
 import Button from "../../../../components/common/Buttons/Button";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 type RecoverProps = {
   onSubmit: (values: any) => void;
@@ -14,6 +15,7 @@ type RecoverProps = {
 
 const EnterCodeForm: React.FC<RecoverProps> = ({ onSubmit, currentEmail }) => {
   const history = useHistory();
+  const { t } = useTranslation();
   const { register, handleSubmit, watch, setValue } = useForm();
   const code = watch([
     "digit1",
@@ -85,7 +87,7 @@ const EnterCodeForm: React.FC<RecoverProps> = ({ onSubmit, currentEmail }) => {
             className={commonStyles.backBtnRelative}
           >
             <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
-            Back
+            {t("backBtn")}
           </div>
           <div />
         </div>

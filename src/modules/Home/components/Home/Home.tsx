@@ -5,6 +5,7 @@ import TopBooksSlider from "../common/TopBooksSlider/TopBooksSlider";
 import AllBooksSlider from "../common/AllBooksSlider/AllBooksSlider";
 import books from "../../../../assets/images/icons/booksIcon.png";
 import { routes } from "../../routing";
+import { useTranslation } from "react-i18next";
 
 type HomeProps = {
   onLogout: Callback;
@@ -27,6 +28,7 @@ const Home: React.FC<HomeProps> = ({
   isSuggestedBooksLoading,
 }) => {
   const value = useContext(UserContext);
+  const { t } = useTranslation();
   console.log(value);
 
   return (
@@ -38,7 +40,7 @@ const Home: React.FC<HomeProps> = ({
       />
       <AllBooksSlider
         books={newBooks}
-        title="New Books"
+        title={t("titleNewBooks")}
         titleImage={<img src={books} alt="books" />}
         seeAllLink={routes.newBooks}
         getBook={getBook}
@@ -47,7 +49,7 @@ const Home: React.FC<HomeProps> = ({
       <div style={{ height: "1px", background: "rgba(18, 18, 18, 0.1)" }} />
       <AllBooksSlider
         books={suggestedBooks}
-        title="Suggested for You"
+        title={t("titleSuggestedForYou")}
         seeAllLink={routes.suggestedBooks}
         getBook={getBook}
         isLoading={isSuggestedBooksLoading}

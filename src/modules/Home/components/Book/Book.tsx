@@ -20,6 +20,7 @@ import PageBooksList from "../common/PageBooksList/PageBooksList";
 import BackIcon from "../../../../assets/images/icons/backPage.svg";
 import Review from "../common/Review/Review";
 import { Skeleton } from "antd";
+import { useTranslation } from "react-i18next";
 
 type LanguageType = {
   id: number;
@@ -93,6 +94,7 @@ const Book: React.FC<HomeProps> = ({
   const { id } = useParams<{ id: string }>();
   const value = useContext(UserContext);
   const history = useHistory();
+  const { t } = useTranslation();
 
   const defaultLanguage = (languages || []).find(
     (lang) => lang.name === "English"
@@ -176,6 +178,7 @@ const Book: React.FC<HomeProps> = ({
       }
     }
   }, [languages]);
+  console.log("book?.categories", book?.categories);
 
   if (!languages) {
     return (
@@ -241,7 +244,7 @@ const Book: React.FC<HomeProps> = ({
         className={styles.backBtnRelativePage}
       >
         <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
-        Back
+        {t("backBtn")}
       </div>
       <div className={styles.home_page}>
         <div className={styles.flex_wrap}>
@@ -387,7 +390,7 @@ const Book: React.FC<HomeProps> = ({
                 variant="Brown"
                 type="submit"
               >
-                Read Now
+                {t("readNowBtn")}
               </Button>
               <div className={styles.divider} />
               <Button
@@ -402,18 +405,20 @@ const Book: React.FC<HomeProps> = ({
                 variant="Transparent"
                 icon={<img src={Question} alt="icon" />}
               >
-                Ask a Question
+                {t("AskQuestionBtn")}
               </Button>
             </div>
             <section className={styles.bookDescription}>
               <div className={styles.description}>
-                <div className={styles.section_title}>Description</div>
+                <div className={styles.section_title}>
+                  {t("bookDescriptionBtn")}
+                </div>
                 <p>{book?.description}</p>
               </div>
               <div className={styles.mobileView}>
                 <div className={styles.age_row}>
                   <img style={{ marginRight: "5px" }} src={Group} alt="icon" />
-                  For Ages 16 and Up
+                  {t("ageLimit")}
                 </div>
                 <div
                   style={{
@@ -450,7 +455,7 @@ const Book: React.FC<HomeProps> = ({
                 variant="Transparent"
                 icon={<img src={Download} alt="icon" />}
               >
-                Download
+                {t("downloadBtn")}
                 <div
                   style={{
                     background: "rgba(153, 108, 66, 0.1)",
@@ -465,7 +470,7 @@ const Book: React.FC<HomeProps> = ({
               </Button>
             </section>
             <section className={styles.reviewsSection}>
-              <div className={styles.section_title}>Reviews</div>
+              <div className={styles.section_title}>{t("reviews")}</div>
               <div className={styles.overallRating}>
                 <Rating
                   count={5}
@@ -475,7 +480,9 @@ const Book: React.FC<HomeProps> = ({
                   activeColor="#ffab00"
                 />
                 <div className={styles.rating_count}>{book?.rating}</div>
-                <span>({book?.reviewCount} reviews)</span>
+                <span>
+                  ({book?.reviewCount} {t("reviews").toLowerCase()})
+                </span>
               </div>
               {reviews.length > 0 ? (
                 reviews.map((review) => (
@@ -489,7 +496,7 @@ const Book: React.FC<HomeProps> = ({
                   />
                 ))
               ) : (
-                <p>No reviews available.</p>
+                <p>{t("noReviewsAvailable")}</p>
               )}
               <Button
                 style={{
@@ -503,7 +510,7 @@ const Book: React.FC<HomeProps> = ({
                 }}
                 variant="Transparent"
               >
-                Write a review
+                {t("writeReviewBtn")}
                 <img
                   style={{ marginLeft: "10px" }}
                   src={ReviewIcon}
@@ -514,7 +521,7 @@ const Book: React.FC<HomeProps> = ({
             <section>
               <PageBooksList
                 books={similarBooks}
-                title="Similar Books"
+                title={t("titleSimilarBooks")}
                 seeAllLink={routes.similarBooks}
                 getBook={getBook}
               />

@@ -11,10 +11,12 @@ import {
   getBooksByQueryName,
   setCurrentCategoryId,
 } from "../slices/home";
+import { useTranslation } from "react-i18next";
 
 const SearchContainer: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { t } = useTranslation();
 
   const { categories } = useLazySelector(({ auth }) => {
     const { categories } = auth;
@@ -22,16 +24,7 @@ const SearchContainer: React.FC = () => {
       categories,
     };
   });
-
-  // const { isLoading, error, data } = useLazySelector(({ userList }) => {
-  //   const { users } = userList
-  //   const { isLoading, error, result } = users
-  //   return {
-  //     isLoading,
-  //     error,
-  //     data: result,
-  //   }
-  // })
+  console.log("categories ", categories);
 
   const { searchBooks, booksByQueryName, isLoading } = useLazySelector(
     ({ home }) => {
@@ -46,16 +39,22 @@ const SearchContainer: React.FC = () => {
 
   useEffect(() => {
     dispatch(getCategories());
-  }, []);
+  }, [dispatch]);
 
-  const getBooksByCategory = useCallback((id) => {
-    dispatch(setCurrentCategoryId(id));
-    history.push(`${routes.searchBooks}/${id}`);
-  }, []);
+  const getBooksByCategory = useCallback(
+    (id) => {
+      dispatch(setCurrentCategoryId(id));
+      history.push(`${routes.searchBooks}/${id}`);
+    },
+    [dispatch, history]
+  );
 
-  const getSearchBooks = useCallback((text) => {
-    dispatch(findBooks(text));
-  }, []);
+  const getSearchBooks = useCallback(
+    (text) => {
+      dispatch(findBooks(text));
+    },
+    [dispatch]
+  );
 
   const getBooksByName = (name: string) => {
     dispatch(
@@ -68,14 +67,24 @@ const SearchContainer: React.FC = () => {
     );
   };
 
-  const getBook = useCallback((id) => {
-    dispatch(getBookById(id.toString()));
-    history.push(`${routes.book}/${id}`);
-  }, []);
+  const getBook = useCallback(
+    (id) => {
+      dispatch(getBookById(id.toString()));
+      history.push(`${routes.book}/${id}`);
+    },
+    [dispatch, history]
+  );
+
+  const translatedCategories = categories?.result?.data?.map(
+    (category: any) => ({
+      ...category,
+      name: t(`category${category.name}`),
+    })
+  );
 
   return (
     <SearchComponent
-      categoriesData={categories?.result?.data}
+      categoriesData={translatedCategories}
       getBooksByCategory={getBooksByCategory}
       getSearchBooks={getSearchBooks}
       searchBooks={searchBooks?.result}

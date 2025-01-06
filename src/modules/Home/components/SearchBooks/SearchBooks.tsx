@@ -5,6 +5,7 @@ import books from "../../../../assets/images/icons/booksIcon.png";
 import { routes } from "../../routing";
 import BackIcon from "../../../../assets/images/icons/goBackIcon.svg";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 type CategoryData = {
   id: number;
@@ -36,6 +37,7 @@ const SearchBooks: FC<HomeProps> = ({
   isSuggestedBooksLoading,
 }) => {
   const history = useHistory();
+  const { t } = useTranslation();
   const selectedCategory = categories.find(
     (category) => category.id.toString() === searchId
   );
@@ -44,17 +46,17 @@ const SearchBooks: FC<HomeProps> = ({
     <div className={styles.home_page}>
       <div onClick={() => history.goBack()} className={styles.backBtnSearch}>
         <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
-        Back
+        {t("backBtn")}
       </div>
       <div className={styles.title}>
-        {selectedCategory ? selectedCategory.name : "Category not found"}
+        {selectedCategory ? selectedCategory.name : t("categoryNotFound")}
       </div>
       <div className={styles.search_page}>
         <div className={styles.searchContainer}>
           {topBooks && (
             <AllBooksSlider
               books={topBooks}
-              title="Top books"
+              title={t("titleTopBooks")}
               seeAllLink={`${routes.searchTopBooks}/${searchId}`}
               getBook={getBook}
               isLoading={isTopBooksLoading}
@@ -64,7 +66,7 @@ const SearchBooks: FC<HomeProps> = ({
           {newBooks && (
             <AllBooksSlider
               books={newBooks}
-              title="New Books"
+              title={t("titleNewBooks")}
               titleImage={<img src={books} alt="books" />}
               seeAllLink={`${routes.searchNewBooks}/${searchId}`}
               getBook={getBook}

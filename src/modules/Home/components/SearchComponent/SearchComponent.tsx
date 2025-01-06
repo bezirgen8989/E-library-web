@@ -3,6 +3,7 @@ import React, { FC, useState } from "react";
 import NoImg from "../../../../assets/images/NoImagePlaceholder.jpg";
 import Search from "../../../../assets/images/icons/SearchIcon.svg";
 import { Input, Skeleton } from "antd";
+import { useTranslation } from "react-i18next";
 
 type CategoryData = {
   id: number;
@@ -47,6 +48,7 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
   getBook,
   isLoading,
 }) => {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [hasSearched, setHasSearched] = useState<boolean>(false);
   const [isDropdownVisible, setDropdownVisible] = useState<boolean>(false);
@@ -147,7 +149,7 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
         {!searchTerm && (
           <div className={styles.categoryFilter}>
             <div className={styles.page_title}>
-              <span>All Genres</span>
+              <span>{t("allGenres")}</span>
             </div>
             <div className={styles.grid_container}>
               {categoriesData.map((category: CategoryData) => (

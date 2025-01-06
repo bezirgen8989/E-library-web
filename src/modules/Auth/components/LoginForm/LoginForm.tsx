@@ -7,6 +7,7 @@ import BackIcon from "../../../../assets/images/icons/goBackIcon.svg";
 import { Link, useHistory } from "react-router-dom";
 import Button from "../../../../components/common/Buttons/Button";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 type LoginFormProps = {
   onSubmit: (values: any) => void;
@@ -14,6 +15,7 @@ type LoginFormProps = {
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   const history = useHistory();
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -40,7 +42,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
             className={commonStyles.backBtnRelative}
           >
             <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
-            Back
+            {t("backBtn")}
           </div>
           <div />
         </div>

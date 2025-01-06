@@ -9,6 +9,7 @@ import BackIcon from "../../../../assets/images/icons/goBackIcon.svg";
 import { useHistory } from "react-router-dom";
 import homeRoutes from "../../../Home/routing/routes";
 import LanguageModal from "../LanguageModal";
+import { useTranslation } from "react-i18next";
 
 type LanguageType = {
   id: number;
@@ -49,6 +50,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
     name: "Select Language",
     flag: { link: NoAvatar },
   };
+  const { t } = useTranslation();
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const defaultGender = genders[0].value;
@@ -124,7 +126,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
             className={commonStyles.backBtnRelative}
           >
             <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
-            Back
+            {t("backBtn")}
           </div>
           <div
             onClick={() => history.push(homeRoutes.root)}

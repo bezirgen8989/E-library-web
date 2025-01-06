@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../../../hooks";
 import { UserContext } from "../../../../../core/contexts";
 import { useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 interface Author {
   name: string;
@@ -78,6 +79,7 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
 }) => {
   const value = useContext(UserContext);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { currentBookshelfBook } = useLazySelector(({ home }) => ({
     currentBookshelfBook: home.currentBookshelfBook,
@@ -179,7 +181,7 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
             onClick={() => continueReadingBook?.(book.id)}
             className={styles.startBtn}
           >
-            Start Reading
+            {t("startReading")}
           </div>
         )}
 
@@ -212,7 +214,7 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
             onClick={() => continueReadingBook?.(book.id)}
             className={styles.startBtn}
           >
-            Continue Reading
+            {t("continueReading")}
           </div>
         )}
       </div>
@@ -227,7 +229,7 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
         </div>
         {seeAllLink && (
           <Link className={styles.titleLink} to={seeAllLink}>
-            See all
+            {t("seeAll")}
           </Link>
         )}
       </div>

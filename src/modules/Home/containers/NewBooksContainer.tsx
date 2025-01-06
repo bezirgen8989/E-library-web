@@ -6,6 +6,7 @@ import BooksComponent from "../components/AllBooksComponents/BooksComponent";
 import { routes } from "../routing";
 import { useHistory } from "react-router-dom";
 import booksImg from "../../../assets/images/icons/booksIcon.png";
+import { useTranslation } from "react-i18next";
 
 const NewBooksContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const NewBooksContainer: React.FC = () => {
 
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
+  const { t } = useTranslation();
 
   // Destructure isLoading directly from `newBooks`
   const { newBooks, isLoading } = useLazySelector(({ home }) => {
@@ -75,7 +77,7 @@ const NewBooksContainer: React.FC = () => {
       getBook={getBook}
       title={
         <>
-          New Books <img src={booksImg} alt="books" />
+          {t("titleNewBooks")} <img src={booksImg} alt="books" />
         </>
       }
       onLoadMore={hasMoreBooks ? loadMoreBooks : undefined}
