@@ -69,5 +69,12 @@
   "avatarExamples3": "अगाथा क्रिस्टी की पुस्तकों में?",
   "askGlobalTitle": "वैश्विक पुस्तकालय संग्रह",
   "talkToAvatar": "अवतार से बात करें",
-  "questionPlaceholder": "आपका प्रश्न..."
+  "questionPlaceholder": "आपका प्रश्न...",
+
+  "yourProgress": "आपकी पढ़ाई की प्रगति",
+  "yourBookshelf": "आपके बुकशेल्फ़ में नई किताब",
+  "yourFavoriteCategory": "पसंदीदा श्रेणी",
+  "saveBtn": "सहेजें",
+  "askNow": "अभी पूछें",
+  "stop": "रोकें"
 }

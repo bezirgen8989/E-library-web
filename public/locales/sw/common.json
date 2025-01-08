@@ -70,5 +70,12 @@
   "avatarExamples4": "katika vitabu vya Agatha Christie?",
   "askGlobalTitle": "Mkusanyiko wa Maktaba ya Ulimwenguni",
   "talkToAvatar": "Zungumza na avatar",
-  "questionPlaceholder": "Swali lako..."
+  "questionPlaceholder": "Swali lako...",
+
+  "yourProgress": "Maendeleo Yako ya Kusoma",
+  "yourBookshelf": "Kitabu Kipya kwenye Rafu Yako",
+  "yourFavoriteCategory": "Kategoria Uipendayo",
+  "saveBtn": "Hifadhi",
+  "askNow": "Uliza sasa",
+  "stop": "Acha"
 }

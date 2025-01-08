@@ -70,5 +70,12 @@
   "avatarExamples4": "",
   "askGlobalTitle": "Colección global de libros",
   "talkToAvatar": "Habla con el avatar",
-  "questionPlaceholder": "Tu pregunta..."
+  "questionPlaceholder": "Tu pregunta...",
+
+  "yourProgress": "Tu progreso de lectura",
+  "yourBookshelf": "Nuevo libro en tu estantería",
+  "yourFavoriteCategory": "Categoría favorita",
+  "saveBtn": "Guardar",
+  "askNow": "Preguntar ahora",
+  "stop": "Detener"
 }

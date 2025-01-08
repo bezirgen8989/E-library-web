@@ -69,5 +69,12 @@
   "avatarExamples3": "در کتاب‌های آگاتا کریستی چیست؟",
   "askGlobalTitle": "مجموعه کتابخانه جهانی",
   "talkToAvatar": "صحبت با آواتار",
-  "questionPlaceholder": "سوال شما..."
+  "questionPlaceholder": "سوال شما...",
+
+  "yourProgress": "پیشرفت مطالعه شما",
+  "yourBookshelf": "کتاب جدید در قفسه شما",
+  "yourFavoriteCategory": "دسته مورد علاقه",
+  "saveBtn": "ذخیره",
+  "askNow": "اکنون بپرسید",
+  "stop": "توقف"
 }

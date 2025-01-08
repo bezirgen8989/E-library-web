@@ -70,5 +70,12 @@
   "avatarExamples4": "in de boeken van Agatha Christie?",
   "askGlobalTitle": "Wereldwijde bibliotheekcollectie",
   "talkToAvatar": "Praat met avatar",
-  "questionPlaceholder": "Uw vraag..."
+  "questionPlaceholder": "Uw vraag...",
+
+  "yourProgress": "Je Leesvoortgang",
+  "yourBookshelf": "Nieuw Boek op Je Boekenplank",
+  "yourFavoriteCategory": "Favoriete Categorie",
+  "saveBtn": "Opslaan",
+  "askNow": "Nu vragen",
+  "stop": "Stoppen"
 }

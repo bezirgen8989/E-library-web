@@ -70,5 +70,12 @@
   "avatarExamples4": "আগাথা ক্রিস্টির বইতে?",
   "askGlobalTitle": "গ্লোবাল লাইব্রেরি সংগ্রহ",
   "talkToAvatar": "অ্যাভাটারের সাথে কথা বলুন",
-  "questionPlaceholder": "আপনার প্রশ্ন..."
+  "questionPlaceholder": "আপনার প্রশ্ন...",
+
+  "yourProgress": "আপনার পড়ার অগ্রগতি",
+  "yourBookshelf": "আপনার বুকশেলফে নতুন বই",
+  "yourFavoriteCategory": "প্রিয় বিভাগ",
+  "saveBtn": "সংরক্ষণ করুন",
+  "askNow": "এখনই জিজ্ঞাসা করুন",
+  "stop": "থামুন"
 }

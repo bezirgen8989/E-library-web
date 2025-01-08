@@ -211,7 +211,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     }
 
     if (!isFirst && !paused) {
-      return "Ask now";
+      return t("askNow");
     }
   };
 
@@ -319,7 +319,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
                 <div id="mic" className={styles.stopBtn}></div>
               </div>
               <div style={{ display: "flex" }}>
-                <Tooltip title="Stop" placement="top">
+                <Tooltip title={t("stop")} placement="top">
                   <div>
                     <Button
                       className={styles.stopRecording}

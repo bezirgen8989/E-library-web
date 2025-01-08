@@ -69,5 +69,12 @@
   "avatarExamples3": "Agata Kristi kitoblarida?",
   "askGlobalTitle": "Global kutubxona to'plami",
   "talkToAvatar": "Avatar bilan gaplashish",
-  "questionPlaceholder": "Sizning savolingiz..."
+  "questionPlaceholder": "Sizning savolingiz...",
+
+  "yourProgress": "O'qishdagi yutuqlaringiz",
+  "yourBookshelf": "Kitob javonida yangi kitob",
+  "yourFavoriteCategory": "Sevimli kategoriya",
+  "saveBtn": "Saqlash",
+  "askNow": "Hozir so'rang",
+  "stop": "To'xtatish"
 }

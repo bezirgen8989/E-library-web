@@ -69,5 +69,12 @@
   "avatarExamples3": "және көмекшісі Агата Кристи кітаптарында кім?",
   "askGlobalTitle": "Әлемдік кітапхана жинағы",
   "talkToAvatar": "Аватармен сөйлесу",
-  "questionPlaceholder": "Сіздің сұрағыңыз..."
+  "questionPlaceholder": "Сіздің сұрағыңыз...",
+
+  "yourProgress": "Оқу прогресіңіз",
+  "yourBookshelf": "Сөреңіздегі жаңа кітап",
+  "yourFavoriteCategory": "Сүйікті категория",
+  "saveBtn": "Сақтау",
+  "askNow": "Қазір сұрау",
+  "stop": "Тоқтату"
 }

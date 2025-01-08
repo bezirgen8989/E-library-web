@@ -69,5 +69,12 @@
   "avatarExamples3": "آگاتھا کرسٹی کی کتابوں میں؟",
   "askGlobalTitle": "عالمی لائبریری مجموعہ",
   "talkToAvatar": "آؤتار سے بات کریں",
-  "questionPlaceholder": "آپ کا سوال..."
+  "questionPlaceholder": "آپ کا سوال...",
+
+  "yourProgress": "آپ کی پڑھنے کی ترقی",
+  "yourBookshelf": "آپ کی شیلف پر نئی کتاب",
+  "yourFavoriteCategory": "پسندیدہ زمرہ",
+  "saveBtn": "محفوظ کریں",
+  "askNow": "ابھی پوچھیں",
+  "stop": "روکیں"
 }

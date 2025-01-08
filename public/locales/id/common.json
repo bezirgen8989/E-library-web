@@ -69,5 +69,12 @@
   "avatarExamples3": "Poirot di buku Agatha Christie?",
   "askGlobalTitle": "Koleksi Perpustakaan Global",
   "talkToAvatar": "Berbicara dengan avatar",
-  "questionPlaceholder": "Pertanyaan Anda..."
+  "questionPlaceholder": "Pertanyaan Anda...",
+
+  "yourProgress": "Kemajuan Membaca Anda",
+  "yourBookshelf": "Buku Baru di Rak Anda",
+  "yourFavoriteCategory": "Kategori Favorit",
+  "saveBtn": "Simpan",
+  "askNow": "Tanya sekarang",
+  "stop": "Berhenti"
 }

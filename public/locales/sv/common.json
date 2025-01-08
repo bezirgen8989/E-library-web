@@ -70,5 +70,12 @@
   "avatarExamples4": "i Agatha Christies böcker?",
   "askGlobalTitle": "Globalt biblioteksutbud",
   "talkToAvatar": "Prata med avatar",
-  "questionPlaceholder": "Din fråga..."
+  "questionPlaceholder": "Din fråga...",
+
+  "yourProgress": "Din läsframgång",
+  "yourBookshelf": "Ny bok i din bokhylla",
+  "yourFavoriteCategory": "Favoritkategori",
+  "saveBtn": "Spara",
+  "askNow": "Fråga nu",
+  "stop": "Stoppa"
 }

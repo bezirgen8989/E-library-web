@@ -70,5 +70,12 @@
   "avatarExamples4": "في كتب أجاثا كريستي؟",
   "askGlobalTitle": "مجموعة المكتبة العالمية",
   "talkToAvatar": "تحدث مع الآفاتار",
-  "questionPlaceholder": "سؤالك..."
+  "questionPlaceholder": "سؤالك...",
+
+  "yourProgress": "تقدمك في القراءة",
+  "yourBookshelf": "كتاب جديد في رفك",
+  "yourFavoriteCategory": "الفئة المفضلة",
+  "saveBtn": "حفظ",
+  "askNow": "اطلب الآن",
+  "stop": "توقف"
 }

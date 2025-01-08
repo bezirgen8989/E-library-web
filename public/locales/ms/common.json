@@ -70,5 +70,12 @@
   "avatarExamples4": "dalam buku Agatha Christie?",
   "askGlobalTitle": "Koleksi Perpustakaan Global",
   "talkToAvatar": "Bercakap dengan avatar",
-  "questionPlaceholder": "Soalan anda..."
+  "questionPlaceholder": "Soalan anda...",
+
+  "yourProgress": "Kemajuan Bacaan Anda",
+  "yourBookshelf": "Buku Baru di Rak Anda",
+  "yourFavoriteCategory": "Kategori Kegemaran",
+  "saveBtn": "Simpan",
+  "askNow": "Tanya sekarang",
+  "stop": "Berhenti"
 }

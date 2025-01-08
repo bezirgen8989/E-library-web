@@ -70,5 +70,12 @@
   "avatarExamples4": "Agatha Christie ၏ စာအုပ်များတွင်?",
   "askGlobalTitle": "ကမ္ဘာလုံးဆိုင်ရာ စာကြည့်တိုက်စုစည်းမှု",
   "talkToAvatar": "Avatar နှင့် စကားပြောပါ",
-  "questionPlaceholder": "သင့်မေးခွန်း..."
+  "questionPlaceholder": "သင့်မေးခွန်း...",
+
+  "yourProgress": "သင့်ဖတ်ရှုမှုတိုးတက်မှု",
+  "yourBookshelf": "သင့်စာအုပ်စင်တွင်စာအုပ်အသစ်",
+  "yourFavoriteCategory": "အကြိုက်ဆုံးအမျိုးအစား",
+  "saveBtn": "သိမ်းဆည်းမည်",
+  "askNow": "ယခုမေးမည်",
+  "stop": "ရပ်တန့်ပါ"
 }

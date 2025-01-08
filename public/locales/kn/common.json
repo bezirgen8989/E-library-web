@@ -69,5 +69,12 @@
   "avatarExamples3": "ಅಗಾಥಾ ಕ್ರಿಸ್ಟಿ ಪುಸ್ತಕಗಳಲ್ಲಿ?",
   "askGlobalTitle": "ಜಾಗತಿಕ ಗ್ರಂಥಾಲಯ ಸಂಗ್ರಹ",
   "talkToAvatar": "ಅವತಾರ್ನೊಂದಿಗೆ ಮಾತನಾಡಿ",
-  "questionPlaceholder": "ನಿಮ್ಮ ಪ್ರಶ್ನೆ..."
+  "questionPlaceholder": "ನಿಮ್ಮ ಪ್ರಶ್ನೆ...",
+
+  "yourProgress": "ನಿಮ್ಮ ಓದುವ ಪ್ರಗತಿ",
+  "yourBookshelf": "ನಿಮ್ಮ ಬುಕ್‌ಶೆಲ್ಫ್‌ನಲ್ಲಿ ಹೊಸ ಪುಸ್ತಕ",
+  "yourFavoriteCategory": "ಮೆಚ್ಚಿನ ವರ್ಗ",
+  "saveBtn": "ಉಳಿಸಿ",
+  "askNow": "ಈಗ ಕೇಳಿ",
+  "stop": "ನಿಲ್ಲಿಸಿ"
 }

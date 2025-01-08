@@ -70,5 +70,12 @@
   "avatarExamples4": "i roto i ngā pukapuka a Agatha Christie?",
   "askGlobalTitle": "Kohinga Pātaka Whānui",
   "talkToAvatar": "Kōrero ki te avatar",
-  "questionPlaceholder": "Tō pātai..."
+  "questionPlaceholder": "Tō pātai...",
+
+  "yourProgress": "Tō Whakatutukitanga Pānui",
+  "yourBookshelf": "Pukapuka Hou i tō Papa Pukapuka",
+  "yourFavoriteCategory": "Wāhanga Pai",
+  "saveBtn": "Tiaki",
+  "askNow": "Pātai ināianei",
+  "stop": "Kāti"
 }

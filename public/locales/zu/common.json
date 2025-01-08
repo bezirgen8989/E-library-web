@@ -70,5 +70,12 @@
   "avatarExamples4": "ezincwadini zika-Agatha Christie?",
   "askGlobalTitle": "Ukuhlangana Kwezakhiwo Zomhlaba Wonke",
   "talkToAvatar": "Xoxa no-avatar",
-  "questionPlaceholder": "Umbuzo wakho..."
+  "questionPlaceholder": "Umbuzo wakho...",
+
+  "yourProgress": "Inqubekela phambili yakho yokufunda",
+  "yourBookshelf": "Incwadi entsha ekhabetheni lakho",
+  "yourFavoriteCategory": "Isigaba esiyintandokazi",
+  "saveBtn": "Londoloza",
+  "askNow": "Buza manje",
+  "stop": "Misa"
 }

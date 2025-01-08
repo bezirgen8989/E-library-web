@@ -70,5 +70,12 @@
   "avatarExamples4": "དེ་འདྲ་སྤྱིར་གཟིགས་བྱེད།",
   "askGlobalTitle": "དེ་ཁུངས་སྤྱིར་སྡེ་རྩའི་འཛིན་སྟོན།",
   "talkToAvatar": "དཔེ་སྟོན་མར་བྱེད།",
-  "questionPlaceholder": "འདྲི་བ།"
+  "questionPlaceholder": "འདྲི་བ།",
+
+  "yourProgress": "ཁྱོད་ཀྱི་དཔེ་ཆ་ཐོག་གི་སྒོམ་སྟངས།",
+  "yourBookshelf": "ཁྱོད་ཀྱི་དཔེ་ཆ་ཁྲོམ་ནང་གསར་འགྱུར་དཔེ་ཆ།",
+  "yourFavoriteCategory": "དགའ་ཤོས་གྲུབ་རིམ།",
+  "saveBtn": "ཉར་བ།",
+  "askNow": "ད་ལྟ་སྐྱོང་ཞུ།",
+  "stop": "འགོར་བསྒྱུར།"
 }

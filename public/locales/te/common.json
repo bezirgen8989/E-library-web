@@ -69,5 +69,12 @@
   "avatarExamples3": "అగథా క్రిస్టీ యొక్క పుస్తకాల్లో?",
   "askGlobalTitle": "గ్లోబల్ లైబ్రరీ కలెక్షన్",
   "talkToAvatar": "అవతార్‌తో మాట్లాడండి",
-  "questionPlaceholder": "మీ ప్రశ్న..."
+  "questionPlaceholder": "మీ ప్రశ్న...",
+
+  "yourProgress": "మీ పఠన ప్రగతి",
+  "yourBookshelf": "మీ పుస్తకాలను క్రోడంలో కొత్త పుస్తకం",
+  "yourFavoriteCategory": "ఇష్టమైన కేటగిరి",
+  "saveBtn": "సేవ్ చేయండి",
+  "askNow": "ఇప్పుడు అడగండి",
+  "stop": "ఆపివేయండి"
 }

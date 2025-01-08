@@ -71,5 +71,13 @@
   "avatarExamples4": "in Agatha Christie's books?",
   "askGlobalTitle": "Global Library Collection",
   "talkToAvatar": "Talk to avatar",
-  "questionPlaceholder": "Your question..."
+  "questionPlaceholder": "Your question...",
+
+
+  "yourProgress": "Your Reading Progress",
+  "yourBookshelf": "New Book on Your Bookshelf",
+  "yourFavoriteCategory": "Favorite Category",
+  "saveBtn": "Save",
+  "askNow": "Ask now",
+  "stop": "Stop"
 }

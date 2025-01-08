@@ -69,5 +69,12 @@
   "avatarExamples3": "在阿加莎·克里斯蒂的书中？",
   "askGlobalTitle": "全球图书馆集合",
   "talkToAvatar": "与头像交谈",
-  "questionPlaceholder": "你的问题..."
+  "questionPlaceholder": "你的问题...",
+
+  "yourProgress": "你的阅读进度",
+  "yourBookshelf": "你的书架上的新书",
+  "yourFavoriteCategory": "最喜欢的类别",
+  "saveBtn": "保存",
+  "askNow": "现在询问",
+  "stop": "停止"
 }

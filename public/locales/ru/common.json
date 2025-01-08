@@ -69,5 +69,12 @@
   "avatarExamples3": "Эркюля Пуаро в книгах Агаты Кристи?",
   "askGlobalTitle": "Мировая библиотека",
   "talkToAvatar": "Поговорить с аватаром",
-  "questionPlaceholder": "Ваш вопрос..."
+  "questionPlaceholder": "Ваш вопрос...",
+
+  "yourProgress": "Ваш прогресс чтения",
+  "yourBookshelf": "Новая книга на вашей полке",
+  "yourFavoriteCategory": "Любимая категория",
+  "saveBtn": "Сохранить",
+  "askNow": "Спросить сейчас",
+  "stop": "Остановить"
 }

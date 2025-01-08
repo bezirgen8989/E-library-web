@@ -70,5 +70,12 @@
   "avatarExamples4": "i bøkene til Agatha Christie?",
   "askGlobalTitle": "Globalt bibliotekssamling",
   "talkToAvatar": "Snakk med avatar",
-  "questionPlaceholder": "Ditt spørsmål..."
+  "questionPlaceholder": "Ditt spørsmål...",
+
+  "yourProgress": "Din leseprogresjon",
+  "yourBookshelf": "Ny bok i bokhyllen din",
+  "yourFavoriteCategory": "Favorittkategori",
+  "saveBtn": "Lagre",
+  "askNow": "Spør nå",
+  "stop": "Stopp"
 }

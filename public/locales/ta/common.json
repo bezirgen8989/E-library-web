@@ -70,5 +70,12 @@
   "avatarExamples4": "அகாதா கிரிஸ்டியின் புத்தகங்களில்?",
   "askGlobalTitle": "உலகளாவிய நூலக சேகரிப்பு",
   "talkToAvatar": "அவதாருடன் பேசுங்கள்",
-  "questionPlaceholder": "உங்கள் கேள்வி..."
+  "questionPlaceholder": "உங்கள் கேள்வி...",
+
+  "yourProgress": "உங்கள் வாசிப்பு முன்னேற்றம்",
+  "yourBookshelf": "உங்கள் புத்தக அலமாரியில் புதிய புத்தகம்",
+  "yourFavoriteCategory": "மிகப் பிடித்த வகை",
+  "saveBtn": "சேமிக்கவும்",
+  "askNow": "இப்போதே கேளுங்கள்",
+  "stop": "நிறுத்து"
 }

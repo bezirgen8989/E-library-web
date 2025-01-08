@@ -69,5 +69,12 @@
   "avatarExamples3": "ja avustajan nimi Agatha Christien kirjoissa?",
   "askGlobalTitle": "Maailmanlaajuinen kirjastokokoelma",
   "talkToAvatar": "Puhu avatarille",
-  "questionPlaceholder": "Kysymyksesi..."
+  "questionPlaceholder": "Kysymyksesi...",
+
+  "yourProgress": "Lukemisen edistyminen",
+  "yourBookshelf": "Uusi kirja kirjahyllyssäsi",
+  "yourFavoriteCategory": "Lempikategoria",
+  "saveBtn": "Tallenna",
+  "askNow": "Kysy nyt",
+  "stop": "Lopeta"
 }

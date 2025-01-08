@@ -70,5 +70,12 @@
   "avatarExamples4": "په د اگاټا کرستي کتابونو کې؟",
   "askGlobalTitle": "نړیوال کتابتون ټولګه",
   "talkToAvatar": "له آواتار سره خبرې وکړئ",
-  "questionPlaceholder": "ستاسو پوښتنه..."
+  "questionPlaceholder": "ستاسو پوښتنه...",
+
+  "yourProgress": "ستاسو د لوستلو پرمختګ",
+  "yourBookshelf": "ستاسو په کتابتون کې نوی کتاب",
+  "yourFavoriteCategory": "د خوښې وېشنيزه",
+  "saveBtn": "ذخیره کړئ",
+  "askNow": "اوس پوښتنه وکړئ",
+  "stop": "ودرول"
 }
