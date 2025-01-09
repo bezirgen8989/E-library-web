@@ -32,6 +32,8 @@ interface IVoiceRecorder {
   isLoadingData?: boolean;
   link: string;
   setFormData: (formData: any) => void;
+  setQuestion: (text: string) => void;
+  setIsStreamConnect?: (value: boolean) => void;
 }
 
 const VoiceRecorder: React.FC<IVoiceRecorder> = ({
@@ -42,7 +44,9 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   selectedLanguage,
   setIsRecordingInProcess,
   setFormData,
+  setQuestion,
   link,
+  setIsStreamConnect,
 }) => {
   // const { open } = useNotification();
   const { t } = useTranslation();
@@ -72,6 +76,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     setTextAreaValue: addTextWithDelay,
     paused,
     setIsRecordingInProcess,
+    setQuestion,
   });
 
   console.log(deleteStreaming, pauseStreaming);
@@ -226,10 +231,12 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
       setPaused(false);
       stopStreaming();
       setIsFirst(true);
+      // setIsStreamConnect && setIsStreamConnect(false); // Stop stream connection when recording stops
       return;
     }
 
     setRecording(true);
+    setIsStreamConnect && setIsStreamConnect(true); // Start stream connection
     await recordRef.current?.startRecording();
   };
 

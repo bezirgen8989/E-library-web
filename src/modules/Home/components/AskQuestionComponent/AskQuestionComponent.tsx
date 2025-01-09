@@ -185,6 +185,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     const currentTime = getCurrentTime();
+    console.log("DATA", data);
     setQuestion(data.question);
     clearMessages();
     setMessageClass(styles.messageSystem);
@@ -381,7 +382,9 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                   clickCursor={clickCursor}
                   setFormData={setFormData}
                   isLoadingData={false}
+                  setQuestion={setQuestion}
                   link=""
+                  setIsStreamConnect={setIsStreamConnect}
                 />
                 <div className={styles.chatInputSection}>
                   <input

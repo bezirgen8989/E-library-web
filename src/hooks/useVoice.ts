@@ -11,6 +11,7 @@ interface IUseVoiceHook {
   paused?: boolean;
   isTrascribe?: boolean;
   setIsRecordingInProcess?: (IsRecordingInProcess: boolean) => void;
+  setQuestion?: (text: string) => void;
 }
 
 export const useVoice = ({
@@ -18,6 +19,7 @@ export const useVoice = ({
   setTextAreaValue,
   setIsRecordingInProcess,
   isTrascribe = false,
+  setQuestion,
 }: IUseVoiceHook) => {
   const socketRef = useRef<WebSocket | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -51,9 +53,6 @@ export const useVoice = ({
             model: "large-v3",
             use_vad: true,
           })
-          // JSON.stringify({
-          //   uid: 'tester',
-          // }),
         );
       }
     };
@@ -61,14 +60,23 @@ export const useVoice = ({
     socketRef.current.onmessage = (event: MessageEvent) => {
       const data = JSON.parse(event.data);
 
-      if (data) {
+      console.log("[WebSocket Response]", data);
+
+      if (data?.segments?.length) {
+        const fullText = data.segments
+          .map((segment: any) => segment.text)
+          .join(" ");
+
+        // Set the question text if setQuestion is provided
+        if (setQuestion) {
+          setQuestion(fullText.trim());
+        }
+
         if (!isTrascribe) {
-          const resultText = data?.segments?.map((item: any) => {
-            if (item.translate?.[`${language}`]) {
-              return `${item.translate?.[`${language}`]?.trim()} `;
-            }
-          });
-          const res = resultText?.[stateRef?.current];
+          const resultText = data.segments
+            .map((item: any) => item.translate?.[language]?.trim())
+            .filter(Boolean);
+          const res = resultText?.[stateRef.current];
 
           if (res) {
             setState((prevState) => {
@@ -79,18 +87,13 @@ export const useVoice = ({
             });
             setTextAreaValue(res);
           }
-
           return;
         }
 
-        const resultText = data?.segments
-          ?.map((item: any) => {
-            if (item.translate?.[`${language}`]) {
-              return `${item.translate?.[`${language}`]?.trim()} `;
-            }
-          })
+        const resultText = data.segments
+          .map((item: any) => item.translate?.[language]?.trim())
+          .filter(Boolean)
           .join(" ");
-        // const resultText = data?.segments?.map((item: any) => item.text).join('\n');
 
         setTextAreaValue(resultText);
       }

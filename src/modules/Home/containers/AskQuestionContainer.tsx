@@ -25,6 +25,8 @@ const AskQuestionContainer: React.FC = () => {
   const history = useHistory();
   const [chatHistory, setChatHistory] = useState<Chat[]>([]);
 
+  console.log("QUESTION11111111", question);
+
   useEffect(() => {
     dispatch(getBookById(id));
   }, [dispatch, id]);
@@ -114,7 +116,6 @@ const AskQuestionContainer: React.FC = () => {
                   if (event.event === "MESSAGE" && data.chunk) {
                     setMessages((prev) => [...prev, data.chunk]);
 
-                    // Обновляем последний ответ в истории
                     setChatHistory((prev) => {
                       const updatedHistory = [...prev];
                       const lastIndex = updatedHistory.length - 1;
