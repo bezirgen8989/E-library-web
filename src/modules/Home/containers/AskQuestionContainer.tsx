@@ -45,13 +45,13 @@ const AskQuestionContainer: React.FC = () => {
       return { currentBook, avatars, avatarLanguage };
     }
   );
-  console.log("avatarLanguage", avatarLanguage.id);
+  // console.log("avatarLanguage", avatarLanguage.id);
 
   const { languages } = useLazySelector(({ auth }) => {
     const { languages } = auth;
     return { languages };
   });
-  console.log("languages", languages);
+  // console.log("languages", languages);
 
   useEffect(() => {
     dispatch(clearBooks());

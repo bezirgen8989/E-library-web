@@ -1,9 +1,15 @@
+.askQuestionWrap {
+  max-width: 950px;
+  margin: 0 auto;
+}
+
 .askQuestionPage {
   max-width: 1050px;
   margin: 0 auto;
   padding: 0 10px 10px;
   min-height: calc(100vh - 74px);
   display: flex;
+  justify-content: space-between;
   align-items: stretch;
   width: 100%;
 }
@@ -48,7 +54,6 @@
   max-width: 450px;
   color: #ffffff;
   font-family: Arial, sans-serif;
-  margin-left: 60px;
   border-radius: 10px;
   overflow: hidden;
   display: flex;
@@ -233,7 +238,7 @@
   display: flex;
   width: 100%;
   align-items: center;
-  justify-content: center;
+  justify-content:space-between;
   max-width: 1050px;
   margin: 0 auto;
   font-size: 19px;

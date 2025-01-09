@@ -72,12 +72,11 @@
   "askGlobalTitle": "Global Library Collection",
   "talkToAvatar": "Talk to avatar",
   "questionPlaceholder": "Your question...",
-
-
   "yourProgress": "Your Reading Progress",
   "yourBookshelf": "New Book on Your Bookshelf",
   "yourFavoriteCategory": "Favorite Category",
   "saveBtn": "Save",
-  "askNow": "Ask now",
-  "stop": "Stop"
+  "stop": "Stop",
+
+  "askNow": "Talking..."
 }

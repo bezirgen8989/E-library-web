@@ -328,32 +328,30 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
               <div style={{ display: "flex" }}>
                 <Tooltip title={t("stop")} placement="top">
                   <div>
-                    <Button
+                    <div
                       className={styles.stopRecording}
-                      variant="Brown"
                       onClick={handleRecordClick}
-                      icon={
-                        <div
-                          className={classNames(
-                            styles.stopBtnIconWrapper,
-                            !paused && styles.stopBtnIconWrapperPaused
-                          )}
+                    >
+                      <div
+                        className={classNames(
+                          styles.stopBtnIconWrapper,
+                          !paused && styles.stopBtnIconWrapperPaused
+                        )}
+                      >
+                        <div className={styles.StopIcon} />
+                      </div>
+                      {recording ? (
+                        <span
+                          className={styles.progressBlock}
+                          id="progress"
+                          ref={progressRef}
                         >
-                          <div className={styles.StopIcon} />
-                          {recording ? (
-                            <p
-                              className={styles.progressBlock}
-                              id="progress"
-                              ref={progressRef}
-                            >
-                              00:00
-                            </p>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                      }
-                    />
+                          00:00
+                        </span>
+                      ) : (
+                        ""
+                      )}
+                    </div>
                   </div>
                 </Tooltip>
               </div>

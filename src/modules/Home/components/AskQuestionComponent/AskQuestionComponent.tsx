@@ -102,7 +102,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   }, [languages]);
 
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
-  console.log("Select Language", selectedLanguage);
+  // console.log("Select Language", selectedLanguage);
 
   useEffect(() => {
     if (chatContentRef.current) {

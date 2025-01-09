@@ -43,6 +43,7 @@ export const useVoice = ({
 
   const connectToWhisper = () => {
     socketRef.current = new WebSocket(urlSocket);
+
     socketRef.current.onopen = () => {
       if (socketRef?.current?.readyState === WebSocket.OPEN) {
         socketRef.current?.send(
@@ -63,13 +64,11 @@ export const useVoice = ({
       console.log("[WebSocket Response]", data);
 
       if (data?.segments?.length) {
-        const fullText = data.segments
-          .map((segment: any) => segment.text)
-          .join(" ");
+        const lastSegment = data.segments[data.segments.length - 1]?.text;
 
-        // Set the question text if setQuestion is provided
-        if (setQuestion) {
-          setQuestion(fullText.trim());
+        // Отправляем текст последнего сегмента через setQuestion
+        if (setQuestion && lastSegment) {
+          setQuestion(lastSegment.trim());
         }
 
         if (!isTrascribe) {
@@ -82,7 +81,6 @@ export const useVoice = ({
             setState((prevState) => {
               const newState = prevState + 1;
               stateRef.current = newState;
-
               return newState;
             });
             setTextAreaValue(res);
