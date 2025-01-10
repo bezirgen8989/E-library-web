@@ -243,6 +243,25 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     return null;
   };
 
+  useEffect(() => {
+    const handleRouteChange = () => {
+      if (!location.pathname.includes("ask_question") && videoRef.current) {
+        // Закрыть поток, если покидается URL ask_question
+        videoRef.current.srcObject = null;
+        setIsStreamConnect(false);
+      }
+    };
+
+    handleRouteChange();
+
+    // Следим за изменениями в маршруте
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+      }
+    };
+  }, [location.pathname]);
+
   // const toggleCollapse = () => {
   //   setIsCollapseVisible(!isCollapseVisible);
   // };
