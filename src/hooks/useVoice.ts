@@ -44,6 +44,8 @@ export const useVoice = ({
   const connectToWhisper = () => {
     socketRef.current = new WebSocket(urlSocket);
 
+    let pauseTimer: ReturnType<typeof setTimeout> | null = null; // Таймер для паузы
+
     socketRef.current.onopen = () => {
       if (socketRef?.current?.readyState === WebSocket.OPEN) {
         socketRef.current?.send(
@@ -66,9 +68,16 @@ export const useVoice = ({
       if (data?.segments?.length) {
         const lastSegment = data.segments[data.segments.length - 1]?.text;
 
-        // Отправляем текст последнего сегмента через setQuestion
-        if (setQuestion && lastSegment) {
-          setQuestion(lastSegment.trim());
+        if (lastSegment && setQuestion) {
+          // Сбросить таймер, если новое сообщение пришло
+          if (pauseTimer) {
+            clearTimeout(pauseTimer);
+          }
+
+          // Установить таймер на 2 секунды
+          pauseTimer = setTimeout(() => {
+            setQuestion(lastSegment.trim()); // Отправляем вопрос после паузы
+          }, 2000);
         }
 
         if (!isTrascribe) {
