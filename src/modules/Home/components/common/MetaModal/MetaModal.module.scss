@@ -1,0 +1,17 @@
+.resourcesWrap {
+  max-height: 500px;
+  overflow-y: auto;
+}
+.resourcesWrap::-webkit-scrollbar {
+  width: 5px;
+}
+
+.resourcesWrap::-webkit-scrollbar-thumb {
+  background-color: #996C42;
+  border-radius: 10px;
+}
+
+.resourcesWrap::-webkit-scrollbar-track {
+  background: transparent;
+  margin-right: 20px;
+}

@@ -19,6 +19,7 @@ import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
 import { useDispatch } from "react-redux";
 import { selectAvatarLanguage } from "../../slices/home";
 import { useTranslation } from "react-i18next";
+import MetaModal from "../common/MetaModal/MetaModal";
 
 type Chat = {
   type: "user" | "system"; // Assuming 'user' or 'system' are the only types of messages
@@ -67,7 +68,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const [messageClass, setMessageClass] = useState(styles.messageSystemChange);
   const [messageTime, setMessageTime] = useState<string>("");
-  const [isCollapseVisible, setIsCollapseVisible] = useState(false);
+  const [isCollapseVisible] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const videoRef = useRef<HTMLVideoElement | any>(null);
   const [currentStep, setCurrentStep] = useState(1);
@@ -80,6 +81,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [isStreamConnect, setIsStreamConnect] = useState(false);
   const chatContentRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMetaModalOpen, setIsMetaModalOpen] = useState(false);
   const { t } = useTranslation();
   console.log("formData", formData);
   console.log("isRecordingInProcess", isRecordingInProcess);
@@ -241,9 +243,9 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     return null;
   };
 
-  const toggleCollapse = () => {
-    setIsCollapseVisible(!isCollapseVisible);
-  };
+  // const toggleCollapse = () => {
+  //   setIsCollapseVisible(!isCollapseVisible);
+  // };
 
   return (
     <>
@@ -356,7 +358,12 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
               {isSending && <ChatSpinner />}
               {metaData && metaData.length > 0 && !isLoading && !isSending && (
-                <div className={styles.collapseButton} onClick={toggleCollapse}>
+                <div
+                  className={styles.collapseButton}
+                  onClick={() => {
+                    setIsMetaModalOpen(true);
+                  }}
+                >
                   <span style={{ paddingRight: 10 }}>
                     {isCollapseVisible
                       ? "Hide used resources"
@@ -418,6 +425,11 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
             languages={languages}
             defaultLanguage={defaultLanguage}
             onLanguageSelect={onLanguageSelect}
+          />
+          <MetaModal
+            isModalOpen={isMetaModalOpen}
+            setIsModalOpen={setIsMetaModalOpen}
+            metaData={renderMetaData()}
           />
         </div>
       )}

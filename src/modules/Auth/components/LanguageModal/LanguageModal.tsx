@@ -24,6 +24,7 @@ const LanguageModal: FC<LanguageModalProps> = ({
   isModalOpen,
   setIsModalOpen,
   languages,
+
   defaultLanguage,
   onLanguageSelect,
 }) => {
@@ -53,11 +54,7 @@ const LanguageModal: FC<LanguageModalProps> = ({
       className="custom-modal"
       footer={null}
       closeIcon={
-        <img
-          className={commonStyles.modalCloseIcon}
-          src={Close}
-          alt="close-icon"
-        />
+        <img className={commonStyles.modalCloseIcon} src={Close} alt="close" />
       }
     >
       <Input
@@ -69,7 +66,7 @@ const LanguageModal: FC<LanguageModalProps> = ({
       />
 
       <div className={commonStyles.languageList}>
-        {filteredLanguages.map((lang: LanguageType) => (
+        {filteredLanguages?.map((lang: LanguageType) => (
           <div
             key={lang.id}
             className={`${commonStyles.languageItem} ${
