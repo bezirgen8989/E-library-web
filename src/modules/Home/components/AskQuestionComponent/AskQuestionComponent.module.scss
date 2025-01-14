@@ -7,7 +7,6 @@
   max-width: 1050px;
   margin: 0 auto;
   padding: 0 10px 10px;
-  min-height: calc(100vh - 74px);
   display: flex;
   justify-content: space-between;
   align-items: stretch;
@@ -48,8 +47,8 @@
 }
 .chatContainer {
   flex-grow: 0;
-  min-height: calc(100vh - 94px);
-  max-height: calc(100vh - 94px);
+  min-height: 84vh;
+  max-height: 84vh;
   width: 60%;
   max-width: 450px;
   color: #ffffff;

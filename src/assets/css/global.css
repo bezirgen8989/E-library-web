@@ -240,19 +240,19 @@ p {
   border: none !important;
 }
   .ant-collapse-header {
-    background-color: #112425 !important;
-    color: white !important; /* White text color for contrast */
+    background-color: #F1F4F6 !important;
+    color: #58616B !important; /* White text color for contrast */
     border: none !important;
     border-radius: 6px !important;
     margin-bottom: 3px !important;
   }
 
   .ant-collapse-content {
-    background-color: rgba(1, 21, 27, 1) !important; /* Red panel background */
-    color: white !important;
-    border-top: 1px solid #182724 !important;
+    background-color:#F1F4F6 !important; /* Red panel background */
+    color: #58616B !important;
+    border-top: none !important;
   }
-.ant-collapse-content p {color: white !important;}
+.ant-collapse-content p {color: #58616B !important;}
 
 .ant-progress-inner {
   background-color: rgba(120, 120, 120, 0.32) !important;
