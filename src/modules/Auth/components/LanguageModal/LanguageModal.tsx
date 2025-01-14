@@ -69,26 +69,27 @@ const LanguageModal: FC<LanguageModalProps> = ({
       />
 
       <div className={commonStyles.languageList}>
-        {filteredLanguages.map((lang: LanguageType) => (
-          <div
-            key={lang.id}
-            className={`${commonStyles.languageItem} ${
-              lang.name === selectedLanguage.name ? commonStyles.active : ""
-            }`}
-            onClick={() => handleLanguageSelect(lang)}
-          >
+        {filteredLanguages &&
+          filteredLanguages.map((lang: LanguageType) => (
             <div
-              className={commonStyles.flagIcon}
-              style={{
-                backgroundImage: `url(${lang.flag.link})`,
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                backgroundSize: "140%",
-              }}
-            ></div>
-            <span style={{ paddingLeft: 22 }}>{lang.name}</span>
-          </div>
-        ))}
+              key={lang.id}
+              className={`${commonStyles.languageItem} ${
+                lang.name === selectedLanguage.name ? commonStyles.active : ""
+              }`}
+              onClick={() => handleLanguageSelect(lang)}
+            >
+              <div
+                className={commonStyles.flagIcon}
+                style={{
+                  backgroundImage: `url(${lang.flag.link})`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center",
+                  backgroundSize: "140%",
+                }}
+              ></div>
+              <span style={{ paddingLeft: 22 }}>{lang.name}</span>
+            </div>
+          ))}
       </div>
 
       <div style={{ textAlign: "right" }}>

@@ -20,6 +20,7 @@ interface ProfileUserComponentProps {
   photoId: string | null;
   deleteAccount: () => void;
   handleKidsMode: (value: any) => void;
+  setUserAvatar: any;
 }
 
 const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
@@ -29,6 +30,7 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
   photoId,
   deleteAccount,
   handleKidsMode,
+  setUserAvatar,
 }) => {
   const { t } = useTranslation();
   const value = useContext(UserContext);
@@ -79,6 +81,7 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
             handleKidsMode={handleKidsMode}
             kidsMode={value?.kidsMode}
             bookLanguage={value?.bookLanguage}
+            setUserAvatar={setUserAvatar}
           />
         </div>
         <div onClick={onLogout} className={styles.logOutBtn}>

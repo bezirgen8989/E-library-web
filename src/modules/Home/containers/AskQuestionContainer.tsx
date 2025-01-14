@@ -25,8 +25,6 @@ const AskQuestionContainer: React.FC = () => {
   const history = useHistory();
   const [chatHistory, setChatHistory] = useState<Chat[]>([]);
 
-  console.log("QUESTION11111111", question);
-
   useEffect(() => {
     dispatch(getBookById(id));
   }, [dispatch, id]);

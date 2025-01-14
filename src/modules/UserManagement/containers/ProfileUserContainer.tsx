@@ -4,14 +4,18 @@ import { useCallback, useEffect } from "react";
 import {
   deleteUserAccount,
   getLanguages,
+  setAvatar,
   setKidsMode,
   setProfile,
   uploadUserPhotoId,
 } from "../../Auth/slices/auth";
 import { useDispatch } from "react-redux";
+import { routes } from "../../Home/routing";
+import { useHistory } from "react-router-dom";
 
 const ProfileUserContainer: React.FC = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const { languages, photoId } = useLazySelector(({ auth }) => {
     const { languages, photoId } = auth;
@@ -20,6 +24,25 @@ const ProfileUserContainer: React.FC = () => {
       photoId,
     };
   });
+
+  const setUserAvatar = async (avatarId: number) => {
+    try {
+      // Ensure dispatch is completed before proceeding
+      await dispatch(
+        setAvatar({
+          avatarSettings: null,
+        })
+      );
+
+      // Add a 2-second delay before navigating
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000ms = 2 seconds
+
+      // Navigate after the delay
+      history.push(routes.askQuestionAll);
+    } catch (error) {
+      console.error("Error setting user avatar:", error);
+    }
+  };
 
   useEffect(() => {
     dispatch(getLanguages());
@@ -51,6 +74,7 @@ const ProfileUserContainer: React.FC = () => {
       photoId={photoId?.result?.[0]?.id || null}
       deleteAccount={deleteAccount}
       handleKidsMode={handleKidsMode}
+      setUserAvatar={setUserAvatar}
     />
   );
 };

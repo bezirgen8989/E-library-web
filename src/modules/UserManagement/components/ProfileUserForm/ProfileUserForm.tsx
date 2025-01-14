@@ -23,6 +23,7 @@ type RecoverProps = {
   handleKidsMode: (value: boolean) => void;
   kidsMode: boolean | undefined;
   bookLanguage?: LanguageType;
+  setUserAvatar: any;
 };
 
 type FormValues = {
@@ -40,6 +41,7 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   handleKidsMode,
   kidsMode = true,
   bookLanguage,
+  setUserAvatar,
 }) => {
   const { t, i18n } = useTranslation();
   const defaultLanguage = languages.find((lang) => lang.name === "English") || {
@@ -211,7 +213,12 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
         </div>
 
         {/* AI Librarian */}
-        <div className={styles.aiWrapper}>
+        <div
+          className={styles.aiWrapper}
+          onClick={() => {
+            setUserAvatar(0);
+          }}
+        >
           <div className={styles.aiAvatar}>
             <img src={tempAi} alt="avatar" />
           </div>
@@ -219,7 +226,6 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
         </div>
       </form>
 
-      {/* Language Modal */}
       <LanguageModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
@@ -232,7 +238,6 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
         }
       />
 
-      {/* Notifications Modal */}
       <NotificationsModal
         isModalOpen={isNotificationsModalOpen}
         setIsModalOpen={setIsNotificationsModalOpen}

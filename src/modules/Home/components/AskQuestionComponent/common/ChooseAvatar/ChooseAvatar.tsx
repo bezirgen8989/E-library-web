@@ -38,20 +38,26 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
   const [initialSlide, setInitialSlide] = useState<number>(0);
   const { t } = useTranslation();
 
+  console.log("AVATARS", avatars);
+
   useEffect(() => {
     if (avatars?.data?.length) {
-      // Find the avatar with the ID from avatarSettings or fall back to the first avatar
+      // Найти аватар с ID из avatarSettings или fallback на первый аватар
       const initialAvatarIndex = avatars.data.findIndex(
         (avatar) => avatar.id === defaultAvatarId
       );
       const foundIndex = initialAvatarIndex !== -1 ? initialAvatarIndex : 0;
       setInitialSlide(foundIndex);
+      console.log("INITIALAVATAR", initialAvatarIndex);
 
       const initialAvatar = avatars.data[foundIndex];
       setCurrentImage(initialAvatar);
       setSelectedAvatar(initialAvatar.avatarPicture.link);
+
+      // Устанавливаем шаг в зависимости от initialAvatarIndex
+      setCurrentStep(foundIndex === 0 ? 1 : 4);
     }
-  }, [avatars, defaultAvatarId, setSelectedAvatar]);
+  }, [avatars, defaultAvatarId, setSelectedAvatar, setCurrentStep]);
 
   const settings = {
     infinite: true,

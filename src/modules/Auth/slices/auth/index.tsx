@@ -52,6 +52,7 @@ const initialState: AuthState = {
   currentEmail: null,
   googleTokenId: {},
   kidsMode: {},
+  avatarSettings: {},
 };
 
 const authSlice = createSlice({
@@ -176,6 +177,15 @@ const authSlice = createSlice({
         const { content, error } = action.payload;
         state.verifyToken = { isLoading: false, result: content, error };
       })
+
+      .addCase(setAvatar.pending, (state) => {
+        state.avatarSettings = { isLoading: true };
+      })
+      .addCase(setAvatar.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.avatarSettings = { isLoading: false, result: content, error };
+      })
+
       .addCase(userLoggedOut, () => initialState);
   },
 });
