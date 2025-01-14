@@ -33,7 +33,9 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
   setUserAvatar,
 }) => {
   const value = useContext(UserContext); // Assuming the context provides user data
-  const defaultAvatarId = value?.avatarSettings?.id || 1;
+
+  const [defaultAvatarId] = useState(value?.avatarSettings?.id || 1);
+
   const [currentImage, setCurrentImage] = useState<AvatarData | null>(null);
   const [initialSlide, setInitialSlide] = useState<number>(0);
   const { t } = useTranslation();
@@ -48,7 +50,6 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
       );
       const foundIndex = initialAvatarIndex !== -1 ? initialAvatarIndex : 0;
       setInitialSlide(foundIndex);
-      console.log("INITIALAVATAR", initialAvatarIndex);
 
       const initialAvatar = avatars.data[foundIndex];
       setCurrentImage(initialAvatar);

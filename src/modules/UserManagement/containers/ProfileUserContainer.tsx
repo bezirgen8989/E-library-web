@@ -4,6 +4,7 @@ import { useCallback, useEffect } from "react";
 import {
   deleteUserAccount,
   getLanguages,
+  getMe,
   setAvatar,
   setKidsMode,
   setProfile,
@@ -33,12 +34,9 @@ const ProfileUserContainer: React.FC = () => {
           avatarSettings: null,
         })
       );
-
-      // Add a 2-second delay before navigating
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000ms = 2 seconds
-
+      dispatch(getMe());
       // Navigate after the delay
-      history.push(routes.askQuestionAll);
+      await history.push(routes.askQuestionAll);
     } catch (error) {
       console.error("Error setting user avatar:", error);
     }
