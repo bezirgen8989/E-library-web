@@ -19,6 +19,7 @@ export type AuthState = {
   currentEmail?: any;
   googleTokenId?: any;
   avatarSettings?: any;
+  aboutOptions: any;
 };
 
 export type VerifyData = {

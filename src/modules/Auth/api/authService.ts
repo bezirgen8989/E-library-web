@@ -50,4 +50,8 @@ export const authVerifyEmail = (data: TokenData) =>
   usingPost("/user/verify_email/", data);
 export const authUpdatePhoto = (obj: any) =>
   usingPost("/user/update_photo/", obj);
+export const getSurveyOptions = () => usingGet("/api/v1/survey/options");
+export const setRegistrationOptionsAbout = (data: any) =>
+  usingPost("/api/v1/survey", data);
+
 export const deleteAccount = () => usingDelete(`/api/v1/auth/me`);

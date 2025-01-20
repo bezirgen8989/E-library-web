@@ -14,7 +14,6 @@ const ProfileContainer: React.FC = () => {
       photoId,
     };
   });
-  console.log("languages", languages?.result?.data);
 
   const handleSubmit = useCallback(
     (values) => {

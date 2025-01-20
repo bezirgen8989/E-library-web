@@ -20,6 +20,8 @@ import {
   resetUserPassword,
   deleteAccount,
   setUserAvatar,
+  getSurveyOptions,
+  setRegistrationOptionsAbout,
 } from "../../api/authService";
 import {
   EditUserParams,
@@ -53,6 +55,7 @@ const initialState: AuthState = {
   googleTokenId: {},
   kidsMode: {},
   avatarSettings: {},
+  aboutOptions: {},
 };
 
 const authSlice = createSlice({
@@ -184,6 +187,14 @@ const authSlice = createSlice({
       .addCase(setAvatar.fulfilled, (state, action) => {
         const { content, error } = action.payload;
         state.avatarSettings = { isLoading: false, result: content, error };
+      })
+
+      .addCase(getOptionsAbout.pending, (state) => {
+        state.aboutOptions = { isLoading: true };
+      })
+      .addCase(getOptionsAbout.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.aboutOptions = { isLoading: false, result: content, error };
       })
 
       .addCase(userLoggedOut, () => initialState);
@@ -403,7 +414,39 @@ export const setProfile = createAsyncThunk(
     } else {
       // Обновляем данные о пользователе
       dispatch(getMe());
+      // history.push(homeRoutes.root);
+      history.push(routes.profileAbout);
+    }
+    return response;
+  }
+);
+
+export const getOptionsAbout = createAsyncThunk(
+  "/api/v1/survey/options",
+  async () => {
+    const response = await getSurveyOptions();
+    return response;
+  }
+);
+
+export const setOptionsAbout = createAsyncThunk(
+  "/api/v1/survey",
+  async (userParams: any, { dispatch }) => {
+    const response = await setRegistrationOptionsAbout(userParams);
+    const { success, error } = response;
+
+    if (!success) {
+      notification.error({
+        message: "Profile Error",
+        description: error?.error,
+        duration: 4,
+        placement: "top",
+        icon: <img src={Alert} alt="icon" />,
+      });
+    } else {
+      dispatch(getMe());
       history.push(homeRoutes.root);
+      // history.push(routes.profileAbout);
     }
     return response;
   }

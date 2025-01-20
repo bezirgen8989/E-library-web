@@ -1,0 +1,72 @@
+.centeredAboutWrapper {
+  display: flex;
+  flex-grow: 1;
+  max-width: 964px;
+  margin: 0 auto;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: calc(100vh - 58px);
+}
+.centered {
+  max-width: 100%;
+}
+.logo_name {
+  font-size: 31px;
+  text-align: center;
+  line-height: 36px;
+  color: #fff;
+  font-weight: 700;
+  padding-bottom: 10px;
+}
+.subtitle_name {
+  text-align: center;
+  font-size: 18px;
+  color: #fff;
+  font-weight: 500;
+  padding-bottom: 10px;
+}
+.formBlock {
+  display: flex;
+  max-width: 964px;
+  justify-content: space-between;
+
+}
+.formSectionFirst {
+  padding: 0 26px 0 0;
+  min-width: 380px;
+}
+.formSectionBorder {
+  padding: 0 26px;
+  min-width: 290px;
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+.formSectionLast {
+  padding: 0 0 0 26px;
+}
+.subtitle {
+  font-size: 27px;
+  font-weight: 700;
+  color: #FFEA84;
+}
+.itemsList {
+  margin: 0;
+  padding: 0;
+  li {
+    display: flex;
+    color: #fff;
+    align-items: baseline;
+    span {
+      padding-left: 10px;
+      font-size: 18px;
+    }
+  }
+}
+.itemsList input[type="checkbox"] {
+  min-width: 20px;
+  min-height: 20px;
+  border-radius: 3px; /* Optional: Keep the rounded look */
+  position: relative; /* Enable relative positioning */
+  top: 5px; /* Move the checkbox 5px downward */
+}

@@ -42,6 +42,7 @@ export const BackgroundUpdater = () => {
       [authRoutes.login]: "linear-gradient(to bottom, #d3a271, #a46542)",
       [authRoutes.onboarding]: "linear-gradient(to bottom, #d3a271, #a46542)",
       [authRoutes.registration]: "linear-gradient(to bottom, #d3a271, #a46542)",
+      [authRoutes.profileAbout]: "linear-gradient(to bottom, #d3a271, #a46542)",
       [authRoutes.forgot]: "linear-gradient(to bottom, #d3a271, #a46542)",
       [authRoutes.recoverPassword]:
         "linear-gradient(to bottom, #d3a271, #a46542)",
