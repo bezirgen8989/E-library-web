@@ -74,6 +74,25 @@ const AskQuestionContainer: React.FC = () => {
     );
   };
 
+  const extractMeta = (data: any[]): { meta: any; content: string }[] => {
+    return data
+      .map((item) => {
+        // Если `docs` существует и это массив
+        if (item.docs && Array.isArray(item.docs)) {
+          return item.docs.map((doc: any) => ({
+            meta: doc.meta,
+            content: doc.content, // Включаем content из вложенных docs
+          }));
+        }
+        // Если `docs` отсутствует, вернуть `meta` и `content` на верхнем уровне
+        return {
+          meta: item.meta,
+          content: item.content, // Включаем content на верхнем уровне
+        };
+      })
+      .flat(); // Плоский массив, если есть вложенные массивы
+  };
+
   useEffect(() => {
     if (question) {
       const token = sessionStorage.getItem("SESSION_TOKEN");
@@ -127,10 +146,14 @@ const AskQuestionContainer: React.FC = () => {
                   }
 
                   if (event.event === "META") {
-                    setMeta(data);
+                    const extractedMeta = extractMeta(data);
+                    setMeta(extractedMeta);
                   }
                 } catch (error) {
-                  console.error("Error processing MESSAGE event:", error);
+                  console.error(
+                    "Error processing MESSAGE or META event:",
+                    error
+                  );
                 }
               },
 
@@ -171,6 +194,8 @@ const AskQuestionContainer: React.FC = () => {
   const clearMessages = () => {
     setMessages([]);
   };
+
+  console.log("metaData111111111", meta);
 
   return (
     <AskQuestionComponent

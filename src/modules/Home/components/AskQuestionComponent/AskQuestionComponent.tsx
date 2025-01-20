@@ -212,33 +212,44 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   const renderMetaData = () => {
     if (metaData && metaData.length > 0) {
-      return metaData.map((item: any, index: number) => (
-        <Panel
-          key={index}
-          header={
-            <div className={styles.panelHeader}>
-              <img
-                src={DocumentIcon}
-                alt="Document Icon"
-                className={styles.documentIcon}
-              />
-              <span>Page {item.meta.loc.pageNumber}</span>
-            </div>
-          }
-          showArrow={false}
-        >
-          <div>
-            <p>
-              <strong>Location:</strong> Page {item.meta.loc.pageNumber}, Lines{" "}
-              {item.meta.loc.lines.from}-{item.meta.loc.lines.to}
-            </p>
-            <p>
-              <strong>Content Excerpt:</strong> {item.content.substring(0, 300)}
-              ...
-            </p>
-          </div>
-        </Panel>
-      ));
+      return metaData.map((item: any, index: number) => {
+        const pageNumber = item?.meta?.loc?.pageNumber;
+        const linesFrom = item?.meta?.loc?.lines?.from;
+        const linesTo = item?.meta?.loc?.lines?.to;
+        const contentExcerpt = item?.content?.substring(0, 300) || "";
+
+        if (pageNumber && linesFrom && linesTo) {
+          return (
+            <Panel
+              key={index}
+              header={
+                <div className={styles.panelHeader}>
+                  <img
+                    src={DocumentIcon}
+                    alt="Document Icon"
+                    className={styles.documentIcon}
+                  />
+                  <span>Page {pageNumber}</span>
+                </div>
+              }
+              showArrow={false}
+            >
+              <div>
+                <p>
+                  <strong>Location:</strong> Page {pageNumber}, Lines{" "}
+                  {linesFrom}-{linesTo}
+                </p>
+                <p>
+                  <strong>Content Excerpt:</strong> {contentExcerpt}...
+                </p>
+              </div>
+            </Panel>
+          );
+        } else {
+          console.warn("Incomplete meta data at index:", index, item);
+          return null;
+        }
+      });
     }
     return null;
   };
