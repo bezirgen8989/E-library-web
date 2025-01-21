@@ -77,20 +77,18 @@ const AskQuestionContainer: React.FC = () => {
   const extractMeta = (data: any[]): { meta: any; content: string }[] => {
     return data
       .map((item) => {
-        // Если `docs` существует и это массив
         if (item.docs && Array.isArray(item.docs)) {
           return item.docs.map((doc: any) => ({
             meta: doc.meta,
-            content: doc.content, // Включаем content из вложенных docs
+            content: doc.content,
           }));
         }
-        // Если `docs` отсутствует, вернуть `meta` и `content` на верхнем уровне
         return {
           meta: item.meta,
-          content: item.content, // Включаем content на верхнем уровне
+          content: item.content,
         };
       })
-      .flat(); // Плоский массив, если есть вложенные массивы
+      .flat();
   };
 
   useEffect(() => {
@@ -99,7 +97,7 @@ const AskQuestionContainer: React.FC = () => {
 
       const fetchData = async () => {
         setIsLoading(true);
-        setMessages([]); // Очищаем сообщения для нового запроса
+        setMessages([]);
 
         try {
           const indexName = location.pathname.includes("ask_global_question")
@@ -108,8 +106,8 @@ const AskQuestionContainer: React.FC = () => {
 
           setChatHistory((prev) => [
             ...prev,
-            { type: "user", message: question }, // Добавляем вопрос
-            { type: "response", message: "" }, // Добавляем место для ответа
+            { type: "user", message: question },
+            { type: "response", message: "" },
           ]);
 
           await fetchEventSource(
@@ -195,8 +193,6 @@ const AskQuestionContainer: React.FC = () => {
     setMessages([]);
   };
 
-  console.log("metaData111111111", meta);
-
   return (
     <AskQuestionComponent
       clearMessages={clearMessages}
@@ -209,6 +205,7 @@ const AskQuestionContainer: React.FC = () => {
       setUserAvatar={setUserAvatar}
       chatHistory={chatHistory}
       languages={languages?.result?.data}
+      indexName={currentBook?.result?.vectorEntity?.indexName}
     />
   );
 };

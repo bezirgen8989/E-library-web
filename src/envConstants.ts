@@ -1,5 +1,5 @@
 // export const urlSocket = "wss://av-stt-madlad-1811.plavno.app:14881";
-export const urlSocket = "wss://c15677395.plavno.app:40031";
+export const urlSocket = "wss://c16357690.plavno.app:50762";
 // export const urlSocket = "wss://c15602432.plavno.app:40102";
 //
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Collapse } from "antd";
 import styles from "./AskQuestionComponent.module.scss";
@@ -20,6 +20,7 @@ import { useDispatch } from "react-redux";
 import { selectAvatarLanguage } from "../../slices/home";
 import { useTranslation } from "react-i18next";
 import MetaModal from "../common/MetaModal/MetaModal";
+import { UserContext } from "../../../../core/contexts";
 
 type Chat = {
   type: "user" | "system"; // Assuming 'user' or 'system' are the only types of messages
@@ -29,6 +30,7 @@ type Chat = {
 type LanguageType = {
   id: number;
   name: string;
+  isoCode2char: string;
   flag: {
     link: string;
   };
@@ -49,6 +51,7 @@ type AskQuestionComponentProps = {
   setUserAvatar: (id: number) => void;
   chatHistory: any;
   languages: LanguageType[];
+  indexName: string;
 };
 
 const { Panel } = Collapse;
@@ -63,8 +66,10 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   setUserAvatar,
   chatHistory,
   languages,
+  indexName,
 }) => {
   const dispatch = useDispatch();
+  const value = useContext(UserContext);
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const [messageClass, setMessageClass] = useState(styles.messageSystemChange);
   const [messageTime, setMessageTime] = useState<string>("");
@@ -85,6 +90,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const { t } = useTranslation();
   console.log("formData", formData);
   console.log("isRecordingInProcess", isRecordingInProcess);
+  console.log("valuevaluevaluevaluevalue", value);
 
   const defaultLanguage = (languages || []).find(
     (lang) => lang.name === "English"
@@ -92,6 +98,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     id: 0,
     name: "Select Language",
     flag: { link: NoAvatar },
+    isoCode2char: "code",
   };
 
   useEffect(() => {
@@ -105,6 +112,10 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
   // console.log("Select Language", selectedLanguage);
+  console.log(
+    "selectedLanguageselectedLanguageselectedLanguage",
+    selectedLanguage
+  );
 
   useEffect(() => {
     if (chatContentRef.current) {
@@ -422,6 +433,9 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                   setQuestion={setQuestion}
                   link=""
                   setIsStreamConnect={setIsStreamConnect}
+                  userId={value.id?.toString()}
+                  selectedLanguageCode={selectedLanguage.isoCode2char}
+                  indexName={indexName}
                 />
                 <div className={styles.chatInputSection}>
                   <input

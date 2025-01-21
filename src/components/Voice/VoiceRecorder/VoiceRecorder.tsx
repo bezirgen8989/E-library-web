@@ -10,9 +10,7 @@ import classNames from "classnames";
 // import {
 //   renderLangCodes,
 // } from '@helper';
-// import { useVoice } from 'src/hooks/useVoice';
 // import SpinMic from '@components/SpinMic';
-// import CustomIcon, { ICON_TYPES } from '@components/CustomIcon';
 
 import styles from "./styles.module.scss";
 import { renderLangCodes } from "../../../helpers/helper";
@@ -34,6 +32,9 @@ interface IVoiceRecorder {
   setFormData: (formData: any) => void;
   setQuestion: (text: string) => void;
   setIsStreamConnect?: (value: boolean) => void;
+  userId: any;
+  selectedLanguageCode: string;
+  indexName: string;
 }
 
 const VoiceRecorder: React.FC<IVoiceRecorder> = ({
@@ -47,6 +48,9 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   setQuestion,
   link,
   setIsStreamConnect,
+  userId,
+  indexName,
+  selectedLanguageCode,
 }) => {
   // const { open } = useNotification();
   const { t } = useTranslation();
@@ -63,7 +67,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   const [isReadyPaused, setIsReadyPaused] = useState(false);
 
   const language = renderLangCodes(selectedLanguage);
-  // ///////////////
 
   const [
     stopStreaming,
@@ -77,10 +80,12 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     paused,
     setIsRecordingInProcess,
     setQuestion,
+    userId,
+    indexName,
+    selectedLanguageCode,
   });
 
   console.log(deleteStreaming, pauseStreaming);
-  // ///////////
 
   const [hasMicrophoneAccess, setHasMicrophoneAccess] = useState<
     boolean | null

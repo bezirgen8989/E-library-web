@@ -12,6 +12,9 @@ interface IUseVoiceHook {
   isTrascribe?: boolean;
   setIsRecordingInProcess?: (IsRecordingInProcess: boolean) => void;
   setQuestion?: (text: string) => void;
+  userId: string;
+  indexName: string;
+  selectedLanguageCode: string;
 }
 
 export const useVoice = ({
@@ -20,6 +23,9 @@ export const useVoice = ({
   setIsRecordingInProcess,
   isTrascribe = false,
   setQuestion,
+  userId,
+  indexName,
+  selectedLanguageCode,
 }: IUseVoiceHook) => {
   const socketRef = useRef<WebSocket | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -50,8 +56,8 @@ export const useVoice = ({
       if (socketRef?.current?.readyState === WebSocket.OPEN) {
         socketRef.current?.send(
           JSON.stringify({
-            uid: "tester",
-            language: userLanguage,
+            uid: userId,
+            language: selectedLanguageCode,
             task: "transcribe",
             model: "large-v3",
             use_vad: true,
@@ -127,8 +133,9 @@ export const useVoice = ({
         const audioData16kHz = resampleTo16kHZ(inputData, audioCtx.sampleRate);
 
         const packet = {
-          speakerLang: userLanguage,
-          allLangs: [language],
+          speakerLang: userLanguage, //isoCode2char Language user string
+          // allLangs: [language],
+          index: indexName,
           audio: float32ArrayToBase64(audioData16kHz),
         };
 
