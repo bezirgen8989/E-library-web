@@ -11,10 +11,11 @@ interface IUseVoiceHook {
   paused?: boolean;
   isTrascribe?: boolean;
   setIsRecordingInProcess?: (IsRecordingInProcess: boolean) => void;
-  setQuestion?: (text: string) => void;
+  // setQuestion?: (text: string) => void;
   userId: string;
   indexName: string;
   selectedLanguageCode: string;
+  setIsShowSilent: any;
 }
 
 export const useVoice = ({
@@ -22,10 +23,11 @@ export const useVoice = ({
   setTextAreaValue,
   setIsRecordingInProcess,
   isTrascribe = false,
-  setQuestion,
+  // setQuestion,
   userId,
   indexName,
   selectedLanguageCode,
+  setIsShowSilent,
 }: IUseVoiceHook) => {
   const socketRef = useRef<WebSocket | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -50,7 +52,7 @@ export const useVoice = ({
   const connectToWhisper = () => {
     socketRef.current = new WebSocket(urlSocket);
 
-    let pauseTimer: ReturnType<typeof setTimeout> | null = null; // Таймер для паузы
+    // let pauseTimer: ReturnType<typeof setTimeout> | null = null;
 
     socketRef.current.onopen = () => {
       if (socketRef?.current?.readyState === WebSocket.OPEN) {
@@ -70,21 +72,25 @@ export const useVoice = ({
       const data = JSON.parse(event.data);
 
       console.log("[WebSocket Response]", data);
+      // if (data && data.segment) {
+      //   setIsStreamConnect(true);
+      // }
 
       if (data?.segments?.length) {
-        const lastSegment = data.segments[data.segments.length - 1]?.text;
+        // const lastSegment = data.segments[data.segments.length - 1]?.text;
+        setIsShowSilent(true);
 
-        if (lastSegment && setQuestion) {
-          // Сбросить таймер, если новое сообщение пришло
-          if (pauseTimer) {
-            clearTimeout(pauseTimer);
-          }
-
-          // Установить таймер на 2 секунды
-          pauseTimer = setTimeout(() => {
-            setQuestion(lastSegment.trim()); // Отправляем вопрос после паузы
-          }, 2000);
-        }
+        // if (lastSegment && setQuestion) {
+        //   // Сбросить таймер, если новое сообщение пришло
+        //   if (pauseTimer) {
+        //     clearTimeout(pauseTimer);
+        //   }
+        //
+        //   // Установить таймер на 2 секунды
+        //   pauseTimer = setTimeout(() => {
+        //     setQuestion(lastSegment.trim()); // Отправляем вопрос после паузы
+        //   }, 2000);
+        // }
 
         if (!isTrascribe) {
           const resultText = data.segments

@@ -21,6 +21,8 @@ import { selectAvatarLanguage } from "../../slices/home";
 import { useTranslation } from "react-i18next";
 import MetaModal from "../common/MetaModal/MetaModal";
 import { UserContext } from "../../../../core/contexts";
+// @ts-ignore
+import silentAvatar from "../../../../assets/videos/silent.mp4";
 
 type Chat = {
   type: "user" | "system"; // Assuming 'user' or 'system' are the only types of messages
@@ -88,9 +90,11 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMetaModalOpen, setIsMetaModalOpen] = useState(false);
   const { t } = useTranslation();
+  const [isShowSilent, setIsShowSilent] = useState();
   console.log("formData", formData);
   console.log("isRecordingInProcess", isRecordingInProcess);
   console.log("valuevaluevaluevaluevalue", value);
+  console.log("isStreamConnect", isStreamConnect);
 
   const defaultLanguage = (languages || []).find(
     (lang) => lang.name === "English"
@@ -342,13 +346,18 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
           </div>
           <div className={styles.askQuestionPage}>
             <div className={styles.avatarSide}>
-              {!isStreamConnect && (
-                <div
-                  className={styles.avatarFace}
-                  style={{ backgroundImage: `url(${selectedAvatar})` }}
-                />
+              {/*{!isStreamConnect && (*/}
+              {/*  <div*/}
+              {/*    className={styles.avatarFace}*/}
+              {/*    style={{ backgroundImage: `url(${selectedAvatar})` }}*/}
+              {/*  />*/}
+              {/*)}*/}
+              {!isShowSilent && (
+                <video width={300} height={300} loop autoPlay>
+                  <source src={silentAvatar} type="video/mp4" />
+                </video>
               )}
-              {isStreamConnect && (
+              {isShowSilent && (
                 <SrsPlayer
                   url={url}
                   width={300}
@@ -436,6 +445,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                   userId={value.id?.toString()}
                   selectedLanguageCode={selectedLanguage.isoCode2char}
                   indexName={indexName}
+                  setIsShowSilent={setIsShowSilent}
                 />
                 <div className={styles.chatInputSection}>
                   <input

@@ -35,6 +35,7 @@ interface IVoiceRecorder {
   userId: any;
   selectedLanguageCode: string;
   indexName: string;
+  setIsShowSilent: any;
 }
 
 const VoiceRecorder: React.FC<IVoiceRecorder> = ({
@@ -51,6 +52,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   userId,
   indexName,
   selectedLanguageCode,
+  setIsShowSilent,
 }) => {
   // const { open } = useNotification();
   const { t } = useTranslation();
@@ -79,10 +81,11 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     setTextAreaValue: addTextWithDelay,
     paused,
     setIsRecordingInProcess,
-    setQuestion,
+    // setQuestion,
     userId,
     indexName,
     selectedLanguageCode,
+    setIsShowSilent,
   });
 
   console.log(deleteStreaming, pauseStreaming);
