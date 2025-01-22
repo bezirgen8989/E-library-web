@@ -95,6 +95,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   console.log("isRecordingInProcess", isRecordingInProcess);
   console.log("valuevaluevaluevaluevalue", value);
   console.log("isStreamConnect", isStreamConnect);
+  console.log("isShowSilent", isShowSilent);
 
   const defaultLanguage = (languages || []).find(
     (lang) => lang.name === "English"
@@ -352,12 +353,14 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
               {/*    style={{ backgroundImage: `url(${selectedAvatar})` }}*/}
               {/*  />*/}
               {/*)}*/}
-              {!isShowSilent && (
+              {/*{!isShowSilent && (*/}
+              {!isStreamConnect && (
                 <video width={300} height={300} loop autoPlay>
                   <source src={silentAvatar} type="video/mp4" />
                 </video>
               )}
-              {isShowSilent && (
+              {/*{isShowSilent && (*/}
+              {isStreamConnect && (
                 <SrsPlayer
                   url={url}
                   width={300}
