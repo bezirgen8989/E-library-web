@@ -25,10 +25,11 @@ const BookContainer: React.FC = () => {
     return { languages, photoId };
   });
 
-  const { currentBook, reviews, similarBooks } = useLazySelector(({ home }) => {
-    const { currentBook, reviews, similarBooks } = home;
-    return { currentBook, reviews, similarBooks };
-  });
+  const { currentBook, reviews, similarBooks, currentBookVersion } =
+    useLazySelector(({ home }) => {
+      const { currentBook, reviews, similarBooks, currentBookVersion } = home;
+      return { currentBook, reviews, similarBooks, currentBookVersion };
+    });
 
   const getBook = useCallback(
     (id) => {
@@ -151,6 +152,7 @@ const BookContainer: React.FC = () => {
       deleteReview={deleteReview}
       getAuthorBooks={getAuthorBooks}
       startRead={startRead}
+      currentBookVersion={currentBookVersion}
     />
   );
 };

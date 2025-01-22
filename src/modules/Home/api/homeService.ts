@@ -76,3 +76,11 @@ export const checkUserNotifications = () =>
 export const getAllAvatars = (params: { limit: string; page: string }) =>
   usingGet(`/api/v1/avatars?limit=${params.limit}&page=${params.page}`);
 export const getStreamUrl = () => usingPost(`/api/v1/srs/url`, {});
+export const getCurrentBookVersion = (params: any) =>
+  usingGet(
+    `/api/v1/bookVersions?page=${params.page}&limit=${params.limit}&filter${params.filterId}&filter${params.filterLanguage}`
+  );
+// export const getCurrentBookVersion = (params: any) =>
+//   usingGet(
+//     `/api/v1/bookVersions?page=1&limit=1&filter[coreBook.id][eq]=202&filter[language.id][eq]=7`
+//   );

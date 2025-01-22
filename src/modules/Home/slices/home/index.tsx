@@ -29,6 +29,7 @@ import {
   getBooks,
   getBookshelfBooks,
   getCurrentBookshelfBookById,
+  getCurrentBookVersion,
   getCurrentReadBook,
   getSearchBooks,
   getStreamUrl,
@@ -67,6 +68,7 @@ const initialState: HomeState = {
   avatars: {},
   streamUrl: {},
   avatarLanguage: {},
+  currentBookVersion: {},
 };
 
 const homeSlice = createSlice({
@@ -262,6 +264,13 @@ const homeSlice = createSlice({
         const { content, error } = action.payload;
         state.searchBooks = { isLoading: false, result: content, error };
       })
+      .addCase(getBookVersion.pending, (state) => {
+        state.currentBookVersion = { isLoading: true };
+      })
+      .addCase(getBookVersion.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.currentBookVersion = { isLoading: false, result: content, error };
+      })
 
       .addCase(getStartedBooks.pending, (state) => {
         if (!state.startedBooks.result) {
@@ -454,6 +463,15 @@ export const getBookById = createAsyncThunk(
     return response;
   }
 );
+
+export const getBookVersion = createAsyncThunk(
+  "/api/v1/bookVersions",
+  async (params: any) => {
+    const response = await getCurrentBookVersion(params);
+    return response;
+  }
+);
+
 export const addToShelf = createAsyncThunk(
   "/api/v1/bookshelf",
   async (params: AddBookToShelfParams) => {
