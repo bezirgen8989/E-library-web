@@ -71,7 +71,7 @@ export const useVoice = ({
     socketRef.current.onmessage = (event: MessageEvent) => {
       const data = JSON.parse(event.data);
 
-      console.log("[WebSocket Response]", data);
+      console.log("[WebSocket Response1]", data);
       // if (data && data.segment) {
       //   setIsStreamConnect(true);
       // }
