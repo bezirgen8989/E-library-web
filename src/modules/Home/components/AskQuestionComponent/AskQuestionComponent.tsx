@@ -348,13 +348,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
           </div>
           <div className={styles.askQuestionPage}>
             <div className={styles.avatarSide}>
-              {/*{!isStreamConnect && (*/}
-              {/*  <div*/}
-              {/*    className={styles.avatarFace}*/}
-              {/*    style={{ backgroundImage: `url(${selectedAvatar})` }}*/}
-              {/*  />*/}
-              {/*)}*/}
-
               {/*{!isShowSilent && (*/}
               {/*{!isStreamConnect && (*/}
               {/*    <video width={300} height={300} loop autoPlay>*/}
@@ -362,24 +355,32 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
               {/*    </video>*/}
               {/*)}*/}
               {/*{isStreamConnect && (*/}
-              <SrsPlayer
-                url={url}
-                width={300}
-                height={300}
-                videoRef={videoRef}
-                options={{
-                  autoPlay: true,
-                  playsInline: true,
-                  muted: false,
-                  controls: true,
-                }}
-                rtcOpts={{
-                  audio: {
-                    enable: true,
-                  },
-                }}
-              />
-              {/*)}*/}
+              {/*{!isShowSilent && (*/}
+              {!isStreamConnect && (
+                <video width={300} height={300} loop autoPlay>
+                  <source src={silentAvatar} type="video/mp4" />
+                </video>
+              )}
+              {/*{isShowSilent && (*/}
+              {isStreamConnect && (
+                <SrsPlayer
+                  url={url}
+                  width={300}
+                  height={300}
+                  videoRef={videoRef}
+                  options={{
+                    autoPlay: true,
+                    playsInline: true,
+                    muted: false,
+                    controls: true,
+                  }}
+                  rtcOpts={{
+                    audio: {
+                      enable: true,
+                    },
+                  }}
+                />
+              )}
             </div>
             <div className={styles.chatContainer}>
               <div className={styles.chatContent} ref={chatContentRef}>

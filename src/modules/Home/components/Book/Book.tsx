@@ -21,6 +21,8 @@ import BackIcon from "../../../../assets/images/icons/backPage.svg";
 import Review from "../common/Review/Review";
 import { Skeleton } from "antd";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { getBookVersion } from "../../slices/home";
 
 type LanguageType = {
   id: number;
@@ -75,6 +77,7 @@ type HomeProps = {
   deleteReview: any;
   getAuthorBooks: any;
   startRead: any;
+  currentBookVersion: any;
 };
 
 const Book: React.FC<HomeProps> = ({
@@ -89,12 +92,18 @@ const Book: React.FC<HomeProps> = ({
   deleteReview,
   getAuthorBooks,
   startRead,
+  currentBookVersion,
 }) => {
   const [book, setBook] = useState<BookType | null>(null);
   const { id } = useParams<{ id: string }>();
   const value = useContext(UserContext);
   const history = useHistory();
   const { t } = useTranslation();
+  console.log(
+    "currentBookVersiontitle",
+    currentBookVersion?.result?.data[0]?.title
+  );
+  console.log("currentBookVersion", currentBookVersion);
 
   const defaultLanguage = (languages || []).find(
     (lang) => lang.name === "English"
@@ -108,13 +117,26 @@ const Book: React.FC<HomeProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  console.log("currentBook", currentBook?.result?.isFavourite);
+  const dispatch = useDispatch();
+  console.log("selectedLanguageId", selectedLanguage?.id);
+  console.log("currentBookId", currentBook?.result?.id);
 
   useEffect(() => {
     if (id) {
       getBook(Number(id));
     }
   }, [id, getBook]);
+
+  useEffect(() => {
+    dispatch(
+      getBookVersion({
+        page: "1",
+        limit: "1",
+        filterLanguage: `[language.id][eq]=${selectedLanguage?.id}`,
+        filterId: `[coreBook.id][eq]=${currentBook?.result?.id}`,
+      })
+    );
+  }, [selectedLanguage, currentBook, selectedLanguage]);
 
   useEffect(() => {
     if (currentBook?.result) {
@@ -299,7 +321,7 @@ const Book: React.FC<HomeProps> = ({
           <div className={styles.right_side}>
             <div className={styles.top_block}>
               <div className={styles.book_title}>
-                <div>{currentBook?.result?.title}</div>
+                <div>{currentBookVersion?.result?.data[0]?.title}</div>
                 <div className={styles.bookSettings}>
                   <div className={styles.desktopView}>
                     <div
@@ -413,7 +435,9 @@ const Book: React.FC<HomeProps> = ({
                 <div className={styles.section_title}>
                   {t("bookDescriptionBtn")}
                 </div>
-                <p>{book?.description}</p>
+                <p>
+                  <div>{currentBookVersion?.result?.data[0]?.description}</div>
+                </p>
               </div>
               <div className={styles.mobileView}>
                 <div className={styles.age_row}>
