@@ -72,7 +72,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 }) => {
   const dispatch = useDispatch();
   const value = useContext(UserContext);
-  const { register, handleSubmit, reset } = useForm<FormValues>();
+  const { register, handleSubmit, reset, setValue } = useForm<FormValues>();
   const [messageClass, setMessageClass] = useState(styles.messageSystemChange);
   const [messageTime, setMessageTime] = useState<string>("");
   const [isCollapseVisible] = useState(false);
@@ -95,6 +95,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   console.log("isRecordingInProcess", isRecordingInProcess);
   console.log("valuevaluevaluevaluevalue", value);
   console.log("isStreamConnect", isStreamConnect);
+  console.log("isShowSilent", isShowSilent);
 
   const defaultLanguage = (languages || []).find(
     (lang) => lang.name === "English"
@@ -209,6 +210,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     setMessageTime(currentTime);
     setIsSending(true);
     setIsStreamConnect(true);
+    setValue("question", "");
     reset();
     setFormData(undefined);
 
@@ -352,61 +354,70 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
               {/*    style={{ backgroundImage: `url(${selectedAvatar})` }}*/}
               {/*  />*/}
               {/*)}*/}
-              {!isShowSilent && (
-                <video width={300} height={300} loop autoPlay>
-                  <source src={silentAvatar} type="video/mp4" />
-                </video>
-              )}
-              {isShowSilent && (
-                <SrsPlayer
-                  url={url}
-                  width={300}
-                  height={300}
-                  videoRef={videoRef}
-                  options={{
-                    autoPlay: true,
-                    playsInline: true,
-                    muted: false,
-                    controls: true,
-                  }}
-                  rtcOpts={{
-                    audio: {
-                      enable: true,
-                    },
-                  }}
-                />
-              )}
+
+              {/*{!isShowSilent && (*/}
+              {/*{!isStreamConnect && (*/}
+              {/*    <video width={300} height={300} loop autoPlay>*/}
+              {/*        <source src={silentAvatar} type="video/mp4"/>*/}
+              {/*    </video>*/}
+              {/*)}*/}
+              {/*{isStreamConnect && (*/}
+              <SrsPlayer
+                url={url}
+                width={300}
+                height={300}
+                videoRef={videoRef}
+                options={{
+                  autoPlay: true,
+                  playsInline: true,
+                  muted: false,
+                  controls: true,
+                }}
+                rtcOpts={{
+                  audio: {
+                    enable: true,
+                  },
+                }}
+              />
+              {/*)}*/}
             </div>
             <div className={styles.chatContainer}>
               <div className={styles.chatContent} ref={chatContentRef}>
-                {chatHistory.map((chat: Chat, index: number) => (
-                  <div
-                    key={index}
-                    className={
-                      chat.type === "user" ? styles.messageUser : messageClass
-                    }
-                  >
+                {chatHistory.map((chat: Chat, index: number) => {
+                  const isLastMessage = index === chatHistory.length - 1;
+
+                  return (
                     <div
+                      key={index}
                       className={
-                        chat.type === "user"
-                          ? styles.userMessage
-                          : styles.messageSystemContent
+                        chat.type === "user" ? styles.messageUser : messageClass
                       }
                     >
-                      {chat.message}
-                      {chat.type === "user" && (
-                        <div className={styles.messageSystemBottom}>
-                          <span className={styles.messageTime}>
-                            {messageTime}
-                          </span>
-                        </div>
-                      )}
+                      <div
+                        className={
+                          chat.type === "user"
+                            ? styles.userMessage
+                            : styles.messageSystemContent
+                        }
+                      >
+                        {/* Показываем ChatSpinner только если сообщение ещё не пришло */}
+                        {chat.type !== "user" &&
+                          isLastMessage &&
+                          isLoading &&
+                          !chat.message && <ChatSpinner />}
+                        {chat.message}
+                        {chat.type === "user" && (
+                          <div className={styles.messageSystemBottom}>
+                            <span className={styles.messageTime}>
+                              {messageTime}
+                            </span>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
-
-              {isSending && <ChatSpinner />}
               {metaData && metaData.length > 0 && !isLoading && !isSending && (
                 <div
                   className={styles.collapseButton}
