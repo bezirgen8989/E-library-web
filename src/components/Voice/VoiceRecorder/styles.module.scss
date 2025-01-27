@@ -1,14 +1,16 @@
 .wrapper {
   display: flex;
   align-items: center;
-  margin-right: 10px;
+  width: 100%;
 }
 .voiceBlock {
   display: flex;
   align-items: center;
-  background: rgb(153, 108, 66);
+  background: linear-gradient(to bottom, #d3a171, #c18a5b, #a66744);
   padding: 0 20px;
   border-radius: 16px;
+  min-height: 88px;
+  width: 100%;
 }
 
 .btnPause {
@@ -16,9 +18,9 @@
 }
 
 .stopBtnIconWrapper {
-  width: 48px;
-  min-width: 48px;
-  height: 48px;
+  width: 60px;
+  min-width: 60px;
+  height: 60px;
   background: #fff;
   flex-grow: 0;
   border-radius: 50%;
@@ -27,11 +29,13 @@
   justify-content: center;
   padding: 8px;
   margin-right: 4px;
-  border: 3px solid rgb(153, 108, 66);
+  border: 8px solid #dcbba1;
+  //box-sizing: content-box;
   .progressBlock {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     font-size: 12px;
+    color: white !important;
   }
 }
 
@@ -44,6 +48,15 @@
   padding: 0 !important;
 }
 .stopRecording {
+  height: 62px;
+  width: 70px;
+  margin: 0 0 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.startRecording {
   height: 62px;
   width: 70px;
   margin: 0 0 0 16px;
@@ -94,4 +107,7 @@
   width: 14px;
   background: #996C42;
   border-radius: 2px;
+}
+.initialBlock {
+  width: 100%;
 }

@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import WaveSurfer from "wavesurfer.js";
 // import { Mic } from "lucide-react";
 import RecordPlugin from "wavesurfer.js/dist/plugins/record";
+import MicIcon from "../../../assets/images/icons/Mic.svg";
+
 // import { useNotification } from '@refinedev/core';
 import { Spin, Tooltip } from "antd";
 import classNames from "classnames";
@@ -34,6 +36,8 @@ interface IVoiceRecorder {
   setIsStreamConnect?: (value: boolean) => void;
   userId: any;
   selectedLanguageCode: string;
+  isFirst: boolean;
+  setIsFirst: (value: boolean) => void;
   indexName: string;
   setIsShowSilent: any;
 }
@@ -53,6 +57,8 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   indexName,
   selectedLanguageCode,
   setIsShowSilent,
+  setIsFirst,
+  isFirst,
 }) => {
   // const { open } = useNotification();
   const { t } = useTranslation();
@@ -63,7 +69,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   const recordRef = useRef<any>(null);
   const progressRef = useRef<HTMLParagraphElement>(null);
 
-  const [isFirst, setIsFirst] = useState(true);
   const [isConnecting, setIsConnecting] = useState(false);
 
   const [isReadyPaused, setIsReadyPaused] = useState(false);
@@ -105,7 +110,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
       setHasMicrophoneAccess(false);
     }
   };
-
+  console.log("isFirst", isFirst);
   useEffect(() => {
     checkMicrophoneAccess();
   }, []);
@@ -140,8 +145,8 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
 
     wavesurferRef.current = WaveSurfer.create({
       container: "#mic",
-      waveColor: "rgba(199, 204, 205, 0.6)",
-      progressColor: "rgba(199, 204, 205, 0.6)",
+      waveColor: "white",
+      progressColor: "white",
       height: 24,
       width: isNonHealth ? "850px" : "220px",
       barGap: 1,
@@ -313,15 +318,36 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
           <div className={styles.btnMic}>
             <Button
               variant="Brown"
-              style={{ marginBottom: 0, minHeight: 62, marginTop: 0 }}
+              style={{
+                marginBottom: 0,
+                minHeight: 88,
+                marginTop: 0,
+                width: "100%",
+                justifyContent: "space-between",
+                background:
+                  "linear-gradient(to bottom, #d3a171, #c18a5b, #a66744)",
+                borderRadius: "16px",
+              }}
               onClick={() => {
                 setIsConnecting(true);
               }}
             >
-              {
-                isConnecting ? <SpinMic /> : <span>{t("talkToAvatar")}</span>
-                // <Mic size={24} />
-              }
+              <span>{t("talkToAvatar")}</span>
+
+              <div className={styles.startRecording}>
+                <div
+                  className={classNames(
+                    styles.stopBtnIconWrapper,
+                    !paused && styles.stopBtnIconWrapperPaused
+                  )}
+                >
+                  {isConnecting ? (
+                    <SpinMic />
+                  ) : (
+                    <img style={{ margin: 0 }} src={MicIcon} alt="" />
+                  )}
+                </div>
+              </div>
             </Button>
           </div>
         </div>
@@ -350,6 +376,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
                       </div>
                       {recording ? (
                         <span
+                          style={{ color: "white" }}
                           className={styles.progressBlock}
                           id="progress"
                           ref={progressRef}

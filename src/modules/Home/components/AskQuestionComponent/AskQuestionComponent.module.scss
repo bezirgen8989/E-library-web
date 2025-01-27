@@ -15,12 +15,13 @@
 .avatarSide {
   align-items: center;
   flex-grow: 0;
-  width: 40%;
+  width: 50%;
   display: flex;
   flex-direction: column;
   min-height: 500px;
-  //justify-content: center;
+  justify-content: space-between;
   margin-top: 20px;
+  padding-bottom: 50px;
   img {
     margin-bottom: 20px;
   }
@@ -49,7 +50,7 @@
   flex-grow: 0;
   min-height: 84vh;
   max-height: 84vh;
-  width: 60%;
+  width: 50%;
   max-width: 450px;
   color: #ffffff;
   font-family: Arial, sans-serif;
@@ -59,30 +60,31 @@
   flex-direction: column;
   padding-bottom: 50px;
 
+
   .chatContent {
-    flex-grow: 1; /* Контейнер занимает оставшееся пространство */
-    overflow-y: auto; /* Включение вертикальной прокрутки */
+    flex-grow: 1;
+    overflow-y: auto;
     display: flex;
-    flex-direction: column; /* Элементы выстраиваются по вертикали */
+    flex-direction: column;
     padding: 20px;
-    max-height: calc(100vh - 94px); /* Ограничение высоты */
-    scrollbar-color: #8E8E93 rgba(255, 255, 255, 0.1); /* Цвет ползунка */
-    scrollbar-width: thin; /* Узкий скроллбар */
+    max-height: calc(100vh - 94px);
+    scrollbar-color: #8E8E93 rgba(255, 255, 255, 0.1);
+    scrollbar-width: thin;
 
     ::-webkit-scrollbar {
-      width: 8px; /* Ширина скроллбара */
+      width: 8px;
     }
     ::-webkit-scrollbar-thumb {
-      background: #8E8E93; /* Цвет ползунка */
+      background: #8E8E93;
       border-radius: 5px;
     }
     ::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.1); /* Цвет трека */
+      background: rgba(255, 255, 255, 0.1);
     }
 
-    /* Для автоматического смещения контента вверх */
+
     & > :first-child {
-      margin-top: auto; /* Отодвигаем все сообщения наверх */
+      margin-top: auto;
     }
   }
 
@@ -185,14 +187,16 @@
     width: 100%;
     display: flex;
     align-items: center;
-    //background-color: #1a2e3f;
+    background-image: url('../../../../assets/images/icons/inputQuestionIcon.svg');
+    background-repeat: no-repeat;
+    background-position: 15px 50%;
     padding: 10px;
     border-radius: 12px;
     background-color: rgba(199,204,205, 0.2);
 
     .chatInput {
       flex-grow: 1;
-      padding: 10px;
+      padding: 10px 10px 10px 30px;
       border: none;
       border-radius: 5px;
       background: none;
@@ -227,6 +231,15 @@
   &:hover {
     opacity: 0.8;
   }
+}
+.clearButton {
+  background: none;
+  border: none;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  margin: 0 10px 0 0;
+  cursor: pointer;
 }
 .micButton {
   height: 28px;

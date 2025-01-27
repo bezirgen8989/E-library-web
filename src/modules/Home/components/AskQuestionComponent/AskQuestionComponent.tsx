@@ -5,6 +5,7 @@ import styles from "./AskQuestionComponent.module.scss";
 import Send from "../../../../assets/images/icons/sendIcon.svg";
 import CollapseIcon from "../../../../assets/images/icons/CollapseIcon.svg";
 import DocumentIcon from "../../../../assets/images/icons/document.svg";
+import ClearIcon from "../../../../assets/images/icons/Clear.svg";
 import ArrowDown from "../../../../assets/images/icons/arrowProfile.svg";
 import ChatSpinner from "../../../../components/common/ChatSpinner";
 import { SrsPlayer } from "../../../../components/common/SrsPlayer";
@@ -91,6 +92,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [isMetaModalOpen, setIsMetaModalOpen] = useState(false);
   const { t } = useTranslation();
   const [isShowSilent, setIsShowSilent] = useState();
+  const [isFirst, setIsFirst] = useState(true);
   console.log("formData", formData);
   console.log("isRecordingInProcess", isRecordingInProcess);
   console.log("valuevaluevaluevaluevalue", value);
@@ -381,6 +383,23 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                   }}
                 />
               )}
+              <VoiceRecorder
+                setIsRecordingInProcess={setIsRecordingInProcess}
+                addTextWithDelay={addTextWithDelay}
+                selectedLanguage=""
+                clickCursor={clickCursor}
+                setFormData={setFormData}
+                isLoadingData={false}
+                setQuestion={setQuestion}
+                link=""
+                setIsStreamConnect={setIsStreamConnect}
+                userId={value.id?.toString()}
+                selectedLanguageCode={selectedLanguage.isoCode2char}
+                indexName={indexName}
+                setIsShowSilent={setIsShowSilent}
+                isFirst={isFirst}
+                setIsFirst={setIsFirst}
+              />
             </div>
             <div className={styles.chatContainer}>
               <div className={styles.chatContent} ref={chatContentRef}>
@@ -444,21 +463,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                 {isCollapseVisible && <Collapse>{renderMetaData()}</Collapse>}
               </div>
               <div className={styles.chatWrap}>
-                <VoiceRecorder
-                  setIsRecordingInProcess={setIsRecordingInProcess}
-                  addTextWithDelay={addTextWithDelay}
-                  selectedLanguage=""
-                  clickCursor={clickCursor}
-                  setFormData={setFormData}
-                  isLoadingData={false}
-                  setQuestion={setQuestion}
-                  link=""
-                  setIsStreamConnect={setIsStreamConnect}
-                  userId={value.id?.toString()}
-                  selectedLanguageCode={selectedLanguage.isoCode2char}
-                  indexName={indexName}
-                  setIsShowSilent={setIsShowSilent}
-                />
                 <div className={styles.chatInputSection}>
                   <input
                     {...register("question", { required: true })}
@@ -467,7 +471,17 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                     placeholder={t("questionPlaceholder")}
                     autoComplete="off"
                     onKeyDown={handleKeyDown}
+                    disabled={!isFirst}
                   />
+                  <button
+                    type="button"
+                    className={styles.clearButton}
+                    onClick={() => {
+                      setValue("question", ""); // Очищает поле ввода
+                    }}
+                  >
+                    <img src={ClearIcon} alt="clear" />
+                  </button>
                   <button
                     type="button"
                     className={styles.submitButton}
