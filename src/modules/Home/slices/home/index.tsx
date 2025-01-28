@@ -68,6 +68,7 @@ const initialState: HomeState = {
   avatars: {},
   streamUrl: {},
   avatarLanguage: {},
+  isStreamShow: false,
   currentBookVersion: {},
 };
 
@@ -89,6 +90,9 @@ const homeSlice = createSlice({
     },
     resetCounter(state) {
       state.counter = initialState.counter;
+    },
+    setIsStreamShow(state, action: PayloadAction<boolean>) {
+      state.isStreamShow = action.payload;
     },
     setNewBooks: (state, action: PayloadAction<any>) => {
       state.newBooks = action.payload;
@@ -656,5 +660,6 @@ export const {
   clearBooks,
   setDrawerOpen,
   selectAvatarLanguage,
+  setIsStreamShow,
 } = homeSlice.actions;
 export default homeSlice.reducer;

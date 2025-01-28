@@ -1,17 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-
-// import { float32ArrayToBase64, resampleTo16kHZ } from '@helper';
-// import { urlSocket } from 'src/envConstants';
 import { float32ArrayToBase64, resampleTo16kHZ } from "../helpers/helper";
 import { urlSocket } from "../envConstants";
+import { useDispatch } from "react-redux";
+import { setIsStreamShow } from "../modules/Home/slices/home";
 
 interface IUseVoiceHook {
   language?: string;
   setTextAreaValue: (values: string) => void;
   paused?: boolean;
   isTrascribe?: boolean;
-  setIsRecordingInProcess?: (IsRecordingInProcess: boolean) => void;
-  // setQuestion?: (text: string) => void;
+  setIsRecordingInProcess?: (isRecordingInProcess: boolean) => void;
   userId: string;
   indexName: string;
   selectedLanguageCode: string;
@@ -23,7 +21,6 @@ export const useVoice = ({
   setTextAreaValue,
   setIsRecordingInProcess,
   isTrascribe = false,
-  // setQuestion,
   userId,
   indexName,
   selectedLanguageCode,
@@ -33,8 +30,11 @@ export const useVoice = ({
   const audioCtxRef = useRef<AudioContext | null>(null);
   const recorderRef = useRef<ScriptProcessorNode | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const dispatch = useDispatch();
 
   const [userLanguage, setUserLanguage] = useState("en");
+  const [state, setState] = useState(0);
+  const stateRef = useRef(state);
 
   useEffect(() => {
     if (navigator) {
@@ -42,17 +42,12 @@ export const useVoice = ({
     }
   }, []);
 
-  const [state, setState] = useState(0);
-  const stateRef = useRef(state);
-
   useEffect(() => {
     stateRef.current = state;
   }, [state]);
 
   const connectToWhisper = () => {
     socketRef.current = new WebSocket(urlSocket);
-
-    // let pauseTimer: ReturnType<typeof setTimeout> | null = null;
 
     socketRef.current.onopen = () => {
       if (socketRef?.current?.readyState === WebSocket.OPEN) {
@@ -70,32 +65,11 @@ export const useVoice = ({
 
     socketRef.current.onmessage = (event: MessageEvent) => {
       const data = JSON.parse(event.data);
+      console.log("[WebSocket Response]", data);
 
-      console.log("[WebSocket Response1]", data);
-      // if (data && data.segment) {
-      //   setIsStreamConnect(true);
-      // }
-
-      if (data?.segments?.length) {
-        // const lastSegment = data.segments[data.segments.length - 1]?.text;
-        setIsShowSilent(true);
-
-        // if (lastSegment && setQuestion) {
-        //   // Сбросить таймер, если новое сообщение пришло
-        //   if (pauseTimer) {
-        //     clearTimeout(pauseTimer);
-        //   }
-        //
-        //   // Установить таймер на 2 секунды
-        //   pauseTimer = setTimeout(() => {
-        //     setQuestion(lastSegment.trim()); // Отправляем вопрос после паузы
-        //   }, 2000);
-        // }
-
+      if (data?.segments) {
         if (!isTrascribe) {
-          const resultText = data.segments
-            .map((item: any) => item.translate?.[language]?.trim())
-            .filter(Boolean);
+          const resultText = data.segments.map((item: any) => item.text || "");
           const res = resultText?.[stateRef.current];
 
           if (res) {
@@ -105,32 +79,49 @@ export const useVoice = ({
               return newState;
             });
             setTextAreaValue(res);
+            dispatch(setIsStreamShow(true));
           }
           return;
         }
 
         const resultText = data.segments
-          .map((item: any) => item.translate?.[language]?.trim())
-          .filter(Boolean)
+          .map((item: any) => item.text || "")
           .join(" ");
 
         setTextAreaValue(resultText);
+        dispatch(setIsStreamShow(true));
       }
     };
   };
 
   const requestUserMediaAudioStream = async (config: MediaTrackConstraints) => {
     const stream = await navigator.mediaDevices.getUserMedia({
-      audio: { ...config, channelCount: 1 },
+      audio: {
+        ...config,
+        noiseSuppression: true,
+        echoCancellation: true,
+        channelCount: 1,
+      },
     });
-
     return stream;
   };
+
   const getRecorder = (stream: MediaStream) => {
     const audioCtx = new AudioContext();
     audioCtxRef.current = audioCtx;
 
     const mediaStream = audioCtx.createMediaStreamSource(stream);
+
+    // Low-pass filter (reduces high-frequency noise)
+    const lowPassFilter = audioCtx.createBiquadFilter();
+    lowPassFilter.type = "lowpass";
+    lowPassFilter.frequency.setValueAtTime(3000, audioCtx.currentTime);
+
+    // High-pass filter (reduces low-frequency noise)
+    const highPassFilter = audioCtx.createBiquadFilter();
+    highPassFilter.type = "highpass";
+    highPassFilter.frequency.setValueAtTime(85, audioCtx.currentTime);
+
     const recorder = audioCtx.createScriptProcessor(8192, 1, 1);
 
     recorder.onaudioprocess = (event) => {
@@ -139,19 +130,21 @@ export const useVoice = ({
         const audioData16kHz = resampleTo16kHZ(inputData, audioCtx.sampleRate);
 
         const packet = {
-          speakerLang: userLanguage, //isoCode2char Language user string
-          // allLangs: [language],
+          speakerLang: userLanguage,
           index: indexName,
           audio: float32ArrayToBase64(audioData16kHz),
         };
 
-        const jsonPacket = JSON.stringify(packet);
-        socketRef.current?.send(jsonPacket);
+        socketRef.current?.send(JSON.stringify(packet));
       }
     };
 
-    mediaStream.connect(recorder);
+    // Connect filters
+    mediaStream.connect(lowPassFilter);
+    lowPassFilter.connect(highPassFilter);
+    highPassFilter.connect(recorder);
     recorder.connect(audioCtx.destination);
+
     recorderRef.current = recorder;
   };
 
@@ -170,12 +163,11 @@ export const useVoice = ({
 
     try {
       const stream = await requestUserMediaAudioStream({
-        noiseSuppression: false,
-        echoCancellation: false,
+        noiseSuppression: true,
+        echoCancellation: true,
       });
       streamRef.current = stream;
       getRecorder(stream);
-      // setIsRecording(true);
     } catch (e) {
       console.error("[startStreaming] media stream request failed:", e);
     }
@@ -189,7 +181,7 @@ export const useVoice = ({
       streamRef.current = null;
 
       if (audioCtxRef.current) {
-        audioCtxRef.current?.close();
+        await audioCtxRef.current.close();
         audioCtxRef.current = null;
       }
     } else {
@@ -200,7 +192,6 @@ export const useVoice = ({
   const stopStreaming = () => {
     setIsRecordingInProcess && setIsRecordingInProcess(false);
 
-    // Stop all tracks in the media stream
     if (streamRef.current) {
       streamRef.current
         .getTracks()
@@ -208,50 +199,33 @@ export const useVoice = ({
       streamRef.current = null;
     }
 
-    // Disconnect the audio context and recorder
     if (recorderRef.current) {
       recorderRef.current.disconnect();
       recorderRef.current = null;
     }
 
     if (audioCtxRef.current) {
-      audioCtxRef.current?.close();
+      audioCtxRef.current.close();
       audioCtxRef.current = null;
     }
 
-    // Close the WebSocket connection
     if (socketRef.current) {
-      // const encoder = new TextEncoder();
-      // const endSignal = encoder.encode('END_OF_AUDIO');
-      // socketRef.current?.send(endSignal);
-
-      socketRef.current?.close();
-
+      socketRef.current.close();
       socketRef.current = null;
     }
   };
-  useEffect(
-    () => () => {
-      if (socketRef.current) {
-        socketRef.current?.close();
-      }
 
-      if (streamRef.current) {
+  useEffect(() => {
+    return () => {
+      if (socketRef.current) socketRef.current.close();
+      if (streamRef.current)
         streamRef.current
           .getTracks()
           .forEach((track: MediaStreamTrack) => track.stop());
-      }
-
-      if (recorderRef.current) {
-        recorderRef.current.disconnect();
-      }
-
-      if (audioCtxRef.current) {
-        audioCtxRef.current.close();
-      }
-    },
-    []
-  );
+      if (recorderRef.current) recorderRef.current.disconnect();
+      if (audioCtxRef.current) audioCtxRef.current.close();
+    };
+  }, []);
 
   const deleteStreaming = () => {
     socketRef.current = null;

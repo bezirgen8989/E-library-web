@@ -28,6 +28,7 @@ export type HomeState = {
   streamUrl: any;
   avatarLanguage: any;
   currentBookVersion: any;
+  isStreamShow: boolean;
 };
 export interface SetReadingBookPayload {
   user: {

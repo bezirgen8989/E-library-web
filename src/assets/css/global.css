@@ -276,9 +276,6 @@ p {
   border-bottom: none !important;
 }
 
-
-
-
 .avatarCarousel {
   margin-top: -120px;
   perspective: 800px; /* Добавляем перспективу для 3D эффекта */

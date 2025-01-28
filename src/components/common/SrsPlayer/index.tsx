@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { defaultVideoOptions, getIdFromUrl } from "./helpers";
 import { SrsRtcWhipWhepAsync } from "./srs/srs.sdk";
+import { useLazySelector } from "../../../hooks";
+import { useDispatch } from "react-redux";
+// @ts-ignore
+import silentAvatar from "../../../assets/videos/silent.mp4";
+import { setIsStreamShow } from "../../../modules/Home/slices/home";
 
 export enum PlayerStatus {
   Loading = "loading",
@@ -25,6 +30,31 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
   height,
   videoRef,
 }) => {
+  const dispatch = useDispatch();
+
+  const { isStreamShow } = useLazySelector(({ home }) => {
+    const { isStreamShow } = home;
+    return { isStreamShow };
+  });
+
+  console.log("isStream", isStreamShow);
+
+  const checkTracksState = () => {
+    console.log(485769547608975609);
+    if (srsSdkRef.current && srsSdkRef.current.stream) {
+      const tracks = srsSdkRef.current.stream.getTracks();
+      console.log("tracks", tracks);
+
+      if (tracks[1]._muted) {
+        dispatch(setIsStreamShow(false));
+        setStatus(PlayerStatus.Loading);
+        cleanup();
+      } else {
+        setTimeout(checkTracksState, 1000);
+      }
+    }
+  };
+
   const videoOptions = {
     ...defaultVideoOptions,
     ...options,
@@ -44,6 +74,13 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
       if (videoRef.current) {
         videoRef.current.srcObject = srsSdkRef.current.stream;
       }
+
+      srsSdkRef.current.pc.oniceconnectionstatechange = () => {
+        console.log("ICE State:", srsSdkRef?.current?.pc?.iceConnectionState);
+        if (srsSdkRef?.current?.pc?.iceConnectionState === "completed") {
+          checkTracksState();
+        }
+      };
     } catch (e) {
       console.error(`SrsWhepPlayer error happens on ${id}`, e);
       setStatus(PlayerStatus.Loading);
@@ -58,6 +95,8 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
     if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
+    // @ts-ignore
+    clearTimeout(checkTracksState);
   };
 
   useEffect(() => {
@@ -66,17 +105,17 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
     return () => {
       cleanup();
     };
-  }, [url, status]);
+  }, [url, status, isStreamShow]);
 
   const displayedWidth = width;
   const displayedHeight = height;
 
   return (
     <div>
-      {status === PlayerStatus.Loading ? (
-        <div>
-          <span>Loading...</span>
-        </div>
+      {!isStreamShow ? (
+        <video width={300} height={300} loop autoPlay>
+          <source src={silentAvatar} type="video/mp4" />
+        </video>
       ) : (
         <video
           ref={videoRef}

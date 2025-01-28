@@ -705,6 +705,13 @@ export function SrsRtcWhipWhepAsync() {
   // @see https://webrtc.org/getting-started/media-devices
   self.stream = new MediaStream();
 
+  self.pc.oniceconnectionstatechange = () => {
+    console.log("ICE Connection State:", self?.pc?.iceConnectionState);
+    if (self?.pc?.iceConnectionState === "failed") {
+      console.error("ICE connection failed");
+    }
+  };
+
   // Internal APIs.
   self.__internal = {
     parseId: (url, offer, answer) => {

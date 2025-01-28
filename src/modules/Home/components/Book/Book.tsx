@@ -119,7 +119,7 @@ const Book: React.FC<HomeProps> = ({
   const [isLiked, setIsLiked] = useState(false);
   const dispatch = useDispatch();
   console.log("selectedLanguageId", selectedLanguage?.id);
-  console.log("currentBookId", currentBook?.result?.id);
+  console.log("currentBook", currentBook);
 
   useEffect(() => {
     if (id) {
@@ -496,13 +496,17 @@ const Book: React.FC<HomeProps> = ({
             <section className={styles.reviewsSection}>
               <div className={styles.section_title}>{t("reviews")}</div>
               <div className={styles.overallRating}>
-                <Rating
-                  count={5}
-                  value={Number(book?.rating)}
-                  size={24}
-                  edit={false}
-                  activeColor="#ffab00"
-                />
+                {book?.rating !== undefined && (
+                  <Rating
+                    count={5}
+                    value={Number(book.rating) > 0 ? Number(book.rating) : 0}
+                    size={24}
+                    edit={false}
+                    activeColor="#996C42"
+                    emptyColor="#ccc"
+                    half={true}
+                  />
+                )}
                 <div className={styles.rating_count}>{book?.rating}</div>
                 <span>
                   ({book?.reviewCount} {t("reviews").toLowerCase()})
