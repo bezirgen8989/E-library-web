@@ -78,7 +78,7 @@ const SearchContainer: React.FC = () => {
   const translatedCategories = categories?.result?.data?.map(
     (category: any) => ({
       ...category,
-      name: t(`category${category.name}`),
+      name: t(`category${category.name}`, category.name),
     })
   );
 
