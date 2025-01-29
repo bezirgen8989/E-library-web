@@ -1,5 +1,5 @@
 import styles from "./ProfileUserForm.module.scss";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useForm, Controller } from "react-hook-form";
 import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
 import tempAi from "../../../../assets/images/testAiImg.png";
@@ -7,6 +7,7 @@ import LanguageModal from "../../../Auth/components/LanguageModal";
 import { Switch } from "antd";
 import NotificationsModal from "../common/NotificationModal/NotificationsModal";
 import { useTranslation } from "react-i18next";
+import { UserContext } from "../../../../core/contexts";
 
 export type LanguageType = {
   id: number;
@@ -50,7 +51,7 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
     flag: { link: NoAvatar },
     isoCode2char: "en",
   };
-
+  const value = useContext(UserContext);
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
   const [selectedBookLanguage, setSelectedBookLanguage] = useState(
     bookLanguage || defaultLanguage
@@ -220,7 +221,14 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
           }}
         >
           <div className={styles.aiAvatar}>
-            <img src={tempAi} alt="avatar" />
+            <img
+              src={
+                value?.avatarSettings?.avatarMiniature?.link
+                  ? value?.avatarSettings?.avatarMiniature?.link
+                  : tempAi
+              }
+              alt="avatar"
+            />
           </div>
           <span>{t("aILibrarian")}</span>
         </div>

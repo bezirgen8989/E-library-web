@@ -2,9 +2,8 @@ import styles from "./ChooseAvatar.module.scss";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { FC, useState, useEffect, useContext } from "react";
+import { FC } from "react";
 import Button from "../../../../../../components/common/Buttons/Button";
-import { UserContext } from "../../../../../../core/contexts";
 import Spinner from "../../../../../../components/common/Spinner";
 import { useTranslation } from "react-i18next";
 
@@ -24,6 +23,11 @@ interface ChooseAvatarProps {
   avatars: { data: AvatarData[] };
   setSelectedAvatar: (link: string) => void;
   setUserAvatar: (id: number) => void;
+  initialSlide: any;
+  setInitialSlide: any;
+  defaultAvatarId: any;
+  currentImage: any;
+  setCurrentImage: any;
 }
 
 const ChooseAvatar: FC<ChooseAvatarProps> = ({
@@ -31,34 +35,13 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
   avatars = { data: [] },
   setSelectedAvatar,
   setUserAvatar,
+  initialSlide,
+  setInitialSlide,
+  defaultAvatarId,
+  currentImage,
+  setCurrentImage,
 }) => {
-  const value = useContext(UserContext); // Assuming the context provides user data
-
-  const [defaultAvatarId] = useState(value?.avatarSettings?.id || 1);
-
-  const [currentImage, setCurrentImage] = useState<AvatarData | null>(null);
-  const [initialSlide, setInitialSlide] = useState<number>(0);
   const { t } = useTranslation();
-
-  console.log("AVATARS", avatars);
-
-  useEffect(() => {
-    if (avatars?.data?.length) {
-      // Найти аватар с ID из avatarSettings или fallback на первый аватар
-      const initialAvatarIndex = avatars.data.findIndex(
-        (avatar) => avatar.id === defaultAvatarId
-      );
-      const foundIndex = initialAvatarIndex !== -1 ? initialAvatarIndex : 0;
-      setInitialSlide(foundIndex);
-
-      const initialAvatar = avatars.data[foundIndex];
-      setCurrentImage(initialAvatar);
-      setSelectedAvatar(initialAvatar.avatarPicture.link);
-
-      // Устанавливаем шаг в зависимости от initialAvatarIndex
-      setCurrentStep(foundIndex === 0 ? 1 : 4);
-    }
-  }, [avatars, defaultAvatarId, setSelectedAvatar, setCurrentStep]);
 
   const settings = {
     infinite: true,

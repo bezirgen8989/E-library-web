@@ -43,6 +43,17 @@ type FormValues = {
   question: string;
 };
 
+interface AvatarData {
+  id: number;
+  name: string;
+  avatarMiniature: {
+    link: string;
+  };
+  avatarPicture: {
+    link: string;
+  };
+}
+
 type AskQuestionComponentProps = {
   setQuestion: (text: string) => void;
   clearMessages: () => void;
@@ -95,9 +106,30 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [isFirst, setIsFirst] = useState(true);
   console.log("formData", formData);
   console.log("isRecordingInProcess", isRecordingInProcess);
-  console.log("valuevaluevaluevaluevalue", value);
   console.log("isStreamConnect", isStreamConnect);
   console.log("isShowSilent", isShowSilent);
+
+  console.log("currentStep", currentStep);
+
+  const [initialSlide, setInitialSlide] = useState<number>(0);
+  const [defaultAvatarId] = useState(value?.avatarSettings?.id || 1);
+  const [currentImage, setCurrentImage] = useState<AvatarData | null>(null);
+  useEffect(() => {
+    if (avatars?.result?.data?.length && value) {
+      const initialAvatarIndex = avatars?.result?.data.findIndex(
+        (avatar: AvatarData) => avatar.id === value?.avatarSettings?.id
+      );
+      console.log("initialAvatarIndex", initialAvatarIndex);
+      const foundIndex = initialAvatarIndex !== -1 ? initialAvatarIndex : 0;
+      console.log("foundIndex", foundIndex);
+      setInitialSlide(foundIndex);
+
+      const initialAvatar = avatars?.result?.data[foundIndex];
+      setCurrentImage(initialAvatar);
+      setSelectedAvatar(initialAvatar.avatarPicture.link);
+      setCurrentStep(foundIndex === 0 ? 1 : 4);
+    }
+  }, [avatars, defaultAvatarId, setSelectedAvatar, setCurrentStep, value]);
 
   const defaultLanguage = (languages || []).find(
     (lang) => lang.name === "English"
@@ -118,11 +150,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   }, [languages]);
 
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
-  // console.log("Select Language", selectedLanguage);
-  console.log(
-    "selectedLanguageselectedLanguageselectedLanguage",
-    selectedLanguage
-  );
 
   useEffect(() => {
     if (chatContentRef.current) {
@@ -304,6 +331,11 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
           setCurrentStep={setCurrentStep}
           setSelectedAvatar={setSelectedAvatar}
           setUserAvatar={setUserAvatar}
+          initialSlide={initialSlide}
+          setInitialSlide={setInitialSlide}
+          defaultAvatarId={defaultAvatarId}
+          currentImage={currentImage}
+          setCurrentImage={setCurrentImage}
         />
       )}
       {currentStep === 2 && (
