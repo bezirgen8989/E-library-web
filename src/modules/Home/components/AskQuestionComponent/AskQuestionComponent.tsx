@@ -18,7 +18,7 @@ import VoiceRecorder from "../../../../components/Voice/VoiceRecorder/VoiceRecor
 import LanguageModal from "../../../Auth/components/LanguageModal";
 import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
 import { useDispatch } from "react-redux";
-import { selectAvatarLanguage } from "../../slices/home";
+import { selectAvatarLanguage, setIsStreamShow } from "../../slices/home";
 import { useTranslation } from "react-i18next";
 import MetaModal from "../common/MetaModal/MetaModal";
 import { UserContext } from "../../../../core/contexts";
@@ -358,31 +358,31 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
               {/*)}*/}
               {/*{isStreamConnect && (*/}
               {/*{!isShowSilent && (*/}
-              {!isStreamConnect && (
-                <video width={300} height={300} loop autoPlay>
-                  <source src={silentAvatar} type="video/mp4" />
-                </video>
-              )}
+              {/*{!isStreamConnect && (*/}
+              {/*  <video width={300} height={300} loop autoPlay>*/}
+              {/*    <source src={silentAvatar} type="video/mp4" />*/}
+              {/*  </video>*/}
+              {/*)}*/}
               {/*{isShowSilent && (*/}
-              {isStreamConnect && (
-                <SrsPlayer
-                  url={url}
-                  width={300}
-                  height={300}
-                  videoRef={videoRef}
-                  options={{
-                    autoPlay: true,
-                    playsInline: true,
-                    muted: false,
-                    controls: true,
-                  }}
-                  rtcOpts={{
-                    audio: {
-                      enable: true,
-                    },
-                  }}
-                />
-              )}
+              {/*{isStreamConnect && (*/}
+              <SrsPlayer
+                url={url}
+                width={300}
+                height={300}
+                videoRef={videoRef}
+                options={{
+                  autoPlay: true,
+                  playsInline: true,
+                  muted: false,
+                  controls: true,
+                }}
+                rtcOpts={{
+                  audio: {
+                    enable: true,
+                  },
+                }}
+              />
+              {/*)}*/}
               <VoiceRecorder
                 setIsRecordingInProcess={setIsRecordingInProcess}
                 addTextWithDelay={addTextWithDelay}
@@ -490,6 +490,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                       handleSubmit((data) => {
                         onSubmit(data);
                         setIsStreamConnect(true);
+                        dispatch(setIsStreamShow(true));
                       })();
                     }}
                   >

@@ -5,7 +5,12 @@ import {
   fetchEventSource,
 } from "@microsoft/fetch-event-source";
 import { useParams, useHistory } from "react-router-dom";
-import { clearBooks, getAvatars, getBookById } from "../slices/home";
+import {
+  clearBooks,
+  getAvatars,
+  getBookById,
+  setIsStreamShow,
+} from "../slices/home";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../hooks";
 import { getLanguages, getMe, setAvatar } from "../../Auth/slices/auth";
@@ -186,6 +191,8 @@ const AskQuestionContainer: React.FC = () => {
 
     return () => {
       unlisten();
+      // Cleanup dispatch when component is unmounted
+      dispatch(setIsStreamShow(false));
     };
   }, [dispatch, history]);
 

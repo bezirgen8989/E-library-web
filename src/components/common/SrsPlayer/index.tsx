@@ -40,7 +40,6 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
   console.log("isStream", isStreamShow);
 
   const checkTracksState = () => {
-    console.log(485769547608975609);
     if (srsSdkRef.current && srsSdkRef.current.stream) {
       const tracks = srsSdkRef.current.stream.getTracks();
       console.log("tracks", tracks);

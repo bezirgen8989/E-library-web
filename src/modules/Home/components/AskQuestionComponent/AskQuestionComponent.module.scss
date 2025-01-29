@@ -66,7 +66,7 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 20px 0;
     max-height: calc(100vh - 94px);
     scrollbar-color: #8E8E93 rgba(255, 255, 255, 0.1);
     scrollbar-width: thin;
@@ -151,7 +151,7 @@
       background: rgba(0, 0, 0, 0.12);
       padding: 10px;
       border-radius: 10px;
-      max-width: 95%;
+      //max-width: 95%;
       margin: 0;
       border: 1px solid rgba(181, 202, 221, 0.24);
     }
@@ -190,7 +190,7 @@
     background-image: url('../../../../assets/images/icons/inputQuestionIcon.svg');
     background-repeat: no-repeat;
     background-position: 15px 50%;
-    padding: 10px;
+    padding: 6px 10px;
     border-radius: 12px;
     background-color: rgba(199,204,205, 0.2);
 
@@ -289,7 +289,7 @@
 .collapseButton {
   margin-left: 15px;
   color: #996C42;
-  padding: 15px 0;
+  padding: 10px 0 0 0;
   font-size: 14px;
   font-weight: 600;
   &:hover {
