@@ -104,6 +104,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const { t } = useTranslation();
   const [isShowSilent, setIsShowSilent] = useState();
   const [isFirst, setIsFirst] = useState(true);
+  const [isEmpty, setIsEmpty] = useState(true);
   console.log("formData", formData);
   console.log("isRecordingInProcess", isRecordingInProcess);
   console.log("isStreamConnect", isStreamConnect);
@@ -503,17 +504,22 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                     placeholder={t("questionPlaceholder")}
                     autoComplete="off"
                     onKeyDown={handleKeyDown}
+                    onInput={(e) => setIsEmpty(e.currentTarget.value === "")}
                     disabled={!isFirst}
                   />
-                  <button
-                    type="button"
-                    className={styles.clearButton}
-                    onClick={() => {
-                      setValue("question", ""); // Очищает поле ввода
-                    }}
-                  >
-                    <img src={ClearIcon} alt="clear" />
-                  </button>
+
+                  {!isEmpty && (
+                    <button
+                      type="button"
+                      className={styles.clearButton}
+                      onClick={() => {
+                        setValue("question", "");
+                        setIsEmpty(true);
+                      }}
+                    >
+                      <img src={ClearIcon} alt="clear" />
+                    </button>
+                  )}
                   <button
                     type="button"
                     className={styles.submitButton}
