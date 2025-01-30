@@ -507,7 +507,9 @@ const Book: React.FC<HomeProps> = ({
                     half={true}
                   />
                 )}
-                <div className={styles.rating_count}>{book?.rating}</div>
+                <div className={styles.rating_count}>
+                  {book?.rating ? Number(book.rating).toFixed(1) : "N/A"}
+                </div>
                 <span>
                   ({book?.reviewCount} {t("reviews").toLowerCase()})
                 </span>
