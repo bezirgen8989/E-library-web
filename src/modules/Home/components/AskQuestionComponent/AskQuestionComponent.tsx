@@ -435,6 +435,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
               />
             </div>
             <div className={styles.chatContainer}>
+              <div className={styles.gradientOverlay} />
               <div className={styles.chatContent} ref={chatContentRef}>
                 {chatHistory.map((chat: Chat, index: number) => {
                   const isLastMessage = index === chatHistory.length - 1;

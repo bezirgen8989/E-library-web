@@ -11,6 +11,10 @@
   border-radius: 16px;
   min-height: 88px;
   width: 100%;
+  @media (max-width: 964px) {
+    max-width: 420px;
+    margin: 0 auto;
+  }
 }
 
 .btnPause {
@@ -101,6 +105,10 @@
 }
 .btnMic {
   margin-left: 10px;
+  @media (max-width: 964px) {
+    max-width: 420px;
+    margin: 0 auto;
+  }
 }
 .StopIcon {
   height: 14px;
