@@ -20,7 +20,7 @@ type RecoverProps = {
 
 type SelectedOption = {
   surveyOption: { id: number };
-  freeText?: string; // Allow freeText as an optional property
+  freeText?: string;
 };
 
 const ProfileAboutForm: React.FC<RecoverProps> = ({
@@ -55,6 +55,13 @@ const ProfileAboutForm: React.FC<RecoverProps> = ({
 
     const formattedData = { data: selectedOptions };
     onSubmit(formattedData);
+  };
+
+  const safeName = (name: string) => {
+    return name
+      .replace(/[^\w\s]/gi, "")
+      .replace(/\s+/g, "-")
+      .toLowerCase();
   };
 
   return (
@@ -105,7 +112,7 @@ const ProfileAboutForm: React.FC<RecoverProps> = ({
                   {items.map((item) => (
                     <li key={item.id}>
                       <Controller
-                        name={item.name}
+                        name={safeName(item.name)}
                         control={control}
                         defaultValue={false}
                         render={({ field }) => (
@@ -124,7 +131,6 @@ const ProfileAboutForm: React.FC<RecoverProps> = ({
             ))}
           </div>
           <div style={{ maxWidth: "420px", margin: "20px auto 0 auto" }}>
-            {/* Add your variant */}
             <div className={commonStyles.inputWrapper}>
               <input
                 {...register("freeText")}
