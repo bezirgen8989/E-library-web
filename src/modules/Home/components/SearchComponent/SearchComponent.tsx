@@ -145,7 +145,6 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
           </div>
         )}
 
-        {/* Рендерим categoryFilter только если searchTerm пустое */}
         {!searchTerm && (
           <div className={styles.categoryFilter}>
             <div className={styles.page_title}>

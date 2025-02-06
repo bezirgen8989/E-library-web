@@ -200,7 +200,6 @@ const Book: React.FC<HomeProps> = ({
       }
     }
   }, [languages]);
-  console.log("book?.categories", book?.categories);
 
   if (!languages) {
     return (
@@ -312,7 +311,9 @@ const Book: React.FC<HomeProps> = ({
                       src={HabitIcon}
                       alt="icon"
                     />
-                    {t(`category${category.name}`)}
+                    {t(`category${category.name}`, {
+                      defaultValue: category.name,
+                    })}
                   </div>
                 ))}
               </div>
