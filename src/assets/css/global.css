@@ -276,9 +276,15 @@ p {
   border-bottom: none !important;
 }
 
+.ant-drawer-right.ant-drawer-open .ant-drawer-content-wrapper {
+  @media (max-width: 480px) {
+    max-width: 370px;
+  }
+}
+
 .avatarCarousel {
   margin-top: -120px;
-  perspective: 800px; /* Добавляем перспективу для 3D эффекта */
+  perspective: 800px;
 }
 
 .slideItem {
@@ -343,3 +349,65 @@ p {
 }
 
 
+.slick-prev, .slick-next {
+  width: 40px;
+  height: 40px;
+  z-index: 10;
+}
+
+.slick-prev {
+  left: -50px;
+}
+
+.slick-next {
+  right: -50px;
+}
+
+@media (max-width: 1024px) {
+  .slick-prev {
+    left: -30px;
+  }
+
+  .slick-next {
+    right: -30px;
+  }
+}
+
+@media (max-width: 775px) {
+  .slick-prev {
+    left: 10px !important;
+  }
+
+  .slick-next {
+    right: 10px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .slick-prev,
+  .slick-next {
+    width: 30px;
+    height: 30px;
+  }
+
+  .slick-prev {
+    left: 0;
+  }
+
+  .slick-next {
+    right: 0;
+  }
+}
+
+@media (max-width: 375px) {
+  .slick-prev,
+  .slick-next {
+    display: none;
+  }
+}
+
+.appLayer {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}

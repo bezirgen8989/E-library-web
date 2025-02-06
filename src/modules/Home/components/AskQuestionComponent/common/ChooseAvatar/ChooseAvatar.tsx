@@ -53,7 +53,7 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
     centerMode: true,
     focusOnSelect: true,
     centerPadding: "0",
-    initialSlide: initialSlide, // Set the initial slide dynamically
+    initialSlide: initialSlide,
     afterChange: (current: number) => {
       if (avatars?.data?.length) {
         const selected = avatars.data[current % avatars.data.length];
@@ -61,6 +61,32 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
         setSelectedAvatar(selected.avatarPicture.link);
       }
     },
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 5,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 5,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      // {
+      //   breakpoint: 375,
+      //   settings: {
+      //     slidesToShow: 1,
+      //   },
+      // },
+    ],
   };
 
   if (!currentImage) return <Spinner />;

@@ -2,14 +2,28 @@ import styles from "./FooterMobile.module.scss";
 import { Link } from "react-router-dom";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import homeRoutes from "../../../modules/Home/routing/routes";
+import userRoutes from "../../../modules/UserManagement/routing/routes";
+import { routes } from "../../../modules/Home/routing";
 
 const FooterMobile: React.FC = () => {
   const { t } = useTranslation();
+  const isActive = (path: string) => location.pathname === path;
+
+  const difStyles =
+    location.pathname === userRoutes.profile ||
+    /^\/search_genre_books\/\d+$/.test(location.pathname);
 
   return (
     <div className={styles.footer}>
       <nav className={styles.footerNav}>
-        <Link to="#" className={`${styles.footerNavItem} ${styles.active}`}>
+        <Link
+          to={homeRoutes.root}
+          style={{ color: difStyles ? "#996C42" : "#7C8482" }}
+          className={`${styles.footerNavItem} ${
+            isActive(homeRoutes.root) ? styles.active : ""
+          }`}
+        >
           <svg
             className={styles.footerIcon}
             width="17"
@@ -22,7 +36,13 @@ const FooterMobile: React.FC = () => {
           </svg>
           <span className={styles.itemText}>Home</span>
         </Link>
-        <Link to="#" className={styles.footerNavItem}>
+        <Link
+          to={homeRoutes.booksShelf}
+          style={{ color: difStyles ? "#7C8482" : "#7C8482" }}
+          className={`${styles.footerNavItem} ${
+            isActive(homeRoutes.booksShelf) ? styles.active : ""
+          }`}
+        >
           <svg
             className={styles.footerIcon}
             width="19"
@@ -35,7 +55,13 @@ const FooterMobile: React.FC = () => {
           </svg>
           <span className={styles.itemText}>{t("menuItemMyBookshelf")}</span>
         </Link>
-        <Link to="#" className={styles.footerNavItem}>
+        <Link
+          to={routes.askQuestionAll}
+          style={{ color: difStyles ? "#7C8482" : "#7C8482" }}
+          className={`${styles.footerNavItem} ${
+            isActive(routes.askQuestionAll) ? styles.active : ""
+          }`}
+        >
           <svg
             className={styles.footerIcon}
             width="19"
@@ -48,7 +74,13 @@ const FooterMobile: React.FC = () => {
           </svg>
           <span className={styles.itemText}>{t("menuItemAskQuestion")}</span>
         </Link>
-        <Link to="#" className={styles.footerNavItem}>
+        <Link
+          to={homeRoutes.search}
+          style={{ color: difStyles ? "#7C8482" : "#7C8482" }}
+          className={`${styles.footerNavItem} ${
+            isActive(homeRoutes.search) ? styles.active : ""
+          }`}
+        >
           <svg
             className={styles.footerIcon}
             width="19"

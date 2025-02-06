@@ -35,6 +35,7 @@ export const useVoice = ({
   const [userLanguage, setUserLanguage] = useState("en");
   const [state, setState] = useState(0);
   const stateRef = useRef(state);
+  console.log(userLanguage);
 
   useEffect(() => {
     if (navigator) {
@@ -51,6 +52,7 @@ export const useVoice = ({
 
     socketRef.current.onopen = () => {
       if (socketRef?.current?.readyState === WebSocket.OPEN) {
+        console.log("selectedLanguageCode", selectedLanguageCode, userId);
         socketRef.current?.send(
           JSON.stringify({
             uid: userId,
@@ -130,7 +132,7 @@ export const useVoice = ({
         const audioData16kHz = resampleTo16kHZ(inputData, audioCtx.sampleRate);
 
         const packet = {
-          speakerLang: userLanguage,
+          speakerLang: selectedLanguageCode,
           index: indexName,
           audio: float32ArrayToBase64(audioData16kHz),
         };

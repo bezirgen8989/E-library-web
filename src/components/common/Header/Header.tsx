@@ -173,12 +173,12 @@ const Header: React.FC = () => {
         </div>
       </div>
       <div className={styles.headerMobile}>
-        <div className={styles.headerAvatar}>
+        <Link to={userRoutes.profile} className={styles.headerAvatar}>
           <img
             src={value?.photo?.link ? value?.photo?.link : noAvatar}
             alt=""
           />
-        </div>
+        </Link>
         <div className={styles.pageTitle}>{t("menuItemHome")}</div>
         <div className={styles.headerNotifications} onClick={showDrawer}>
           {hasNotifications && <div className={styles.dot} />}

@@ -26,7 +26,7 @@ import { UserContext } from "../../../../core/contexts";
 import silentAvatar from "../../../../assets/videos/silent.mp4";
 
 type Chat = {
-  type: "user" | "system"; // Assuming 'user' or 'system' are the only types of messages
+  type: "user" | "system";
   message: string;
 };
 
