@@ -530,6 +530,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                         onSubmit(data);
                         setIsStreamConnect(true);
                         dispatch(setIsStreamShow(true));
+                        setIsEmpty(true);
                       })();
                     }}
                   >
