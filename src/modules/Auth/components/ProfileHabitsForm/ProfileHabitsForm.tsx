@@ -64,10 +64,28 @@ const ProfileHabitsForm: React.FC<RecoverProps> = ({
                 key={category.id}
                 className={styles.grid_item}
                 style={{
+                  position: "relative",
                   backgroundColor: category.color,
-                  backgroundImage: `url(${category.picture.link})`,
+                  overflow: "hidden",
                 }}
               >
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "32px",
+                    right: 0,
+                    width: "74px",
+                    height: "112px",
+                    backgroundImage: `url(${category.picture.link})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover",
+                    transform: "rotate(15deg)",
+                    transformOrigin: "center",
+                    borderRadius: 6,
+                    overflow: "hidden",
+                    boxShadow: "3px 5px 15px rgba(0, 0, 0, 0.5)",
+                  }}
+                />
                 <div className={styles.controllerWrap}>
                   {category.name}
                   <div

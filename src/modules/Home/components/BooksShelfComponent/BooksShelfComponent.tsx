@@ -1,8 +1,10 @@
-import styles from "./Home.module.scss";
+import styles from "./BooksShelfComponent.module.scss";
 import React from "react";
 import AllBooksSlider from "../common/AllBooksSlider/AllBooksSlider";
 import { routes } from "../../routing";
 import { useTranslation } from "react-i18next";
+import EmptyImg from "../../../../assets/images/emptyImg.jpg";
+import Button from "../../../../components/common/Buttons/Button";
 
 type HomeProps = {
   started: any;
@@ -26,49 +28,73 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
   isFinishedBooksLoading,
 }) => {
   const { t } = useTranslation();
-  console.log("started", notStarted);
+
+  const isEmptyShelf =
+    (!started || started.length === 0) &&
+    (!notStarted || notStarted.length === 0) &&
+    (!finished || finished.length === 0);
+
   return (
     <div className={styles.home_page}>
-      {started && (
-        <AllBooksSlider
-          books={started}
-          title={
-            <span style={{ fontSize: "44px", fontWeight: "600" }}>
-              {t("started")}
-            </span>
-          }
-          seeAllLink={routes.startedBooks}
-          getBook={getBook}
-          continueReadingBook={continueReadingBook}
-          isLoading={isStartedBooksLoading}
-        />
+      {!isEmptyShelf && (
+        <>
+          {started && started.length > 0 && (
+            <AllBooksSlider
+              books={started}
+              title={
+                <span style={{ fontSize: "44px", fontWeight: "600" }}>
+                  {t("started")}
+                </span>
+              }
+              seeAllLink={routes.startedBooks}
+              getBook={getBook}
+              continueReadingBook={continueReadingBook}
+              isLoading={isStartedBooksLoading}
+            />
+          )}
+          {notStarted && notStarted.length > 0 && (
+            <AllBooksSlider
+              books={notStarted}
+              title={
+                <span style={{ fontSize: "44px", fontWeight: "600" }}>
+                  {t("notStarted")}
+                </span>
+              }
+              seeAllLink={routes.notStartedBooks}
+              getBook={getBook}
+              isLoading={isNotStartedBooksLoading}
+              continueReadingBook={continueReadingBook}
+            />
+          )}
+          {finished && finished.length > 0 && (
+            <AllBooksSlider
+              books={finished}
+              title={
+                <span style={{ fontSize: "44px", fontWeight: "600" }}>
+                  {t("finished")}
+                </span>
+              }
+              seeAllLink={routes.finishedBooks}
+              getBook={getBook}
+              isLoading={isFinishedBooksLoading}
+            />
+          )}
+        </>
       )}
-      {notStarted && notStarted.length > 0 && (
-        <AllBooksSlider
-          books={notStarted}
-          title={
-            <span style={{ fontSize: "44px", fontWeight: "600" }}>
-              {t("notStarted")}
-            </span>
-          }
-          seeAllLink={routes.notStartedBooks}
-          getBook={getBook}
-          isLoading={isNotStartedBooksLoading}
-          continueReadingBook={continueReadingBook}
-        />
-      )}
-      {finished && finished.length > 0 && (
-        <AllBooksSlider
-          books={finished}
-          title={
-            <span style={{ fontSize: "44px", fontWeight: "600" }}>
-              {t("finished")}
-            </span>
-          }
-          seeAllLink={routes.finishedBooks}
-          getBook={getBook}
-          isLoading={isFinishedBooksLoading}
-        />
+
+      {isEmptyShelf && (
+        <div className={styles.emptyBookShelf}>
+          <div className={styles.emptyInner}>
+            <div className={styles.innerImg}>
+              <img src={EmptyImg} alt="empty" />
+            </div>
+            <div className={styles.title}>Your Bookshelf is empty now</div>
+            <div className={styles.subTitle}>Explore our library right now</div>
+            <Button variant="Brown" to={routes.root}>
+              Start exploring
+            </Button>
+          </div>
+        </div>
       )}
     </div>
   );
