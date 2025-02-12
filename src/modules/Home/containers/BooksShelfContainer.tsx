@@ -78,33 +78,38 @@ const BookShelfContainer: React.FC = () => {
   useEffect(() => {
     if (value?.id) {
       const userIdFilter = `[user.id][eq]=${value.id}`;
-      dispatch(
-        getStartedBooks({
-          limit: "6",
-          page: "1",
-          order: "",
-          filter: startedFilter,
-          userFilter: userIdFilter,
-        })
-      );
-      dispatch(
-        getNotStartedBooks({
-          limit: "6",
-          page: "1",
-          order: "",
-          filter: favouriteFilter,
-          userFilter: userIdFilter,
-        })
-      );
-      dispatch(
-        getFinishedBooks({
-          limit: "6",
-          page: "1",
-          order: "",
-          filter: finishedFilter,
-          userFilter: userIdFilter,
-        })
-      );
+
+      const timeoutId = setTimeout(() => {
+        dispatch(
+          getStartedBooks({
+            limit: "6",
+            page: "1",
+            order: "",
+            filter: startedFilter,
+            userFilter: userIdFilter,
+          })
+        );
+        dispatch(
+          getNotStartedBooks({
+            limit: "6",
+            page: "1",
+            order: "",
+            filter: favouriteFilter,
+            userFilter: userIdFilter,
+          })
+        );
+        dispatch(
+          getFinishedBooks({
+            limit: "6",
+            page: "1",
+            order: "",
+            filter: finishedFilter,
+            userFilter: userIdFilter,
+          })
+        );
+      }, 500); // Задержка в 1 секунду
+
+      return () => clearTimeout(timeoutId); // Очистка таймера при размонтировании или изменении value.id
     }
   }, [value?.id, dispatch]);
 

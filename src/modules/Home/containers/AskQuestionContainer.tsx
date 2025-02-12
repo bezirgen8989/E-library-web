@@ -211,7 +211,7 @@ const AskQuestionContainer: React.FC = () => {
       avatars={avatars}
       setUserAvatar={setUserAvatar}
       chatHistory={chatHistory}
-      languages={languages?.result?.data}
+      languagesWithDari={languages?.result?.data}
       indexName={currentBook?.result?.vectorEntity?.indexName}
     />
   );
