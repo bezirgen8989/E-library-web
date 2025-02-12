@@ -70,6 +70,7 @@ export const BackgroundUpdater = () => {
       [homeRoutes.searchTopBooks]: "#FBF1EA",
       [homeRoutes.searchNewBooks]: "#FBF1EA",
       [homeRoutes.askQuestionAll]: "#00191e",
+      [homeRoutes.chooseAvatar]: "#00191e",
     };
 
     if (

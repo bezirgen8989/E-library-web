@@ -6,6 +6,8 @@ import { FC } from "react";
 import Button from "../../../../../../components/common/Buttons/Button";
 import Spinner from "../../../../../../components/common/Spinner";
 import { useTranslation } from "react-i18next";
+import { routes as profileRoutes } from "../../../../../UserManagement/routing";
+import { useHistory } from "react-router-dom";
 
 interface AvatarData {
   id: number;
@@ -28,6 +30,7 @@ interface ChooseAvatarProps {
   defaultAvatarId: any;
   currentImage: any;
   setCurrentImage: any;
+  isChooseAvatarPage?: boolean;
 }
 
 const ChooseAvatar: FC<ChooseAvatarProps> = ({
@@ -40,8 +43,10 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
   defaultAvatarId,
   currentImage,
   setCurrentImage,
+  isChooseAvatarPage,
 }) => {
   const { t } = useTranslation();
+  const history = useHistory();
 
   const settings = {
     infinite: true,
@@ -92,8 +97,13 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
   if (!currentImage) return <Spinner />;
 
   const handleNextStep = () => {
-    setCurrentStep(2);
-    setUserAvatar(currentImage.id);
+    if (isChooseAvatarPage) {
+      setUserAvatar(currentImage.id);
+      history.push(profileRoutes.profile);
+    } else {
+      setCurrentStep(2);
+      setUserAvatar(currentImage.id);
+    }
   };
 
   return (

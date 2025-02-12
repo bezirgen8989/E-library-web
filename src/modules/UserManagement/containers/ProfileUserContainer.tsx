@@ -4,8 +4,8 @@ import { useCallback, useEffect } from "react";
 import {
   deleteUserAccount,
   getLanguages,
-  getMe,
-  setAvatar,
+  // getMe,
+  // setAvatar,
   setKidsMode,
   setProfile,
   uploadUserPhotoId,
@@ -29,14 +29,14 @@ const ProfileUserContainer: React.FC = () => {
   const setUserAvatar = async (avatarId: number) => {
     try {
       // Ensure dispatch is completed before proceeding
-      await dispatch(
-        setAvatar({
-          avatarSettings: null,
-        })
-      );
-      dispatch(getMe());
+      // await dispatch(
+      //   setAvatar({
+      //     avatarSettings: null,
+      //   })
+      // );
+      // dispatch(getMe());
       // Navigate after the delay
-      await history.push(routes.askQuestionAll);
+      await history.push(routes.chooseAvatar);
     } catch (error) {
       console.error("Error setting user avatar:", error);
     }

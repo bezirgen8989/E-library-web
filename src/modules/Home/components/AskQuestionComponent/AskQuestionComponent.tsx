@@ -66,6 +66,7 @@ type AskQuestionComponentProps = {
   chatHistory: any;
   languages: LanguageType[];
   indexName: string;
+  isChooseAvatarPage?: boolean;
 };
 
 const { Panel } = Collapse;
@@ -81,6 +82,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   chatHistory,
   languages,
   indexName,
+  isChooseAvatarPage,
 }) => {
   const dispatch = useDispatch();
   const value = useContext(UserContext);
@@ -115,6 +117,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [initialSlide, setInitialSlide] = useState<number>(0);
   const [defaultAvatarId] = useState(value?.avatarSettings?.id || 1);
   const [currentImage, setCurrentImage] = useState<AvatarData | null>(null);
+
   useEffect(() => {
     if (avatars?.result?.data?.length && value) {
       const initialAvatarIndex = avatars?.result?.data.findIndex(
@@ -128,9 +131,21 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       const initialAvatar = avatars?.result?.data[foundIndex];
       setCurrentImage(initialAvatar);
       setSelectedAvatar(initialAvatar.avatarPicture.link);
-      setCurrentStep(foundIndex === 0 ? 1 : 4);
+
+      if (isChooseAvatarPage) {
+        setCurrentStep(1);
+      } else {
+        setCurrentStep(foundIndex === 0 ? 1 : 4);
+      }
     }
-  }, [avatars, defaultAvatarId, setSelectedAvatar, setCurrentStep, value]);
+  }, [
+    avatars,
+    defaultAvatarId,
+    setSelectedAvatar,
+    setCurrentStep,
+    value,
+    isChooseAvatarPage,
+  ]);
 
   const defaultLanguage = (languages || []).find(
     (lang) => lang.name === "English"
@@ -254,6 +269,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       // Prevent default form submission behavior
       e.preventDefault();
       handleSubmit(onSubmit)();
+      setIsEmpty(true);
     }
   };
 
@@ -337,6 +353,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
           defaultAvatarId={defaultAvatarId}
           currentImage={currentImage}
           setCurrentImage={setCurrentImage}
+          isChooseAvatarPage
         />
       )}
       {currentStep === 2 && (

@@ -491,7 +491,6 @@ export const setAvatar = createAsyncThunk(
     return response;
   }
 );
-setAvatar;
 
 export const recoverPassword = createAsyncThunk(
   "api/v1/auth/forgot/password",
