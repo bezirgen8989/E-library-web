@@ -21,6 +21,11 @@ const BookContainer: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const { languages } = useLazySelector(({ auth }) => {
+    const { languages, photoId } = auth;
+    return { languages, photoId };
+  });
+
   const {
     currentBook,
     reviews,
@@ -44,6 +49,25 @@ const BookContainer: React.FC = () => {
     };
   });
 
+  // const aiTranslations = bookVersions?.result?.data.filter((book: any) => book.translationType === "ai") || [];
+  // const officialTranslations = bookVersions?.result?.data.filter((book: any) => book.translationType === "official") || [];
+  //
+  // const transformBooksToLanguages = (books: any) => {
+  //   return books.map((book: any) => ({
+  //     id: book.language.id,
+  //     name: book.language.name,
+  //     isoCode: book.language.isoCode,
+  //     isoCode2char: book.language.isoCode2char,
+  //     flag: book.language.flag,
+  //     translationType: book.translationType
+  //   }));
+  // };
+  //
+  // const aiLanguages = transformBooksToLanguages(aiTranslations);
+  // const officialLanguages = transformBooksToLanguages(officialTranslations);
+  //
+  // console.log("AI Translations:", aiLanguages);
+  // console.log("Official Translations:", officialLanguages);
   const allTranslations =
     (bookVersions &&
       bookVersions?.result?.data.map((book: any) => ({
@@ -55,6 +79,8 @@ const BookContainer: React.FC = () => {
         translationType: book.translationType,
       }))) ||
     [];
+  console.log("languages888888888", languages?.result?.data);
+  console.log("allTranslations9999999999", allTranslations);
 
   const getBook = useCallback(
     (id) => {
@@ -96,6 +122,7 @@ const BookContainer: React.FC = () => {
       );
     }
   }, [dispatch, currentBook?.result?.id]);
+  console.log("currentBook?.result?.id", currentBook?.result?.id);
 
   useEffect(() => {
     const unlisten = history.listen((location) => {

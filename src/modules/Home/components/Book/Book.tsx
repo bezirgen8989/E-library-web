@@ -100,36 +100,22 @@ const Book: React.FC<BookProps> = ({
   const history = useHistory();
   const { t } = useTranslation();
 
-  // const defaultLanguage = () => {
-  //   const storedLanguageId = sessionStorage.getItem("selectedLanguage");
-  //   const selectedLang = languages.find(
-  //       (lang) => lang.id === (storedLanguageId ? Number(storedLanguageId) : 0)
-  //   );
-  //
-  //   if (selectedLang) {
-  //     return selectedLang;
-  //   }
-  //
-  //   return {
-  //     id: 0,
-  //     name: "Select Language",
-  //     flag: { link: NoAvatar },
-  //     translationType: "official"
-  //   };
-  // };
-
-  const [selectedLanguage, setSelectedLanguage] = useState({
+  const defaultLanguage = (languages || []).find(
+    (lang) => lang.name === "English"
+  ) || {
     id: 0,
     name: "Select Language",
     flag: { link: NoAvatar },
     translationType: "official",
-  });
+  };
+
+  const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const dispatch = useDispatch();
   console.log("selectedLanguage", selectedLanguage);
-  console.log("currentBookVersion", currentBookVersion);
+  console.log("currentBook", currentBook);
 
   useEffect(() => {
     if (id) {
@@ -138,16 +124,14 @@ const Book: React.FC<BookProps> = ({
   }, [id, getBook]);
 
   useEffect(() => {
-    if (selectedLanguage) {
-      dispatch(
-        getBookVersion({
-          page: "1",
-          limit: "1",
-          filterLanguage: `[language.id][eq]=${selectedLanguage?.id}`,
-          filterId: `[coreBook.id][eq]=${currentBook?.result?.id}`,
-        })
-      );
-    }
+    dispatch(
+      getBookVersion({
+        page: "1",
+        limit: "1",
+        filterLanguage: `[language.id][eq]=${selectedLanguage?.id}`,
+        filterId: `[coreBook.id][eq]=${currentBook?.result?.id}`,
+      })
+    );
   }, [selectedLanguage, currentBook]);
 
   useEffect(() => {
@@ -183,9 +167,8 @@ const Book: React.FC<BookProps> = ({
   };
 
   const onLanguageSelect = (language: LanguageType) => {
-    // @ts-ignore
     setSelectedLanguage(language);
-    sessionStorage.setItem("selectedLanguageId", JSON.stringify(language.id));
+    sessionStorage.setItem("selectedLanguage", JSON.stringify(language.id));
   };
 
   useEffect(() => {
@@ -572,7 +555,7 @@ const Book: React.FC<BookProps> = ({
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           languages={languages}
-          defaultLanguage={selectedLanguage}
+          defaultLanguage={defaultLanguage}
           onLanguageSelect={onLanguageSelect}
         />
         <ReviewModal
