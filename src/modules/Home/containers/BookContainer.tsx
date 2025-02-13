@@ -10,6 +10,7 @@ import {
   deleteFromShelf,
   deleteYourReview,
   getBookById,
+  getBookVersions,
   getReviews,
   getSimilarBooks,
 } from "../slices/home";
@@ -20,16 +21,40 @@ const BookContainer: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { languages } = useLazySelector(({ auth }) => {
-    const { languages, photoId } = auth;
-    return { languages, photoId };
+  const {
+    currentBook,
+    reviews,
+    similarBooks,
+    currentBookVersion,
+    bookVersions,
+  } = useLazySelector(({ home }) => {
+    const {
+      currentBook,
+      reviews,
+      similarBooks,
+      currentBookVersion,
+      bookVersions,
+    } = home;
+    return {
+      currentBook,
+      reviews,
+      similarBooks,
+      currentBookVersion,
+      bookVersions,
+    };
   });
 
-  const { currentBook, reviews, similarBooks, currentBookVersion } =
-    useLazySelector(({ home }) => {
-      const { currentBook, reviews, similarBooks, currentBookVersion } = home;
-      return { currentBook, reviews, similarBooks, currentBookVersion };
-    });
+  const allTranslations =
+    (bookVersions &&
+      bookVersions?.result?.data.map((book: any) => ({
+        id: book.language.id,
+        name: book.language.name,
+        isoCode: book.language.isoCode,
+        isoCode2char: book.language.isoCode2char,
+        flag: book.language.flag,
+        translationType: book.translationType,
+      }))) ||
+    [];
 
   const getBook = useCallback(
     (id) => {
@@ -59,6 +84,18 @@ const BookContainer: React.FC = () => {
   useEffect(() => {
     dispatch(getLanguages());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (currentBook?.result?.id) {
+      dispatch(
+        getBookVersions({
+          page: "1",
+          limit: "50",
+          filterId: `[coreBook.id][eq]=${currentBook?.result?.id}`,
+        })
+      );
+    }
+  }, [dispatch, currentBook?.result?.id]);
 
   useEffect(() => {
     const unlisten = history.listen((location) => {
@@ -143,7 +180,7 @@ const BookContainer: React.FC = () => {
     <Book
       getBook={getBook}
       currentBook={currentBook}
-      languages={languages?.result?.data}
+      languages={allTranslations}
       addToBookShelf={addToBookShelf}
       deleteFromBookShelf={deleteFromBookShelf}
       reviews={reviews?.result?.data}

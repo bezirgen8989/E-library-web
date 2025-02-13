@@ -59,7 +59,6 @@ export const getCurrentBookshelfBookById = (payload: {
   userId: number;
   bookId: number;
 }) => usingGet(`/api/v1/bookshelf/${payload.userId}/${payload.bookId}`);
-
 export const getAllUserNotifications = (params: any) =>
   usingGet(
     `/api/v1/notifications?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
@@ -68,7 +67,6 @@ export const markNotificationAsRead = (params: any) =>
   usingPatch(`/api/v1/notifications/markAsRead`, params);
 export const setUserNotifications = (payload: any) =>
   usingPatch(`/api/v1/notifications/settings`, payload);
-
 export const getUserNotifications = () =>
   usingGet(`/api/v1/notifications/settings`);
 export const checkUserNotifications = () =>
@@ -80,7 +78,7 @@ export const getCurrentBookVersion = (params: any) =>
   usingGet(
     `/api/v1/bookVersions?page=${params.page}&limit=${params.limit}&filter${params.filterId}&filter${params.filterLanguage}`
   );
-// export const getCurrentBookVersion = (params: any) =>
-//   usingGet(
-//     `/api/v1/bookVersions?page=1&limit=1&filter[coreBook.id][eq]=202&filter[language.id][eq]=7`
-//   );
+export const getAllBookVersions = (params: any) =>
+  usingGet(
+    `/api/v1/bookVersions?page=${params.page}&limit=${params.limit}&filter${params.filterId}`
+  );

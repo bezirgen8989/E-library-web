@@ -19,6 +19,7 @@ import {
   deleteBookFromShelf,
   deleteBookReview,
   getAllAvatars,
+  getAllBookVersions,
   getAllFinishedBooks,
   getAllNotStartedBooks,
   getAllReviews,
@@ -70,6 +71,7 @@ const initialState: HomeState = {
   avatarLanguage: {},
   isStreamShow: false,
   currentBookVersion: {},
+  bookVersions: {},
 };
 
 const homeSlice = createSlice({
@@ -415,6 +417,14 @@ const homeSlice = createSlice({
         };
       })
 
+      .addCase(getBookVersions.pending, (state) => {
+        state.bookVersions = { isLoading: true };
+      })
+      .addCase(getBookVersions.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.bookVersions = { isLoading: false, result: content, error };
+      })
+
       // Clear store if 'userLoggedOut' happened
       .addCase(userLoggedOut, () => initialState);
   },
@@ -652,6 +662,15 @@ export const setStreamUrl = createAsyncThunk("/api/v1/srs/url", async () => {
   const response = await getStreamUrl();
   return response;
 });
+
+export const getBookVersions = createAsyncThunk(
+  "getVersions/api/v1/bookshelf",
+  async (books: any) => {
+    console.log("0675986745988909", books);
+    const response = await getAllBookVersions(books);
+    return response;
+  }
+);
 
 export const {
   updateCounter,

@@ -29,6 +29,7 @@ export type HomeState = {
   avatarLanguage: any;
   currentBookVersion: any;
   isStreamShow: boolean;
+  bookVersions: any;
 };
 export interface SetReadingBookPayload {
   user: {
