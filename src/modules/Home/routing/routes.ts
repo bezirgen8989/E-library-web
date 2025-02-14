@@ -17,5 +17,6 @@ const routes = {
   askQuestion: "/ask_question",
   askQuestionAll: "/ask_global_question",
   chooseAvatar: "/choose_avatar",
+  audioBook: "/audio_book",
 };
 export default routes;

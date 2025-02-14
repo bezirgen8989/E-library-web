@@ -29,6 +29,7 @@ import {
   getBook,
   getBooks,
   getBookshelfBooks,
+  getCurrentAudioBook,
   getCurrentBookshelfBookById,
   getCurrentBookVersion,
   getCurrentReadBook,
@@ -72,6 +73,7 @@ const initialState: HomeState = {
   isStreamShow: false,
   currentBookVersion: {},
   bookVersions: {},
+  currentAudioBook: {},
 };
 
 const homeSlice = createSlice({
@@ -349,6 +351,14 @@ const homeSlice = createSlice({
         state.currentReadBook = { isLoading: false, result: content, error };
       })
 
+      .addCase(getAudioBook.pending, (state) => {
+        state.currentAudioBook = { isLoading: true };
+      })
+      .addCase(getAudioBook.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.currentAudioBook = { isLoading: false, result: content, error };
+      })
+
       .addCase(checkNewNotifications.pending, (state) => {
         state.hasNew = { isLoading: true };
       })
@@ -585,6 +595,14 @@ export const getReadBook = createAsyncThunk(
   "/api/v1/books/readBook",
   async (books: ReadBooksParams) => {
     const response = await getCurrentReadBook(books);
+    return response;
+  }
+);
+
+export const getAudioBook = createAsyncThunk(
+  "/api/v1/books/listenBook",
+  async (books: ReadBooksParams) => {
+    const response = await getCurrentAudioBook(books);
     return response;
   }
 );

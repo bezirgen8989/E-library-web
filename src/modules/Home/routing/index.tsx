@@ -6,7 +6,10 @@ import routes from "./routes";
 export { routes };
 
 export const Home = lazy(
-  () => import(/* webpackChunkName: "Home" */ "modules/Home/pages/Home")
+  () =>
+    import(
+      /* webpackChunkName: "AudioBookComponent" */ "modules/Home/pages/Home"
+    )
 );
 export const SearchBooks = lazy(
   () =>
@@ -93,6 +96,12 @@ export const ChooseAvatar = lazy(
       /* webpackChunkName: "AskQuestion" */ "modules/Home/pages/ChooseAvatarPage"
     )
 );
+export const AudioBook = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "AskQuestion" */ "modules/Home/pages/AudioBookPage"
+    )
+);
 
 const HomeRouting = () => (
   <Suspense fallback={<Spinner />}>
@@ -113,6 +122,7 @@ const HomeRouting = () => (
       <Route exact path={`${routes.askQuestion}/:id`} component={AskQuestion} />
       <Route exact path={routes.askQuestionAll} component={AskQuestion} />
       <Route exact path={routes.chooseAvatar} component={ChooseAvatar} />
+      <Route exact path={`${routes.audioBook}/:id`} component={AudioBook} />
       <Route
         exact
         path={`${routes.searchTopBooks}/:id`}

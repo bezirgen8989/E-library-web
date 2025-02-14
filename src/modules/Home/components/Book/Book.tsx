@@ -77,6 +77,7 @@ type BookProps = {
   deleteReview: any;
   getAuthorBooks: any;
   startRead: any;
+  startListen: any;
   currentBookVersion: any;
 };
 
@@ -93,6 +94,7 @@ const Book: React.FC<BookProps> = ({
   getAuthorBooks,
   startRead,
   currentBookVersion,
+  startListen,
 }) => {
   const [book, setBook] = useState<BookType | null>(null);
   const { id } = useParams<{ id: string }>();
@@ -408,6 +410,19 @@ const Book: React.FC<BookProps> = ({
                 {t("readNowBtn")}
               </Button>
               <div className={styles.divider} />
+              <Button
+                style={{
+                  color: "#996C42",
+                  border: "2px solid rgba(153, 108, 66, 0.2)",
+                  borderRadius: "50px",
+                  background: "transparent",
+                }}
+                onClick={() => {
+                  startListen({ bookId: id });
+                }}
+              >
+                Audio
+              </Button>
               <Button
                 className={styles.questionBtn}
                 to={`${routes.askQuestion}/${id}`}

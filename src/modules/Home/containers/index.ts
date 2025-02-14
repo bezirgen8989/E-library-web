@@ -11,3 +11,4 @@ export { default as FinishedBooksContainer } from "./FinishedBooksContainer";
 export { default as ReadingContainer } from "./ReadingContainer";
 export { default as AskQuestionContainer } from "./AskQuestionContainer";
 export { default as ChooseAvatarContainer } from "./ChooseAvatarContainer";
+export { default as AudioBookContainer } from "./AudioBookContainer";
