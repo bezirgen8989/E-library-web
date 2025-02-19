@@ -14,6 +14,7 @@ interface AudioBookComponentProps {
   currentBookVersion: any;
   book: any;
   currentPage: any;
+  setMaxLoadPage: any;
 }
 
 const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
@@ -22,6 +23,7 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
   currentBookVersion,
   book,
   currentPage,
+  setMaxLoadPage,
 }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -53,7 +55,12 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
   };
 
   const handleNextPage = () => {
-    setCurrentPage((prev: string) => (parseInt(prev) + 1).toString());
+    setCurrentPage((prev: string) => {
+      const nextPage = (parseInt(prev) + 1).toString();
+
+      setMaxLoadPage((prevMax: any) => Math.max(prevMax, parseInt(nextPage))); // обновление maxLoadPage
+      return nextPage;
+    });
     setProgress(0);
   };
 
@@ -182,7 +189,13 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
                   currentBookVersion?.result?.data?.[0]?.totalPages || 1;
                 setCurrentPage((prev: string) => {
                   const nextPage = parseInt(prev) + 1;
-                  return nextPage <= totalPages ? nextPage.toString() : prev;
+                  const updatedPage =
+                    nextPage <= totalPages ? nextPage.toString() : prev;
+
+                  setMaxLoadPage((prevMax: any) =>
+                    Math.max(prevMax, parseInt(updatedPage))
+                  ); // обновление maxLoadPage
+                  return updatedPage;
                 });
               }}
             />
