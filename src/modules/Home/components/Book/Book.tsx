@@ -8,6 +8,7 @@ import Group from "../../../../assets/images/icons/group.png";
 import HabitIcon from "../../../../assets/images/icons/habit_icon.png";
 import ReviewIcon from "../../../../assets/images/icons/review_icon.png";
 import LikeIcon from "../../../../assets/images/icons/like.svg";
+import ListenIcon from "../../../../assets/images/icons/listenIcon.svg";
 import { useHistory, useParams } from "react-router-dom";
 // @ts-ignore
 import Rating from "react-rating-stars-component";
@@ -397,19 +398,18 @@ const Book: React.FC<BookProps> = ({
                 </div>
               </div>
             </div>
+            <Button
+              className={styles.readBtn}
+              style={{ marginTop: "30px" }}
+              onClick={() => {
+                startRead({ bookId: id });
+              }}
+              variant="Brown"
+              type="submit"
+            >
+              {t("readNowBtn")}
+            </Button>
             <div className={styles.btns_block}>
-              <Button
-                className={styles.readBtn}
-                style={{ marginTop: 0 }}
-                onClick={() => {
-                  startRead({ bookId: id });
-                }}
-                variant="Brown"
-                type="submit"
-              >
-                {t("readNowBtn")}
-              </Button>
-              <div className={styles.divider} />
               <Button
                 style={{
                   color: "#996C42",
@@ -420,9 +420,11 @@ const Book: React.FC<BookProps> = ({
                 onClick={() => {
                   startListen({ bookId: id });
                 }}
+                icon={<img src={ListenIcon} alt="icon" />}
               >
-                Audio
+                Listen
               </Button>
+              <div className={styles.divider} />
               <Button
                 className={styles.questionBtn}
                 to={`${routes.askQuestion}/${id}`}

@@ -120,6 +120,7 @@
   align-items: center;
   padding-top: 30px;
   padding-bottom: 5px;
+  justify-content: space-between;
   border-bottom: 1px solid rgba(153, 108, 66, 0.2);
   @media (max-width: 768px) {
     display: block;
