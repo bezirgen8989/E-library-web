@@ -45,7 +45,8 @@ const Header: React.FC = () => {
 
   const difStyles =
     location.pathname === userRoutes.profile ||
-    /^\/search_genre_books\/\d+$/.test(location.pathname);
+    /^\/search_genre_books\/\d+$/.test(location.pathname) ||
+    /^\/audio_book\/\d+$/.test(location.pathname);
 
   // console.log("difStyles ", difStyles);
 

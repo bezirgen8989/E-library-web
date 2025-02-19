@@ -48,6 +48,7 @@ const AudioBookContainer: React.FC = () => {
       setCurrentPage={setCurrentPage}
       currentBookVersion={currentBookVersion}
       book={currentBook}
+      currentPage={currentPage}
     />
   );
 };
