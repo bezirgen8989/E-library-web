@@ -102,6 +102,18 @@ export const AudioBook = lazy(
       /* webpackChunkName: "AskQuestion" */ "modules/Home/pages/AudioBookPage"
     )
 );
+export const TermsAndConditions = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "AskQuestion" */ "modules/Home/pages/TermsAndConditionsPage"
+    )
+);
+export const PrivacyPolicy = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "AskQuestion" */ "modules/Home/pages/PrivacyPolicyPage"
+    )
+);
 
 const HomeRouting = () => (
   <Suspense fallback={<Spinner />}>
@@ -123,6 +135,13 @@ const HomeRouting = () => (
       <Route exact path={routes.askQuestionAll} component={AskQuestion} />
       <Route exact path={routes.chooseAvatar} component={ChooseAvatar} />
       <Route exact path={`${routes.audioBook}/:id`} component={AudioBook} />
+      <Route
+        exact
+        path={routes.termsAndConditions}
+        component={TermsAndConditions}
+      />
+      <Route exact path={routes.privacyPolicy} component={PrivacyPolicy} />
+
       <Route
         exact
         path={`${routes.searchTopBooks}/:id`}

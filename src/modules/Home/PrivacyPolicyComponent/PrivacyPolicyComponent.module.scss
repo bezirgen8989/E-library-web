@@ -1,0 +1,31 @@
+.terms_page {
+  max-width: 996px;
+  margin: 0 auto;
+  padding: 50px 10px 10px;
+  min-height: calc(100vh - 74px);
+  position: relative;
+  p {
+    font-size: 18px !important;
+    color: #121212;
+  }
+}
+.title {
+  font-size: 27px;
+  color: #121212;
+  font-weight: 700;
+  text-align: center;
+}
+.subTitle {
+  font-size: 22px;
+  color: #121212;
+  font-weight: 600
+}
+.list {
+  list-style-type: circle;
+  background: #F3EDE8;
+  padding: 10px 10px 10px 50px;
+  li {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+}
