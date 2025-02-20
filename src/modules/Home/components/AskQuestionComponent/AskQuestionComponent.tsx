@@ -24,6 +24,7 @@ import MetaModal from "../common/MetaModal/MetaModal";
 import { UserContext } from "../../../../core/contexts";
 // @ts-ignore
 import silentAvatar from "../../../../assets/videos/silent.mp4";
+// import {useSocket} from "../../../../hooks/useSocket";
 
 type Chat = {
   type: "user" | "system";
@@ -107,10 +108,48 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [isShowSilent, setIsShowSilent] = useState();
   const [isFirst, setIsFirst] = useState(true);
   const [isEmpty, setIsEmpty] = useState(true);
-  console.log("formData", formData);
-  console.log("isRecordingInProcess", isRecordingInProcess);
-  console.log("isStreamConnect", isStreamConnect);
-  console.log("isShowSilent", isShowSilent);
+
+  // const [streamStart, setStreamStart] = useState(false)
+  // const [messageDone, setMessageDone] = useState(false)
+  // const [show, setShow] = useState(false)
+  // console.log("streamStart", streamStart)
+  // console.log("messageDone", messageDone)
+  // console.log("show", show)
+  //
+  // const { connected, subscribeToEvent, unsubscribeFromEvent } = useSocket({
+  //   url: "https://elib.plavno.io:8080/srs",
+  //   getAuthToken: async () => sessionStorage.getItem("SESSION_TOKEN"),
+  // })
+  //
+  // useEffect(() => {
+  //   if (!connected) return
+  //   const handlePublishStream = () => {
+  //     console.log("Stream started")
+  //     setMessageDone(true)
+  //     setStreamStart?.(true)
+  //     setShow(true)
+  //   }
+  //
+  //   const handleUnpublishStream = () => {
+  //     console.log("Stream ended")
+  //     setMessageDone(false)
+  //     setStreamStart?.(false)
+  //     setShow(false)
+  //   }
+  //
+  //   subscribeToEvent("publish-stream", handlePublishStream)
+  //   subscribeToEvent("unpublish-stream", handleUnpublishStream)
+  //
+  //   return () => {
+  //     unsubscribeFromEvent("publish-stream")
+  //     unsubscribeFromEvent("unpublish-stream")
+  //   }
+  // }, [subscribeToEvent, unsubscribeFromEvent, connected])
+
+  // console.log("formData", formData);
+  // console.log("isRecordingInProcess", isRecordingInProcess);
+  // console.log("isStreamConnect", isStreamConnect);
+  // console.log("isShowSilent", isShowSilent);
   const languages =
     languagesWithDari &&
     languagesWithDari.filter((lang) => lang.name !== "Dari");
@@ -331,17 +370,12 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
     handleRouteChange();
 
-    // Следим за изменениями в маршруте
     return () => {
       if (videoRef.current) {
         videoRef.current.srcObject = null;
       }
     };
   }, [location.pathname]);
-
-  // const toggleCollapse = () => {
-  //   setIsCollapseVisible(!isCollapseVisible);
-  // };
 
   return (
     <>
@@ -403,21 +437,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
           </div>
           <div className={styles.askQuestionPage}>
             <div className={styles.avatarSide}>
-              {/*{!isShowSilent && (*/}
-              {/*{!isStreamConnect && (*/}
-              {/*    <video width={300} height={300} loop autoPlay>*/}
-              {/*        <source src={silentAvatar} type="video/mp4"/>*/}
-              {/*    </video>*/}
-              {/*)}*/}
-              {/*{isStreamConnect && (*/}
-              {/*{!isShowSilent && (*/}
-              {/*{!isStreamConnect && (*/}
-              {/*  <video width={300} height={300} loop autoPlay>*/}
-              {/*    <source src={silentAvatar} type="video/mp4" />*/}
-              {/*  </video>*/}
-              {/*)}*/}
-              {/*{isShowSilent && (*/}
-              {/*{isStreamConnect && (*/}
               <SrsPlayer
                 url={url}
                 width={300}
@@ -435,7 +454,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                   },
                 }}
               />
-              {/*)}*/}
               <VoiceRecorder
                 setIsRecordingInProcess={setIsRecordingInProcess}
                 addTextWithDelay={addTextWithDelay}
@@ -474,7 +492,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                             : styles.messageSystemContent
                         }
                       >
-                        {/* Показываем ChatSpinner только если сообщение ещё не пришло */}
                         {chat.type !== "user" &&
                           isLastMessage &&
                           isLoading &&

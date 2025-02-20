@@ -32,12 +32,18 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
 }) => {
   const dispatch = useDispatch();
 
+  const { avatarStreamShow } = useLazySelector(({ home }) => {
+    const { avatarStreamShow } = home;
+    return {
+      avatarStreamShow,
+    };
+  });
+  console.log("avatarStreamShow123", avatarStreamShow);
+
   const { isStreamShow } = useLazySelector(({ home }) => {
     const { isStreamShow } = home;
     return { isStreamShow };
   });
-
-  console.log("isStream", isStreamShow);
 
   const checkTracksState = () => {
     if (srsSdkRef.current && srsSdkRef.current.stream) {
@@ -110,22 +116,51 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
   const displayedHeight = height;
 
   return (
-    <div>
-      {!isStreamShow ? (
-        <video width={300} height={300} loop autoPlay>
-          <source src={silentAvatar} type="video/mp4" />
-        </video>
-      ) : (
-        <video
-          ref={videoRef}
-          style={{
-            width: `${displayedWidth}px`,
-            height: `${displayedHeight}px`,
-          }}
-          {...videoOptions}
-          controls={true}
-        />
-      )}
-    </div>
+    <>
+      <div>
+        {!avatarStreamShow ? (
+          <div>
+            <video width={300} height={300} loop autoPlay>
+              <source src={silentAvatar} type="video/mp4" />
+            </video>
+            <span style={{ color: "white" }}>Silent</span>
+          </div>
+        ) : (
+          <div>
+            <video
+              ref={videoRef}
+              style={{
+                width: `${displayedWidth}px`,
+                height: `${displayedHeight}px`,
+              }}
+              {...videoOptions}
+              controls={true}
+            />
+            <span style={{ color: "white" }}>Show Stream</span>
+          </div>
+        )}
+        {!isStreamShow ? (
+          <div>
+            <video width={300} height={300} loop autoPlay>
+              <source src={silentAvatar} type="video/mp4" />
+            </video>
+            <span style={{ color: "white" }}>Silent</span>
+          </div>
+        ) : (
+          <div>
+            <video
+              ref={videoRef}
+              style={{
+                width: `${displayedWidth}px`,
+                height: `${displayedHeight}px`,
+              }}
+              {...videoOptions}
+              controls={true}
+            />
+            <span style={{ color: "white" }}>Show Stream</span>
+          </div>
+        )}
+      </div>
+    </>
   );
 };

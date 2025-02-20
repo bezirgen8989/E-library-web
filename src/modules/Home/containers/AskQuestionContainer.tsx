@@ -9,11 +9,16 @@ import {
   clearBooks,
   getAvatars,
   getBookById,
+  setAvatarStreamShow,
   setIsStreamShow,
+  setMessageDone,
+  setShow,
+  setStreamStart,
 } from "../slices/home";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../hooks";
 import { getLanguages, getMe, setAvatar } from "../../Auth/slices/auth";
+import { useSocket } from "../../../hooks/useSocket";
 
 type Chat = {
   type: "user" | "response";
@@ -42,12 +47,12 @@ const AskQuestionContainer: React.FC = () => {
     dispatch(getLanguages());
   }, [dispatch]);
 
-  const { currentBook, avatars, avatarLanguage } = useLazySelector(
-    ({ home }) => {
-      const { currentBook, avatars, avatarLanguage } = home;
-      return { currentBook, avatars, avatarLanguage };
-    }
-  );
+  const { currentBook, avatars, avatarLanguage, avatarStreamShow } =
+    useLazySelector(({ home }) => {
+      const { currentBook, avatars, avatarLanguage, avatarStreamShow } = home;
+      return { currentBook, avatars, avatarLanguage, avatarStreamShow };
+    });
+
   // console.log("avatarLanguage", avatarLanguage.id);
 
   const { languages } = useLazySelector(({ auth }) => {
@@ -199,6 +204,32 @@ const AskQuestionContainer: React.FC = () => {
   const clearMessages = () => {
     setMessages([]);
   };
+
+  const { connected, subscribeToEvent, unsubscribeFromEvent } = useSocket({
+    url: "https://elib.plavno.io:8080/srs",
+    getAuthToken: async () => sessionStorage.getItem("SESSION_TOKEN"),
+  });
+
+  useEffect(() => {
+    if (!connected) return;
+    const handlePublishStream = () => {
+      console.log("Stream started");
+      dispatch(setAvatarStreamShow(true));
+    };
+
+    const handleUnpublishStream = () => {
+      console.log("Stream ended");
+      dispatch(setAvatarStreamShow(false));
+    };
+
+    subscribeToEvent("publish-stream", handlePublishStream);
+    subscribeToEvent("unpublish-stream", handleUnpublishStream);
+
+    return () => {
+      unsubscribeFromEvent("publish-stream");
+      unsubscribeFromEvent("unpublish-stream");
+    };
+  }, [subscribeToEvent, unsubscribeFromEvent, connected, avatarStreamShow]);
 
   return (
     <AskQuestionComponent
