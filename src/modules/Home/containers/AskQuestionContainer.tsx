@@ -11,9 +11,6 @@ import {
   getBookById,
   setAvatarStreamShow,
   setIsStreamShow,
-  setMessageDone,
-  setShow,
-  setStreamStart,
 } from "../slices/home";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../hooks";
@@ -47,11 +44,28 @@ const AskQuestionContainer: React.FC = () => {
     dispatch(getLanguages());
   }, [dispatch]);
 
-  const { currentBook, avatars, avatarLanguage, avatarStreamShow } =
-    useLazySelector(({ home }) => {
-      const { currentBook, avatars, avatarLanguage, avatarStreamShow } = home;
-      return { currentBook, avatars, avatarLanguage, avatarStreamShow };
-    });
+  const {
+    currentBook,
+    avatars,
+    avatarLanguage,
+    avatarStreamShow,
+    isStopQuestion,
+  } = useLazySelector(({ home }) => {
+    const {
+      currentBook,
+      avatars,
+      avatarLanguage,
+      avatarStreamShow,
+      isStopQuestion,
+    } = home;
+    return {
+      currentBook,
+      avatars,
+      avatarLanguage,
+      avatarStreamShow,
+      isStopQuestion,
+    };
+  });
 
   // console.log("avatarLanguage", avatarLanguage.id);
 
@@ -102,89 +116,97 @@ const AskQuestionContainer: React.FC = () => {
   };
 
   useEffect(() => {
-    if (question) {
-      const token = sessionStorage.getItem("SESSION_TOKEN");
+    if (!question || isStopQuestion) return; // Останавливаем поток, если isStopQuestion = true
 
-      const fetchData = async () => {
-        setIsLoading(true);
-        setMessages([]);
+    const token = sessionStorage.getItem("SESSION_TOKEN");
+    const controller = new AbortController(); // Позволяет прерывать поток
 
-        try {
-          const indexName = location.pathname.includes("ask_global_question")
-            ? "GlobalLibraryCollection"
-            : currentBook?.result?.vectorEntity?.indexName;
+    const fetchData = async () => {
+      setIsLoading(true);
+      setMessages([]);
 
-          setChatHistory((prev) => [
-            ...prev,
-            { type: "user", message: question },
-            { type: "response", message: "" },
-          ]);
+      try {
+        const indexName = location.pathname.includes("ask_global_question")
+          ? "GlobalLibraryCollection"
+          : currentBook?.result?.vectorEntity?.indexName;
 
-          await fetchEventSource(
-            "https://elib.plavno.io:8080/api/v1/vectors/ask",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify({
-                query: question,
-                indexName,
-                language: { id: avatarLanguage?.id || 7 },
-              }),
+        setChatHistory((prev) => [
+          ...prev,
+          { type: "user", message: question },
+          { type: "response", message: "" },
+        ]);
 
-              onmessage(event: EventSourceMessage) {
-                try {
-                  const data = JSON.parse(event.data);
+        await fetchEventSource(
+          "https://elib.plavno.io:8080/api/v1/vectors/ask",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              query: question,
+              indexName,
+              language: { id: avatarLanguage?.id || 7 },
+            }),
+            signal: controller.signal, // Добавляем AbortController
 
-                  if (event.event === "MESSAGE" && data.chunk) {
-                    setMessages((prev) => [...prev, data.chunk]);
+            onmessage(event: EventSourceMessage) {
+              if (isStopQuestion) {
+                controller.abort(); // Прерываем поток
+                return;
+              }
 
-                    setChatHistory((prev) => {
-                      const updatedHistory = [...prev];
-                      const lastIndex = updatedHistory.length - 1;
+              try {
+                const data = JSON.parse(event.data);
 
-                      if (updatedHistory[lastIndex].type === "response") {
-                        updatedHistory[lastIndex].message += data.chunk;
-                      }
+                if (event.event === "MESSAGE" && data.chunk) {
+                  setMessages((prev) => [...prev, data.chunk]);
 
-                      return updatedHistory;
-                    });
-                  }
+                  setChatHistory((prev) => {
+                    const updatedHistory = [...prev];
+                    const lastIndex = updatedHistory.length - 1;
 
-                  if (event.event === "META") {
-                    const extractedMeta = extractMeta(data);
-                    setMeta(extractedMeta);
-                  }
-                } catch (error) {
-                  console.error(
-                    "Error processing MESSAGE or META event:",
-                    error
-                  );
+                    if (updatedHistory[lastIndex].type === "response") {
+                      updatedHistory[lastIndex].message += data.chunk;
+                    }
+
+                    return updatedHistory;
+                  });
                 }
-              },
 
-              onopen() {
-                console.log("SSE open channel");
-                return Promise.resolve();
-              },
+                if (event.event === "META") {
+                  const extractedMeta = extractMeta(data);
+                  setMeta(extractedMeta);
+                }
+              } catch (error) {
+                console.error("Error processing MESSAGE or META event:", error);
+              }
+            },
 
-              onerror(error: Event) {
-                console.error("SSE error:", error);
-              },
-            }
-          );
-        } catch (error) {
-          console.error("Error sending POST request:", error);
-        } finally {
-          setIsLoading(false);
-        }
-      };
+            onopen() {
+              console.log("SSE open channel");
+              return Promise.resolve();
+            },
 
-      fetchData();
-    }
-  }, [question, currentBook]);
+            onerror(error: Event) {
+              console.error("SSE error:", error);
+            },
+          }
+        );
+      } catch (error) {
+        console.error("Error sending POST request:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      controller.abort(); // Прерываем поток при размонтировании
+    };
+  }, [question, currentBook, isStopQuestion]);
 
   // Dispatch getMe() when leaving the "ask_question" route
   useEffect(() => {
@@ -207,7 +229,10 @@ const AskQuestionContainer: React.FC = () => {
 
   const { connected, subscribeToEvent, unsubscribeFromEvent } = useSocket({
     url: "https://elib.plavno.io:8080/srs",
-    getAuthToken: async () => sessionStorage.getItem("SESSION_TOKEN"),
+    getAuthToken: async () => {
+      const token = sessionStorage.getItem("SESSION_TOKEN");
+      return token ?? "";
+    },
   });
 
   useEffect(() => {

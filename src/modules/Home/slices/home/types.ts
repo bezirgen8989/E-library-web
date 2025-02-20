@@ -32,6 +32,7 @@ export type HomeState = {
   bookVersions: any;
   currentAudioBook: any;
   avatarStreamShow: boolean;
+  isStopQuestion: boolean;
 };
 export interface SetReadingBookPayload {
   user: {

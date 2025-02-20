@@ -75,6 +75,7 @@ const initialState: HomeState = {
   bookVersions: {},
   currentAudioBook: {},
   avatarStreamShow: false,
+  isStopQuestion: false,
 };
 
 const homeSlice = createSlice({
@@ -99,9 +100,11 @@ const homeSlice = createSlice({
     setIsStreamShow(state, action: PayloadAction<boolean>) {
       state.isStreamShow = action.payload;
     },
-
     setAvatarStreamShow(state, action: PayloadAction<boolean>) {
       state.avatarStreamShow = action.payload;
+    },
+    setIsStopQuestion(state, action: PayloadAction<boolean>) {
+      state.isStopQuestion = action.payload;
     },
 
     setNewBooks: (state, action: PayloadAction<any>) => {
@@ -705,5 +708,6 @@ export const {
   selectAvatarLanguage,
   setIsStreamShow,
   setAvatarStreamShow,
+  setIsStopQuestion,
 } = homeSlice.actions;
 export default homeSlice.reducer;

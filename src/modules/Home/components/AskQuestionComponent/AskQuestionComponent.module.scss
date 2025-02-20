@@ -250,6 +250,28 @@
     opacity: 0.8;
   }
 }
+.stopButton {
+  position: relative;
+  border: none;
+  height: 28px;
+  width: 28px;
+  margin-top: 0;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding-left: 8px;
+  &:hover {
+    opacity: 0.8;
+  }
+}
+.beforeIcon {
+  width: 10px;
+  height: 10px;
+  margin-left: 1px;
+  background: #996C42;
+}
 .clearButton {
   background: none;
   border: none;

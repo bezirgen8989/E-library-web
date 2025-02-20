@@ -18,7 +18,11 @@ import VoiceRecorder from "../../../../components/Voice/VoiceRecorder/VoiceRecor
 import LanguageModal from "../../../Auth/components/LanguageModal";
 import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
 import { useDispatch } from "react-redux";
-import { selectAvatarLanguage, setIsStreamShow } from "../../slices/home";
+import {
+  selectAvatarLanguage,
+  setIsStopQuestion,
+  setIsStreamShow,
+} from "../../slices/home";
 import { useTranslation } from "react-i18next";
 import MetaModal from "../common/MetaModal/MetaModal";
 import { UserContext } from "../../../../core/contexts";
@@ -96,24 +100,27 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const videoRef = useRef<HTMLVideoElement | any>(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
-  const [isRecordingInProcess, setIsRecordingInProcess] = useState(false);
-  const [formData, setFormData] = useState<FormData | undefined>();
+  const [, setIsRecordingInProcess] = useState(false);
+  const [, setFormData] = useState<FormData | undefined>();
   const quillRef = useRef<ReactQuill>(null);
   const cursorPositionRef = useRef<null | number>(null);
   const [url, setUrl] = useState<any>();
-  const [isStreamConnect, setIsStreamConnect] = useState(false);
+  const [, setIsStreamConnect] = useState(false);
   const chatContentRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMetaModalOpen, setIsMetaModalOpen] = useState(false);
   const { t } = useTranslation();
-  const [isShowSilent, setIsShowSilent] = useState();
+  const [, setIsShowSilent] = useState();
   const [isFirst, setIsFirst] = useState(true);
   const [isEmpty, setIsEmpty] = useState(true);
+  const [showStopButton, setShowStopButton] = useState(false);
 
   const { avatarStreamShow } = useLazySelector(({ home }) => {
-    const { avatarStreamShow } = home;
+    const { avatarStreamShow, isStreamShow, isStopQuestion } = home;
     return {
       avatarStreamShow,
+      isStreamShow,
+      isStopQuestion,
     };
   });
 
@@ -531,21 +538,38 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                       <img src={ClearIcon} alt="clear" />
                     </button>
                   )}
-                  <button
-                    type="button"
-                    className={styles.submitButton}
-                    disabled={isSending}
-                    onClick={() => {
-                      handleSubmit((data) => {
-                        onSubmit(data);
-                        setIsStreamConnect(true);
-                        dispatch(setIsStreamShow(true));
-                        setIsEmpty(true);
-                      })();
-                    }}
-                  >
-                    <img src={Send} alt="btn" />
-                  </button>
+
+                  {!showStopButton ? (
+                    <button
+                      type="button"
+                      className={styles.submitButton}
+                      disabled={isSending}
+                      onClick={() => {
+                        handleSubmit((data) => {
+                          onSubmit(data);
+                          setIsStreamConnect(true);
+                          dispatch(setIsStreamShow(true));
+                          setIsEmpty(true);
+                          dispatch(setIsStopQuestion(false));
+                          setShowStopButton(true);
+                        })();
+                      }}
+                    >
+                      <img src={Send} alt="btn" />
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className={styles.stopButton}
+                      disabled={isSending}
+                      onClick={() => {
+                        setShowStopButton(false);
+                        dispatch(setIsStopQuestion(true));
+                      }}
+                    >
+                      <div className={styles.beforeIcon} />
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
