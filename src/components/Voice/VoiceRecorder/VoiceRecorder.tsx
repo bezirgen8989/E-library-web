@@ -78,9 +78,9 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   const [
     stopStreaming,
     startStreaming,
-    // deleteStreaming,
+    deleteStreaming,
     connectToWhisper,
-    // pauseStreaming,
+    pauseStreaming,
   ] = useVoice({
     language,
     setTextAreaValue: addTextWithDelay,
@@ -92,6 +92,8 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     selectedLanguageCode,
     setIsShowSilent,
   });
+
+  console.log(deleteStreaming, pauseStreaming);
 
   const [hasMicrophoneAccess, setHasMicrophoneAccess] = useState<
     boolean | null
@@ -108,7 +110,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
       setHasMicrophoneAccess(false);
     }
   };
-  // console.log("isFirst", isFirst);
+  console.log("isFirst", isFirst);
   useEffect(() => {
     checkMicrophoneAccess();
   }, []);

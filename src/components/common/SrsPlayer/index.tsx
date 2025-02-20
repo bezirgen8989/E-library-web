@@ -116,51 +116,14 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
   const displayedHeight = height;
 
   return (
-    <>
-      <div>
-        {!avatarStreamShow ? (
-          <div>
-            <video width={300} height={300} loop autoPlay>
-              <source src={silentAvatar} type="video/mp4" />
-            </video>
-            <span style={{ color: "white" }}>Silent</span>
-          </div>
-        ) : (
-          <div>
-            <video
-              ref={videoRef}
-              style={{
-                width: `${displayedWidth}px`,
-                height: `${displayedHeight}px`,
-              }}
-              {...videoOptions}
-              controls={true}
-            />
-            <span style={{ color: "white" }}>Show Stream</span>
-          </div>
-        )}
-        {!isStreamShow ? (
-          <div>
-            <video width={300} height={300} loop autoPlay>
-              <source src={silentAvatar} type="video/mp4" />
-            </video>
-            <span style={{ color: "white" }}>Silent</span>
-          </div>
-        ) : (
-          <div>
-            <video
-              ref={videoRef}
-              style={{
-                width: `${displayedWidth}px`,
-                height: `${displayedHeight}px`,
-              }}
-              {...videoOptions}
-              controls={true}
-            />
-            <span style={{ color: "white" }}>Show Stream</span>
-          </div>
-        )}
-      </div>
-    </>
+    <video
+      ref={videoRef}
+      style={{
+        width: `${displayedWidth}px`,
+        height: `${displayedHeight}px`,
+      }}
+      {...videoOptions}
+      controls={true}
+    />
   );
 };

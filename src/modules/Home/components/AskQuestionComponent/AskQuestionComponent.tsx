@@ -24,6 +24,7 @@ import MetaModal from "../common/MetaModal/MetaModal";
 import { UserContext } from "../../../../core/contexts";
 // @ts-ignore
 import silentAvatar from "../../../../assets/videos/silent.mp4";
+import { useLazySelector } from "../../../../hooks";
 // import {useSocket} from "../../../../hooks/useSocket";
 
 type Chat = {
@@ -109,47 +110,13 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [isFirst, setIsFirst] = useState(true);
   const [isEmpty, setIsEmpty] = useState(true);
 
-  // const [streamStart, setStreamStart] = useState(false)
-  // const [messageDone, setMessageDone] = useState(false)
-  // const [show, setShow] = useState(false)
-  // console.log("streamStart", streamStart)
-  // console.log("messageDone", messageDone)
-  // console.log("show", show)
-  //
-  // const { connected, subscribeToEvent, unsubscribeFromEvent } = useSocket({
-  //   url: "https://elib.plavno.io:8080/srs",
-  //   getAuthToken: async () => sessionStorage.getItem("SESSION_TOKEN"),
-  // })
-  //
-  // useEffect(() => {
-  //   if (!connected) return
-  //   const handlePublishStream = () => {
-  //     console.log("Stream started")
-  //     setMessageDone(true)
-  //     setStreamStart?.(true)
-  //     setShow(true)
-  //   }
-  //
-  //   const handleUnpublishStream = () => {
-  //     console.log("Stream ended")
-  //     setMessageDone(false)
-  //     setStreamStart?.(false)
-  //     setShow(false)
-  //   }
-  //
-  //   subscribeToEvent("publish-stream", handlePublishStream)
-  //   subscribeToEvent("unpublish-stream", handleUnpublishStream)
-  //
-  //   return () => {
-  //     unsubscribeFromEvent("publish-stream")
-  //     unsubscribeFromEvent("unpublish-stream")
-  //   }
-  // }, [subscribeToEvent, unsubscribeFromEvent, connected])
+  const { avatarStreamShow } = useLazySelector(({ home }) => {
+    const { avatarStreamShow } = home;
+    return {
+      avatarStreamShow,
+    };
+  });
 
-  // console.log("formData", formData);
-  // console.log("isRecordingInProcess", isRecordingInProcess);
-  // console.log("isStreamConnect", isStreamConnect);
-  // console.log("isShowSilent", isShowSilent);
   const languages =
     languagesWithDari &&
     languagesWithDari.filter((lang) => lang.name !== "Dari");
@@ -437,23 +404,29 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
           </div>
           <div className={styles.askQuestionPage}>
             <div className={styles.avatarSide}>
-              <SrsPlayer
-                url={url}
-                width={300}
-                height={300}
-                videoRef={videoRef}
-                options={{
-                  autoPlay: true,
-                  playsInline: true,
-                  muted: false,
-                  controls: true,
-                }}
-                rtcOpts={{
-                  audio: {
-                    enable: true,
-                  },
-                }}
-              />
+              {avatarStreamShow ? (
+                <SrsPlayer
+                  url={url}
+                  width={300}
+                  height={300}
+                  videoRef={videoRef}
+                  options={{
+                    autoPlay: true,
+                    playsInline: true,
+                    muted: false,
+                    controls: true,
+                  }}
+                  rtcOpts={{
+                    audio: {
+                      enable: true,
+                    },
+                  }}
+                />
+              ) : (
+                <video width={300} height={300} loop autoPlay>
+                  <source src={silentAvatar} type="video/mp4" />
+                </video>
+              )}
               <VoiceRecorder
                 setIsRecordingInProcess={setIsRecordingInProcess}
                 addTextWithDelay={addTextWithDelay}
