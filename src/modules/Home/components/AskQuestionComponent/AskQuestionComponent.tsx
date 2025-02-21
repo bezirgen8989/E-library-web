@@ -411,29 +411,50 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
           </div>
           <div className={styles.askQuestionPage}>
             <div className={styles.avatarSide}>
-              {avatarStreamShow ? (
-                <SrsPlayer
-                  url={url}
-                  width={300}
-                  height={300}
-                  videoRef={videoRef}
-                  options={{
-                    autoPlay: true,
-                    playsInline: true,
-                    muted: false,
-                    controls: true,
+              <div style={{ position: "relative", width: 300, height: 300 }}>
+                <div
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    height: "100%",
+                    opacity: avatarStreamShow ? 1 : 0,
+                    pointerEvents: avatarStreamShow ? "auto" : "none",
+                    transition: "opacity 0.3s ease-in-out",
                   }}
-                  rtcOpts={{
-                    audio: {
-                      enable: true,
-                    },
+                >
+                  <SrsPlayer
+                    url={url}
+                    width={300}
+                    height={300}
+                    videoRef={videoRef}
+                    options={{
+                      autoPlay: true,
+                      playsInline: true,
+                      muted: false,
+                      controls: true,
+                    }}
+                    rtcOpts={{
+                      audio: {
+                        enable: true,
+                      },
+                    }}
+                  />
+                </div>
+                <div
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    height: "100%",
+                    opacity: avatarStreamShow ? 0 : 1,
+                    pointerEvents: avatarStreamShow ? "none" : "auto",
+                    transition: "opacity 0.3s ease-in-out",
                   }}
-                />
-              ) : (
-                <video width={300} height={300} loop autoPlay>
-                  <source src={silentAvatar} type="video/mp4" />
-                </video>
-              )}
+                >
+                  <video width={300} height={300} loop autoPlay>
+                    <source src={silentAvatar} type="video/mp4" />
+                  </video>
+                </div>
+              </div>
               <VoiceRecorder
                 setIsRecordingInProcess={setIsRecordingInProcess}
                 addTextWithDelay={addTextWithDelay}

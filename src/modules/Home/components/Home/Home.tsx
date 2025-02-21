@@ -6,7 +6,6 @@ import AllBooksSlider from "../common/AllBooksSlider/AllBooksSlider";
 import books from "../../../../assets/images/icons/booksIcon.png";
 import { routes } from "../../routing";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 
 type HomeProps = {
   onLogout: Callback;
@@ -48,8 +47,6 @@ const Home: React.FC<HomeProps> = ({
         isLoading={isNewBooksLoading}
       />
       <div style={{ height: "1px", background: "rgba(18, 18, 18, 0.1)" }} />
-      <Link to={routes.termsAndConditions}>/terms_and_conditions</Link>
-      <Link to={routes.privacyPolicy}>/privacy</Link>
       <AllBooksSlider
         books={suggestedBooks}
         title={t("titleSuggestedForYou")}

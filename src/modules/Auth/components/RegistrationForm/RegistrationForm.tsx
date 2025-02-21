@@ -7,6 +7,7 @@ import BackIcon from "../../../../assets/images/icons/goBackIcon.svg";
 import Button from "../../../../components/common/Buttons/Button";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { routes } from "../../../Home/routing";
 
 type LoginFormProps = {
   onSubmit: (values: any) => void;
@@ -163,12 +164,18 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
               <div style={{ textAlign: "center" }}>
                 By creating an account you agree
                 <br /> to our{" "}
-                <Link style={{ color: "#FFEA84", marginLeft: 8 }} to="">
+                <Link
+                  to={routes.termsAndConditions}
+                  style={{ color: "#FFEA84", marginLeft: 8 }}
+                >
                   Terms and Conditions
                 </Link>
                 <br />
                 and
-                <Link style={{ color: "#FFEA84", marginLeft: 8 }} to="">
+                <Link
+                  to={routes.privacyPolicy}
+                  style={{ color: "#FFEA84", marginLeft: 8 }}
+                >
                   Privacy Policy
                 </Link>
                 .

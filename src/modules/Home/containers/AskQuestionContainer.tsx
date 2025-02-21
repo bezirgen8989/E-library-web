@@ -116,10 +116,10 @@ const AskQuestionContainer: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!question || isStopQuestion) return; // Останавливаем поток, если isStopQuestion = true
+    if (!question || isStopQuestion) return;
 
     const token = sessionStorage.getItem("SESSION_TOKEN");
-    const controller = new AbortController(); // Позволяет прерывать поток
+    const controller = new AbortController();
 
     const fetchData = async () => {
       setIsLoading(true);
@@ -149,11 +149,11 @@ const AskQuestionContainer: React.FC = () => {
               indexName,
               language: { id: avatarLanguage?.id || 7 },
             }),
-            signal: controller.signal, // Добавляем AbortController
+            signal: controller.signal,
 
             onmessage(event: EventSourceMessage) {
               if (isStopQuestion) {
-                controller.abort(); // Прерываем поток
+                controller.abort();
                 return;
               }
 
@@ -204,7 +204,7 @@ const AskQuestionContainer: React.FC = () => {
     fetchData();
 
     return () => {
-      controller.abort(); // Прерываем поток при размонтировании
+      controller.abort();
     };
   }, [question, currentBook, isStopQuestion]);
 
