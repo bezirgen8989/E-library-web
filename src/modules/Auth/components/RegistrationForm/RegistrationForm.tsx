@@ -7,7 +7,7 @@ import BackIcon from "../../../../assets/images/icons/goBackIcon.svg";
 import Button from "../../../../components/common/Buttons/Button";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { routes } from "../../../Home/routing";
+import routes from "../../routing/routes";
 
 type LoginFormProps = {
   onSubmit: (values: any) => void;

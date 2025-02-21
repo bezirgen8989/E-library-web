@@ -74,6 +74,18 @@ export const Error404Route = lazy(
   () =>
     import(/* webpackChunkName: "Error404Route" */ "modules/Auth/pages/404Page")
 );
+export const TermsAndConditions = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "AskQuestion" */ "modules/Auth/pages/TermsAndConditionsPage"
+    )
+);
+export const PrivacyPolicy = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "AskQuestion" */ "modules/Auth/pages/PrivacyPolicyPage"
+    )
+);
 
 const AuthRouting = () => (
   <Suspense fallback={<Spinner />}>
@@ -144,6 +156,17 @@ const AuthRouting = () => (
         component={ProfileAbout}
         restricted
       />
+      <PublicRoute
+        exact
+        path={routes.termsAndConditions}
+        component={TermsAndConditions}
+      />
+      <PublicRoute
+        exact
+        path={routes.privacyPolicy}
+        component={PrivacyPolicy}
+      />
+
       <PublicRoute
         exact
         path={routes.Error404}

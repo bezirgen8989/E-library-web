@@ -1,4 +1,4 @@
-import TermsAndConditionsComponent from "../TermsAndConditionsComponent";
+import TermsAndConditionsComponent from "../components/TermsAndConditionsComponent";
 
 const AudioBookPage: React.FC = () => {
   return <TermsAndConditionsComponent />;

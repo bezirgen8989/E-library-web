@@ -1,4 +1,4 @@
-import PrivacyPolicyComponent from "../PrivacyPolicyComponent";
+import PrivacyPolicyComponent from "../components/PrivacyPolicyComponent";
 
 const AudioBookPage: React.FC = () => {
   return <PrivacyPolicyComponent />;
