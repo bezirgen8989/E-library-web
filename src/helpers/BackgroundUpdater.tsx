@@ -58,6 +58,8 @@ export const BackgroundUpdater = () => {
       [rootRoutes.root]: "#FBF1EA",
       [userRoutes.profile]: "linear-gradient(to bottom, #d3a271, #a46542)",
       [homeRoutes.audioBook]: "#996C42",
+      [authRoutes.termsAndConditions]: "#FBF1EA",
+      [authRoutes.privacyPolicy]: "#FBF1EA",
       [homeRoutes.search]: "#FBF1EA",
       [homeRoutes.reading]: "#FBF1EA",
       [homeRoutes.newBooks]: "#FBF1EA",

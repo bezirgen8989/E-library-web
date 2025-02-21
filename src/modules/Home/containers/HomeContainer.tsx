@@ -57,7 +57,7 @@ const HomeContainer: React.FC = () => {
         limit: "3",
         page: "1",
         order: "",
-        filter: "",
+        filter: null,
       })
     );
     dispatch(

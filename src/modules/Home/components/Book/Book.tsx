@@ -416,6 +416,7 @@ const Book: React.FC<BookProps> = ({
                   border: "2px solid rgba(153, 108, 66, 0.2)",
                   borderRadius: "50px",
                   background: "transparent",
+                  marginTop: "0",
                 }}
                 onClick={() => {
                   startListen({ bookId: id });

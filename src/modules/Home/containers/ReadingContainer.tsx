@@ -89,7 +89,7 @@ const ReadingContainer: React.FC = () => {
   }, [dispatch, id, featurePageFromServer]);
 
   useEffect(() => {
-    const langId = sessionStorage.getItem("selectedLanguageId") || "7";
+    const langId = sessionStorage.getItem("selectedLanguage") || "7";
 
     if (page !== null && !loadedPages.has(page)) {
       dispatch(getReadBook({ bookId: id, langId, page: page.toString() }));

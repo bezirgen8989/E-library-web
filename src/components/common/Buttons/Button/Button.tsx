@@ -103,7 +103,7 @@ const Button: React.FC<ButtonType> = ({
   return (
     <button
       onClick={onClick}
-      style={{ ...appliedStyle, ...style }}
+      style={{ ...appliedStyle, ...style, marginTop: 0 }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
