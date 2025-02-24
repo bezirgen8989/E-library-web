@@ -469,311 +469,502 @@ const PrivacyPolicyComponent: React.FC = ({}) => {
       <p>
         1.8.2.22. Consent-Based Use: For any other purpose with your consent.
       </p>
-      DATA SHARING AND DISCLOSURE Subject to obtaining your consent as per
-      section 6.5 of this Policy, We may share your Data with certain associated
-      third parties as required. Please note that if the use and storage of your
-      Data by these associated third parties are not governed by Elore's privacy
-      Policy, we will notify you to review their privacy policies before
-      consenting to share your Data. Additionally, certain services offered by
-      Elore may only be accessible upon your consent to share your Data with
-      necessary and or associated third parties. Types of necessary or
-      associated Third Parties: Such third parties may include, but are not
-      limited to: Payment service providers; ID verification partners; Employees
-      and customer relationship management service partners/staff; Customer care
-      representatives and service software providers; File storage managers;
-      Marketing agencies and third-party review partners; and Affiliates and
-      group companies of Elore and Third Parties. In the case of business
-      transactions, such as the sale or purchase of assets, we may disclose your
-      Data to prospective buyers or sellers who will be obligated to use and
-      store your Data in accordance with this Policy. We may also disclose your
-      Data to governmental authorities or other entities to comply with legal
-      obligations, cooperate in crime prevention, or fulfill court orders.
-      Third-Party Websites: If you are directed to third-party websites while
-      using Elore Platform, you are responsible for reviewing and engaging with
-      those sites in accordance with their privacy policies. If you access or
-      use any other non-associated third parties through Elore Platform, you
-      shall be responsible for reading their terms of use and privacy policies
-      before disclosing any of your Data to such third parties. Advertising
-      Disclosure: We do not sell or share your personal Data with third-party
-      advertisers or ad networks for advertising purposes. We may disclose your
-      personal information to associated third parties to process information as
-      described above and to enable us to provide Elore services. Disclosure on
-      Your Behalf: We may disclose the Data that we collect from you as
-      described in this Policy to fulfill our obligations under our Terms of
-      Use, to achieve the purpose for which you provided it, or for any other
-      purpose you request at the time of providing the information. Disclosure
-      by You: When you share information through Elore, that information is
-      viewable by you and anyone else you choose to share it with. If you grant
-      access to your Elore account to other applications and services, those
-      services will have access to your shared information. The use, collection,
-      and protection of your Data by such third-party services are subject to
-      their respective policies. Internal Disclosure: We will process your Data
-      internally within Elore and its affiliates to integrate personal
-      information across different aspects of Elore and our other products and
-      services, ensuring a personalized and useful experience. Service Providers
-      and Locations-associated third parties: We may disclose the Data that we
-      collect, or you provide to contractors, service providers, and other
-      associated third parties who support Elore's operations and
-      functionalities of any features or the Platform (such as cloud hosting,
-      maintenance, analysis, payment processing, and fraud detection, etc). We
-      may combine the information we have with data from these service providers
-      to facilitate their support. For instance, platforms used to send emails
-      and notifications are managed by third parties, ensuring your information
-      is sent securely to provide necessary functionality. We may also share
-      aggregated, de-identified information about interactions by Elore users
-      with associated or non-associated third parties. As mentioned earlier,
-      only upon your consent the Data collected shall be shared with Elore’s
-      associated third parties, as applicable, in cases where such associated
-      third parties of Elore are not governed by this Policy but as per their
-      respective policies and terms of use provided you consent to their
-      respective policies and terms of use. Content and Service Providers: Our
-      ability to offer different features and in various languages may be
-      subject to agreements with certain service providers, referred to as
-      "Elore Specific Service Providers." Some of these agreements require us to
-      share your name, email address, and country with the Elore Specific
-      Service Providers. Legal Obligations: We may need to disclose information
-      about you when required by law, subpoena, or other legal processes. We
-      will attempt to notify you about legal demands for your Data when
-      appropriate, unless prohibited by law or court order, or if the request is
-      urgent. We may contest demands that appear overly broad, vague, or lack
-      proper authority, but we do not guarantee that we will challenge every
-      request. Additionally, we may disclose your information if we believe it
-      is necessary to: Investigate, prevent, or take action regarding suspected
-      illegal activities or assist law enforcement. Enforce our agreements with
-      you. Investigate and defend against third-party claims or allegations.
-      protect the security and integrity of Elore. Safeguard the rights and
-      safety of Elore, its users, personnel, or others. LEGAL BASIS ON
-      PROCESSING PERSONAL DATA In accordance with globally accepted data
-      protection laws, the collection of Data must be based on lawful and fair
-      reasons, obtained transparently. The Company is committed to collecting,
-      processing, and using Data from its Data Subjects in alignment with widely
-      recognized principles, including lawfulness, fairness, consent,
-      contractual necessity, transparency, confidentiality, data protection,
-      limited retention, accuracy, and specified purpose. The Company
-      acknowledges that the Data or any other information collected under this
-      Policy may be collected and used as per the Use of Data mentioned under
-      this Policy based on one or more of the following criteria: Consent of the
-      Data Subject; For legitimate interest or legal obligation, it may include
-      conducting our day-to-day business operation, building relationships with
-      our service providers/collaborators, delivering high quality of customer
-      service, for our business development, to discharge our contractual
-      obligations, or for the purpose of performance of contract, and to
-      efficiently operate our Elore Platform, or due to any legal obligation; or
-      For specific purposes including without limitation such as if the
-      collection of Data is necessary to fulfil our obligations under any
-      contract with you, including providing you with access to Elore’s
-      services, for which you have paid the fees and purchased subject to the
-      terms and conditions on Elore Platform. TRANSFER OR TRANSMISSION OF DATA
-      COLLECTED Any transfer or transmission of the Data collected to recipients
-      outside or inside the Company is subject to the authorization requirements
-      for processing Data as provided under this Policy and requires the consent
-      of the Data subject as applicable under this Policy. However, this
-      requirement is not on or include the permitted collection, storage, use
-      and Disclosures mentioned in this Policy which is deemed impliedly
-      accepted by the user upon accessing, using, registering on the Elore
-      Platform. Except if transferred as per this Policy, in the circumstances
-      of any Data that is transmitted to a recipient outside the Company, such
-      recipient must covenant to implement and abide by data protection
-      equivalent to this Policy, unless such transmission is made pursuant to
-      any statutory mandates or obligations. DATA SUBJECT RIGHTS AND REQUESTS
-      Pursuant to the applicable laws, the Data Subject shall be entitled to
-      exercise the following rights or make the following requests with respect
-      to their Data provided to the Company: Withdraw Consent: In the
-      circumstance where the Company requires the consent of the Data Subjects,
-      Data Subjects shall have the right to give their consent or deny their
-      consent for disclosing such Data as requested by the Company, unless such
-      Data is required pursuant to any statutory provision, where the consent of
-      the Data Subjects is not mandatory. Rectification: Data Subjects shall
-      have the right to rectify and correct any inaccurate or incomplete Data.
-      Right to Access: Data Subjects may request copies of their Data provided
-      to us, including information on how it has been used and processed. Right
-      to be Informed: Data Subjects have the right to be informed about how
-      their Data is collected and processed, in accordance with the principle of
-      transparency. Right to Erasure or Forgotten: Data Subjects may request the
-      deletion of their Data if it is no longer necessary for the purposes it
-      was collected, if consent is withdrawn (where applicable), or if the
-      processing is unlawful. Right to Data Portability: In certain
-      circumstances, Data Subjects may request a copy of their Data in a
-      structured, commonly used, and machine-readable format for transfer to a
-      third party. Right to Restrict Processing: Data Subjects may ask the
-      Company to restrict processing their Data if it is inaccurate, if
-      processing is unlawful, or if it is no longer necessary for the purposes
-      it was collected. Right to Object: Data Subjects may object to processing
-      based on the Company’s legitimate interests. Right to Complain: Data
-      Subjects can file complaints at [xxx] or call [xxxx] for clarifications or
-      concerns. Right to Object to Decisions made based on Automated Processing:
-      - Data Subjects have the right to object to decisions made solely through
-      automated processing, including profiling, which significantly affect
-      them, and to request human intervention. Right to Object to Direct
-      Marketing: Data Subjects may request that their Data not be used for
-      direct marketing purposes. Right to be Notified of Data Breaches: Data
-      Subjects have the right to be informed of any personal data breaches that
-      may pose a high risk to their rights and freedoms. DATA STORAGE AND
-      SECURITY, INTERGRITY AND CONFIDENTIALITY OF PROCESSING All of your Data
-      will be securely stored on our servers. Upon registration, you will be
-      prompted to create a password to access your User Account and its
-      contents. It is your responsibility to keep your login credentials
-      confidential. We advise against sharing this information; should you
-      choose to do so, you do so at your own risk, and Elore will not be liable
-      for any consequences. The Company is committed to implementing reasonable
-      security measures to protect your Data from unauthorized access, use,
-      disclosure, duplication, reproduction, and storage. However, we cannot
-      guarantee complete security against all threats, including potential
-      attacks from viruses, malware, trojans, spyware, or adware. Therefore, it
-      is important for you to understand the risks associated with providing
-      your Data to us. We encourage you to take all necessary precautions to
-      safeguard your Data, even as we strive to protect it to the best of our
-      ability. We may retain your Data for as long as required by law, or for
-      legitimate business purposes, such as fulfilling your service requests or
-      complying with legal, tax, or accounting obligations. Your Data will be
-      deleted in accordance with your rights, applicable laws, or upon the
-      expiration of the purpose for which it was collected. COMPANY’S
-      NO-LIABILITY We are committed to employing all necessary precautions and
-      adhering to industry-standard physical, technical, and administrative
-      security measures to ensure the confidentiality and security of your Data.
-      We will not share your Data with third parties, except as outlined in this
-      Policy or when disclosure is required by law. However, we cannot guarantee
-      the absolute security of your Data and therefore, cannot held liable in
-      any manner for any infringement, loss, misuse, disclosure of your Data in
-      our possession. There is always a risk that unauthorized third parties may
-      find ways to bypass our security measures, or that information transmitted
-      over the Internet could be intercepted. It is your responsibility to
-      safeguard your login information. Please be aware that email
-      communications are generally not encrypted and should not be considered
-      secure. Please note that Elore may contain links to other websites or
-      applications. You are responsible for reviewing the privacy policies of
-      those external sites to understand how they collect, use, and store your
-      information. We are not liable for the privacy practices, policies, or
-      content of any third-party websites or applications, including those
-      linked to or from Elore. Websites featuring co-branding (showing our name
-      alongside a third party’s name) contain content provided by the third
-      party and not by us. If you link Elore with other websites, applications,
-      or services, you will share any personal data stored on those platforms
-      with Elore. For instance, if you create a new Elore Membership account by
-      linking your Facebook account, you will provide personal information that
-      you have opted to share through Facebook. You may revoke this link by
-      adjusting your settings within those applications. Elore may engage
-      certain associated third parties to support and facilitate the operations
-      of the Elore Platform. In these cases, we will notify users of the
-      applicable privacy policies of the respective third parties regarding any
-      Data that may need to be disclosed. It is the user’s responsibility to
-      carefully review these policies before proceeding. Elore will manage the
-      Data shared with third parties covered under this Policy. Users may also
-      encounter links to both associated and non-associated third parties. For
-      any such associated or non-associated third party’s links, external links
-      or websites not affiliated with Elore or fall under the governance of this
-      Policy, users are solely responsible for reviewing the relevant privacy
-      policies and terms of use before sharing any Data. Elore will not be
-      liable for any consequences arising from such disclosures. Notwithstanding
-      any provisions to the contrary in this Policy, and to the extent permitted
-      by applicable laws, Mesol reserves the right to use and disclose Data or
-      any other collected information without the consent of the Data Subject,
-      as allowed by law. For clarity, by accessing, viewing, or registering with
-      Elore, or by agreeing to the User Consent Agreement, the user provides
-      explicit and implied consent as required by law for Mesol to collect,
-      store, use, and disclose Data or any other information in accordance with
-      this Policy, without the need for additional consent, except as required
-      by law or as implemented by Elore on its platform. DECLARATIONS BY COMPANY
-      This version of the Policy does not supersede or replace any prior consent
-      that the Data Subject may have given to the Company regarding their Data.
-      It is important to note that the consents provided herein are in addition
-      to any and all rights the Company may have under applicable laws to
-      collect, use, or disclose the Data Subject's Data. The Company reserves
-      the right to update this Privacy Policy as deemed appropriate and
-      necessary to align with future requirements, business developments, or
-      changes to legal and regulatory provisions. RIGHTS AND DISCLAIMER OF THE
-      COMPANY The Company reserves the right to amend its policies at any time.
-      Users are responsible for staying informed of any updates. By accessing,
-      visiting, registering, or using our services, you consent to the amended
-      policies as they are updated. The Company shall not be liable for any lack
-      of awareness regarding these changes. We may update our Policy
-      periodically to reflect changes in our practices. Elore is committed to
-      continuously improving its services and enhancing user engagement, which
-      may involve the collection of new data or new methods of data usage. Given
-      the dynamic nature of Elore, we may need to modify our information
-      collection or processing practices. If we materially change the personal
-      data we collect or how we utilize your information, we will revise this
-      Policy accordingly. Any updates to our Policy will be posted on this page.
-      The date of the last modification will be indicated at the beginning of
-      the Policy. You are responsible for ensuring that we have an up-to-date,
-      active email address for you and for periodically reviewing this Policy
-      for any changes. Unless explicitly stated otherwise, the Company is not
-      responsible or liable for any third parties (including associated third
-      parties or Elore Specific Service Providers) referenced in this Policy. It
-      is the user’s responsibility to read the terms and privacy policies of
-      such third parties before consenting to our Terms and Policies for
-      services that depend on those third parties. The Company will notify users
-      of any partners or dependencies not covered under this Policy prior to
-      obtaining consent. Any use, storage, or disclosure of your Data by these
-      third parties will be governed by their respective policies, and the
-      Company will not be liable in this regard. This Policy should be read in
-      conjunction with our Terms and any related disclaimers. We are committed
-      to protecting your personal information and maintaining your privacy. As
-      part of this commitment, we want to clarify the following aspects: No Sale
-      of Personal Data: We will not sell, rent, or lease your personal
-      information to any third parties (associated or not associated) under any
-      circumstances. Your Data is secure with us, and we prioritize your privacy
-      above all. Permitted Disclosures: Your personal information may only be
-      disclosed in accordance with the provisions detailed in this Policy. By
-      using our services, you provide your explicit consent to the specific
-      disclosures outlined herein. These may include, but are not limited to,
-      circumstances where we are required to comply with legal obligations,
-      protect our rights, or ensure the safety of our users and the general
-      public. Limitations of Responsibility: We will not be held liable for any
-      misuse, unauthorized access, or disclosure of your Data resulting from
-      circumstances beyond our control. This includes any Data you choose to
-      share publicly on our platform or third-party platforms. Once your
-      information is shared in a public forum, it may be accessed by others, and
-      we cannot guarantee its security from misuse. We encourage you to
-      carefully consider the information you share publicly and to familiarize
-      yourself with the privacy policies of any third-party platforms you engage
-      with. Your trust is paramount to us, and we are dedicated to responsibly
-      managing your personal information. If you have any questions or concerns
-      regarding our privacy practices, please do not hesitate to reach out to
-      us. All rights of Mesol not explicitly addressed herein are expressly
-      reserved. These Policy terms do not prejudice any other rights or remedies
-      available to Mesol, all of which are preserved. Any action taken by Mesol
-      in accordance with applicable laws, even if not specifically covered by
-      this Policy, shall not constitute a breach of the user's rights.
-      Consequently, Mesol shall be exempt from any liability arising from such
-      actions. Declarations by Data Subjects The Data Subject acknowledges and
-      agrees, subject to any legal rights, to be bound by the provisions of the
-      Policy as updated from time to time on the Elore Platform or in manuals
-      provided. It is the Data Subject's responsibility to stay informed of
-      these updates. Data Subject’s Obligations If the Data Subject provides the
-      Company with any Personal and Sensitive Data regarding a third party
-      (e.g., spouse, family, children, employees, employers, representatives),
-      the Data Subject confirms that prior consent from that third party has
-      been obtained before submitting such data to the Company. The Data Subject
-      must ensure that all Personal and Sensitive Data submitted is accurate,
-      true, and complete. Failure to comply with this requirement may hinder the
-      Company’s ability to provide the requested services. The Data Subject
-      confirms that they possess the required legal capacity and or authorized
-      capacity to use Elore Platform for itself or on behalf of others. If any
-      minors wish to use this app, they must do so only with the consent and
-      supervision of their guardians. We are not responsible for any breaches of
-      this obligation by minor users. REACH OUT TO US You can now reach out to
-      us for any complaints or queries with respect the Data collected at
-      contact@mesol.me. GOVERNING LAW AND DISPUTE RESOLUTION All matters,
-      disputes, or claims relating to this Policy (including non-contractual
-      disputes or claims), shall be governed by and construed in accordance with
-      the laws of United Arab Emirates without giving effect to any choice or
-      conflict of law provision or rule. Any legal suit, action or proceeding
-      arising out of, or related to, this Policy shall be instituted exclusively
-      in the competent courts of UAE. By agreeing to these Policy and using
-      Elore, you waive any and all objections to the exercise of jurisdiction
-      over you by such courts and to venue in such courts. Elore operates out of
-      emirate of Dubai, UAE, and your use of Elore and this Policy is governed
-      by the laws of the UAE and the Emirate of Dubai. If you are accessing
-      Elore from outside the UAE, please be aware that your information may be
-      transferred to, stored, and processed in the UAE, where our servers are
-      located. We process Data both domestically and internationally and rely on
-      contractual agreements with companies that transfer personal Data to
-      ensure its protection and security. The data protection laws in the
-      Emirate of Dubai, UAE and other jurisdictions may not be as comprehensive
-      as those in your region. By using Elore, you consent to the transfer of
-      your information to our facilities and those of third parties with whom we
-      share it, as outlined in this Policy.
+      <div className={styles.subTitle}> 1.9 DATA SHARING AND DISCLOSURE</div>
+      <p>
+        {" "}
+        1.9.1. Subject to obtaining your consent as per section 6.5 of this
+        Policy, We may share your Data with certain associated third parties as
+        required. Please note that if the use and storage of your Data by these
+        associated third parties are not governed by Elore's privacy Policy, we
+        will notify you to review their privacy policies before consenting to
+        share your Data. Additionally, certain services offered by Elore may
+        only be accessible upon your consent to share your Data with necessary
+        and or associated third parties.
+      </p>
+      <p>
+        1.9.2. Types of necessary or associated Third Parties: Such third
+        parties may include, but are not limited to:
+      </p>{" "}
+      <p>1.9.2.1. Payment service providers;</p>{" "}
+      <p>1.9.2.2. ID verification partners;</p>{" "}
+      <p>
+        1.9.2.3. Employees and customer relationship management service
+        partners/staff;
+      </p>{" "}
+      <p>
+        1.9.2.4. Customer care representatives and service software providers;
+      </p>{" "}
+      <p>1.9.2.5. File storage managers;</p>
+      <p>
+        1.9.2.6. Marketing agencies and third-party review partners; and
+      </p>{" "}
+      <p>1.9.2.7. Affiliates and group companies of Elore and Third Parties.</p>{" "}
+      <p>
+        1.9.2.8. In the case of business transactions, such as the sale or
+        purchase of assets, we may disclose your Data to prospective buyers or
+        sellers who will be obligated to use and store your Data in accordance
+        with this Policy. We may also disclose your Data to governmental
+        authorities or other entities to comply with legal obligations,
+        cooperate in crime prevention, or fulfill court orders.
+      </p>
+      <p>
+        1.9.3. Third-Party Websites: If you are directed to third-party websites
+        while using Elore Platform, you are responsible for reviewing and
+        engaging with those sites in accordance with their privacy policies. If
+        you access or use any other non-associated third parties through Elore
+        Platform, you shall be responsible for reading their terms of use and
+        privacy policies before disclosing any of your Data to such third
+        parties.
+      </p>{" "}
+      <p>
+        1.9.4. Advertising Disclosure: We do not sell or share your personal
+        Data with third-party advertisers or ad networks for advertising
+        purposes. We may disclose your personal information to associated third
+        parties to process information as described above and to enable us to
+        provide Elore services.
+      </p>{" "}
+      <p>
+        {" "}
+        1.9.5. Disclosure on Your Behalf: We may disclose the Data that we
+        collect from you as described in this Policy to fulfill our obligations
+        under our Terms of Use, to achieve the purpose for which you provided
+        it, or for any other purpose you request at the time of providing the
+        information.
+        <p>
+          1.9.6 Disclosure by You: When you share information through Elore,
+          that information is viewable by you and anyone else you choose to
+          share it with. If you grant access to your Elore account to other
+          applications and services, those services will have access to your
+          shared information. The use, collection, and protection of your Data
+          by such third-party services are subject to their respective policies.
+        </p>{" "}
+        <p>
+          1.9.7. Internal Disclosure: We will process your Data internally
+          within Elore and its affiliates to integrate personal information
+          across different aspects of Elore and our other products and services,
+          ensuring a personalized and useful experience.
+        </p>
+        1.9.8. Service Providers and Locations-associated third parties: We may
+        disclose the Data that we collect, or you provide to contractors,
+        service providers, and other associated third parties who support
+        Elore's operations and functionalities of any features or the Platform
+        (such as cloud hosting, maintenance, analysis, payment processing, and
+        fraud detection, etc). We may combine the information we have with data
+        from these service providers to facilitate their support. For instance,
+        platforms used to send emails and notifications are managed by third
+        parties, ensuring your information is sent securely to provide necessary
+        functionality. We may also share aggregated, de-identified information
+        about interactions by Elore users with associated or non-associated
+        third parties. As mentioned earlier, only upon your consent the Data
+        collected shall be shared with Elore’s associated third parties, as
+        applicable, in cases where such associated third parties of Elore are
+        not governed by this Policy but as per their respective policies and
+        terms of use provided you consent to their respective policies and terms
+        of use.
+      </p>
+      <p>
+        1.9.9. Content and Service Providers: Our ability to offer different
+        features and in various languages may be subject to agreements with
+        certain service providers, referred to as "Elore Specific Service
+        Providers."Some of these agreements require us to share your name, email
+        address, and country with the Elore Specific Service Providers.
+      </p>{" "}
+      <p>
+        1.9.10. Legal Obligations: We may need to disclose information about you
+        when required by law, subpoena, or other legal processes. We will
+        attempt to notify you about legal demands for your Data when
+        appropriate, unless prohibited by law or court order, or if the request
+        is urgent. We may contest demands that appear overly broad, vague, or
+        lack proper authority, but we do not guarantee that we will challenge
+        every request. Additionally, we may disclose your information if we
+        believe it is necessary to:
+      </p>{" "}
+      <p>
+        1.9.10.1. Investigate, prevent, or take action regarding suspected
+        illegal activities or assist law enforcement.
+      </p>{" "}
+      <p>1.9.10.2 Enforce our agreements with you.</p>{" "}
+      <p>
+        1.9.10.3 Investigate and defend against third-party claims or
+        allegations.
+      </p>
+      <p>1.9.10.4. protect the security and integrity of Elore.</p>{" "}
+      <p>
+        1.9.10.5. Safeguard the rights and safety of Elore, its users,
+        personnel, or others.
+      </p>
+      <div className={styles.subTitle}>
+        2. LEGAL BASIS ON PROCESSING PERSONAL DATA
+      </div>{" "}
+      <p>
+        2.1. In accordance with globally accepted data protection laws, the
+        collection of Data must be based on lawful and fair reasons, obtained
+        transparently. The Company is committed to collecting, processing, and
+        using Data from its Data Subjects in alignment with widely recognized
+        principles, including lawfulness, fairness, consent, contractual
+        necessity, transparency, confidentiality, data protection, limited
+        retention, accuracy, and specified purpose.
+      </p>{" "}
+      <p>
+        2.2. The Company acknowledges that the Data or any other information
+        collected under this Policy may be collected and used as per the Use of
+        Data mentioned under this Policy based on one or more of the following
+        criteria:
+      </p>{" "}
+      <p>2.2.1. Consent of the Data Subject;</p>{" "}
+      <p>
+        2.2.2. For legitimate interest or legal obligation, it may include
+        conducting our day-to-day business operation, building relationships
+        with our service providers/collaborators, delivering high quality of
+        customer service, for our business development, to discharge our
+        contractual obligations, or for the purpose of performance of contract,
+        and to efficiently operate our Elore Platform, or due to any legal
+        obligation; or
+      </p>
+      <p>
+        2.2.3. For specific purposes including without limitation such as if the
+        collection of Data is necessary to fulfil our obligations under any
+        contract with you, including providing you with access to Elore’s
+        services, for which you have paid the fees and purchased subject to the
+        terms and conditions on Elore Platform.
+      </p>
+      <div className={styles.subTitle}>
+        3. TRANSFER OR TRANSMISSION OF DATA COLLECTED
+      </div>{" "}
+      <p>
+        3.1. Any transfer or transmission of the Data collected to recipients
+        outside or inside the Company is subject to the authorization
+        requirements for processing Data as provided under this Policy and
+        requires the consent of the Data subject as applicable under this
+        Policy. However, this requirement is not on or include the permitted
+        collection, storage, use and Disclosures mentioned in this Policy which
+        is deemed impliedly accepted by the user upon accessing, using,
+        registering on the Elore Platform.
+      </p>{" "}
+      <p>
+        3.2. Except if transferred as per this Policy, in the circumstances of
+        any Data that is transmitted to a recipient outside the Company, such
+        recipient must covenant to implement and abide by data protection
+        equivalent to this Policy, unless such transmission is made pursuant to
+        any statutory mandates or obligations.
+      </p>{" "}
+      <div className={styles.subTitle}>4. DATA SUBJECT RIGHTS AND REQUESTS</div>
+      <p>
+        4.1. Pursuant to the applicable laws, the Data Subject shall be entitled
+        to exercise the following rights or make the following requests with
+        respect to their Data provided to the Company:
+      </p>{" "}
+      <p>
+        4.1.1. Withdraw Consent: In the circumstance where the Company requires
+        the consent of the Data Subjects, Data Subjects shall have the right to
+        give their consent or deny their consent for disclosing such Data as
+        requested by the Company, unless such Data is required pursuant to any
+        statutory provision, where the consent of the Data Subjects is not
+        mandatory.
+      </p>{" "}
+      <p>
+        4.1.2. Rectification: Data Subjects shall have the right to rectify and
+        correct any inaccurate or incomplete Data.
+      </p>
+      <p>
+        4.1.3. Right to Access: Data Subjects may request copies of their Data
+        provided to us, including information on how it has been used and
+        processed.
+      </p>
+      <p>
+        4.1.4. Right to be Informed: Data Subjects have the right to be informed
+        about how their Data is collected and processed, in accordance with the
+        principle of transparency.
+      </p>{" "}
+      <p>
+        4.1.5. Right to Erasure or Forgotten: Data Subjects may request the
+        deletion of their Data if it is no longer necessary for the purposes it
+        was collected, if consent is withdrawn (where applicable), or if the
+        processing is unlawful.
+      </p>{" "}
+      <p>
+        4.1.6. Right to Data Portability: In certain circumstances, Data
+        Subjects may request a copy of their Data in a structured, commonly
+        used, and machine-readable format for transfer to a third party.
+      </p>{" "}
+      <p>
+        4.1.7. Right to Restrict Processing: Data Subjects may ask the Company
+        to restrict processing their Data if it is inaccurate, if processing is
+        unlawful, or if it is no longer necessary for the purposes it was
+        collected.
+      </p>{" "}
+      <p>
+        4.1.8. Right to Object: Data Subjects may object to processing based on
+        the Company’s legitimate interests.
+      </p>{" "}
+      <p>
+        4.1.9. Right to Complain: Data Subjects can file complaints at [xxx] or
+        call [xxxx] for clarifications or concerns.
+      </p>{" "}
+      <p>
+        4.1.10 Right to Object to Decisions made based on Automated Processing:
+        - Data Subjects have the right to object to decisions made solely
+        through automated processing, including profiling, which significantly
+        affect them, and to request human intervention.
+      </p>{" "}
+      <p>
+        4.1.11. Right to Object to Direct Marketing: Data Subjects may request
+        that their Data not be used for direct marketing purposes.
+      </p>{" "}
+      <p>
+        4.1.12. Right to be Notified of Data Breaches: Data Subjects have the
+        right to be informed of any personal data breaches that may pose a high
+        risk to their rights and freedoms.
+      </p>
+      <div className={styles.subTitle}>
+        5. DATA STORAGE AND SECURITY, INTERGRITY AND CONFIDENTIALITY OF
+        PROCESSING
+      </div>
+      <p>
+        5.1. All of your Data will be securely stored on our servers. Upon
+        registration, you will be prompted to create a password to access your
+        User Account and its contents. It is your responsibility to keep your
+        login credentials confidential. We advise against sharing this
+        information; should you choose to do so, you do so at your own risk, and
+        Elore will not be liable for any consequences.
+      </p>{" "}
+      <p>
+        5.2. The Company is committed to implementing reasonable security
+        measures to protect your Data from unauthorized access, use, disclosure,
+        duplication, reproduction, and storage. However, we cannot guarantee
+        complete security against all threats, including potential attacks from
+        viruses, malware, trojans, spyware, or adware. Therefore, it is
+        important for you to understand the risks associated with providing your
+        Data to us.
+      </p>{" "}
+      <p>
+        5.3. We encourage you to take all necessary precautions to safeguard
+        your Data, even as we strive to protect it to the best of our ability.
+      </p>{" "}
+      <p>
+        5.4. We may retain your Data for as long as required by law, or for
+        legitimate business purposes, such as fulfilling your service requests
+        or complying with legal, tax, or accounting obligations. Your Data will
+        be deleted in accordance with your rights, applicable laws, or upon the
+        expiration of the purpose for which it was collected.
+      </p>
+      <div className={styles.subTitle}>6. COMPANY’S NO-LIABILITY</div>{" "}
+      <p>
+        6.1. We are committed to employing all necessary precautions and
+        adhering to industry-standard physical, technical, and administrative
+        security measures to ensure the confidentiality and security of your
+        Data. We will not share your Data with third parties, except as outlined
+        in this Policy or when disclosure is required by law.
+      </p>{" "}
+      <p>
+        6.2. However, we cannot guarantee the absolute security of your Data and
+        therefore, cannot held liable in any manner for any infringement, loss,
+        misuse, disclosure of your Data in our possession. There is always a
+        risk that unauthorized third parties may find ways to bypass our
+        security measures, or that information transmitted over the Internet
+        could be intercepted. It is your responsibility to safeguard your login
+        information. Please be aware that email communications are generally not
+        encrypted and should not be considered secure.
+      </p>{" "}
+      <p>
+        6.3. Please note that Elore may contain links to other websites or
+        applications. You are responsible for reviewing the privacy policies of
+        those external sites to understand how they collect, use, and store your
+        information. We are not liable for the privacy practices, policies, or
+        content of any third-party websites or applications, including those
+        linked to or from Elore. Websites featuring co-branding (showing our
+        name alongside a third party’s name) contain content provided by the
+        third party and not by us. If you link Elore with other websites,
+        applications, or services, you will share any personal data stored on
+        those platforms with Elore. For instance, if you create a new Elore
+        Membership account by linking your Facebook account, you will provide
+        personal information that you have opted to share through Facebook. You
+        may revoke this link by adjusting your settings within those
+        applications.
+      </p>{" "}
+      <p>
+        6.4. Elore may engage certain associated third parties to support and
+        facilitate the operations of the Elore Platform. In these cases, we will
+        notify users of the applicable privacy policies of the respective third
+        parties regarding any Data that may need to be disclosed. It is the
+        user’s responsibility to carefully review these policies before
+        proceeding. Elore will manage the Data shared with third parties covered
+        under this Policy. Users may also encounter links to both associated and
+        non-associated third parties. For any such associated or non-associated
+        third party’s links, external links or websites not affiliated with
+        Elore or fall under the governance of this Policy, users are solely
+        responsible for reviewing the relevant privacy policies and terms of use
+        before sharing any Data. Elore will not be liable for any consequences
+        arising from such disclosures.
+      </p>{" "}
+      <p>
+        6.5. Notwithstanding any provisions to the contrary in this Policy, and
+        to the extent permitted by applicable laws, Mesol reserves the right to
+        use and disclose Data or any other collected information without the
+        consent of the Data Subject, as allowed by law. For clarity, by
+        accessing, viewing, or registering with Elore, or by agreeing to the
+        User Consent Agreement, the user provides explicit and implied consent
+        as required by law for Mesol to collect, store, use, and disclose Data
+        or any other information in accordance with this Policy, without the
+        need for additional consent, except as required by law or as implemented
+        by Elore on its platform.
+      </p>
+      <div className={styles.subTitle}>7. DECLARATIONS BY COMPANY</div>
+      <p>
+        7.1. This version of the Policy does not supersede or replace any prior
+        consent that the Data Subject may have given to the Company regarding
+        their Data. It is important to note that the consents provided herein
+        are in addition to any and all rights the Company may have under
+        applicable laws to collect, use, or disclose the Data Subject's Data.
+      </p>{" "}
+      <p>
+        7.2 The Company reserves the right to update this Privacy Policy as
+        deemed appropriate and necessary to align with future requirements,
+        business developments, or changes to legal and regulatory provisions.
+      </p>
+      <div className={styles.subTitle}>
+        8. RIGHTS AND DISCLAIMER OF THE COMPANY
+      </div>{" "}
+      <p>
+        8.1. The Company reserves the right to amend its policies at any time.
+        Users are responsible for staying informed of any updates. By accessing,
+        visiting, registering, or using our services, you consent to the amended
+        policies as they are updated. The Company shall not be liable for any
+        lack of awareness regarding these changes. We may update our Policy
+        periodically to reflect changes in our practices. Elore is committed to
+        continuously improving its services and enhancing user engagement, which
+        may involve the collection of new data or new methods of data usage.
+        Given the dynamic nature of Elore, we may need to modify our information
+        collection or processing practices. If we materially change the personal
+        data we collect or how we utilize your information, we will revise this
+        Policy accordingly.
+      </p>{" "}
+      <p>
+        8.2. Any updates to our Policy will be posted on this page. The date of
+        the last modification will be indicated at the beginning of the Policy.
+        You are responsible for ensuring that we have an up-to-date, active
+        email address for you and for periodically reviewing this Policy for any
+        changes.
+      </p>{" "}
+      <p>
+        8.3. Unless explicitly stated otherwise, the Company is not responsible
+        or liable for any third parties (including associated third parties or
+        Elore Specific Service Providers) referenced in this Policy. It is the
+        user’s responsibility to read the terms and privacy policies of such
+        third parties before consenting to our Terms and Policies for services
+        that depend on those third parties. The Company will notify users of any
+        partners or dependencies not covered under this Policy prior to
+        obtaining consent. Any use, storage, or disclosure of your Data by these
+        third parties will be governed by their respective policies, and the
+        Company will not be liable in this regard. This Policy should be read in
+        conjunction with our Terms and any related disclaimers.
+      </p>{" "}
+      <p>
+        8.4 We are committed to protecting your personal information and
+        maintaining your privacy. As part of this commitment, we want to clarify
+        the following aspects:
+      </p>{" "}
+      <p>
+        8.4.1. No Sale of Personal Data: We will not sell, rent, or lease your
+        personal information to any third parties (associated or not associated)
+        under any circumstances. Your Data is secure with us, and we prioritize
+        your privacy above all.
+      </p>{" "}
+      <p>
+        8.4.2. Permitted Disclosures: Your personal information may only be
+        disclosed in accordance with the provisions detailed in this Policy. By
+        using our services, you provide your explicit consent to the specific
+        disclosures outlined herein. These may include, but are not limited to,
+        circumstances where we are required to comply with legal obligations,
+        protect our rights, or ensure the safety of our users and the general
+        public.
+      </p>{" "}
+      <p>
+        8.4.3. Limitations of Responsibility: We will not be held liable for any
+        misuse, unauthorized access, or disclosure of your Data resulting from
+        circumstances beyond our control. This includes any Data you choose to
+        share publicly on our platform or third-party platforms. Once your
+        information is shared in a public forum, it may be accessed by others,
+        and we cannot guarantee its security from misuse.
+      </p>{" "}
+      <p>
+        8.4.4. We encourage you to carefully consider the information you share
+        publicly and to familiarize yourself with the privacy policies of any
+        third-party platforms you engage with. Your trust is paramount to us,
+        and we are dedicated to responsibly managing your personal information.
+        If you have any questions or concerns regarding our privacy practices,
+        please do not hesitate to reach out to us.
+      </p>{" "}
+      <p>
+        8.4.5. All rights of Mesol not explicitly addressed herein are expressly
+        reserved. These Policy terms do not prejudice any other rights or
+        remedies available to Mesol, all of which are preserved. Any action
+        taken by Mesol in accordance with applicable laws, even if not
+        specifically covered by this Policy, shall not constitute a breach of
+        the user's rights. Consequently, Mesol shall be exempt from any
+        liability arising from such actions.
+      </p>
+      <div className={styles.subTitle}>9. Declarations by Data Subjects</div>{" "}
+      <p>
+        9.1 The Data Subject acknowledges and agrees, subject to any legal
+        rights, to be bound by the provisions of the Policy as updated from time
+        to time on the Elore Platform or in manuals provided. It is the Data
+        Subject's responsibility to stay informed of these updates.
+      </p>
+      <div className={styles.subTitle}>10. Data Subject’s Obligations</div>{" "}
+      <p>
+        10.1. If the Data Subject provides the Company with any Personal and
+        Sensitive Data regarding a third party (e.g., spouse, family, children,
+        employees, employers, representatives), the Data Subject confirms that
+        prior consent from that third party has been obtained before submitting
+        such data to the Company.
+      </p>{" "}
+      <p>
+        10.2. The Data Subject must ensure that all Personal and Sensitive Data
+        submitted is accurate, true, and complete. Failure to comply with this
+        requirement may hinder the Company’s ability to provide the requested
+        services.
+      </p>{" "}
+      <p>
+        10.3The Data Subject confirms that they possess the required legal
+        capacity and or authorized capacity to use Elore Platform for itself or
+        on behalf of others. If any minors wish to use this app, they must do so
+        only with the consent and supervision of their guardians. We are not
+        responsible for any breaches of this obligation by minor users.
+      </p>
+      <div className={styles.subTitle}>11. REACH OUT TO US</div>{" "}
+      <p>
+        11.1. You can now reach out to us for any complaints or queries with
+        respect the Data collected at contact@mesol.me.
+      </p>
+      <div className={styles.subTitle}>
+        12. GOVERNING LAW AND DISPUTE RESOLUTION
+      </div>
+      <p>
+        12.1. All matters, disputes, or claims relating to this Policy
+        (including non-contractual disputes or claims), shall be governed by and
+        construed in accordance with the laws of United Arab Emirates without
+        giving effect to any choice or conflict of law provision or rule. Any
+        legal suit, action or proceeding arising out of, or related to, this
+        Policy shall be instituted exclusively in the competent courts of UAE.
+        By agreeing to these Policy and using Elore, you waive any and all
+        objections to the exercise of jurisdiction over you by such courts and
+        to venue in such courts.
+      </p>{" "}
+      <p>
+        12.2. Elore operates out of emirate of Dubai, UAE, and your use of Elore
+        and this Policy is governed by the laws of the UAE and the Emirate of
+        Dubai. If you are accessing Elore from outside the UAE, please be aware
+        that your information may be transferred to, stored, and processed in
+        the UAE, where our servers are located. We process Data both
+        domestically and internationally and rely on contractual agreements with
+        companies that transfer personal Data to ensure its protection and
+        security. The data protection laws in the Emirate of Dubai, UAE and
+        other jurisdictions may not be as comprehensive as those in your region.
+        By using Elore, you consent to the transfer of your information to our
+        facilities and those of third parties with whom we share it, as outlined
+        in this Policy.
+      </p>
     </div>
   );
 };
