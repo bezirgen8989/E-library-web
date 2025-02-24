@@ -56,8 +56,8 @@ export const useVoice = ({
   // const [chatHistory, setChatHistory] = useState<any>([]);
   console.log("messages", messages);
 
-  let questionTexts = []; // Array to hold the texts of all "question" segments
-  let timeoutId = null; // To keep track of the timeout
+  let questionTexts = [];
+  let timeoutId: any = null;
   let lastQuestionText = "";
 
   // console.log("chatHistory", chatHistory)
@@ -89,27 +89,31 @@ export const useVoice = ({
         const lastSegment = data.segments[data.segments.length - 1];
         const questionText = lastSegment?.text || "";
 
-        // Add the questionText to the array of collected questions
         questionTexts.push(questionText);
-        lastQuestionText = questionText; // Keep track of the latest question text
+        lastQuestionText = questionText;
 
-        // Clear the previous timeout to restart the waiting period
         if (timeoutId) {
           clearTimeout(timeoutId);
         }
 
-        // Set a new timeout to handle the break period
         timeoutId = setTimeout(() => {
-          // After 1 second, add the last question text to the chat history
           if (lastQuestionText) {
-            setChatHistory((prev) => [
+            setChatHistory((prev: any) => [
               ...prev,
-              { type: "user", message: lastQuestionText }, // Add the latest question
-              { type: "response", message: " " }, // Create space for the response
+              {
+                type: "user",
+                message: lastQuestionText,
+                timestamp: new Date().toLocaleTimeString(),
+              },
+              {
+                type: "response",
+                message: " ",
+                timestamp: new Date().toLocaleTimeString(),
+              },
             ]);
-            questionTexts = []; // Reset the array after adding to chat history
+            questionTexts = [];
           }
-        }, 1000); // 1000ms = 1 second delay
+        }, 1000);
       }
       setMessageClass(styles.messageSystem);
 
@@ -119,15 +123,14 @@ export const useVoice = ({
         // Add the chunk to messages
         setMessages((prev) => [...prev, chunkText]);
 
-        // Append to chat history, ensuring we don't overwrite previous responses
-        setChatHistory((prev) => {
+        setChatHistory((prev: any) => {
           const updatedHistory = [...prev];
           const lastIndex = updatedHistory.length - 1;
 
           if (updatedHistory[lastIndex]?.type === "response") {
-            updatedHistory[lastIndex].message += chunkText; // append the chunk to the last message
+            updatedHistory[lastIndex].message += chunkText;
           } else {
-            updatedHistory.push({ type: "response", message: chunkText }); // push as a new response
+            updatedHistory.push({ type: "response", message: chunkText });
           }
 
           return updatedHistory;

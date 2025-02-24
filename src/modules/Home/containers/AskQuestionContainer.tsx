@@ -133,8 +133,16 @@ const AskQuestionContainer: React.FC = () => {
 
         setChatHistory((prev) => [
           ...prev,
-          { type: "user", message: question },
-          { type: "response", message: "" },
+          {
+            type: "user",
+            message: question,
+            timestamp: new Date().toLocaleTimeString(),
+          },
+          {
+            type: "response",
+            message: "",
+            timestamp: new Date().toLocaleTimeString(),
+          },
         ]);
 
         await fetchEventSource(

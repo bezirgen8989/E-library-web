@@ -354,6 +354,18 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     };
   }, [location.pathname]);
 
+  const [chatMessages, setChatMessages] = useState<Chat[]>([]);
+
+  useEffect(() => {
+    setChatMessages(
+      [...voiceChatHistory, ...chatHistory].sort(
+        (a, b) =>
+          new Date(`1970-01-01T${a.timestamp}Z`).getTime() -
+          new Date(`1970-01-01T${b.timestamp}Z`).getTime()
+      )
+    );
+  }, [chatHistory, voiceChatHistory]);
+
   return (
     <>
       {currentStep === 1 && (
@@ -480,9 +492,11 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
             </div>
             <div className={styles.chatContainer}>
               <div className={styles.gradientOverlay} />
+
               <div className={styles.chatContent} ref={chatContentRef}>
-                {chatHistory.map((chat: Chat, index: number) => {
-                  const isLastMessage = index === chatHistory.length - 1;
+                {chatMessages.map((chat, index) => {
+                  const isLastMessage = index === chatMessages.length - 1;
+
                   return (
                     <div
                       key={index}
@@ -494,8 +508,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                         className={
                           chat.type === "user"
                             ? styles.userMessage
-                            : !chat.type
-                            ? styles.messageSystemContent
                             : styles.messageSystemContent
                         }
                       >
@@ -516,6 +528,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                   );
                 })}
               </div>
+
               {metaData && metaData.length > 0 && !isLoading && !isSending && (
                 <div
                   className={styles.collapseButton}
@@ -537,9 +550,11 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                   />
                 </div>
               )}
+
               <div className={styles.collapseContent}>
                 {isCollapseVisible && <Collapse>{renderMetaData()}</Collapse>}
               </div>
+
               <div className={styles.chatWrap}>
                 <div className={styles.chatInputSection}>
                   <input
