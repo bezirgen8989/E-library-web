@@ -3,6 +3,7 @@ import { float32ArrayToBase64, resampleTo16kHZ } from "../helpers/helper";
 import { urlSocket } from "../envConstants";
 import { useDispatch } from "react-redux";
 import { setIsStreamShow } from "../modules/Home/slices/home";
+import styles from "../modules/Home/components/AskQuestionComponent/AskQuestionComponent.module.scss";
 
 interface IUseVoiceHook {
   language?: string;
@@ -14,6 +15,8 @@ interface IUseVoiceHook {
   indexName: string;
   selectedLanguageCode: string;
   setIsShowSilent: any;
+  setChatHistory?: any;
+  setMessageClass: any;
 }
 
 export const useVoice = ({
@@ -25,6 +28,8 @@ export const useVoice = ({
   indexName,
   selectedLanguageCode,
   setIsShowSilent,
+  setChatHistory,
+  setMessageClass,
 }: IUseVoiceHook) => {
   const socketRef = useRef<WebSocket | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -46,6 +51,16 @@ export const useVoice = ({
   useEffect(() => {
     stateRef.current = state;
   }, [state]);
+
+  const [messages, setMessages] = useState<string[]>([]);
+  // const [chatHistory, setChatHistory] = useState<any>([]);
+  console.log("messages", messages);
+
+  let questionTexts = []; // Array to hold the texts of all "question" segments
+  let timeoutId = null; // To keep track of the timeout
+  let lastQuestionText = "";
+
+  // console.log("chatHistory", chatHistory)
 
   const connectToWhisper = () => {
     socketRef.current = new WebSocket(urlSocket);
@@ -69,28 +84,56 @@ export const useVoice = ({
       const data = JSON.parse(event.data);
       console.log("[WebSocket Response]", data);
 
-      if (data?.segments) {
-        if (!isTrascribe) {
-          const resultText = data.segments.map((item: any) => item.text || "");
-          const res = resultText?.[stateRef.current];
+      if (data?.type === "question" && data?.segments) {
+        // Get the last segment of the question
+        const lastSegment = data.segments[data.segments.length - 1];
+        const questionText = lastSegment?.text || "";
 
-          if (res) {
-            setState((prevState) => {
-              const newState = prevState + 1;
-              stateRef.current = newState;
-              return newState;
-            });
-            setTextAreaValue(res);
-            dispatch(setIsStreamShow(true));
-          }
-          return;
+        // Add the questionText to the array of collected questions
+        questionTexts.push(questionText);
+        lastQuestionText = questionText; // Keep track of the latest question text
+
+        // Clear the previous timeout to restart the waiting period
+        if (timeoutId) {
+          clearTimeout(timeoutId);
         }
 
-        const resultText = data.segments
-          .map((item: any) => item.text || "")
-          .join(" ");
+        // Set a new timeout to handle the break period
+        timeoutId = setTimeout(() => {
+          // After 1 second, add the last question text to the chat history
+          if (lastQuestionText) {
+            setChatHistory((prev) => [
+              ...prev,
+              { type: "user", message: lastQuestionText }, // Add the latest question
+              { type: "response", message: " " }, // Create space for the response
+            ]);
+            questionTexts = []; // Reset the array after adding to chat history
+          }
+        }, 1000); // 1000ms = 1 second delay
+      }
+      setMessageClass(styles.messageSystem);
 
-        setTextAreaValue(resultText);
+      if (data?.type === "answer" && data?.text) {
+        const chunkText = data.text;
+
+        // Add the chunk to messages
+        setMessages((prev) => [...prev, chunkText]);
+
+        // Append to chat history, ensuring we don't overwrite previous responses
+        setChatHistory((prev) => {
+          const updatedHistory = [...prev];
+          const lastIndex = updatedHistory.length - 1;
+
+          if (updatedHistory[lastIndex]?.type === "response") {
+            updatedHistory[lastIndex].message += chunkText; // append the chunk to the last message
+          } else {
+            updatedHistory.push({ type: "response", message: chunkText }); // push as a new response
+          }
+
+          return updatedHistory;
+        });
+
+        // setTextAreaValue((prev) => prev + chunkText);
         dispatch(setIsStreamShow(true));
       }
     };
@@ -201,20 +244,20 @@ export const useVoice = ({
       streamRef.current = null;
     }
 
-    if (recorderRef.current) {
-      recorderRef.current.disconnect();
-      recorderRef.current = null;
-    }
+    // if (recorderRef.current) {
+    //   recorderRef.current.disconnect();
+    //   recorderRef.current = null;
+    // }
 
-    if (audioCtxRef.current) {
-      audioCtxRef.current.close();
-      audioCtxRef.current = null;
-    }
-
-    if (socketRef.current) {
-      socketRef.current.close();
-      socketRef.current = null;
-    }
+    // if (audioCtxRef.current) {
+    //   audioCtxRef.current.close();
+    //   audioCtxRef.current = null;
+    // }
+    //
+    // if (socketRef.current) {
+    //   socketRef.current.close();
+    //   socketRef.current = null;
+    // }
   };
 
   useEffect(() => {

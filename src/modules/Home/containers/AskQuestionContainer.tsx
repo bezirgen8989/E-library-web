@@ -25,7 +25,8 @@ type Chat = {
 const AskQuestionContainer: React.FC = () => {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState<string[]>([]);
-  const [meta, setMeta] = useState<any>(null); // New state for metadata
+  console.log("messages", messages);
+  const [meta, setMeta] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch();
@@ -67,7 +68,7 @@ const AskQuestionContainer: React.FC = () => {
     };
   });
 
-  // console.log("avatarLanguage", avatarLanguage.id);
+  console.log("avatarLanguage", avatarLanguage.id);
 
   const { languages } = useLazySelector(({ auth }) => {
     const { languages } = auth;

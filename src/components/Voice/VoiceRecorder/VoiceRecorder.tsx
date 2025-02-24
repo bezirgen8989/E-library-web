@@ -40,6 +40,8 @@ interface IVoiceRecorder {
   setIsFirst: (value: boolean) => void;
   indexName: string;
   setIsShowSilent: any;
+  setChatHistory: any;
+  setMessageClass: any;
 }
 
 const VoiceRecorder: React.FC<IVoiceRecorder> = ({
@@ -59,6 +61,8 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   setIsShowSilent,
   setIsFirst,
   isFirst,
+  setChatHistory,
+  setMessageClass,
 }) => {
   // const { open } = useNotification();
   const { t } = useTranslation();
@@ -91,6 +95,8 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     indexName,
     selectedLanguageCode,
     setIsShowSilent,
+    setChatHistory,
+    setMessageClass,
   });
 
   console.log(deleteStreaming, pauseStreaming);

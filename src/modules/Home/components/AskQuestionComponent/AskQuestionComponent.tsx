@@ -114,6 +114,9 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [isFirst, setIsFirst] = useState(true);
   const [isEmpty, setIsEmpty] = useState(true);
   const [showStopButton, setShowStopButton] = useState(false);
+  const [voiceChatHistory, setVoiceChatHistory] = useState<any>([]);
+  console.log("chatHistory", chatHistory);
+  console.log("voiceChatHistory", voiceChatHistory);
 
   const { avatarStreamShow } = useLazySelector(({ home }) => {
     const { avatarStreamShow, isStreamShow, isStopQuestion } = home;
@@ -187,7 +190,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     if (chatContentRef.current) {
       chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
     }
-  }, [chatHistory, isSending]);
+  }, [chatHistory, isSending, voiceChatHistory]);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -471,6 +474,8 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                 setIsShowSilent={setIsShowSilent}
                 isFirst={isFirst}
                 setIsFirst={setIsFirst}
+                setChatHistory={setVoiceChatHistory}
+                setMessageClass={setMessageClass}
               />
             </div>
             <div className={styles.chatContainer}>
@@ -478,7 +483,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
               <div className={styles.chatContent} ref={chatContentRef}>
                 {chatHistory.map((chat: Chat, index: number) => {
                   const isLastMessage = index === chatHistory.length - 1;
-
                   return (
                     <div
                       key={index}
@@ -490,6 +494,8 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                         className={
                           chat.type === "user"
                             ? styles.userMessage
+                            : !chat.type
+                            ? styles.messageSystemContent
                             : styles.messageSystemContent
                         }
                       >
