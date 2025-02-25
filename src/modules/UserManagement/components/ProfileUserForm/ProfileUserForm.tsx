@@ -25,6 +25,9 @@ type RecoverProps = {
   kidsMode: boolean | undefined;
   bookLanguage?: LanguageType;
   setUserAvatar: any;
+  language?: LanguageType;
+  handleAppLanguage: any;
+  handleBookLanguage: any;
 };
 
 type FormValues = {
@@ -43,6 +46,9 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   kidsMode = true,
   bookLanguage,
   setUserAvatar,
+  language,
+  handleAppLanguage,
+  handleBookLanguage,
 }) => {
   const { t, i18n } = useTranslation();
   const defaultLanguage = languages.find((lang) => lang.name === "English") || {
@@ -66,20 +72,20 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
 
   const { control, handleSubmit, setValue } = useForm<FormValues>({
     defaultValues: {
-      language: defaultLanguage.name,
+      language: language?.name || defaultLanguage.name,
       bookLanguage: bookLanguage?.name || defaultLanguage.name,
     },
   });
 
   useEffect(() => {
     if (languages.length > 0 && modalType === "language") {
-      const currentLang = i18n.language.toLowerCase(); // Текущий язык из i18n
+      const currentLang = i18n.language.toLowerCase();
       const matchedLanguage =
         languages.find(
           (lang) => lang.isoCode2char.toLowerCase() === currentLang
-        ) || defaultLanguage; // Используем defaultLanguage, если язык не найден
+        ) || defaultLanguage;
       setSelectedLanguage(matchedLanguage);
-      setValue("language", matchedLanguage.name); // Устанавливаем в форму
+      setValue("language", matchedLanguage.name);
     }
   }, [i18n.language, languages, modalType, setValue]);
 
@@ -98,10 +104,12 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   const handleLanguageChange = (language: LanguageType) => {
     if (modalType === "language") {
       setSelectedLanguage(language);
+      handleAppLanguage(language);
       setValue("language", language.name);
       i18n.changeLanguage(language.isoCode2char.toLowerCase()); // Меняем язык приложения
     } else if (modalType === "bookLanguage") {
       setSelectedBookLanguage(language);
+      handleBookLanguage(language);
       setValue("bookLanguage", language.name);
     }
   };

@@ -21,6 +21,8 @@ interface ProfileUserComponentProps {
   deleteAccount: () => void;
   handleKidsMode: (value: any) => void;
   setUserAvatar: any;
+  handleAppLanguage: any;
+  handleBookLanguage: any;
 }
 
 const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
@@ -31,6 +33,8 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
   deleteAccount,
   handleKidsMode,
   setUserAvatar,
+  handleAppLanguage,
+  handleBookLanguage,
 }) => {
   const { t } = useTranslation();
   const value = useContext(UserContext);
@@ -39,7 +43,7 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
   const onLogout = () => {
     dispatch(logoutUser());
   };
-
+  console.log("VALUE", value);
   return (
     <div className={styles.profile_page_wrap}>
       <div className={styles.profile_page}>
@@ -80,8 +84,11 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
             onSubmit={onSubmit}
             handleKidsMode={handleKidsMode}
             kidsMode={value?.kidsMode}
+            handleAppLanguage={handleAppLanguage}
+            handleBookLanguage={handleBookLanguage}
             bookLanguage={value?.bookLanguage}
             setUserAvatar={setUserAvatar}
+            language={value?.language}
           />
         </div>
         <div onClick={onLogout} className={styles.logOutBtn}>

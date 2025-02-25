@@ -412,9 +412,7 @@ export const setProfile = createAsyncThunk(
         icon: <img src={Alert} alt="icon" />,
       });
     } else {
-      // Обновляем данные о пользователе
       dispatch(getMe());
-      // history.push(homeRoutes.root);
       history.push(routes.profileAbout);
     }
     return response;
@@ -454,6 +452,21 @@ export const setOptionsAbout = createAsyncThunk(
 
 export const setKidsMode = createAsyncThunk(
   "kidsMode/api/v1/auth/me",
+  async (userParams: any, { dispatch }) => {
+    const response = await setUserProfile(userParams);
+    return response;
+  }
+);
+
+export const setAppLanguage = createAsyncThunk(
+  "appLang/api/v1/auth/me",
+  async (userParams: any, { dispatch }) => {
+    const response = await setUserProfile(userParams);
+    return response;
+  }
+);
+export const setBookLanguage = createAsyncThunk(
+  "bookLang/api/v1/auth/me",
   async (userParams: any, { dispatch }) => {
     const response = await setUserProfile(userParams);
     return response;

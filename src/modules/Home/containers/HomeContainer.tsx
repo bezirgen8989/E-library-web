@@ -48,6 +48,7 @@ const HomeContainer: React.FC = () => {
   }, []);
 
   const suggestedFilter = `[categories.id][in]=${habitsCategories}`;
+  console.log("suggestedFilter", suggestedFilter);
   // const ratingOrder = "[rating]=desc";
 
   useEffect(() => {
@@ -71,14 +72,16 @@ const HomeContainer: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(
-      getSuggestedBooks({
-        limit: "6",
-        page: "1",
-        order: "",
-        filter: suggestedFilter,
-      })
-    );
+    if (habitsCategories) {
+      dispatch(
+        getSuggestedBooks({
+          limit: "6",
+          page: "1",
+          order: "",
+          filter: suggestedFilter,
+        })
+      );
+    }
   }, [dispatch, suggestedFilter]);
 
   return (

@@ -99,7 +99,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
       },
       userName: data.userName,
       dateBirth: data.dateBirth,
-      bookLanguage: {
+      language: {
         id: selectedLanguage.id,
       },
       gender: data.gender,
@@ -297,7 +297,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
                     )}
                   />
                   <label className={commonStyles.inputLabel}>
-                    Book Language
+                    App Language
                   </label>
                 </div>
               )}

@@ -4,6 +4,8 @@ import { useCallback, useEffect } from "react";
 import {
   deleteUserAccount,
   getLanguages,
+  setAppLanguage,
+  setBookLanguage,
   // getMe,
   // setAvatar,
   setKidsMode,
@@ -48,6 +50,7 @@ const ProfileUserContainer: React.FC = () => {
 
   const handleSubmit = useCallback(
     (values) => {
+      console.log("SUBMIT_VALUES", values);
       dispatch(setProfile(values));
     },
     [dispatch]
@@ -58,6 +61,28 @@ const ProfileUserContainer: React.FC = () => {
   };
   const handleKidsMode = (value: any) => {
     dispatch(setKidsMode({ kidsMode: value }));
+  };
+
+  const handleAppLanguage = (value: any) => {
+    console.log("APP_LANGUAGE", value);
+    dispatch(
+      setAppLanguage({
+        language: {
+          id: value.id,
+        },
+      })
+    );
+  };
+  const handleBookLanguage = (value: any) => {
+    console.log("BOOK_LANGUAGE", value);
+    dispatch(
+      setBookLanguage({
+        bookLanguage: {
+          id: value.id,
+        },
+      })
+    );
+    // dispatch(setAppLanguage({ kidsMode: value }));
   };
 
   const deleteAccount = () => {
@@ -73,6 +98,8 @@ const ProfileUserContainer: React.FC = () => {
       deleteAccount={deleteAccount}
       handleKidsMode={handleKidsMode}
       setUserAvatar={setUserAvatar}
+      handleAppLanguage={handleAppLanguage}
+      handleBookLanguage={handleBookLanguage}
     />
   );
 };
