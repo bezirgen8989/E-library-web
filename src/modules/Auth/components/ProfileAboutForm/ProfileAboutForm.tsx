@@ -29,7 +29,9 @@ const ProfileAboutForm: React.FC<RecoverProps> = ({
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
-  const { handleSubmit, control, register } = useForm();
+  const { handleSubmit, control, register, watch } = useForm();
+
+  const isFreeTextSelected = watch("option_15", false); // Следим за чекбоксом с id: 15
 
   const categories = (aboutOptions || []).reduce((acc, option) => {
     if (!acc[option.category]) {
@@ -41,9 +43,9 @@ const ProfileAboutForm: React.FC<RecoverProps> = ({
 
   const handleFormSubmit = (data: any) => {
     const selectedOptions: SelectedOption[] = aboutOptions
-      .filter((item) => data[item.name])
+      .filter((item) => data[`option_${item.id}`]) // Используем новый name
       .map((item) => ({
-        surveyOption: { id: item.id },
+        surveyOption: { id: item.id, isFreeText: false },
       }));
 
     if (data.freeText) {
@@ -55,13 +57,6 @@ const ProfileAboutForm: React.FC<RecoverProps> = ({
 
     const formattedData = { data: selectedOptions };
     onSubmit(formattedData);
-  };
-
-  const safeName = (name: string) => {
-    return name
-      .replace(/[^\w\s]/gi, "")
-      .replace(/\s+/g, "-")
-      .toLowerCase();
   };
 
   return (
@@ -112,7 +107,7 @@ const ProfileAboutForm: React.FC<RecoverProps> = ({
                   {items.map((item) => (
                     <li key={item.id}>
                       <Controller
-                        name={safeName(item.name)}
+                        name={`option_${item.id}`} // Используем уникальное имя
                         control={control}
                         defaultValue={false}
                         render={({ field }) => (
@@ -131,16 +126,18 @@ const ProfileAboutForm: React.FC<RecoverProps> = ({
             ))}
           </div>
           <div style={{ maxWidth: "420px", margin: "20px auto 0 auto" }}>
-            <div className={commonStyles.inputWrapper}>
-              <input
-                {...register("freeText")}
-                className={commonStyles.inputField}
-                type="text"
-                placeholder=""
-                autoComplete="off"
-              />
-              <label className={commonStyles.inputLabel}>Your variant</label>
-            </div>
+            {isFreeTextSelected && (
+              <div className={commonStyles.inputWrapper}>
+                <input
+                  {...register("freeText")}
+                  className={commonStyles.inputField}
+                  type="text"
+                  placeholder=""
+                  autoComplete="off"
+                />
+                <label className={commonStyles.inputLabel}>Your variant</label>
+              </div>
+            )}
             <Button variant="White" type="submit">
               Continue
             </Button>
