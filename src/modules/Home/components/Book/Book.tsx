@@ -112,7 +112,9 @@ const Book: React.FC<BookProps> = ({
     translationType: "official",
   };
 
-  const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    value?.bookLanguage || defaultLanguage
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
@@ -135,7 +137,7 @@ const Book: React.FC<BookProps> = ({
         filterId: `[coreBook.id][eq]=${currentBook?.result?.id}`,
       })
     );
-  }, [selectedLanguage, currentBook]);
+  }, [selectedLanguage, currentBook, value?.bookLanguage]);
 
   useEffect(() => {
     if (currentBook?.result) {
@@ -171,7 +173,6 @@ const Book: React.FC<BookProps> = ({
 
   const onLanguageSelect = (language: LanguageType) => {
     setSelectedLanguage(language);
-    sessionStorage.setItem("selectedLanguage", JSON.stringify(language.id));
   };
 
   useEffect(() => {

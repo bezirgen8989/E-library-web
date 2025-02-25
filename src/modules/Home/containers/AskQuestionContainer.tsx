@@ -265,6 +265,8 @@ const AskQuestionContainer: React.FC = () => {
     };
   }, [subscribeToEvent, unsubscribeFromEvent, connected, avatarStreamShow]);
 
+  // const filteredLanguages = languages?.result?.data.filter(lang => lang.name !== "Dari");
+
   return (
     <AskQuestionComponent
       clearMessages={clearMessages}
@@ -276,7 +278,7 @@ const AskQuestionContainer: React.FC = () => {
       avatars={avatars}
       setUserAvatar={setUserAvatar}
       chatHistory={chatHistory}
-      languagesWithDari={languages?.result?.data}
+      languages={languages?.result?.data}
       indexName={currentBook?.result?.vectorEntity?.indexName}
     />
   );

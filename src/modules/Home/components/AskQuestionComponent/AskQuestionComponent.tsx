@@ -70,7 +70,7 @@ type AskQuestionComponentProps = {
   avatars: any;
   setUserAvatar: (id: number) => void;
   chatHistory: any;
-  languagesWithDari: LanguageType[];
+  languages: LanguageType[];
   indexName: string;
   isChooseAvatarPage?: boolean;
 };
@@ -86,7 +86,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   avatars,
   setUserAvatar,
   chatHistory,
-  languagesWithDari,
+  languages,
   indexName,
   isChooseAvatarPage,
 }) => {
@@ -126,10 +126,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       isStopQuestion,
     };
   });
-
-  const languages =
-    languagesWithDari &&
-    languagesWithDari.filter((lang) => lang.name !== "Dari");
 
   console.log("currentStep", currentStep);
 
