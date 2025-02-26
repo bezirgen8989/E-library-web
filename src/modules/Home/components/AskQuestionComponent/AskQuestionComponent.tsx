@@ -22,6 +22,7 @@ import {
   selectAvatarLanguage,
   setIsStopQuestion,
   setIsStreamShow,
+  setStreamDone,
 } from "../../slices/home";
 import { useTranslation } from "react-i18next";
 import MetaModal from "../common/MetaModal/MetaModal";
@@ -118,16 +119,17 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   console.log("chatHistory", chatHistory);
   console.log("voiceChatHistory", voiceChatHistory);
 
-  const { avatarStreamShow } = useLazySelector(({ home }) => {
-    const { avatarStreamShow, isStreamShow, isStopQuestion } = home;
+  const { avatarStreamShow, streamDone } = useLazySelector(({ home }) => {
+    const { avatarStreamShow, isStreamShow, isStopQuestion, streamDone } = home;
     return {
       avatarStreamShow,
       isStreamShow,
       isStopQuestion,
+      streamDone,
     };
   });
 
-  console.log("currentStep", currentStep);
+  console.log("value", value);
 
   const [initialSlide, setInitialSlide] = useState<number>(0);
   const [defaultAvatarId] = useState(value?.avatarSettings?.id || 1);
@@ -362,6 +364,31 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     );
   }, [chatHistory, voiceChatHistory]);
 
+  const token = sessionStorage.getItem("SESSION_TOKEN");
+
+  const stopAvatarGeneration = async (params: any) => {
+    try {
+      const response = await fetch("https://genavatars.plavno.app:50956/stop", {
+        method: "POST",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(params),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("Success:", data);
+    } catch (error) {
+      console.error("Error stopping avatar generation:", error);
+    }
+  };
+
   return (
     <>
       {currentStep === 1 && (
@@ -577,7 +604,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                     </button>
                   )}
 
-                  {!showStopButton ? (
+                  {!streamDone ? (
                     <button
                       type="button"
                       className={styles.submitButton}
@@ -589,7 +616,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                           dispatch(setIsStreamShow(true));
                           setIsEmpty(true);
                           dispatch(setIsStopQuestion(false));
-                          setShowStopButton(true);
+                          dispatch(setStreamDone(true));
                         })();
                       }}
                     >
@@ -601,8 +628,9 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                       className={styles.stopButton}
                       disabled={isSending}
                       onClick={() => {
-                        setShowStopButton(false);
                         dispatch(setIsStopQuestion(true));
+                        dispatch(setStreamDone(false));
+                        stopAvatarGeneration({ client_id: value.id });
                       }}
                     >
                       <div className={styles.beforeIcon} />

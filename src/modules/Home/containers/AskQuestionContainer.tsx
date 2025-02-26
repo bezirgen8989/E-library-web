@@ -11,6 +11,7 @@ import {
   getBookById,
   setAvatarStreamShow,
   setIsStreamShow,
+  setStreamDone,
 } from "../slices/home";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../hooks";
@@ -254,6 +255,7 @@ const AskQuestionContainer: React.FC = () => {
     const handleUnpublishStream = () => {
       console.log("Stream ended");
       dispatch(setAvatarStreamShow(false));
+      dispatch(setStreamDone(false));
     };
 
     subscribeToEvent("publish-stream", handlePublishStream);

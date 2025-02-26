@@ -76,6 +76,7 @@ const initialState: HomeState = {
   currentAudioBook: {},
   avatarStreamShow: false,
   isStopQuestion: false,
+  streamDone: false,
 };
 
 const homeSlice = createSlice({
@@ -105,6 +106,9 @@ const homeSlice = createSlice({
     },
     setIsStopQuestion(state, action: PayloadAction<boolean>) {
       state.isStopQuestion = action.payload;
+    },
+    setStreamDone(state, action: PayloadAction<boolean>) {
+      state.streamDone = action.payload;
     },
 
     setNewBooks: (state, action: PayloadAction<any>) => {
@@ -709,5 +713,6 @@ export const {
   setIsStreamShow,
   setAvatarStreamShow,
   setIsStopQuestion,
+  setStreamDone,
 } = homeSlice.actions;
 export default homeSlice.reducer;
