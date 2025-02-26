@@ -106,7 +106,7 @@ const Book: React.FC<BookProps> = ({
   const defaultLanguage = (languages || []).find(
     (lang) => lang.name === "English"
   ) || {
-    id: 0,
+    id: 7,
     name: "Select Language",
     flag: { link: NoAvatar },
     translationType: "official",
@@ -265,10 +265,10 @@ const Book: React.FC<BookProps> = ({
         <div className={styles.flex_wrap}>
           <div className={styles.left_side}>
             <div className={styles.img_wrap}>
-              {book?.bookCover?.link ? (
+              {currentBookVersion?.result?.data[0]?.locBookCover?.link ? (
                 <img
-                  src={book.bookCover?.link}
-                  alt={book.title}
+                  src={currentBookVersion?.result?.data[0]?.locBookCover?.link}
+                  alt={"img"}
                   className={styles.bookCoverImage}
                 />
               ) : (

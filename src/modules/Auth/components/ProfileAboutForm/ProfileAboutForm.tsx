@@ -3,7 +3,6 @@ import styles from "./ProfileAboutForm.module.scss";
 import React from "react";
 import BackIcon from "../../../../assets/images/icons/goBackIcon.svg";
 import { useHistory } from "react-router-dom";
-import homeRoutes from "../../../Home/routing/routes";
 import { useTranslation } from "react-i18next";
 import Button from "../../../../components/common/Buttons/Button";
 import { useForm, Controller } from "react-hook-form";
@@ -73,17 +72,17 @@ const ProfileAboutForm: React.FC<RecoverProps> = ({
             <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
             {t("backBtn")}
           </div>
-          <div
-            onClick={() => history.push(homeRoutes.root)}
-            className={commonStyles.backBtnRelative}
-          >
-            Skip
-            <img
-              style={{ marginLeft: 9, transform: "rotate(180deg)" }}
-              src={BackIcon}
-              alt="Back arrow"
-            />
-          </div>
+          {/*<div*/}
+          {/*  onClick={() => history.push(homeRoutes.root)}*/}
+          {/*  className={commonStyles.backBtnRelative}*/}
+          {/*>*/}
+          {/*  Skip*/}
+          {/*  <img*/}
+          {/*    style={{ marginLeft: 9, transform: "rotate(180deg)" }}*/}
+          {/*    src={BackIcon}*/}
+          {/*    alt="Back arrow"*/}
+          {/*  />*/}
+          {/*</div>*/}
         </div>
         <div className={styles.centered}>
           <div className={styles.logo_name}>How did you learn about Elor?</div>

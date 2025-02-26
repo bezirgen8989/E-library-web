@@ -13,7 +13,6 @@ const routes = {
   ProfileHabits: `${base}/habits`,
   Profile: `${base}/profile_auth`,
   profileAbout: `${base}/profile_about`,
-  Error404: `${base}/404`,
   termsAndConditions: `${base}/terms_and_conditions`,
   privacyPolicy: `${base}/privacy_policy`,
 };

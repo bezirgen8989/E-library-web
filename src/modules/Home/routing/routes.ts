@@ -18,5 +18,6 @@ const routes = {
   askQuestionAll: "/ask_global_question",
   chooseAvatar: "/choose_avatar",
   audioBook: "/audio_book",
+  error404: `/404`,
 };
 export default routes;

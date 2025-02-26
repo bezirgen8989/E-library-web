@@ -102,6 +102,9 @@ export const AudioBook = lazy(
       /* webpackChunkName: "AskQuestion" */ "modules/Home/pages/AudioBookPage"
     )
 );
+export const Error404Route = lazy(
+  () => import(/* webpackChunkName: "404Page" */ "modules/Home/pages/404Page")
+);
 
 const HomeRouting = () => (
   <Suspense fallback={<Spinner />}>
@@ -123,6 +126,7 @@ const HomeRouting = () => (
       <Route exact path={routes.askQuestionAll} component={AskQuestion} />
       <Route exact path={routes.chooseAvatar} component={ChooseAvatar} />
       <Route exact path={`${routes.audioBook}/:id`} component={AudioBook} />
+      <Route exact path={routes.error404} component={Error404Route} />
 
       <Route
         exact

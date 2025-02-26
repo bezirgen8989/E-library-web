@@ -5,6 +5,6 @@ export { default as RecoverPasswordContainer } from "./RecoverPasswordContainer"
 export { default as VerifyEmailContainer } from "./ChangePasswordContainer";
 export { default as EnterCodeContainer } from "./EnterCodeContainer";
 export { default as ProfileContainer } from "./ProfileContainer";
-export { default as ErrorContainer } from "./Error404Container";
+export { default as ErrorContainer } from "../../Home/containers/Error404Container";
 export { default as VerifyEmailSuccessContainer } from "./VerifyEmailSuccessContainer";
 export { default as ProfileAboutContainer } from "./ProfileAboutContainer";

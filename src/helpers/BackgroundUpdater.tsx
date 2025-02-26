@@ -54,7 +54,7 @@ export const BackgroundUpdater = () => {
       [authRoutes.ProfileHabits]:
         "linear-gradient(to bottom, #d3a271, #a46542)",
       [authRoutes.Profile]: "linear-gradient(to bottom, #d3a271, #a46542)",
-      [authRoutes.Error404]: "linear-gradient(to bottom, #d3a271, #a46542)",
+      [homeRoutes.error404]: "linear-gradient(to bottom, #d3a271, #a46542)",
       [rootRoutes.root]: "#FBF1EA",
       [userRoutes.profile]: "linear-gradient(to bottom, #d3a271, #a46542)",
       [homeRoutes.audioBook]: "#996C42",

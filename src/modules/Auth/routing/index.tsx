@@ -70,10 +70,6 @@ export const ProfileAbout = lazy(
       /* webpackChunkName: "ProfileAuthRoute" */ "modules/Auth/pages/ProfileAboutPage"
     )
 );
-export const Error404Route = lazy(
-  () =>
-    import(/* webpackChunkName: "Error404Route" */ "modules/Auth/pages/404Page")
-);
 export const TermsAndConditions = lazy(
   () =>
     import(
@@ -165,13 +161,6 @@ const AuthRouting = () => (
         exact
         path={routes.privacyPolicy}
         component={PrivacyPolicy}
-      />
-
-      <PublicRoute
-        exact
-        path={routes.Error404}
-        component={Error404Route}
-        restricted
       />
 
       <Redirect path="*" to={routes.onboarding} />

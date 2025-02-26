@@ -7,6 +7,6 @@ export { default as ProfileHabitsForm } from "./ProfileHabitsForm";
 export { default as ProfileForm } from "./ProfileForm";
 export { default as ProfileAboutForm } from "./ProfileAboutForm";
 export { default as Loading } from "./Loading";
-export { default as ErrorComponent } from "./Error404Component";
+export { default as ErrorComponent } from "../../Home/components/Error404Component";
 export { default as VerifyEmailSuccess } from "./VerifyEmailSuccess";
 export { default as ChangePasswordForm } from "./ChangePasswordForm";
