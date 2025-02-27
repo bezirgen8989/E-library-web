@@ -78,6 +78,7 @@ const AskQuestionContainer: React.FC = () => {
   // console.log("languages", languages);
 
   useEffect(() => {
+    setAvatarStreamShow(false);
     dispatch(clearBooks());
   }, [dispatch]);
 

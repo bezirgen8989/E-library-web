@@ -42,6 +42,7 @@ interface IVoiceRecorder {
   setIsShowSilent: any;
   setChatHistory: any;
   setMessageClass: any;
+  streamDone: any;
 }
 
 const VoiceRecorder: React.FC<IVoiceRecorder> = ({
@@ -63,6 +64,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   isFirst,
   setChatHistory,
   setMessageClass,
+  streamDone,
 }) => {
   // const { open } = useNotification();
   const { t } = useTranslation();
@@ -324,6 +326,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
           <div className={styles.btnMic}>
             <Button
               variant="Brown"
+              disabled={streamDone}
               style={{
                 marginBottom: 0,
                 minHeight: 88,

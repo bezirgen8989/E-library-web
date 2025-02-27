@@ -11,6 +11,7 @@ export type ButtonType = {
   icon?: ReactNode;
   id?: string;
   className?: string;
+  disabled?: boolean; // Добавлен пропс disabled
 };
 
 type ButtonOptions = "Blue" | "White" | "Brown" | "Transparent" | "Error";
@@ -22,6 +23,7 @@ const Button: React.FC<ButtonType> = ({
   variant,
   style,
   icon,
+  disabled = false,
 }) => {
   const [hovered, setHovered] = useState(false);
 
@@ -34,11 +36,11 @@ const Button: React.FC<ButtonType> = ({
     width: "100%",
     fontSize: "16px",
     borderRadius: "12px",
-    cursor: "pointer",
+    cursor: disabled ? "not-allowed" : "pointer", // Меняем курсор, если кнопка отключена
     transition: "all 0.2s",
     fontWeight: 700,
     whiteSpace: "nowrap",
-    opacity: hovered ? 0.8 : 1,
+    opacity: hovered && !disabled ? 0.8 : 1, // Не менять opacity, если disabled
     marginBottom: "9px",
   };
 
@@ -67,7 +69,6 @@ const Button: React.FC<ButtonType> = ({
       color: "#D55454",
       border: "1px solid #D554541F",
     },
-
     Transparent: {
       ...commonStyles,
       backgroundColor: "none",
@@ -76,9 +77,27 @@ const Button: React.FC<ButtonType> = ({
     },
   };
 
-  const appliedStyle = buttonVariants[variant ?? "Transparent"];
-  const handleMouseEnter = () => setHovered(true);
-  const handleMouseLeave = () => setHovered(false);
+  // Дополнительный стиль для отключённой кнопки
+  const disabledStyle: CSSProperties = disabled
+    ? { opacity: 0.5, pointerEvents: "none" }
+    : {};
+
+  const appliedStyle = {
+    ...buttonVariants[variant ?? "Transparent"],
+    ...style,
+    ...disabledStyle,
+  };
+
+  const handleMouseEnter = () => {
+    if (!disabled) {
+      setHovered(true);
+    }
+  };
+  const handleMouseLeave = () => {
+    if (!disabled) {
+      setHovered(false);
+    }
+  };
 
   const renderContent = () => (
     <>
@@ -91,7 +110,7 @@ const Button: React.FC<ButtonType> = ({
     return (
       <Link
         to={to}
-        style={{ ...appliedStyle, ...style }}
+        style={appliedStyle}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -102,8 +121,9 @@ const Button: React.FC<ButtonType> = ({
 
   return (
     <button
-      onClick={onClick}
-      style={{ ...appliedStyle, ...style, marginTop: 0 }}
+      onClick={disabled ? undefined : onClick} // Если disabled, onClick не вызывается
+      disabled={disabled}
+      style={{ ...appliedStyle, marginTop: 0 }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

@@ -159,24 +159,37 @@ export const useVoice = ({
     audioCtxRef.current = audioCtx;
 
     const mediaStream = audioCtx.createMediaStreamSource(stream);
-
-    // Low-pass filter (reduces high-frequency noise)
+    const gainNode = audioCtx.createGain();
+    gainNode.gain.value = 1.5;
+    // 1. Low-pass filter (удаляет высокочастотные шумы)
     const lowPassFilter = audioCtx.createBiquadFilter();
     lowPassFilter.type = "lowpass";
-    lowPassFilter.frequency.setValueAtTime(3000, audioCtx.currentTime);
+    lowPassFilter.frequency.setValueAtTime(2000, audioCtx.currentTime); // было 3000
 
-    // High-pass filter (reduces low-frequency noise)
+    // 2. High-pass filter (удаляет низкочастотные шумы)
     const highPassFilter = audioCtx.createBiquadFilter();
     highPassFilter.type = "highpass";
-    highPassFilter.frequency.setValueAtTime(85, audioCtx.currentTime);
+    highPassFilter.frequency.setValueAtTime(150, audioCtx.currentTime); // было 85
+
+    // 3. Notch (band-stop) filter на 50/60 Гц (электрические шумы)
+    const notchFilter = audioCtx.createBiquadFilter();
+    notchFilter.type = "notch";
+    notchFilter.frequency.setValueAtTime(50, audioCtx.currentTime);
+    notchFilter.Q.setValueAtTime(10, audioCtx.currentTime); // Узкий диапазон подавления
 
     const recorder = audioCtx.createScriptProcessor(8192, 1, 1);
 
     recorder.onaudioprocess = (event) => {
       if (socketRef?.current?.readyState === WebSocket.OPEN) {
         const inputData = event.inputBuffer.getChannelData(0);
-        const audioData16kHz = resampleTo16kHZ(inputData, audioCtx.sampleRate);
 
+        // Проверяем громкость сигнала (если RMS < порога — не отправляем)
+        const rms = Math.sqrt(
+          inputData.reduce((sum, val) => sum + val * val, 0) / inputData.length
+        );
+        if (rms < 0.01) return; // Порог чувствительности, подбери нужное значение
+
+        const audioData16kHz = resampleTo16kHZ(inputData, audioCtx.sampleRate);
         const packet = {
           speakerLang: selectedLanguageCode,
           index: indexName,
@@ -187,15 +200,16 @@ export const useVoice = ({
       }
     };
 
-    // Connect filters
+    // Подключаем фильтры в цепочку
     mediaStream.connect(lowPassFilter);
     lowPassFilter.connect(highPassFilter);
-    highPassFilter.connect(recorder);
+    highPassFilter.connect(notchFilter);
+    notchFilter.connect(recorder);
+    gainNode.connect(recorder);
     recorder.connect(audioCtx.destination);
 
     recorderRef.current = recorder;
   };
-
   const startStreaming = async () => {
     setIsRecordingInProcess && setIsRecordingInProcess(true);
 

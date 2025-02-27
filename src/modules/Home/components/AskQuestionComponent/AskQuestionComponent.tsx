@@ -20,6 +20,7 @@ import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
 import { useDispatch } from "react-redux";
 import {
   selectAvatarLanguage,
+  setAvatarStreamShow,
   setIsStopQuestion,
   setIsStreamShow,
   setStreamDone,
@@ -114,22 +115,20 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [, setIsShowSilent] = useState();
   const [isFirst, setIsFirst] = useState(true);
   const [isEmpty, setIsEmpty] = useState(true);
-  const [showStopButton, setShowStopButton] = useState(false);
+  // const [showStopButton, setShowStopButton] = useState(false);
   const [voiceChatHistory, setVoiceChatHistory] = useState<any>([]);
   console.log("chatHistory", chatHistory);
   console.log("voiceChatHistory", voiceChatHistory);
 
   const { avatarStreamShow, streamDone } = useLazySelector(({ home }) => {
-    const { avatarStreamShow, isStreamShow, isStopQuestion, streamDone } = home;
+    const { avatarStreamShow, streamDone } = home;
     return {
       avatarStreamShow,
-      isStreamShow,
-      isStopQuestion,
       streamDone,
     };
   });
 
-  console.log("value", value);
+  console.log("streamDone", streamDone);
 
   const [initialSlide, setInitialSlide] = useState<number>(0);
   const [defaultAvatarId] = useState(value?.avatarSettings?.id || 1);
@@ -335,9 +334,26 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   };
 
   useEffect(() => {
+    let prevPath = location.pathname; // Сохраняем предыдущее значение
+
+    return () => {
+      if (
+        prevPath.includes("ask_question") &&
+        !location.pathname.includes("ask_question")
+      ) {
+        stopAvatarGeneration({ client_id: String(value.id) });
+        setAvatarStreamShow(false);
+        dispatch(setIsStopQuestion(true));
+        dispatch(setStreamDone(false));
+      }
+    };
+  }, [location.pathname]);
+
+  useEffect(() => {
     const handleRouteChange = () => {
       if (!location.pathname.includes("ask_question") && videoRef.current) {
         // Закрыть поток, если покидается URL ask_question
+        stopAvatarGeneration({ client_id: String(value.id) });
         videoRef.current.srcObject = null;
         setIsStreamConnect(false);
       }
@@ -388,6 +404,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       console.error("Error stopping avatar generation:", error);
     }
   };
+  console.log("stream_DONE", streamDone);
 
   return (
     <>
@@ -511,6 +528,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                 setIsFirst={setIsFirst}
                 setChatHistory={setVoiceChatHistory}
                 setMessageClass={setMessageClass}
+                streamDone={streamDone}
               />
             </div>
             <div className={styles.chatContainer}>
@@ -628,9 +646,9 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                       className={styles.stopButton}
                       disabled={isSending}
                       onClick={() => {
+                        stopAvatarGeneration({ client_id: String(value.id) });
                         dispatch(setIsStopQuestion(true));
                         dispatch(setStreamDone(false));
-                        stopAvatarGeneration({ client_id: value.id });
                       }}
                     >
                       <div className={styles.beforeIcon} />
