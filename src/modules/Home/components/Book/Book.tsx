@@ -120,7 +120,7 @@ const Book: React.FC<BookProps> = ({
   const [isLiked, setIsLiked] = useState(false);
   const dispatch = useDispatch();
   console.log("selectedLanguage", selectedLanguage);
-  console.log("currentBook", currentBook);
+  console.log("currentBookVersion?.result", currentBookVersion?.result);
 
   useEffect(() => {
     if (id) {
@@ -129,22 +129,40 @@ const Book: React.FC<BookProps> = ({
   }, [id, getBook]);
 
   useEffect(() => {
-    dispatch(
-      getBookVersion({
-        page: "1",
-        limit: "1",
-        filterLanguage: `[language.id][eq]=${selectedLanguage?.id}`,
-        filterId: `[coreBook.id][eq]=${currentBook?.result?.id}`,
-      })
-    );
-  }, [selectedLanguage, currentBook, value?.bookLanguage]);
+    // Изначально выбираем язык из value?.bookLanguage, если он есть
+    if (value?.bookLanguage) {
+      setSelectedLanguage(value.bookLanguage);
+    } else {
+      // Если нет, используем дефолтный язык
+      setSelectedLanguage(defaultLanguage);
+    }
+  }, [value?.bookLanguage]);
+
+  useEffect(() => {
+    if (selectedLanguage && currentBook?.result?.id) {
+      dispatch(
+        getBookVersion({
+          page: "1",
+          limit: "1",
+          filterLanguage: `[language.id][eq]=${selectedLanguage?.id}`,
+          filterId: `[coreBook.id][eq]=${currentBook?.result?.id}`,
+        })
+      );
+    }
+  }, [selectedLanguage, currentBook?.result?.id, dispatch]);
+
+  useEffect(() => {
+    if (currentBookVersion?.result) {
+      setBook(currentBookVersion.result);
+    }
+  }, [currentBookVersion?.result]);
 
   useEffect(() => {
     if (currentBook?.result) {
       setBook(currentBook.result);
       setIsLiked(currentBook.result.isFavourite);
     }
-  }, [currentBook]);
+  }, [currentBook, currentBookVersion?.result]);
 
   const handleLikeClick = () => {
     if (book) {
