@@ -8,6 +8,7 @@ import { Switch } from "antd";
 import NotificationsModal from "../common/NotificationModal/NotificationsModal";
 import { useTranslation } from "react-i18next";
 import { UserContext } from "../../../../core/contexts";
+import i18n from "i18next";
 
 export type LanguageType = {
   id: number;
@@ -50,7 +51,7 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   handleAppLanguage,
   handleBookLanguage,
 }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const defaultLanguage = languages.find((lang) => lang.name === "English") || {
     id: 0,
     name: "English",
@@ -58,6 +59,7 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
     isoCode2char: "en",
   };
   const value = useContext(UserContext);
+  console.log(333, value); // Проверка контекста
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
   const [selectedBookLanguage, setSelectedBookLanguage] = useState(
     bookLanguage || defaultLanguage
@@ -78,39 +80,44 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   });
 
   useEffect(() => {
-    if (languages.length > 0 && modalType === "language") {
-      const currentLang = i18n.language.toLowerCase();
-      const matchedLanguage =
-        languages.find(
-          (lang) => lang.isoCode2char.toLowerCase() === currentLang
-        ) || defaultLanguage;
-      setSelectedLanguage(matchedLanguage);
-      setValue("language", matchedLanguage.name);
+    if (value && value.language) {
+      setSelectedLanguage(value.language);
+      setValue("language", value.language.name);
     }
-  }, [i18n.language, languages, modalType, setValue]);
+  }, [value, setValue]);
 
   useEffect(() => {
-    if (languages.length > 0) {
-      const initialBookLanguage = bookLanguage || defaultLanguage;
-      setSelectedBookLanguage(initialBookLanguage);
-      setValue("bookLanguage", initialBookLanguage.name);
+    if (value && value.bookLanguage) {
+      setSelectedBookLanguage(value.bookLanguage);
+      setValue("bookLanguage", value.bookLanguage.name);
     }
-  }, [languages, setValue, bookLanguage]);
+  }, [value, setValue]);
 
   useEffect(() => {
     setUserKidsMode(kidsMode);
   }, [kidsMode]);
 
+  useEffect(() => {
+    if (value && value.bookLanguage) {
+      setSelectedBookLanguage(value.bookLanguage); // Use context value for bookLanguage
+      setValue("bookLanguage", value.bookLanguage.name);
+    } else if (value && value.language) {
+      // If bookLanguage is not available in context, use app language
+      setSelectedBookLanguage(value.language);
+      setValue("bookLanguage", value.language.name);
+    }
+  }, [value, setValue]);
+
   const handleLanguageChange = (language: LanguageType) => {
     if (modalType === "language") {
       setSelectedLanguage(language);
-      handleAppLanguage(language);
-      setValue("language", language.name);
-      i18n.changeLanguage(language.isoCode2char.toLowerCase()); // Меняем язык приложения
+      handleAppLanguage(language); // Dispatch the action
+      setValue("language", language.name); // Update the form value
+      i18n.changeLanguage(language.isoCode2char.toLowerCase());
     } else if (modalType === "bookLanguage") {
       setSelectedBookLanguage(language);
-      handleBookLanguage(language);
-      setValue("bookLanguage", language.name);
+      handleBookLanguage(language); // Dispatch the action
+      setValue("bookLanguage", language.name); // Update the form value
     }
   };
 
@@ -131,7 +138,6 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
       },
       gender: data.gender,
     };
-    console.log("profileFormattedData", formattedData);
     onSubmit(formattedData);
   };
 
@@ -139,7 +145,6 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
     setUserKidsMode(checked);
     handleKidsMode(checked);
   };
-  console.log("languages", languages);
 
   return (
     <div>
