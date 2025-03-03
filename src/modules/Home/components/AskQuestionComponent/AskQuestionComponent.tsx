@@ -282,10 +282,15 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !isSending) {
-      // Prevent default form submission behavior
       e.preventDefault();
-      handleSubmit(onSubmit)();
-      setIsEmpty(true);
+      handleSubmit((data) => {
+        onSubmit(data);
+        setIsStreamConnect(true);
+        dispatch(setIsStreamShow(true));
+        setIsEmpty(true);
+        dispatch(setIsStopQuestion(false));
+        dispatch(setStreamDone(true));
+      })();
     }
   };
 
