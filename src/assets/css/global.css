@@ -136,12 +136,25 @@ p {
   padding: 24px 20px !important;
 }
 
+@media (max-width: 768px) {
+  .custom-modal .ant-modal-content {
+    padding: 5px 5px !important;
+  }
+}
+
 .custom-modal-settings .ant-modal-content{
   border-radius: 20px !important;
   overflow: hidden;
   padding: 24px 20px !important;
   /*background: #FBF1EA !important;*/
 }
+
+@media (max-width: 768px) {
+  .custom-modal-settings .ant-modal-body {
+    padding: 20px 5px !important;
+  }
+}
+
 .ant-modal-header {
   border-bottom: transparent !important;
 }

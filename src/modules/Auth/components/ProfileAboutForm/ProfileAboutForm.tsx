@@ -64,7 +64,7 @@ const ProfileAboutForm: React.FC<RecoverProps> = ({
       style={{ display: "flex", width: "100%", height: "100vh" }}
     >
       <div className={styles.centeredAboutWrapper}>
-        <div className={commonStyles.navTop}>
+        <div className={commonStyles.navTop} style={{ padding: "30px 26px 0" }}>
           <div
             onClick={() => history.goBack()}
             className={commonStyles.backBtnRelative}
@@ -124,7 +124,7 @@ const ProfileAboutForm: React.FC<RecoverProps> = ({
               </div>
             ))}
           </div>
-          <div style={{ maxWidth: "420px", margin: "20px auto 0 auto" }}>
+          <div className={styles.submit}>
             {isFreeTextSelected && (
               <div className={commonStyles.inputWrapper}>
                 <input

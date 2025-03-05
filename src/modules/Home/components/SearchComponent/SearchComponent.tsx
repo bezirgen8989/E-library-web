@@ -58,19 +58,19 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
     setSearchTerm(value);
 
     if (value.trim() === "") {
-      setDropdownVisible(false); // Скрываем dropdown
-      setHasSearched(false); // Сбрасываем состояние поиска
-      getBooksByName({}); // Сбрасываем booksByQueryName
+      setDropdownVisible(false);
+      setHasSearched(false);
+      getBooksByName({});
     } else {
       getSearchBooks(value);
-      setDropdownVisible(true); // Показываем dropdown при вводе текста
+      setDropdownVisible(true);
     }
   };
 
   const handleBookSelect = (title: string) => {
     setSearchTerm(title);
-    setHasSearched(true); // Устанавливаем флаг для выполнения поиска
-    setDropdownVisible(false); // Скрыть dropdown после выбора
+    setHasSearched(true);
+    setDropdownVisible(false);
     getBooksByName(title);
   };
 

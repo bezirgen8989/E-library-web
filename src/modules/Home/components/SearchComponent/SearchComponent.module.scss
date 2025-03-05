@@ -28,6 +28,12 @@
   margin: 0 auto;
 }
 
+@media (max-width: 768px) {
+  .grid_container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .grid_item {
   border-radius: 10px;
   height: 100px;
