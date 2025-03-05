@@ -78,5 +78,34 @@
   "saveBtn": "Save",
   "stop": "Stop",
 
-  "askNow": "Talking..."
+  "askNow": "Talking...",
+
+
+  "alreadyHaveAnAccount": "Already have an account?",
+  "logInWithEmail": "Log In With Email",
+  "signUpWithEmail": "Sign Up with Email",
+  "createAccount": "Create Account",
+  "byCreatingAnAccountYouAgreeToOur": "By creating an account you agree to our",
+  "termsAndConditions": "Terms and Conditions",
+  "privacyPolicy": "Privacy Policy",
+  "and": "and",
+  "pleaseInputYourEmail!": "Please input your Email!",
+  "passwordMustBeAtLeast8CharactersLong!": "Password must be at least 8 characters long!",
+  "pleaseConfirmYourPassword!": "Please confirm your password!",
+  "Log In": "Log In",
+  "DontHaveAnAccount": "Don’t have an account?",
+  "forgotYourPassword": "Forgot your password?",
+  "recover": "Recover",
+  "signUp": "Sign Up",
+  "recoverYourPassword": "Recover Your Password",
+  "emailYouInstructionsToResetYourPassword.": " We’ll email you instructions to reset your password.",
+  "enterYourNewPassword": "Enter Your New Password",
+  "changePassword": "Change Password",
+  "enterDigitCode": "Enter 6 Digit Code",
+  "sentCodeTo": "We’ve sent a code to",
+  "DidntReceiveCode": "Didn’t receive a code?",
+  "chooseYourReadingHabits": "Choose Your Reading Habits",
+  "profileDetails": "Profile Details",
+  "howDidYouLearnAbout": "How did you learn about Elor?",
+  "selectMultipleOptions": "You can select multiple options"
 }
