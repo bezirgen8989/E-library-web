@@ -6,7 +6,7 @@ import Onboarding from "../../../../assets/images/Onboarding-img.png";
 import { useForm } from "react-hook-form";
 import Button from "../../../../components/common/Buttons/Button";
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useLazySelector } from "../../../../hooks";
 
 type RecoverProps = {
   onSubmit: (values: any) => void;
@@ -15,7 +15,6 @@ type RecoverProps = {
 
 const EnterCodeForm: React.FC<RecoverProps> = ({ onSubmit, currentEmail }) => {
   const history = useHistory();
-  const { t } = useTranslation();
   const { register, handleSubmit, watch, setValue } = useForm();
   const code = watch([
     "digit1",
@@ -25,6 +24,9 @@ const EnterCodeForm: React.FC<RecoverProps> = ({ onSubmit, currentEmail }) => {
     "digit5",
     "digit6",
   ]);
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
 
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -87,15 +89,17 @@ const EnterCodeForm: React.FC<RecoverProps> = ({ onSubmit, currentEmail }) => {
             className={commonStyles.backBtnRelative}
           >
             <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
-            {t("backBtn")}
+            {localization?.backBtn}
           </div>
           <div />
         </div>
         <div className={commonStyles.centered}>
-          <div className={styles.logo_code_name}>Enter 6 Digit Code</div>
+          <div className={styles.logo_code_name}>
+            {localization?.enterDigitCode}
+          </div>
           <div className={styles.code_subtitle}>
-            We’ve sent a code <br />
-            to {currentEmail}.
+            {localization?.sentCodeTo}
+            {currentEmail}
           </div>
           <form
             onSubmit={handleSubmit(onSubmitForm)}
@@ -122,7 +126,7 @@ const EnterCodeForm: React.FC<RecoverProps> = ({ onSubmit, currentEmail }) => {
               ))}
             </div>
             <Button type="submit" variant="White">
-              Submit
+              {localization?.submit}
             </Button>
           </form>
         </div>

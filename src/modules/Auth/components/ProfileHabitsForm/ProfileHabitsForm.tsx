@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./ProfileHabitsForm.module.scss";
 import { useForm, Controller } from "react-hook-form";
 import Button from "../../../../components/common/Buttons/Button";
+import { useLazySelector } from "../../../../hooks";
 
 type FormValues = {
   categories: {
@@ -30,6 +31,9 @@ const ProfileHabitsForm: React.FC<RecoverProps> = ({
   habits,
 }) => {
   const habitIds = new Set(habits?.map((habit: any) => habit.id));
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
 
   const { handleSubmit, control, watch } = useForm<FormValues>({
     defaultValues: {
@@ -55,7 +59,9 @@ const ProfileHabitsForm: React.FC<RecoverProps> = ({
   return (
     <div className={styles.habitPageContainer}>
       <div />
-      <div className={styles.habit_title}>Choose Your Reading Habits</div>
+      <div className={styles.habit_title}>
+        {localization?.chooseYourReadingHabits}
+      </div>
       <div className={styles.habit_wrap}>
         <form onSubmit={handleSubmit(onSubmitForm)}>
           <div className={styles.grid_container}>
@@ -133,7 +139,7 @@ const ProfileHabitsForm: React.FC<RecoverProps> = ({
           </div>
           <div className={styles.btnWrap}>
             <Button variant="Brown" type="submit">
-              Continue ({selectedCount})
+              {localization?.continueBtn} ({selectedCount})
             </Button>
           </div>
         </form>

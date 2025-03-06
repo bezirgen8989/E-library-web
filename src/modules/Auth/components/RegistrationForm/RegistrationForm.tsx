@@ -6,8 +6,8 @@ import { Link, useHistory } from "react-router-dom";
 import BackIcon from "../../../../assets/images/icons/goBackIcon.svg";
 import Button from "../../../../components/common/Buttons/Button";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import routes from "../../routing/routes";
+import { useLazySelector } from "../../../../hooks";
 
 type LoginFormProps = {
   onSubmit: (values: any) => void;
@@ -15,13 +15,16 @@ type LoginFormProps = {
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   const history = useHistory();
-  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
+
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
 
   const onSubmitForm = (values: any) => {
     console.log("values", values);
@@ -47,7 +50,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
             className={commonStyles.backBtnRelative}
           >
             <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
-            {t("backBtn")}
+            {localization?.backBtn}
           </div>
           <div />
         </div>
@@ -55,7 +58,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
           <div className={commonStyles.login_logo}>
             <img src={logo} alt="logo" />
           </div>
-          <div className={commonStyles.logo_name}>Create Account</div>
+          <div className={commonStyles.logo_name}>
+            {localization?.createAccount}
+          </div>
           <form onSubmit={handleSubmit(onSubmitForm)}>
             <div>
               <div className={commonStyles.inputWrapper}>
@@ -80,7 +85,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                     errors.email ? commonStyles.errorLabel : ""
                   }`}
                 >
-                  Email
+                  {localization?.email}
                 </label>
               </div>
               {errors.email && (
@@ -114,7 +119,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                     errors.password ? commonStyles.errorLabel : ""
                   }`}
                 >
-                  Password
+                  {localization?.password}
                 </label>
               </div>
               {errors.password && (
@@ -141,7 +146,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                     errors.confirmPassword ? commonStyles.errorLabel : ""
                   }`}
                 >
-                  Confirm Password
+                  {localization?.confirmPassword}
                 </label>
               </div>
               {errors.confirmPassword && (
@@ -151,7 +156,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
               )}
             </div>
             <Button variant="White" type="submit">
-              Create Account
+              {localization?.createAccount}
             </Button>
           </form>
         </div>
@@ -162,13 +167,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
               style={{ marginBottom: "15px" }}
             >
               <div style={{ textAlign: "center" }}>
-                By creating an account you agree
-                <br /> to our{" "}
+                {localization?.byCreatingAnAccountYouAgreeToOur}
                 <Link
                   to={routes.termsAndConditions}
                   style={{ color: "#FFEA84", marginLeft: 8 }}
                 >
-                  Terms and Conditions
+                  {localization?.termsAndConditions}
                 </Link>
                 <br />
                 and
@@ -176,9 +180,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                   to={routes.privacyPolicy}
                   style={{ color: "#FFEA84", marginLeft: 8 }}
                 >
-                  Privacy Policy
+                  {localization?.privacyPolicy}
                 </Link>
-                .
               </div>
             </div>
           </div>

@@ -7,7 +7,7 @@ import BackIcon from "../../../../assets/images/icons/goBackIcon.svg";
 import { Link, useHistory } from "react-router-dom";
 import Button from "../../../../components/common/Buttons/Button";
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useLazySelector } from "../../../../hooks";
 
 type LoginFormProps = {
   onSubmit: (values: any) => void;
@@ -15,12 +15,15 @@ type LoginFormProps = {
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   const history = useHistory();
-  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
 
   const onSubmitForm = (values: any) => {
     onSubmit(values);
@@ -42,7 +45,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
             className={commonStyles.backBtnRelative}
           >
             <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
-            {t("backBtn")}
+            {localization?.backBtn}
           </div>
           <div />
         </div>
@@ -75,7 +78,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                     errors.email ? commonStyles.errorLabel : ""
                   }`}
                 >
-                  Email
+                  {localization?.email}
                 </label>
               </div>
               {errors.email && (
@@ -110,7 +113,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                     errors.email ? commonStyles.errorLabel : ""
                   }`}
                 >
-                  Password
+                  {localization?.password}
                 </label>
               </div>
               {errors.password && (
@@ -128,21 +131,21 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
               className={commonStyles.login_subtitle}
               style={{ marginBottom: "15px" }}
             >
-              Don’t have an account?
+              {localization?.DontHaveAnAccount}
               <Link
                 style={{ color: "#FFEA84", marginLeft: 8 }}
                 to="/auth/registration"
               >
-                Sign Up
+                {localization?.signUp}
               </Link>
             </div>
             <div className={commonStyles.login_subtitle}>
-              Forgot your password?
+              {localization?.forgotYourPassword}
               <Link
                 style={{ color: "#FFEA84", marginLeft: 8 }}
                 to="/auth/recover_password"
               >
-                Recover
+                {localization?.recover}
               </Link>
             </div>
           </div>

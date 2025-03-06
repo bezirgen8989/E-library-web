@@ -1,12 +1,18 @@
-// import homeRoutes from 'modules/SearchBooks/routing/routes'
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { LoginUser } from "../slices/auth";
+import { getLocalization, LoginUser } from "../slices/auth";
 import LoginForm from "../components/LoginForm";
 
 const LoginContainer: React.FC = () => {
   const dispatch = useDispatch();
+
+  const appLanguage = sessionStorage.getItem("appLanguage");
+  const parsedAppLanguage = appLanguage ? JSON.parse(appLanguage) : "en";
+
+  useEffect(() => {
+    dispatch(getLocalization(parsedAppLanguage));
+  }, [dispatch, parsedAppLanguage]);
 
   const handleSubmit = useCallback(
     (values) => {

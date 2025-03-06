@@ -7,9 +7,8 @@ import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
 import Button from "../../../../components/common/Buttons/Button";
 import BackIcon from "../../../../assets/images/icons/goBackIcon.svg";
 import { useHistory } from "react-router-dom";
-import homeRoutes from "../../../Home/routing/routes";
 import LanguageModal from "../LanguageModal";
-import { useTranslation } from "react-i18next";
+import { useLazySelector } from "../../../../hooks";
 
 type LanguageType = {
   id: number;
@@ -50,7 +49,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
     name: "Select Language",
     flag: { link: NoAvatar },
   };
-  const { t } = useTranslation();
+
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const defaultGender = genders[0].value;
@@ -72,6 +71,10 @@ const ProfileForm: React.FC<RecoverProps> = ({
 
   const history = useHistory();
   const profilePicture = watch("photo");
+
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
 
   useEffect(() => {
     if (languages.length > 0) {
@@ -126,22 +129,24 @@ const ProfileForm: React.FC<RecoverProps> = ({
             className={commonStyles.backBtnRelative}
           >
             <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
-            {t("backBtn")}
+            {localization?.backBtn}
           </div>
-          <div
-            onClick={() => history.push(homeRoutes.root)}
-            className={commonStyles.backBtnRelative}
-          >
-            Skip
-            <img
-              style={{ marginLeft: 9, transform: "rotate(180deg)" }}
-              src={BackIcon}
-              alt="Back arrow"
-            />
-          </div>
+          {/*<div*/}
+          {/*  onClick={() => history.push(homeRoutes.root)}*/}
+          {/*  className={commonStyles.backBtnRelative}*/}
+          {/*>*/}
+          {/*  Skip*/}
+          {/*  <img*/}
+          {/*    style={{ marginLeft: 9, transform: "rotate(180deg)" }}*/}
+          {/*    src={BackIcon}*/}
+          {/*    alt="Back arrow"*/}
+          {/*  />*/}
+          {/*</div>*/}
         </div>
         <div className={commonStyles.centered}>
-          <div className={commonStyles.logo_name}>Profile Details</div>
+          <div className={commonStyles.logo_name}>
+            {localization?.profileDetails}
+          </div>
           <form onSubmit={handleSubmit(onSubmitForm)}>
             <div className="form-group">
               <div className="authUploadWrap">
@@ -175,7 +180,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
               </div>
             </div>
             <span className={commonStyles.uploadSubtitle}>
-              Upload Your Picture
+              Upload Your Picture{localization?.profileDetails}
             </span>
             <div style={{ marginTop: 15 }}>
               <div className={commonStyles.inputWrapper}>

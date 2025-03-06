@@ -1,17 +1,30 @@
-import { RegistrationForm } from 'modules/Auth/components'
-import { useCallback } from 'react'
-import { useDispatch } from 'react-redux'
-import {registerUser, updateCurrentEmail} from '../slices/auth'
+import { RegistrationForm } from "modules/Auth/components";
+import { useCallback, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import {
+  getLocalization,
+  registerUser,
+  updateCurrentEmail,
+} from "../slices/auth";
 
 const RegistrationContainer: React.FC = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const appLanguage = sessionStorage.getItem("appLanguage");
+  const parsedAppLanguage = appLanguage ? JSON.parse(appLanguage) : "en";
 
-  const onSubmit = useCallback((userParams) => {
-    dispatch(registerUser(userParams))
-    dispatch(updateCurrentEmail(userParams?.email));
-  }, [dispatch])
+  useEffect(() => {
+    dispatch(getLocalization(parsedAppLanguage));
+  }, [dispatch, parsedAppLanguage]);
 
-  return <RegistrationForm onSubmit={onSubmit} />
-}
+  const onSubmit = useCallback(
+    (userParams) => {
+      dispatch(registerUser(userParams));
+      dispatch(updateCurrentEmail(userParams?.email));
+    },
+    [dispatch]
+  );
 
-export default RegistrationContainer
+  return <RegistrationForm onSubmit={onSubmit} />;
+};
+
+export default RegistrationContainer;

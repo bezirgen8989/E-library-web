@@ -111,6 +111,10 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   const handleLanguageChange = (language: LanguageType) => {
     if (modalType === "language") {
       setSelectedLanguage(language);
+      sessionStorage.setItem(
+        "appLanguage",
+        JSON.stringify(language.isoCode2char)
+      );
       handleAppLanguage(language); // Dispatch the action
       setValue("language", language.name); // Update the form value
       i18n.changeLanguage(language.isoCode2char.toLowerCase());

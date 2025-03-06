@@ -110,6 +110,7 @@
   "listen": "Listen",
   "backToHomePage": "Back to Home Page",
   "thisPageNotfound": "This page can't be found",
-  "error404": "Oops, error 404!"
+  "error404": "Oops, error 404!",
+  "orContinueWith": "Or continue with"
 
 }

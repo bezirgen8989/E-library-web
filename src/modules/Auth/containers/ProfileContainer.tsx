@@ -1,7 +1,12 @@
 import { ProfileForm } from "modules/Auth/components";
 import { useDispatch } from "react-redux";
 import { useCallback, useEffect } from "react";
-import { getLanguages, setProfile, uploadUserPhotoId } from "../slices/auth";
+import {
+  getLanguages,
+  getLocalization,
+  setProfile,
+  uploadUserPhotoId,
+} from "../slices/auth";
 import { useLazySelector } from "../../../hooks";
 
 const ProfileContainer: React.FC = () => {
@@ -14,6 +19,12 @@ const ProfileContainer: React.FC = () => {
       photoId,
     };
   });
+  const appLanguage = sessionStorage.getItem("appLanguage");
+  const parsedAppLanguage = appLanguage ? JSON.parse(appLanguage) : "en";
+
+  useEffect(() => {
+    dispatch(getLocalization(parsedAppLanguage));
+  }, [dispatch, parsedAppLanguage]);
 
   const handleSubmit = useCallback(
     (values) => {

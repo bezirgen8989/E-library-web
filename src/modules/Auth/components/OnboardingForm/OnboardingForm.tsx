@@ -8,6 +8,7 @@ import Onboarding from "../../../../assets/images/Onboarding-img.png";
 import GoogleIcon from "../../../../assets/images/icons/google.png";
 import { Link } from "react-router-dom";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { useLazySelector } from "../../../../hooks";
 
 type LoginFormProps = {
   onSubmit: (values: any) => void;
@@ -18,6 +19,10 @@ const OnboardingForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
     console.log("Google User Token:", credentialResponse.credential);
     onSubmit({ idToken: credentialResponse.credential });
   };
+
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
 
   const handleGoogleFailure = () => {
     console.error("Google login failed");
@@ -33,7 +38,7 @@ const OnboardingForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
               <img src={logo} alt="logo" />
             </div>
             <Button variant="White" to="/auth/registration">
-              Sign Up with Email
+              {localization?.signUpWithEmail}
             </Button>
             <div className={styles.googleButton}>
               <div className={styles.googleButtonAbsolute}>
@@ -61,7 +66,7 @@ const OnboardingForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
             >
               <div className={styles.subtitle_line}></div>
               <div className={commonStyles.login_subtitle}>
-                Or continue with
+                localization?.orContinueWith
               </div>
               <div className={styles.subtitle_line}></div>
             </div>
@@ -83,10 +88,10 @@ const OnboardingForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
           </div>
           <div className={commonStyles.footerCentered}>
             <div className={commonStyles.login_subtitle}>
-              Already have an account?
+              {localization?.alreadyHaveAnAccount}
             </div>
             <Button variant="Transparent" to="/auth/login">
-              Log In with Email
+              {localization?.logInWithEmail}
             </Button>
           </div>
         </div>
