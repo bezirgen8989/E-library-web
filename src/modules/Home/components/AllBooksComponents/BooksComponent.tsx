@@ -16,7 +16,6 @@ import { getBookshelfById } from "../../slices/home";
 import { UserContext } from "../../../../core/contexts";
 import { useDispatch } from "react-redux";
 import { routes } from "../../routing";
-import { useTranslation } from "react-i18next";
 
 interface Author {
   name: string;
@@ -54,6 +53,9 @@ const BooksComponent: React.FC<HomeProps> = ({
 }) => {
   const history = useHistory();
   const value = useContext(UserContext);
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
 
   const { currentBookshelfBook } = useLazySelector(({ home }) => ({
     currentBookshelfBook: home.currentBookshelfBook,
@@ -61,7 +63,6 @@ const BooksComponent: React.FC<HomeProps> = ({
   const [bookProgress, setBookProgress] = useState<Record<number, number>>({});
   const processedBooks = useRef<Set<number>>(new Set());
   const dispatch = useDispatch();
-  const { t } = useTranslation();
 
   const continueReadingBook = useCallback((id) => {
     history.push(`${routes.reading}/${id}`);
@@ -102,7 +103,7 @@ const BooksComponent: React.FC<HomeProps> = ({
         className={commonStyles.backBtnRelativePage}
       >
         <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
-        {t("backBtn")}
+        {localization?.backBtn}
       </div>
       <div className={styles.page_title}>
         {isLoading && !isLoadingMore ? (
@@ -183,7 +184,7 @@ const BooksComponent: React.FC<HomeProps> = ({
                     onClick={() => continueReadingBook?.(book.id)}
                     className={styles.startBtn}
                   >
-                    {t("continueReading")}
+                    {localization?.continueReading}
                   </div>
                 )}
               </div>
@@ -192,10 +193,10 @@ const BooksComponent: React.FC<HomeProps> = ({
       {hasMoreBooks && (
         <div className={styles.loadMoreBtn} onClick={onLoadMore}>
           {isLoadingMore ? (
-            t("loading")
+            localization?.loading
           ) : (
             <div style={{ display: "flex", alignItems: "center" }}>
-              {t("loadMoreBtn")}
+              localization?.loadMoreBtn
               <img style={{ marginLeft: 5 }} src={ArrowDown} alt="icon" />
             </div>
           )}

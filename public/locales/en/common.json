@@ -102,5 +102,14 @@
   "chooseYourReadingHabits": "Choose Your Reading Habits",
   "profileDetails": "Profile Details",
   "howDidYouLearnAbout": "How did you learn about Elor?",
-  "selectMultipleOptions": "You can select multiple options"
+  "selectMultipleOptions": "You can select multiple options",
+
+  "YourBookshelfEmpty": "Your Bookshelf is empty now",
+  "ExploreLibraryNow": "Explore our library right now",
+  "StartExploring": "Start exploring",
+  "listen": "Listen",
+  "backToHomePage": "Back to Home Page",
+  "thisPageNotfound": "This page can't be found",
+  "error404": "Oops, error 404!"
+
 }

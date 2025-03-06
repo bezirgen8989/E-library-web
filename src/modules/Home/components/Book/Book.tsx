@@ -21,9 +21,10 @@ import PageBooksList from "../common/PageBooksList/PageBooksList";
 import BackIcon from "../../../../assets/images/icons/backPage.svg";
 import Review from "../common/Review/Review";
 import { Skeleton } from "antd";
-import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { getBookVersion } from "../../slices/home";
+import { useLazySelector } from "../../../../hooks";
+import { getLocalization } from "../../../Auth/slices/auth";
 
 type LanguageType = {
   id: number;
@@ -43,7 +44,7 @@ type ReviewType = {
   text: string;
   reviewer: string;
   deleteReview: any;
-  user?: UserType; // Optional user property added
+  user?: UserType;
 };
 
 type CategoryType = {
@@ -101,7 +102,9 @@ const Book: React.FC<BookProps> = ({
   const { id } = useParams<{ id: string }>();
   const value = useContext(UserContext);
   const history = useHistory();
-  const { t } = useTranslation();
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
 
   const defaultLanguage = (languages || []).find(
     (lang) => lang.name === "English"
@@ -121,6 +124,12 @@ const Book: React.FC<BookProps> = ({
   const dispatch = useDispatch();
   console.log("selectedLanguage", selectedLanguage);
   console.log("currentBookVersion?.result", currentBookVersion?.result);
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
 
   useEffect(() => {
     if (id) {
@@ -277,7 +286,7 @@ const Book: React.FC<BookProps> = ({
         className={styles.backBtnRelativePage}
       >
         <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
-        {t("backBtn")}
+        {localization?.backBtn}
       </div>
       <div className={styles.home_page}>
         <div className={styles.flex_wrap}>
@@ -323,9 +332,13 @@ const Book: React.FC<BookProps> = ({
                       src={HabitIcon}
                       alt="icon"
                     />
-                    {t(`category${category.name}`, {
-                      defaultValue: category.name,
-                    })}
+                    {category?.name &&
+                    localization &&
+                    localization[`category${category.name}`]
+                      ? localization[`category${category.name}`]
+                      : category?.name ||
+                        localization?.categoryNotFound ||
+                        "Category not found"}
                   </div>
                 ))}
               </div>
@@ -426,7 +439,7 @@ const Book: React.FC<BookProps> = ({
               variant="Brown"
               type="submit"
             >
-              {t("readNowBtn")}
+              {localization?.readNowBtn}
             </Button>
             <div className={styles.btns_block}>
               <Button
@@ -442,7 +455,7 @@ const Book: React.FC<BookProps> = ({
                 }}
                 icon={<img src={ListenIcon} alt="icon" />}
               >
-                Listen
+                localization?.listen
               </Button>
               <div className={styles.divider} />
               <Button
@@ -457,13 +470,13 @@ const Book: React.FC<BookProps> = ({
                 variant="Transparent"
                 icon={<img src={Question} alt="icon" />}
               >
-                {t("AskQuestionBtn")}
+                {localization?.AskQuestionBtn}
               </Button>
             </div>
             <section className={styles.bookDescription}>
               <div className={styles.description}>
                 <div className={styles.section_title}>
-                  {t("bookDescriptionBtn")}
+                  {localization?.bookDescriptionBtn}
                 </div>
                 <p>
                   <div>{currentBookVersion?.result?.data[0]?.description}</div>
@@ -472,7 +485,7 @@ const Book: React.FC<BookProps> = ({
               <div className={styles.mobileView}>
                 <div className={styles.age_row}>
                   <img style={{ marginRight: "5px" }} src={Group} alt="icon" />
-                  {t("ageLimit")}
+                  {localization?.ageLimit}
                 </div>
                 <div
                   style={{
@@ -494,7 +507,13 @@ const Book: React.FC<BookProps> = ({
                         src={HabitIcon}
                         alt="icon"
                       />
-                      {t(`category${category.name}`)}
+                      {category?.name &&
+                      localization &&
+                      localization[`category${category.name}`]
+                        ? localization[`category${category.name}`]
+                        : category?.name ||
+                          localization?.categoryNotFound ||
+                          "Category not found"}
                     </div>
                   ))}
                 </div>
@@ -509,7 +528,7 @@ const Book: React.FC<BookProps> = ({
                 variant="Transparent"
                 icon={<img src={Download} alt="icon" />}
               >
-                {t("downloadBtn")}
+                {localization?.downloadBtn}
                 <div
                   style={{
                     background: "rgba(153, 108, 66, 0.1)",
@@ -524,7 +543,9 @@ const Book: React.FC<BookProps> = ({
               </Button>
             </section>
             <section className={styles.reviewsSection}>
-              <div className={styles.section_title}>{t("reviews")}</div>
+              <div className={styles.section_title}>
+                {localization?.reviews}
+              </div>
               <div className={styles.overallRating}>
                 {book?.rating !== undefined && (
                   <Rating
@@ -541,7 +562,7 @@ const Book: React.FC<BookProps> = ({
                   {book?.rating ? Number(book.rating).toFixed(1) : "N/A"}
                 </div>
                 <span>
-                  ({book?.reviewCount} {t("reviews").toLowerCase()})
+                  ({book?.reviewCount} {localization?.reviews.toLowerCase()})
                 </span>
               </div>
               {reviews.length > 0 ? (
@@ -556,7 +577,7 @@ const Book: React.FC<BookProps> = ({
                   />
                 ))
               ) : (
-                <p>{t("noReviewsAvailable")}</p>
+                <p>{localization?.noReviewsAvailable}</p>
               )}
               <Button
                 style={{
@@ -570,7 +591,7 @@ const Book: React.FC<BookProps> = ({
                 }}
                 variant="Transparent"
               >
-                {t("writeReviewBtn")}
+                {localization?.writeReviewBtn}
                 <img
                   style={{ marginLeft: "10px" }}
                   src={ReviewIcon}
@@ -581,7 +602,7 @@ const Book: React.FC<BookProps> = ({
             <section>
               <PageBooksList
                 books={similarBooks}
-                title={t("titleSimilarBooks")}
+                title={localization?.titleSimilarBooks}
                 seeAllLink={routes.similarBooks}
                 getBook={getBook}
               />

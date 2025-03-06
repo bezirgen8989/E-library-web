@@ -12,6 +12,7 @@ import {
 import { UserContext } from "../../../core/contexts";
 import { useHistory } from "react-router-dom";
 import { routes } from "../routing";
+import { getLocalization } from "../../Auth/slices/auth";
 
 const BookShelfContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,12 @@ const BookShelfContainer: React.FC = () => {
       isFinishedBooksLoading,
     };
   });
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
 
   const startedBooksList = startedBooks?.result?.data.map((item: any) => {
     return {

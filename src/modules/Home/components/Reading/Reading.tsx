@@ -4,7 +4,7 @@ import BackIcon from "../../../../assets/images/icons/backPage.svg";
 import { useHistory } from "react-router-dom";
 import SpinnerBrown from "../../../../components/common/SpinnerBrown";
 import { Progress } from "antd";
-import { useTranslation } from "react-i18next"; // Import Ant Design's Progress component
+import { useLazySelector } from "../../../../hooks"; // Import Ant Design's Progress component
 
 interface ReadingProps {
   pagesContent: string[];
@@ -31,7 +31,9 @@ const Reading: React.FC<ReadingProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState<number>(10);
   const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
-  const { t } = useTranslation();
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
 
   const getPageNumberFromHTML = (html: string) => {
     const match = html.match(/<title>Page (\d+)<\/title>/);
@@ -106,7 +108,7 @@ const Reading: React.FC<ReadingProps> = ({
         className={styles.backBtnRelativePage}
       >
         <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
-        {t("backBtn")}
+        {localization.backBtn}
       </div>
 
       <div

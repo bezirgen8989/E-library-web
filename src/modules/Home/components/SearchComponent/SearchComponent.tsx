@@ -3,7 +3,7 @@ import React, { FC, useState } from "react";
 import NoImg from "../../../../assets/images/NoImagePlaceholder.jpg";
 import Search from "../../../../assets/images/icons/SearchIcon.svg";
 import { Input, Skeleton } from "antd";
-import { useTranslation } from "react-i18next";
+import { useLazySelector } from "../../../../hooks";
 
 type CategoryData = {
   id: number;
@@ -48,7 +48,6 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
   getBook,
   isLoading,
 }) => {
-  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [hasSearched, setHasSearched] = useState<boolean>(false);
   const [isDropdownVisible, setDropdownVisible] = useState<boolean>(false);
@@ -74,6 +73,10 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
     getBooksByName(title);
   };
 
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
+
   const filteredBooks = searchBooks.filter((book) =>
     book.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -83,7 +86,7 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
       <div className={styles.habit_wrap}>
         <div className={styles.searchWrapper}>
           <Input
-            placeholder={t("searchPlaceholder")}
+            placeholder={localization?.searchPlaceholder}
             prefix={<img src={Search} alt="search" />}
             id="search-input"
             value={searchTerm}
@@ -148,7 +151,7 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
         {!searchTerm && (
           <div className={styles.categoryFilter}>
             <div className={styles.page_title}>
-              <span>{t("allGenres")}</span>
+              <span>{localization?.allGenres}</span>
             </div>
             <div className={styles.grid_container}>
               {categoriesData.map((category: CategoryData) => (

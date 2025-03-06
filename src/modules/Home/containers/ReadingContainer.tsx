@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../hooks";
 import { UserContext } from "../../../core/contexts";
 import { SetReadingBookPayload } from "../slices/home/types";
+import { getLocalization } from "../../Auth/slices/auth";
 
 const ReadingContainer: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -35,6 +36,12 @@ const ReadingContainer: React.FC = () => {
       currentBookshelfBook: home.currentBookshelfBook,
     })
   );
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
 
   useEffect(() => {
     const fetchBookshelfData = async () => {

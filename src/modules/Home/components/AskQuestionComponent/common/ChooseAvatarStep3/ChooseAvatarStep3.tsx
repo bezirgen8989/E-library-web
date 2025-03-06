@@ -3,7 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Button from "../../../../../../components/common/Buttons/Button";
 import { FC } from "react";
-import { useTranslation } from "react-i18next";
+import { useLazySelector } from "../../../../../../hooks";
 
 interface ChooseAvatarStep2Props {
   setCurrentStep: (value: number) => void;
@@ -13,7 +13,9 @@ const ChooseAvatarStep3: FC<ChooseAvatarStep2Props> = ({
   setCurrentStep,
   selectedAvatar,
 }) => {
-  const { t } = useTranslation();
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
   return (
     <div className={styles.askQuestionAvatar}>
       {/*<div className={styles.avatarSettings}>*/}
@@ -30,9 +32,9 @@ const ChooseAvatarStep3: FC<ChooseAvatarStep2Props> = ({
         ></div>
         <div className={styles.messageSystemContent}>
           <ul>
-            <li>{t("avatarListItem1")}</li>
-            <li>{t("avatarListItem2")}</li>
-            <li>{t("avatarListItem3")}</li>
+            <li>{localization?.avatarListItem1}</li>
+            <li>{localization?.avatarListItem2}</li>
+            <li>{localization?.avatarListItem3}</li>
           </ul>
         </div>
         <Button
@@ -42,7 +44,7 @@ const ChooseAvatarStep3: FC<ChooseAvatarStep2Props> = ({
           style={{ width: "341px", margin: "30px auto 20px" }}
           variant="Brown"
         >
-          {t("continueBtn")}
+          {localization?.continueBtn}
         </Button>
       </div>
     </div>

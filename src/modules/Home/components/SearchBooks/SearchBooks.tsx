@@ -5,7 +5,7 @@ import books from "../../../../assets/images/icons/booksIcon.png";
 import { routes } from "../../routing";
 import BackIcon from "../../../../assets/images/icons/goBackIcon.svg";
 import { useHistory } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useLazySelector } from "../../../../hooks";
 
 type CategoryData = {
   id: number;
@@ -37,7 +37,9 @@ const SearchBooks: FC<HomeProps> = ({
   isSuggestedBooksLoading,
 }) => {
   const history = useHistory();
-  const { t } = useTranslation();
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
   const selectedCategory = categories.find(
     (category) => category.id.toString() === searchId
   );
@@ -46,21 +48,20 @@ const SearchBooks: FC<HomeProps> = ({
     <div className={styles.home_page}>
       <div onClick={() => history.goBack()} className={styles.backBtnSearch}>
         <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
-        {t("backBtn")}
+        {localization?.backBtn}
       </div>
       <div className={styles.title}>
         {selectedCategory
-          ? t(`category${selectedCategory.name}`, {
-              defaultValue: selectedCategory.name,
-            })
-          : t("categoryNotFound")}
+          ? localization[`category${selectedCategory.name}`] ||
+            selectedCategory.name
+          : localization?.categoryNotFound}
       </div>
       <div className={styles.search_page}>
         <div className={styles.searchContainer}>
           {topBooks && (
             <AllBooksSlider
               books={topBooks}
-              title={t("titleTopBooks")}
+              title={localization?.titleTopBooks}
               seeAllLink={`${routes.searchTopBooks}/${searchId}`}
               getBook={getBook}
               isLoading={isTopBooksLoading}
@@ -70,7 +71,7 @@ const SearchBooks: FC<HomeProps> = ({
           {newBooks && (
             <AllBooksSlider
               books={newBooks}
-              title={t("titleNewBooks")}
+              title={localization?.titleNewBooks}
               titleImage={<img src={books} alt="books" />}
               seeAllLink={`${routes.searchNewBooks}/${searchId}`}
               getBook={getBook}

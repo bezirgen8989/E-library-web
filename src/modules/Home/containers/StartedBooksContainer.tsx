@@ -6,6 +6,7 @@ import BooksComponent from "../components/AllBooksComponents/BooksComponent";
 import { routes } from "../routing";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../../core/contexts";
+import { getLocalization } from "../../Auth/slices/auth";
 
 const StartedBooksContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -22,6 +23,12 @@ const StartedBooksContainer: React.FC = () => {
       isLoading: startedBooks.isLoading,
     };
   });
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
 
   const limit = 6;
 

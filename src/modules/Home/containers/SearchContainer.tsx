@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import SearchComponent from "../components/SearchComponent/SearchComponent";
-import { useCallback, useEffect } from "react";
-import { getCategories } from "../../Auth/slices/auth";
+import { useCallback, useContext, useEffect } from "react";
+import { getCategories, getLocalization } from "../../Auth/slices/auth";
 import { useLazySelector } from "../../../hooks";
 import routes from "../routing/routes";
 import { useHistory } from "react-router-dom";
@@ -12,6 +12,7 @@ import {
   setCurrentCategoryId,
 } from "../slices/home";
 import { useTranslation } from "react-i18next";
+import { UserContext } from "../../../core/contexts";
 
 const SearchContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,13 @@ const SearchContainer: React.FC = () => {
       return { searchBooks, booksByQueryName, isLoading };
     }
   );
+  const value = useContext(UserContext);
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
 
   console.log("isLoading", isLoading);
   console.log("booksByQueryName", booksByQueryName);

@@ -5,9 +5,9 @@ import "slick-carousel/slick/slick-theme.css";
 import { FC } from "react";
 import Button from "../../../../../../components/common/Buttons/Button";
 import Spinner from "../../../../../../components/common/Spinner";
-import { useTranslation } from "react-i18next";
 import { routes as profileRoutes } from "../../../../../UserManagement/routing";
 import { useHistory } from "react-router-dom";
+import { useLazySelector } from "../../../../../../hooks";
 
 interface AvatarData {
   id: number;
@@ -45,8 +45,10 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
   setCurrentImage,
   isChooseAvatarPage,
 }) => {
-  const { t } = useTranslation();
   const history = useHistory();
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
 
   const settings = {
     infinite: true,
@@ -85,12 +87,6 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
           slidesToShow: 3,
         },
       },
-      // {
-      //   breakpoint: 375,
-      //   settings: {
-      //     slidesToShow: 1,
-      //   },
-      // },
     ],
   };
 
@@ -124,16 +120,16 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
           ))}
         </Slider>
         <div className={styles.gratisBlock}>
-          {t("helloAvatar1")}
-          <br /> {t("helloAvatar2")}
+          {localization?.helloAvatar1}
+          <br /> {localization?.helloAvatar2}
         </div>
-        <div className={styles.subTitle}>{t("avatarLook")}</div>
+        <div className={styles.subTitle}>{localization?.avatarLook}</div>
         <Button
           onClick={handleNextStep}
           style={{ width: "341px", margin: "20px auto 20px" }}
           variant="Brown"
         >
-          {t("chooseBtn")} {currentImage.name}
+          {localization?.chooseBtn} {currentImage.name}
         </Button>
       </div>
     </div>

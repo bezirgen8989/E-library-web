@@ -25,12 +25,12 @@ import {
   setIsStreamShow,
   setStreamDone,
 } from "../../slices/home";
-import { useTranslation } from "react-i18next";
 import MetaModal from "../common/MetaModal/MetaModal";
 import { UserContext } from "../../../../core/contexts";
 // @ts-ignore
 import silentAvatar from "../../../../assets/videos/silent.mp4";
 import { useLazySelector } from "../../../../hooks";
+import { getLocalization } from "../../../Auth/slices/auth";
 // import {useSocket} from "../../../../hooks/useSocket";
 
 type Chat = {
@@ -111,12 +111,14 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const chatContentRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMetaModalOpen, setIsMetaModalOpen] = useState(false);
-  const { t } = useTranslation();
   const [, setIsShowSilent] = useState();
   const [isFirst, setIsFirst] = useState(true);
   const [isEmpty, setIsEmpty] = useState(true);
   // const [showStopButton, setShowStopButton] = useState(false);
   const [voiceChatHistory, setVoiceChatHistory] = useState<any>([]);
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
   console.log("chatHistory", chatHistory);
   console.log("voiceChatHistory", voiceChatHistory);
 
@@ -128,11 +130,15 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     };
   });
 
-  console.log("streamDone", streamDone);
-
   const [initialSlide, setInitialSlide] = useState<number>(0);
   const [defaultAvatarId] = useState(value?.avatarSettings?.id || 1);
   const [currentImage, setCurrentImage] = useState<AvatarData | null>(null);
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
 
   useEffect(() => {
     if (avatars?.result?.data?.length && value) {
@@ -209,7 +215,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
         if (quillEditor) {
           quillEditor?.insertText(position, res);
           const result: any = position + res?.length;
-          // Move cursor after inserted text
           quillEditor?.setSelection(result);
         }
       }
@@ -357,7 +362,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   useEffect(() => {
     const handleRouteChange = () => {
       if (!location.pathname.includes("ask_question") && videoRef.current) {
-        // Закрыть поток, если покидается URL ask_question
         stopAvatarGeneration({ client_id: String(value.id) });
         videoRef.current.srcObject = null;
         setIsStreamConnect(false);
@@ -451,7 +455,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
           <div className={styles.bookTitle}>
             <div style={{ marginRight: 10 }}>
               {location.pathname.includes("ask_global_question")
-                ? t("askGlobalTitle")
+                ? localization?.askGlobalTitle
                 : title}
             </div>
             <div
@@ -608,7 +612,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                     {...register("question", { required: true })}
                     type="text"
                     className={styles.chatInput}
-                    placeholder={t("questionPlaceholder")}
+                    placeholder={localization?.questionPlaceholder}
                     autoComplete="off"
                     onKeyDown={handleKeyDown}
                     onInput={(e) => setIsEmpty(e.currentTarget.value === "")}
