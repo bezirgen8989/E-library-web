@@ -1,6 +1,6 @@
 import ProfileUserComponent from "../components/ProfileUserComponent";
 import { useLazySelector } from "../../../hooks";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {
   deleteUserAccount,
   getLanguages,
@@ -15,11 +15,30 @@ import {
 } from "../../Auth/slices/auth";
 import { useDispatch } from "react-redux";
 import { routes } from "../../Home/routing";
+import { routes as userManagementRoutes } from "../../UserManagement/routing";
 import { useHistory } from "react-router-dom";
 
 const ProfileUserContainer: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const prevPath = useRef(history.location.pathname);
+
+  useEffect(() => {
+    const unlisten = history.listen((location) => {
+      if (
+        prevPath.current === userManagementRoutes.profile &&
+        location.pathname !== userManagementRoutes.profile
+      ) {
+        console.log("User left profile, fetching new data...");
+        dispatch(getMe());
+      }
+      prevPath.current = location.pathname;
+    });
+
+    return () => {
+      unlisten();
+    };
+  }, [history, dispatch]);
 
   const { languages, photoId } = useLazySelector(({ auth }) => {
     const { languages, photoId } = auth;

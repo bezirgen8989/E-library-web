@@ -22,6 +22,7 @@ import {
   setUserAvatar,
   getSurveyOptions,
   setRegistrationOptionsAbout,
+  getAppLocalization,
 } from "../../api/authService";
 import {
   EditUserParams,
@@ -56,6 +57,7 @@ const initialState: AuthState = {
   kidsMode: {},
   avatarSettings: {},
   aboutOptions: {},
+  appLocalization: {},
 };
 
 const authSlice = createSlice({
@@ -196,6 +198,13 @@ const authSlice = createSlice({
         const { content, error } = action.payload;
         state.aboutOptions = { isLoading: false, result: content, error };
       })
+      .addCase(getLocalization.pending, (state) => {
+        state.appLocalization = { isLoading: true };
+      })
+      .addCase(getLocalization.fulfilled, (state, action) => {
+        const { content, error } = action.payload;
+        state.appLocalization = { isLoading: false, result: content, error };
+      })
 
       .addCase(userLoggedOut, () => initialState);
   },
@@ -209,8 +218,6 @@ export const LoginUser = createAsyncThunk(
   async (formParams: LoginUserParams) => {
     const response = await authLogin(formParams);
     const { success, status, error, content } = response;
-
-    console.log("response", success, status, error, content);
 
     if (!success) {
       if (status === 401) {
@@ -396,6 +403,14 @@ export const getMe = createAsyncThunk("api/v1/auth/me", async () => {
   const response = await authMe();
   return response;
 });
+
+export const getLocalization = createAsyncThunk(
+  "/api/v1/localization/web/",
+  async (lang: string) => {
+    const response = await getAppLocalization(lang);
+    return response;
+  }
+);
 
 export const setProfile = createAsyncThunk(
   "profile/api/v1/auth/me",

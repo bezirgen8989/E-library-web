@@ -53,5 +53,7 @@ export const authUpdatePhoto = (obj: any) =>
 export const getSurveyOptions = () => usingGet("/api/v1/survey/options");
 export const setRegistrationOptionsAbout = (data: any) =>
   usingPost("/api/v1/survey", data);
+export const getAppLocalization = (lang: string) =>
+  usingGet(`/api/v1/localization/web/${lang}`);
 
 export const deleteAccount = () => usingDelete(`/api/v1/auth/me`);

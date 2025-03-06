@@ -40,8 +40,6 @@
   "password": "Password",
   "confirmPassword": "Confirm Password",
   "dateOfBirth": "Date of Birth",
-
-
   "titleTopBooks": "Top Books",
   "categoryNotFound": "Category not found",
   "readLink": "Read",
@@ -77,10 +75,7 @@
   "yourFavoriteCategory": "Favorite Category",
   "saveBtn": "Save",
   "stop": "Stop",
-
   "askNow": "Talking...",
-
-
   "alreadyHaveAnAccount": "Already have an account?",
   "logInWithEmail": "Log In With Email",
   "signUpWithEmail": "Sign Up with Email",

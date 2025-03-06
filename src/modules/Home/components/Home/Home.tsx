@@ -1,11 +1,10 @@
 import styles from "./Home.module.scss";
-import { UserContext } from "core/contexts";
-import React, { useContext } from "react";
+import React from "react";
 import TopBooksSlider from "../common/TopBooksSlider/TopBooksSlider";
 import AllBooksSlider from "../common/AllBooksSlider/AllBooksSlider";
 import books from "../../../../assets/images/icons/booksIcon.png";
 import { routes } from "../../routing";
-import { useTranslation } from "react-i18next";
+import { useLazySelector } from "../../../../hooks";
 
 type HomeProps = {
   onLogout: Callback;
@@ -27,9 +26,9 @@ const Home: React.FC<HomeProps> = ({
   isNewBooksLoading,
   isSuggestedBooksLoading,
 }) => {
-  const value = useContext(UserContext);
-  const { t } = useTranslation();
-  console.log(value);
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
 
   return (
     <div className={styles.home_page}>
@@ -40,7 +39,7 @@ const Home: React.FC<HomeProps> = ({
       />
       <AllBooksSlider
         books={newBooks}
-        title={t("titleNewBooks")}
+        title={localization?.titleNewBooks}
         titleImage={<img src={books} alt="books" />}
         seeAllLink={routes.newBooks}
         getBook={getBook}
@@ -49,7 +48,7 @@ const Home: React.FC<HomeProps> = ({
       <div style={{ height: "1px", background: "rgba(18, 18, 18, 0.1)" }} />
       <AllBooksSlider
         books={suggestedBooks}
-        title={t("titleSuggestedForYou")}
+        title={localization?.titleSuggestedForYou}
         seeAllLink={routes.suggestedBooks}
         getBook={getBook}
         isLoading={isSuggestedBooksLoading}

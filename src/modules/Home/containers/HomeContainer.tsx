@@ -7,7 +7,8 @@ import { getNewBooks, getSuggestedBooks, getTopBooks } from "../slices/home";
 import { UserContext } from "../../../core/contexts";
 import { useHistory } from "react-router-dom";
 import { routes } from "../routing";
-import { clearBooks } from "../slices/home"; // Import the clearNewBooks action
+import { clearBooks } from "../slices/home";
+import { getLocalization } from "../../Auth/slices/auth";
 
 const HomeContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,12 @@ const HomeContainer: React.FC = () => {
       isSuggestedBooksLoading,
     };
   });
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
 
   const handleLogout = useCallback(() => {
     dispatch(logoutUser());
@@ -85,16 +92,19 @@ const HomeContainer: React.FC = () => {
   }, [dispatch, suggestedFilter]);
 
   return (
-    <Home
-      getBook={getBook}
-      topBooks={topBooks?.result?.data}
-      newBooks={newBooks?.result?.data}
-      suggestedBooks={suggestedBooks?.result?.data}
-      onLogout={handleLogout}
-      isTopBooksLoading={isTopBooksLoading}
-      isNewBooksLoading={isNewBooksLoading}
-      isSuggestedBooksLoading={isSuggestedBooksLoading}
-    />
+    <>
+      {/*{localization && <span>{localization?.AskQuestionBtn}</span>}*/}
+      <Home
+        getBook={getBook}
+        topBooks={topBooks?.result?.data}
+        newBooks={newBooks?.result?.data}
+        suggestedBooks={suggestedBooks?.result?.data}
+        onLogout={handleLogout}
+        isTopBooksLoading={isTopBooksLoading}
+        isNewBooksLoading={isNewBooksLoading}
+        isSuggestedBooksLoading={isSuggestedBooksLoading}
+      />
+    </>
   );
 };
 
