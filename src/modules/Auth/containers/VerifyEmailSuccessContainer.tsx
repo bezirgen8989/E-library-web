@@ -1,7 +1,19 @@
-import {VerifyEmailSuccess} from 'modules/Auth/components'
+import { VerifyEmailSuccess } from "modules/Auth/components";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getLocalization } from "../slices/auth";
 
 const VerifyEmailSuccessContainer: React.FC = () => {
-  return <VerifyEmailSuccess  />
-}
+  const dispatch = useDispatch();
 
-export default VerifyEmailSuccessContainer
+  const appLanguage = sessionStorage.getItem("appLanguage");
+  const parsedAppLanguage = appLanguage ? JSON.parse(appLanguage) : "en";
+
+  useEffect(() => {
+    dispatch(getLocalization(parsedAppLanguage));
+  }, [dispatch, parsedAppLanguage]);
+
+  return <VerifyEmailSuccess />;
+};
+
+export default VerifyEmailSuccessContainer;

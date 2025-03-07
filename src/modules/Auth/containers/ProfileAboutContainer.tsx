@@ -1,11 +1,18 @@
 import { ProfileAboutForm } from "modules/Auth/components";
 import { useDispatch } from "react-redux";
 import { useCallback, useEffect } from "react";
-import { getOptionsAbout, setOptionsAbout } from "../slices/auth";
+import {
+  getLocalization,
+  getOptionsAbout,
+  setOptionsAbout,
+} from "../slices/auth";
 import { useLazySelector } from "../../../hooks";
 
 const ProfileAboutContainer: React.FC = () => {
   const dispatch = useDispatch();
+
+  const appLanguage = sessionStorage.getItem("appLanguage");
+  const parsedAppLanguage = appLanguage ? JSON.parse(appLanguage) : "en";
 
   const { aboutOptions } = useLazySelector(({ auth }) => {
     const { aboutOptions } = auth;
@@ -14,7 +21,9 @@ const ProfileAboutContainer: React.FC = () => {
     };
   });
 
-  console.log("aboutOptions", aboutOptions?.result);
+  useEffect(() => {
+    dispatch(getLocalization(parsedAppLanguage));
+  }, [dispatch, parsedAppLanguage]);
 
   const handleSubmit = useCallback(
     (values) => {

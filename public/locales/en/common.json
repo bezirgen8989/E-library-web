@@ -111,6 +111,14 @@
   "backToHomePage": "Back to Home Page",
   "thisPageNotfound": "This page can't be found",
   "error404": "Oops, error 404!",
-  "orContinueWith": "Or continue with"
-
+  "orContinueWith": "Or continue with",
+  "Upload Your Picture": "Upload Your Picture",
+  "male": "Male",
+  "female": "Female",
+  "yourVariant": "Your variant",
+  "ContinueWithGoogle": "Continue with Google",
+  "emailSent": "Email sent",
+  "emailSentTo": "Email on how to reset your password has been sent to ",
+  "pleaseFollowInstructions": "Please follow instructions.",
+  "resend": "Resend"
 }

@@ -1,18 +1,27 @@
-import {RecoverPasswordForm} from 'modules/Auth/components'
-import {useDispatch} from 'react-redux'
-import {useCallback} from 'react'
-import {recoverPassword} from "../slices/auth";
+import { RecoverPasswordForm } from "modules/Auth/components";
+import { useDispatch } from "react-redux";
+import { useCallback, useEffect } from "react";
+import { getLocalization, recoverPassword } from "../slices/auth";
 
 const RecoverPasswordContainer: React.FC = () => {
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch()
+  const appLanguage = sessionStorage.getItem("appLanguage");
+  const parsedAppLanguage = appLanguage ? JSON.parse(appLanguage) : "en";
 
-    const handleSubmit = useCallback((values) => {
-        console.log("RecoverValue", values)
-        dispatch(recoverPassword(values))
-    }, [dispatch])
+  useEffect(() => {
+    dispatch(getLocalization(parsedAppLanguage));
+  }, [dispatch, parsedAppLanguage]);
 
-    return <RecoverPasswordForm onSubmit={handleSubmit}/>
-}
+  const handleSubmit = useCallback(
+    (values) => {
+      console.log("RecoverValue", values);
+      dispatch(recoverPassword(values));
+    },
+    [dispatch]
+  );
 
-export default RecoverPasswordContainer
+  return <RecoverPasswordForm onSubmit={handleSubmit} />;
+};
+
+export default RecoverPasswordContainer;

@@ -180,7 +180,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
               </div>
             </div>
             <span className={commonStyles.uploadSubtitle}>
-              Upload Your Picture{localization?.profileDetails}
+              localization?.profileDetails
             </span>
             <div style={{ marginTop: 15 }}>
               <div className={commonStyles.inputWrapper}>
@@ -204,7 +204,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
                           errors.userName ? commonStyles.errorLabel : ""
                         }`}
                       >
-                        Name
+                        {localization?.name}
                       </label>
                       {errors.userName && (
                         <p className={commonStyles.errorController}>
@@ -243,7 +243,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
                           errors.dateBirth ? commonStyles.errorLabel : ""
                         } ${field.value ? "has-value" : ""}`}
                       >
-                        Date of Birth
+                        {localization?.dateOfBirth}
                       </label>
                     </div>
                   )}
@@ -268,7 +268,9 @@ const ProfileForm: React.FC<RecoverProps> = ({
                           </option>
                         ))}
                       </select>
-                      <label className={commonStyles.inputLabel}>Gender</label>
+                      <label className={commonStyles.inputLabel}>
+                        {localization?.gender}
+                      </label>
                       {errors.gender && (
                         <p className={commonStyles.errorController}>
                           {errors.gender.message}
@@ -302,13 +304,13 @@ const ProfileForm: React.FC<RecoverProps> = ({
                     )}
                   />
                   <label className={commonStyles.inputLabel}>
-                    App Language
+                    {localization?.appLanguage}
                   </label>
                 </div>
               )}
             </div>
             <Button variant="White" type="submit">
-              Continue
+              {localization?.continueBtn}
             </Button>
           </form>
         </div>

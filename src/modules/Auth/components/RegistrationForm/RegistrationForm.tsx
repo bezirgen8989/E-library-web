@@ -175,7 +175,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                   {localization?.termsAndConditions}
                 </Link>
                 <br />
-                and
+                {localization?.and}
                 <Link
                   to={routes.privacyPolicy}
                   style={{ color: "#FFEA84", marginLeft: 8 }}

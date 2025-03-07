@@ -53,7 +53,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
           <div className={commonStyles.login_logo}>
             <img src={logo} alt="logo" />
           </div>
-          <div className={commonStyles.logo_name}>Log In</div>
+          <div className={commonStyles.logo_name}>
+            {localization && localization["Log In"]}
+          </div>
           <form onSubmit={handleSubmit(onSubmitForm)}>
             <div>
               <div className={commonStyles.inputWrapper}>
@@ -121,7 +123,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
               )}
             </div>
             <Button variant="White" type="submit">
-              Log In
+              {localization && localization["Log In"]}
             </Button>
           </form>
         </div>

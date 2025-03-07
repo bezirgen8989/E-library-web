@@ -4,11 +4,13 @@ import BackIcon from "../../../../assets/images/icons/goBackIcon.svg";
 import Button from "../../../../components/common/Buttons/Button";
 import logo from "../../../../assets/images/ConfirmIcon.svg";
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useLazySelector } from "../../../../hooks";
 
 const VerifyEmailSuccess: React.FC = () => {
   const history = useHistory();
-  const { t } = useTranslation();
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
 
   return (
     <div
@@ -26,7 +28,7 @@ const VerifyEmailSuccess: React.FC = () => {
             className={commonStyles.backBtnRelative}
           >
             <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
-            {t("backBtn")}
+            {localization?.backBtn}
           </div>
           <div />
         </div>

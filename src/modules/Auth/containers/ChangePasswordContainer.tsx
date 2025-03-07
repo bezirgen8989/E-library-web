@@ -1,16 +1,26 @@
-import {ChangePasswordForm} from 'modules/Auth/components'
-import { useDispatch } from 'react-redux'
-import { useCallback } from 'react'
-import {resetPassword} from '../slices/auth'
+import { ChangePasswordForm } from "modules/Auth/components";
+import { useDispatch } from "react-redux";
+import { useCallback, useEffect } from "react";
+import { getLocalization, resetPassword } from "../slices/auth";
 
 const ChangePasswordContainer: React.FC = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const handleSubmit = useCallback((values) => {
-    dispatch(resetPassword(values))
-  }, [dispatch])
+  const appLanguage = sessionStorage.getItem("appLanguage");
+  const parsedAppLanguage = appLanguage ? JSON.parse(appLanguage) : "en";
 
-  return <ChangePasswordForm onSubmit={handleSubmit} />
-}
+  useEffect(() => {
+    dispatch(getLocalization(parsedAppLanguage));
+  }, [dispatch, parsedAppLanguage]);
 
-export default ChangePasswordContainer
+  const handleSubmit = useCallback(
+    (values) => {
+      dispatch(resetPassword(values));
+    },
+    [dispatch]
+  );
+
+  return <ChangePasswordForm onSubmit={handleSubmit} />;
+};
+
+export default ChangePasswordContainer;

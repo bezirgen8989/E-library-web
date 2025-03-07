@@ -133,7 +133,7 @@ const EnterCodeForm: React.FC<RecoverProps> = ({ onSubmit, currentEmail }) => {
         <div className={commonStyles.footerCentered}>
           <div>
             <div className={commonStyles.login_subtitle}>
-              Didn’t receive a code?
+              {localization?.DidntReceiveCode}
               <Link style={{ color: "#FFEA84", marginLeft: 8 }} to="">
                 Resend
               </Link>

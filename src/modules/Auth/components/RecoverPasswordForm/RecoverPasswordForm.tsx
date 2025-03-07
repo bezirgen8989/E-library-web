@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useLazySelector } from "../../../../hooks";
 
 type RecoverProps = {
   onSubmit: (email: VerifyData) => void;
@@ -20,6 +21,10 @@ const RecoverPasswordForm: React.FC<RecoverProps> = ({ onSubmit }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
 
   const onSubmitForm = (values: any) => {
     onSubmit(values);
@@ -49,9 +54,12 @@ const RecoverPasswordForm: React.FC<RecoverProps> = ({ onSubmit }) => {
           <div className={commonStyles.login_logo}>
             <img src={logo} alt="logo" />
           </div>
-          <div className={commonStyles.recover_name}>Recover Your Password</div>
+          <div className={commonStyles.recover_name}>
+            {localization?.recoverYourPassword}
+          </div>
           <div className={commonStyles.recover_subtitle}>
-            We’ll email you instructions to reset your password.
+            {localization &&
+              localization["emailYouInstructionsToResetYourPassword."]}
           </div>
           <form onSubmit={handleSubmit(onSubmitForm)}>
             <div>
@@ -77,7 +85,7 @@ const RecoverPasswordForm: React.FC<RecoverProps> = ({ onSubmit }) => {
                     errors.email ? commonStyles.errorLabel : ""
                   }`}
                 >
-                  Email
+                  {localization?.email}
                 </label>
               </div>
               {errors.email && (
@@ -85,7 +93,7 @@ const RecoverPasswordForm: React.FC<RecoverProps> = ({ onSubmit }) => {
               )}
             </div>
             <Button variant="White" type="submit">
-              Continue
+              {localization?.continueBtn}
             </Button>
           </form>
         </div>
