@@ -13,6 +13,7 @@ import { useLazySelector } from "../../../../hooks";
 type LanguageType = {
   id: number;
   name: string;
+  isoCode2char: string;
   flag: {
     link: string;
   };
@@ -88,6 +89,10 @@ const ProfileForm: React.FC<RecoverProps> = ({
 
   const onLanguageSelect = (language: LanguageType) => {
     setSelectedLanguage(language);
+    sessionStorage.setItem(
+      "appLanguage",
+      JSON.stringify(language.isoCode2char)
+    );
     setValue("language", language.name);
   };
 

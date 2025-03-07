@@ -59,7 +59,6 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
     isoCode2char: "en",
   };
   const value = useContext(UserContext);
-  console.log(333, value?.language);
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
   const [selectedBookLanguage, setSelectedBookLanguage] = useState(
     bookLanguage || defaultLanguage
