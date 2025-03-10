@@ -6,6 +6,7 @@ import { routes } from "../routing";
 import { useHistory } from "react-router-dom";
 import BooksComponent from "../components/AllBooksComponents/BooksComponent";
 import { UserContext } from "../../../core/contexts";
+import { getLocalization } from "../../Auth/slices/auth";
 
 const SuggestedBooksContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,12 @@ const SuggestedBooksContainer: React.FC = () => {
       isLoading: suggestedBooks.isLoading,
     };
   });
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
 
   const { result: localization } = useLazySelector(
     ({ auth }) => auth.appLocalization || {}

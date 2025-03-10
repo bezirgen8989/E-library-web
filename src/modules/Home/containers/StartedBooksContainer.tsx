@@ -24,6 +24,16 @@ const StartedBooksContainer: React.FC = () => {
     };
   });
 
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
+
   useEffect(() => {
     if (value?.language?.isoCode2char) {
       dispatch(getLocalization(value?.language?.isoCode2char));
@@ -91,7 +101,7 @@ const StartedBooksContainer: React.FC = () => {
     <BooksComponent
       books={startedBooksList}
       getBook={getBook}
-      title="Started"
+      title={localization?.started}
       onLoadMore={hasMoreBooks ? loadMoreBooks : undefined}
       isLoadingMore={loadingMore}
       hasMoreBooks={hasMoreBooks}

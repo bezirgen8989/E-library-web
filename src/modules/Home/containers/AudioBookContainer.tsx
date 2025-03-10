@@ -13,12 +13,19 @@ import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../hooks";
 import { UserContext } from "../../../core/contexts";
 import { SetReadingBookPayload } from "../slices/home/types";
+import { getLocalization } from "../../Auth/slices/auth";
 // import {getLanguages} from "../../Auth/slices/auth";
 
 const AudioBookContainer: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const value = useContext(UserContext);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
 
   const { currentAudioBook, currentBookVersion, currentBook } = useLazySelector(
     ({ home }) => ({

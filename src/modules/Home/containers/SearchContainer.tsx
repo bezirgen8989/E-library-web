@@ -11,13 +11,12 @@ import {
   getBooksByQueryName,
   setCurrentCategoryId,
 } from "../slices/home";
-import { useTranslation } from "react-i18next";
 import { UserContext } from "../../../core/contexts";
 
 const SearchContainer: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { t } = useTranslation();
+  const value = useContext(UserContext);
 
   const { categories } = useLazySelector(({ auth }) => {
     const { categories } = auth;
@@ -25,7 +24,16 @@ const SearchContainer: React.FC = () => {
       categories,
     };
   });
-  console.log("categories ", categories);
+
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
 
   const { searchBooks, booksByQueryName, isLoading } = useLazySelector(
     ({ home }) => {
@@ -34,13 +42,6 @@ const SearchContainer: React.FC = () => {
       return { searchBooks, booksByQueryName, isLoading };
     }
   );
-  const value = useContext(UserContext);
-
-  useEffect(() => {
-    if (value?.language?.isoCode2char) {
-      dispatch(getLocalization(value?.language?.isoCode2char));
-    }
-  }, [dispatch, value?.language?.isoCode2char]);
 
   console.log("isLoading", isLoading);
   console.log("booksByQueryName", booksByQueryName);
@@ -86,7 +87,7 @@ const SearchContainer: React.FC = () => {
   const translatedCategories = categories?.result?.data?.map(
     (category: any) => ({
       ...category,
-      name: t(`category${category.name}`, category.name),
+      name: localization?.[category.name] || category.name, // Используем localization напрямую
     })
   );
 

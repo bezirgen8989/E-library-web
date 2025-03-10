@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Modal, Switch } from "antd";
 import { useDispatch } from "react-redux";
@@ -13,7 +13,8 @@ import styles from "../../ProfileUserForm/ProfileUserForm.module.scss";
 import Close from "../../../../../assets/images/icons/Close.svg";
 import { useLazySelector } from "../../../../../hooks";
 import SpinnerBrown from "../../../../../components/common/SpinnerBrown";
-import { useTranslation } from "react-i18next";
+import { UserContext } from "../../../../../core/contexts";
+import { getLocalization } from "../../../../Auth/slices/auth";
 
 interface NotificationsModalProps {
   isModalOpen: boolean;
@@ -31,7 +32,6 @@ const NotificationsModal: FC<NotificationsModalProps> = ({
   setIsModalOpen,
 }) => {
   const dispatch = useDispatch();
-  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
 
   const { notificationsSettings } = useLazySelector(({ home }) => ({
@@ -45,6 +45,17 @@ const NotificationsModal: FC<NotificationsModalProps> = ({
       newBooks: false,
     },
   });
+  const value = useContext(UserContext);
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
+  console.log(localization);
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
 
   console.log("notificationsSettings", notificationsSettings?.result);
 
@@ -78,7 +89,9 @@ const NotificationsModal: FC<NotificationsModalProps> = ({
 
   return (
     <Modal
-      title={<div className="custom-modal-title">{t("notifications")}</div>}
+      title={
+        <div className="custom-modal-title">{localization?.notifications}</div>
+      }
       visible={isModalOpen}
       onCancel={hideModal}
       className="custom-modal-settings"
@@ -98,7 +111,7 @@ const NotificationsModal: FC<NotificationsModalProps> = ({
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.kidsSelectWrapper}>
-            <span>{t("yourProgress")}</span>
+            <span>{localization?.notificationSettings}</span>
             <Controller
               name="startReading"
               control={control}
@@ -109,7 +122,7 @@ const NotificationsModal: FC<NotificationsModalProps> = ({
           </div>
 
           <div className={styles.kidsSelectWrapper}>
-            <span>{t("yourBookshelf")}</span>
+            <span>{localization?.yourBookshelf}</span>
             <Controller
               name="continueReading"
               control={control}
@@ -120,7 +133,7 @@ const NotificationsModal: FC<NotificationsModalProps> = ({
           </div>
 
           <div className={styles.kidsSelectWrapper}>
-            <span>{t("yourFavoriteCategory")}</span>
+            <span>{localization?.yourFavoriteCategory}</span>
             <Controller
               name="newBooks"
               control={control}
@@ -132,7 +145,7 @@ const NotificationsModal: FC<NotificationsModalProps> = ({
 
           <div style={{ textAlign: "right", marginTop: "30px" }}>
             <Button variant="Brown" type="submit">
-              {t("saveBtn")}
+              {localization?.saveBtn}
             </Button>
           </div>
         </form>

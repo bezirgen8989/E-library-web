@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import NoImg from "../../../../../assets/images/NoImagePlaceholder.jpg";
 import { FC, ReactNode, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useLazySelector } from "../../../../../hooks";
 
 interface Author {
   name: string;
@@ -37,7 +37,9 @@ const PageBooksList: FC<PageBooksListProps> = ({
   const [displayCount, setDisplayCount] = useState<number>(
     books ? books.length : 0
   );
-  const { t } = useTranslation();
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
 
   useEffect(() => {
     const handleResize = () => {
@@ -58,7 +60,7 @@ const PageBooksList: FC<PageBooksListProps> = ({
           {titleImage}
         </div>
         <Link className={styles.titleLink} to={seeAllLink}>
-          {t("seeAll")}
+          {localization?.seeAll}
         </Link>
       </div>
       <div className={styles.newBooksList}>

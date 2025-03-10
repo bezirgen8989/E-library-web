@@ -1,16 +1,27 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "hooks";
 import { clearBooks, getBookById, getNewBooks } from "../slices/home";
 import BooksComponent from "../components/AllBooksComponents/BooksComponent";
 import { routes } from "../routing";
 import { useHistory, useParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { UserContext } from "../../../core/contexts";
+import { getLocalization } from "../../Auth/slices/auth";
 
 const SearchNewBooksContainer: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { t } = useTranslation();
+  const value = useContext(UserContext);
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
+
   const { id } = useParams<{ id: string }>();
 
   const [page, setPage] = useState(1);
@@ -74,7 +85,7 @@ const SearchNewBooksContainer: React.FC = () => {
     <BooksComponent
       books={newBooks?.result?.data}
       getBook={getBook}
-      title={t("titleTopBooks")}
+      title={localization?.titleTopBooks}
       onLoadMore={hasMoreBooks ? loadMoreBooks : undefined}
       isLoadingMore={loadingMore}
       hasMoreBooks={hasMoreBooks}

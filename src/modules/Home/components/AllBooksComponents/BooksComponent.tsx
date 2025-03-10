@@ -196,7 +196,7 @@ const BooksComponent: React.FC<HomeProps> = ({
             localization?.loading
           ) : (
             <div style={{ display: "flex", alignItems: "center" }}>
-              localization?.loadMoreBtn
+              {localization?.loadMoreBtn}
               <img style={{ marginLeft: 5 }} src={ArrowDown} alt="icon" />
             </div>
           )}

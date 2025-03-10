@@ -11,7 +11,6 @@ import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../../../hooks";
 import { UserContext } from "../../../../../core/contexts";
 import { useRef } from "react";
-import { useTranslation } from "react-i18next";
 
 interface Author {
   name: string;
@@ -79,7 +78,9 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
 }) => {
   const value = useContext(UserContext);
   const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
 
   const { currentBookshelfBook } = useLazySelector(({ home }) => ({
     currentBookshelfBook: home.currentBookshelfBook,
@@ -181,7 +182,7 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
             onClick={() => continueReadingBook?.(book.id)}
             className={styles.startBtn}
           >
-            {t("startReading")}
+            {localization?.startReading}
           </div>
         )}
 
@@ -214,7 +215,7 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
             onClick={() => continueReadingBook?.(book.id)}
             className={styles.startBtn}
           >
-            {t("continueReading")}
+            {localization?.continueReading}
           </div>
         )}
       </div>
@@ -229,7 +230,7 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
         </div>
         {seeAllLink && (
           <Link className={styles.titleLink} to={seeAllLink}>
-            {t("seeAll")}
+            {localization?.seeAll}
           </Link>
         )}
       </div>

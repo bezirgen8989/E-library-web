@@ -1,13 +1,15 @@
 import commonStyles from "../../../../../assets/css/commonStyles/CommonStyles.module.scss";
 import Close from "../../../../../assets/images/icons/Close.svg";
 import { Modal } from "antd";
-import { FC, useContext, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import Button from "../../../../../components/common/Buttons/Button";
 // @ts-ignore
 import Rating from "react-rating-stars-component";
 import { UserContext } from "../../../../../core/contexts";
 import { BookType } from "../../Book/Book";
-import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { useLazySelector } from "../../../../../hooks";
+import { getLocalization } from "../../../../Auth/slices/auth";
 
 interface ReviewModalProps {
   isModalOpen: boolean;
@@ -22,11 +24,20 @@ const ReviewModal: FC<ReviewModalProps> = ({
   book,
   reviewSubmit,
 }) => {
-  const value = useContext(UserContext);
   const [reviewText, setReviewText] = useState<string>("");
   const [rating, setRating] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
-  const { t } = useTranslation();
+  const value = useContext(UserContext);
+  const dispatch = useDispatch();
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
 
   const hideModal = () => {
     setIsModalOpen(false);
@@ -53,7 +64,9 @@ const ReviewModal: FC<ReviewModalProps> = ({
 
   return (
     <Modal
-      title={<div className="custom-modal-title">{t("writeReviewBtn")}</div>}
+      title={
+        <div className="custom-modal-title">{localization?.writeReviewBtn}</div>
+      }
       visible={isModalOpen}
       onCancel={hideModal}
       className="custom-modal"
@@ -67,7 +80,7 @@ const ReviewModal: FC<ReviewModalProps> = ({
       }
     >
       <textarea
-        placeholder={t("placeholderYourReview")}
+        placeholder={localization?.placeholderYourReview}
         value={reviewText}
         onChange={(e) => {
           setReviewText(e.target.value);
@@ -91,7 +104,9 @@ const ReviewModal: FC<ReviewModalProps> = ({
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "16px" }}
       >
-        <span style={{ marginRight: "8px" }}>{t("rating").toLowerCase()}:</span>
+        <span style={{ marginRight: "8px" }}>
+          {localization?.rating.toLowerCase()}:
+        </span>
         <Rating
           count={5}
           value={rating}
@@ -122,7 +137,7 @@ const ReviewModal: FC<ReviewModalProps> = ({
             fontSize: "16px",
           }}
         >
-          {t("submit")}
+          {localization?.submit}
         </Button>
       </div>
     </Modal>

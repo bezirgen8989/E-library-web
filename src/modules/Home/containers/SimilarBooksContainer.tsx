@@ -1,15 +1,17 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "hooks";
 import { clearBooks, getBookById, getSimilarBooks } from "../slices/home";
 import { routes } from "../routing";
 import { useHistory } from "react-router-dom";
 import BooksComponent from "../components/AllBooksComponents/BooksComponent";
+import { getLocalization } from "../../Auth/slices/auth";
+import { UserContext } from "../../../core/contexts";
 
 const SimilarBooksContainer: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  // const value = useContext(UserContext);
+  const value = useContext(UserContext);
 
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -23,6 +25,16 @@ const SimilarBooksContainer: React.FC = () => {
         isLoading: similarBooks.isLoading,
       };
     }
+  );
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
+
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
   );
 
   const limit = 6;
@@ -81,7 +93,7 @@ const SimilarBooksContainer: React.FC = () => {
     <BooksComponent
       books={similarBooks?.result?.data}
       getBook={getBook}
-      title="Similar books"
+      title={localization?.titleSimilarBooks}
       onLoadMore={hasMoreBooks ? loadMoreBooks : undefined}
       isLoadingMore={loadingMore}
       hasMoreBooks={hasMoreBooks}

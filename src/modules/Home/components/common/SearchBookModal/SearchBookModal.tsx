@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { Input, Modal, Skeleton } from "antd";
 import commonStyles from "../../../../../assets/css/commonStyles/CommonStyles.module.scss";
 import Close from "../../../../../assets/images/icons/Close.svg";
@@ -6,7 +6,10 @@ import styles from "./SearchBookModal.module.scss";
 import Search from "../../../../../assets/images/icons/SearchIcon.svg";
 import { routes } from "../../../routing";
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { UserContext } from "../../../../../core/contexts";
+import { useLazySelector } from "../../../../../hooks";
+import { getLocalization } from "../../../../Auth/slices/auth";
+import { useDispatch } from "react-redux";
 
 interface Author {
   name: string;
@@ -40,10 +43,20 @@ const SearchBookModal: FC<NotificationsModalProps> = ({
   booksByQueryName,
   isLoading,
 }) => {
-  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [hasSearched, setHasSearched] = useState<boolean>(false);
   const [isDropdownVisible, setDropdownVisible] = useState<boolean>(false);
+  const value = useContext(UserContext);
+  const dispatch = useDispatch();
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -78,10 +91,12 @@ const SearchBookModal: FC<NotificationsModalProps> = ({
     <Modal
       title={
         <div>
-          <div className="custom-modal-title">{t("selectBookBtn")}</div>
+          <div className="custom-modal-title">
+            {localization?.selectBookBtn}
+          </div>
           <div style={{ marginTop: "20px" }}>
             <Input
-              placeholder={t("searchPlaceholder")}
+              placeholder={localization?.searchPlaceholder}
               prefix={<img src={Search} alt="search" />}
               id="search-input"
               value={searchTerm}

@@ -6,7 +6,6 @@ import logo from "../../../../assets/images/icons/logo.svg";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { useLazySelector } from "../../../../hooks";
 
 type RecoverProps = {
@@ -15,7 +14,6 @@ type RecoverProps = {
 
 const RecoverPasswordForm: React.FC<RecoverProps> = ({ onSubmit }) => {
   const history = useHistory();
-  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -46,7 +44,7 @@ const RecoverPasswordForm: React.FC<RecoverProps> = ({ onSubmit }) => {
             className={commonStyles.backBtnRelative}
           >
             <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
-            {t("backBtn")}
+            {localization?.backBtn}
           </div>
           <div />
         </div>

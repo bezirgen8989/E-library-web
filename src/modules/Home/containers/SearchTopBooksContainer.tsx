@@ -1,16 +1,17 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "hooks";
 import { clearBooks, getBookById, getTopBooks } from "../slices/home";
 import BooksComponent from "../components/AllBooksComponents/BooksComponent";
 import { routes } from "../routing";
 import { useHistory, useParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { getLocalization } from "../../Auth/slices/auth";
+import { UserContext } from "../../../core/contexts";
 
 const SearchTopBooksContainer: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { t } = useTranslation();
+  const value = useContext(UserContext);
 
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -25,6 +26,16 @@ const SearchTopBooksContainer: React.FC = () => {
       isLoading: topBooks.isLoading,
     };
   });
+
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
 
   const limit = 6;
 
@@ -75,7 +86,7 @@ const SearchTopBooksContainer: React.FC = () => {
     <BooksComponent
       books={topBooks?.result?.data}
       getBook={getBook}
-      title={t("titleTopBooks")}
+      title={localization?.titleTopBooks}
       onLoadMore={hasMoreBooks ? loadMoreBooks : undefined}
       isLoadingMore={loadingMore}
       hasMoreBooks={hasMoreBooks}

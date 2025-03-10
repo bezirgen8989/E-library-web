@@ -6,6 +6,7 @@ import BooksComponent from "../components/AllBooksComponents/BooksComponent";
 import { routes } from "../routing";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../../core/contexts";
+import { getLocalization } from "../../Auth/slices/auth";
 
 const NotStartedBooksContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -35,6 +36,16 @@ const NotStartedBooksContainer: React.FC = () => {
       isBookshelfNotStarted: true,
     };
   });
+
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
 
   const getBook = useCallback((id) => {
     history.push(`${routes.book}/${id}`);
@@ -84,7 +95,7 @@ const NotStartedBooksContainer: React.FC = () => {
     <BooksComponent
       books={notStartedBooksList}
       getBook={getBook}
-      title="Not started"
+      title={localization?.notStarted}
       onLoadMore={hasMoreBooks ? loadMoreBooks : undefined}
       isLoadingMore={loadingMore}
       hasMoreBooks={hasMoreBooks}

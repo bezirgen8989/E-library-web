@@ -1,8 +1,12 @@
-import { FC } from "react";
+import { FC, useContext, useEffect } from "react";
 import { Collapse, Modal } from "antd";
 import styles from "./MetaModal.module.scss";
 import commonStyles from "../../../../../assets/css/commonStyles/CommonStyles.module.scss";
 import Close from "../../../../../assets/images/icons/Close.svg";
+import { UserContext } from "../../../../../core/contexts";
+import { useDispatch } from "react-redux";
+import { useLazySelector } from "../../../../../hooks";
+import { getLocalization } from "../../../../Auth/slices/auth";
 // import { useTranslation } from "react-i18next";
 
 interface NotificationsModalProps {
@@ -16,7 +20,18 @@ const MetaModal: FC<NotificationsModalProps> = ({
   setIsModalOpen,
   metaData,
 }) => {
-  // const { t } = useTranslation();
+  const value = useContext(UserContext);
+  const dispatch = useDispatch();
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
+  console.log(localization);
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
 
   const hideModal = () => {
     setIsModalOpen(false);
