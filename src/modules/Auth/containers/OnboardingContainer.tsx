@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { getLocalization, googleLoginUser } from "../slices/auth";
 import OnboardingForm from "../components/OnboardingForm";
 
-const LoginContainer: React.FC = () => {
+const OnboardingContainer: React.FC = () => {
   const dispatch = useDispatch();
 
   const appLanguage = sessionStorage.getItem("appLanguage");
@@ -24,4 +24,4 @@ const LoginContainer: React.FC = () => {
   return <OnboardingForm onSubmit={handleSubmit} />;
 };
 
-export default LoginContainer;
+export default OnboardingContainer;

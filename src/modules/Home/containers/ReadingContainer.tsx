@@ -96,7 +96,9 @@ const ReadingContainer: React.FC = () => {
   }, [dispatch, id, featurePageFromServer]);
 
   useEffect(() => {
-    const langId = sessionStorage.getItem("selectedLanguage") || "7";
+    const currentBookLang: any = sessionStorage.getItem("currentBookLanguage");
+    const parseLang = JSON.parse(currentBookLang);
+    const langId = parseLang?.id || value?.bookLanguage?.id || "7";
 
     if (page !== null && !loadedPages.has(page)) {
       dispatch(getReadBook({ bookId: id, langId, page: page.toString() }));
@@ -152,6 +154,7 @@ const ReadingContainer: React.FC = () => {
         saveProgress();
         setFeaturePageFromServer(null);
         dispatch(clearBooks());
+        sessionStorage.removeItem("currentBookLanguage");
       }
     };
 

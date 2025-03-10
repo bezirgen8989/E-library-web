@@ -230,9 +230,11 @@ export const LoginUser = createAsyncThunk(
         });
       } else if (status === 422) {
         const validationErrors = error?.errors || "Validation error";
+        const parseError: any = JSON.stringify(validationErrors);
+        console.log("parseError", parseError);
         notification.error({
           message: "Login Error",
-          description: `Validation error: ${JSON.stringify(validationErrors)}`,
+          description: `Validation error: ${parseError?.email}`,
           duration: 4,
           placement: "top",
           icon: <img src={Alert} alt="icon" />,

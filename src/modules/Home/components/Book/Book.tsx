@@ -118,6 +118,7 @@ const Book: React.FC<BookProps> = ({
   const [selectedLanguage, setSelectedLanguage] = useState(
     value?.bookLanguage || defaultLanguage
   );
+  console.log(33333, selectedLanguage);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
@@ -200,6 +201,7 @@ const Book: React.FC<BookProps> = ({
 
   const onLanguageSelect = (language: LanguageType) => {
     setSelectedLanguage(language);
+    sessionStorage.setItem("currentBookLanguage", JSON.stringify(language));
   };
 
   useEffect(() => {
