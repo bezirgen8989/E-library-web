@@ -40,7 +40,6 @@
   "password": "密码",
   "confirmPassword": "确认密码",
   "dateOfBirth": "出生日期",
-
   "titleTopBooks": "最畅销书籍",
   "categoryNotFound": "未找到类别",
   "readLink": "阅读",
@@ -76,7 +75,6 @@
   "saveBtn": "保存",
   "askNow": "现在询问",
   "stop": "停止",
-
   "alreadyHaveAnAccount": "已经有账户了吗？",
   "logInWithEmail": "使用电子邮件登录",
   "signUpWithEmail": "使用电子邮件注册",
@@ -103,5 +101,24 @@
   "chooseYourReadingHabits": "选择您的阅读习惯",
   "profileDetails": "个人资料",
   "howDidYouLearnAbout": "您是如何了解Elor的？",
-  "selectMultipleOptions": "您可以选择多个选项"
+  "selectMultipleOptions": "您可以选择多个选项",
+
+  "YourBookshelfEmpty": "您的书架现在是空的",
+  "ExploreLibraryNow": "立即探索我们的图书馆",
+  "StartExploring": "开始探索",
+  "listen": "听",
+  "backToHomePage": "返回主页",
+  "thisPageNotfound": "未找到该页面",
+  "error404": "哎呀，错误404！",
+  "orContinueWith": "或者继续使用",
+  "Upload Your Picture": "上传您的照片",
+  "male": "男",
+  "female": "女",
+  "yourVariant": "您的类型",
+  "ContinueWithGoogle": "继续使用Google",
+  "emailSent": "邮件已发送",
+  "emailSentTo": "关于如何重置密码的邮件已发送至 ",
+  "pleaseFollowInstructions": "请按照说明操作。",
+  "resend": "重新发送",
+  "resources": "资源"
 }

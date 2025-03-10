@@ -40,7 +40,6 @@
   "password": "கடவுச்சொல்",
   "confirmPassword": "கடவுச்சொல்லை உறுதிப்படுத்தவும்",
   "dateOfBirth": "பிறந்த தேதி",
-
   "titleTopBooks": "சிறந்த புத்தகங்கள்",
   "categoryNotFound": "வகை காணப்படவில்லை",
   "readLink": "வாசிக்க",
@@ -77,7 +76,6 @@
   "saveBtn": "சேமிக்கவும்",
   "askNow": "இப்போதே கேளுங்கள்",
   "stop": "நிறுத்து",
-
   "alreadyHaveAnAccount": "ஏற்கனவே கணக்கு உள்ளதா?",
   "logInWithEmail": "மின்னஞ்சல் மூலம் உள்நுழைக",
   "signUpWithEmail": "மின்னஞ்சல் மூலம் பதிவு செய்யவும்",
@@ -104,5 +102,24 @@
   "chooseYourReadingHabits": "உங்கள் வாசிப்பு பழக்கங்களை தேர்வு செய்யவும்",
   "profileDetails": "பிரொஃபைல் விவரங்கள்",
   "howDidYouLearnAbout": "நீங்கள் எலோரின் பற்றி எப்படி அறிந்தீர்கள்?",
-  "selectMultipleOptions": "நீங்கள் பல தேர்வுகளைத் தேர்வு செய்யலாம்"
+  "selectMultipleOptions": "நீங்கள் பல தேர்வுகளைத் தேர்வு செய்யலாம்",
+
+  "YourBookshelfEmpty": "உங்கள் புத்தக அலமாரி தற்போது காலியாக உள்ளது",
+  "ExploreLibraryNow": "எங்கள் நூலகத்தை இப்போது கண்டறியவும்",
+  "StartExploring": "கண்டறிதல் தொடங்குங்கள்",
+  "listen": "கேளுங்கள்",
+  "backToHomePage": "முகப்புப் பக்கத்திற்குத் திரும்பவும்",
+  "thisPageNotfound": "இந்தப் பக்கம் கிடைக்கவில்லை",
+  "error404": "ஓஹோ, பிழை 404!",
+  "orContinueWith": "அல்லது தொடரவும்",
+  "Upload Your Picture": "உங்கள் படத்தை பதிவேற்றவும்",
+  "male": "ஆண்",
+  "female": "பெண்",
+  "yourVariant": "உங்கள் மாறுபாடு",
+  "ContinueWithGoogle": "Google உடன் தொடரவும்",
+  "emailSent": "மின்னஞ்சல் அனுப்பப்பட்டது",
+  "emailSentTo": "உங்கள் கடவுச்சொல்லை மீட்டமைப்பதற்கான மின்னஞ்சல் அனுப்பப்பட்டது ",
+  "pleaseFollowInstructions": "தயவுசெய்து வழிமுறைகளை பின்பற்றவும்.",
+  "resend": "மீண்டும் அனுப்பு",
+  "resources": "வளங்கள்"
 }

@@ -40,7 +40,6 @@
   "password": "పాస్వర్డ్",
   "confirmPassword": "పాస్వర్డ్ నిర్ధారించండి",
   "dateOfBirth": "పుట్టిన తేదీ",
-
   "titleTopBooks": "టాప్ బుక్స్",
   "categoryNotFound": "వర్గం కనుగొనబడలేదు",
   "readLink": "వాచించు",
@@ -76,7 +75,6 @@
   "saveBtn": "సేవ్ చేయండి",
   "askNow": "ఇప్పుడు అడగండి",
   "stop": "ఆపివేయండి",
-
   "alreadyHaveAnAccount": "ఇంకా ఖాతా ఉందా?",
   "logInWithEmail": "ఈమెయిల్ ద్వారా లాగిన్ అవ్వండి",
   "signUpWithEmail": "ఈమెయిల్ ద్వారా సైన్ అప్ చేయండి",
@@ -103,5 +101,24 @@
   "chooseYourReadingHabits": "మీ చదవడం అలవాట్లను ఎంచుకోండి",
   "profileDetails": "ప్రొఫైల్ వివరాలు",
   "howDidYouLearnAbout": "మీరు ఎలార్ గురించి ఎలా తెలిసింది?",
-  "selectMultipleOptions": "మీరు బహుళ ఎంపికలను ఎంచుకోగలరు"
+  "selectMultipleOptions": "మీరు బహుళ ఎంపికలను ఎంచుకోగలరు",
+
+  "YourBookshelfEmpty": "మీ బుక్‌షెల్ఫ్ ఇప్పుడు ఖాళీగా ఉంది",
+  "ExploreLibraryNow": "ఇప్పుడు మా లైబ్రరీని అన్వేషించండి",
+  "StartExploring": "అన్వేషణ ప్రారంభించండి",
+  "listen": "వినండి",
+  "backToHomePage": "హోమ్ పేజీకి తిరిగి వెళ్లండి",
+  "thisPageNotfound": "ఈ పేజీ కనుగొనబడలేదు",
+  "error404": "అయ్యో, పొరపాటు 404!",
+  "orContinueWith": "లేదా ఈతో కొనసాగించండి",
+  "Upload Your Picture": "మీ చిత్రాన్ని అప్‌లోడ్ చేయండి",
+  "male": "పురుషుడు",
+  "female": "స్త్రీ",
+  "yourVariant": "మీ వేరియంట్",
+  "ContinueWithGoogle": "Google తో కొనసాగించండి",
+  "emailSent": "ఇమెయిల్ పంపబడింది",
+  "emailSentTo": "మీ పాస్‌వర్డ్ రీసెట్ చేయడం గురించి ఇమెయిల్ పంపబడింది ",
+  "pleaseFollowInstructions": "దయచేసి సూచనలను అనుసరించండి.",
+  "resend": "మరల పంపు",
+  "resources": "వనరులు"
 }

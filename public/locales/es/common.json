@@ -76,7 +76,6 @@
   "saveBtn": "Guardar",
   "askNow": "Preguntar ahora",
   "stop": "Detener",
-
   "alreadyHaveAnAccount": "¿Ya tienes una cuenta?",
   "logInWithEmail": "Iniciar sesión con correo electrónico",
   "signUpWithEmail": "Registrarse con correo electrónico",
@@ -103,5 +102,24 @@
   "chooseYourReadingHabits": "Elige tus hábitos de lectura",
   "profileDetails": "Detalles del perfil",
   "howDidYouLearnAbout": "¿Cómo supiste de Elor?",
-  "selectMultipleOptions": "Puedes seleccionar múltiples opciones"
+  "selectMultipleOptions": "Puedes seleccionar múltiples opciones",
+
+  "YourBookshelfEmpty": "Tu estantería está vacía ahora",
+  "ExploreLibraryNow": "Explora nuestra biblioteca ahora mismo",
+  "StartExploring": "Comienza a explorar",
+  "listen": "Escuchar",
+  "backToHomePage": "Volver a la página de inicio",
+  "thisPageNotfound": "Esta página no se puede encontrar",
+  "error404": "¡Vaya, error 404!",
+  "orContinueWith": "O continúa con",
+  "Upload Your Picture": "Sube tu foto",
+  "male": "Masculino",
+  "female": "Femenino",
+  "yourVariant": "Tu variante",
+  "ContinueWithGoogle": "Continuar con Google",
+  "emailSent": "Correo enviado",
+  "emailSentTo": "Un correo sobre cómo restablecer tu contraseña ha sido enviado a ",
+  "pleaseFollowInstructions": "Por favor, sigue las instrucciones.",
+  "resend": "Reenviar",
+  "resources": "Recursos"
 }

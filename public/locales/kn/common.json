@@ -40,7 +40,6 @@
   "password": "ಪಾಸ್ವರ್ಡ್",
   "confirmPassword": "ಪಾಸ್ವರ್ಡ್ ದೃಢೀಕರಿಸಿ",
   "dateOfBirth": "ಜನ್ಮ ದಿನಾಂಕ",
-
   "titleTopBooks": "ಮೆಚ್ಚಿನ ಪುಸ್ತಕಗಳು",
   "categoryNotFound": "ವರ್ಗ ಕಂಡುಬಂದಿಲ್ಲ",
   "readLink": "ಓದು",
@@ -76,7 +75,6 @@
   "saveBtn": "ಉಳಿಸಿ",
   "askNow": "ಈಗ ಕೇಳಿ",
   "stop": "ನಿಲ್ಲಿಸಿ",
-
   "alreadyHaveAnAccount": "ಹೆಚ್ಚು ಖಾತೆ ಇದೆ?",
   "logInWithEmail": "ಇಮೇಲ್ ಮೂಲಕ ಲಾಗಿನ್ ಮಾಡಿ",
   "signUpWithEmail": "ಇಮೇಲ್ ಮೂಲಕ ಸೈನ್ ಅಪ್ ಮಾಡಿ",
@@ -103,5 +101,24 @@
   "chooseYourReadingHabits": "ನಿಮ್ಮ ಓದುವ ಅಭ್ಯಾಸಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ",
   "profileDetails": "ಪ್ರೊಫೈಲ್ ವಿವರಗಳು",
   "howDidYouLearnAbout": "ನೀವು എಲೋರിനെ ಹೇಗೆ ಕಂಡುಕೊಂಡಿರಿ?",
-  "selectMultipleOptions": "ನೀವು ಅನೇಕ ಆಯ್ಕೆಗಳನ್ನು ಆರಿಸಬಹುದು"
+  "selectMultipleOptions": "ನೀವು ಅನೇಕ ಆಯ್ಕೆಗಳನ್ನು ಆರಿಸಬಹುದು",
+
+  "YourBookshelfEmpty": "ನಿಮ್ಮ ಪುಸ್ತಕಶಾಲೆ ಈಗ ಖಾಲಿಯಾಗಿದೆ",
+  "ExploreLibraryNow": "ನಮ್ಮ ಗ್ರಂಥಾಲಯವನ್ನು ಈಗಲೇ ಅನ್ವೇಷಿಸಿ",
+  "StartExploring": "ಅನ್ವೇಷಣೆ ಪ್ರಾರಂಭಿಸಿ",
+  "listen": "ಕೆಳವಣಿಗೆ",
+  "backToHomePage": "ಮುಖಪುಟಕ್ಕೆ ಹಿಂದಿರುಗಿ",
+  "thisPageNotfound": "ಈ ಪುಟವನ್ನು ಕಂಡುಹಿಡಿಯಲಾಗುತ್ತಿಲ್ಲ",
+  "error404": "ಅಪ್ಪ್ಸ್, ದೋಷ 404!",
+  "orContinueWith": "ಅಥವಾ ಮುಂದುವರಿಯಿರಿ",
+  "Upload Your Picture": "ನಿಮ್ಮ ಚಿತ್ರವನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
+  "male": "ಪುರುಷ",
+  "female": "ಮಹಿಳೆ",
+  "yourVariant": "ನಿಮ್ಮ ರೂಪ",
+  "ContinueWithGoogle": "Google ನೊಂದಿಗೆ ಮುಂದುವರಿಯಿರಿ",
+  "emailSent": "ಇಮೇಲ್ ಕಳುಹಿಸಲಾಗಿದೆ",
+  "emailSentTo": "ನಿಮ್ಮ ಪಾಸ್ವರ್ಡ್ ಮರುಹೊಂದಿಸಲು ಇಮೇಲ್ ಕಳುಹಿಸಲಾಗಿದೆ ",
+  "pleaseFollowInstructions": "ದಯವಿಟ್ಟು ಸೂಚನೆಗಳನ್ನು ಅನುಸರಿಸಿ.",
+  "resend": "ಮರುಕಳುಹಿಸಿ",
+  "resources": "ಸಂಪತ್ತುಗಳು"
 }

@@ -34,7 +34,6 @@
   "loadMoreBtn": "ተመሳሳይ ተመነጨ",
   "noReviewsAvailable": "እንደምንም እቅድ አልተጠበቀም",
   "editProfile": "ማእከለሞት",
-
   "titleTopBooks": "ምርጥ መጽሐፍት",
   "categoryNotFound": "ክፍል አልተገኘም",
   "readLink": "ንብረት",
@@ -71,7 +70,6 @@
   "saveBtn": "ዓቅብ",
   "askNow": "ሕጂ ሓበሬታ ኣላዊ",
   "stop": "ኣቁም",
-
   "alreadyHaveAnAccount": "ሕሳብ ኣሎኻ?",
   "logInWithEmail": "ብ ኢሜይል እቶ",
   "signUpWithEmail": "ብ ኢሜይል ተመዝገብ",
@@ -98,5 +96,24 @@
   "chooseYourReadingHabits": "ልምዓት ንባብካ ምረጽ",
   "profileDetails": "ዝርዝር ፕሮፋይል",
   "howDidYouLearnAbout": "ብኣይኒ ኢሎር ተረዲኡ?",
-  "selectMultipleOptions": "ብዙሕ ምርጫታት ምረጽ ይኽእል"
+  "selectMultipleOptions": "ብዙሕ ምርጫታት ምረጽ ይኽእል",
+
+  "YourBookshelfEmpty": "የእርስዎ የመጻሕፍት መስቀል አሁን ባዶ ነው",
+  "ExploreLibraryNow": "አሁን ቤተ መጽሐፍትን ያስሱ",
+  "StartExploring": "መስራት ይጀምሩ",
+  "listen": "ስምተም",
+  "backToHomePage": "ወደ ዋና ገጽ ተመለስ",
+  "thisPageNotfound": "ይህ ገፅ አይገኝም",
+  "error404": "ኦፕስ፣ ስህተት 404!",
+  "orContinueWith": "ወይም በዚህ ይቀጥሉ",
+  "Upload Your Picture": "ምስልዎን ይጫኑ",
+  "male": "ወንድ",
+  "female": "ሴት",
+  "yourVariant": "የእርስዎ ልዩነት",
+  "ContinueWithGoogle": "በGoogle ይቀጥሉ",
+  "emailSent": "ኢሜይል ተልኳል",
+  "emailSentTo": "የይለፍ ቃልዎን እንዴት እንደሚያደርጉ መሰረት የሚያሳዩበትን ኢሜይል ወደ ",
+  "pleaseFollowInstructions": "እባኮትን መመሪያዎቹን ይከተሉ።",
+  "resend": "እንደገና ላክ",
+  "resources": "ምንጮች"
 }

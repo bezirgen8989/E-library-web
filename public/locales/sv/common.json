@@ -40,7 +40,6 @@
   "password": "Lösenord",
   "confirmPassword": "Bekräfta Lösenord",
   "dateOfBirth": "Födelsedatum",
-
   "titleTopBooks": "Toppböcker",
   "categoryNotFound": "Kategori hittades inte",
   "readLink": "Läs",
@@ -77,7 +76,6 @@
   "saveBtn": "Spara",
   "askNow": "Fråga nu",
   "stop": "Stoppa",
-
   "alreadyHaveAnAccount": "Har du redan ett konto?",
   "logInWithEmail": "Logga in med e-post",
   "signUpWithEmail": "Registrera dig med e-post",
@@ -104,5 +102,24 @@
   "chooseYourReadingHabits": "Välj dina läsvanor",
   "profileDetails": "Profilinformation",
   "howDidYouLearnAbout": "Hur hörde du om Elor?",
-  "selectMultipleOptions": "Du kan välja flera alternativ"
+  "selectMultipleOptions": "Du kan välja flera alternativ",
+
+  "YourBookshelfEmpty": "Din bokhylla är tom nu",
+  "ExploreLibraryNow": "Utforska vårt bibliotek nu",
+  "StartExploring": "Börja utforska",
+  "listen": "Lyssna",
+  "backToHomePage": "Tillbaka till startsidan",
+  "thisPageNotfound": "Den här sidan kunde inte hittas",
+  "error404": "Hoppsan, fel 404!",
+  "orContinueWith": "Eller fortsätt med",
+  "Upload Your Picture": "Ladda upp din bild",
+  "male": "Man",
+  "female": "Kvinna",
+  "yourVariant": "Din variant",
+  "ContinueWithGoogle": "Fortsätt med Google",
+  "emailSent": "E-post skickad",
+  "emailSentTo": "Ett e-postmeddelande om hur du återställer ditt lösenord har skickats till ",
+  "pleaseFollowInstructions": "Vänligen följ instruktionerna.",
+  "resend": "Skicka igen",
+  "resources": "Resurser"
 }

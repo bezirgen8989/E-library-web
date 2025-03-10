@@ -75,7 +75,6 @@
   "saveBtn": "ذخیره",
   "askNow": "اکنون بپرسید",
   "stop": "توقف",
-
   "alreadyHaveAnAccount": "آیا از قبل حساب کاربری دارید؟",
   "logInWithEmail": "ورود با ایمیل",
   "signUpWithEmail": "ثبت نام با ایمیل",
@@ -102,5 +101,24 @@
   "chooseYourReadingHabits": "عادات مطالعه خود را انتخاب کنید",
   "profileDetails": "جزئیات پروفایل",
   "howDidYouLearnAbout": "چگونه درباره Elor آموختید؟",
-  "selectMultipleOptions": "می‌توانید چندین گزینه را انتخاب کنید"
+  "selectMultipleOptions": "می‌توانید چندین گزینه را انتخاب کنید",
+
+  "YourBookshelfEmpty": "قفسه کتاب شما اکنون خالی است",
+  "ExploreLibraryNow": "همین حالا کتابخانه ما را کشف کنید",
+  "StartExploring": "شروع به کاوش کنید",
+  "listen": "گوش دادن",
+  "backToHomePage": "بازگشت به صفحه اصلی",
+  "thisPageNotfound": "این صفحه پیدا نشد",
+  "error404": "اوه، خطای ۴۰۴!",
+  "orContinueWith": "یا ادامه دهید با",
+  "Upload Your Picture": "عکس خود را بارگذاری کنید",
+  "male": "مرد",
+  "female": "زن",
+  "yourVariant": "نوع شما",
+  "ContinueWithGoogle": "ادامه با گوگل",
+  "emailSent": "ایمیل ارسال شد",
+  "emailSentTo": "ایمیلی درباره نحوه بازنشانی رمز عبور به ",
+  "pleaseFollowInstructions": "لطفاً دستورالعمل‌ها را دنبال کنید.",
+  "resend": "ارسال دوباره",
+  "resources": "منابع"
 }

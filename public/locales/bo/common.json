@@ -40,7 +40,6 @@
   "password": "གི་ནང་འཛིན",
   "confirmPassword": "གི་ནང་འཛིན་སོགས་ལས་རོ་ལ་མཐོ་ང",
   "dateOfBirth": "བསུས་འཚོལ་མཁར",
-
   "titleTopBooks": "དཔེ་ཆའི་གོང་མཐོ་བ།",
   "categoryNotFound": "དབྱེ་བ་དགོད་མི་ཐོབ།",
   "readLink": "བལྟ།",
@@ -77,7 +76,6 @@
   "saveBtn": "ཉར་བ།",
   "askNow": "ད་ལྟ་སྐྱོང་ཞུ།",
   "stop": "འགོར་བསྒྱུར།",
-
   "alreadyHaveAnAccount": "ཁྱེད་རང་གི་རྩིས་ཐོ་ཡོད་པས།",
   "logInWithEmail": "གློག་འཕྲིན་གིས་ནང་བསྐྱོད",
   "signUpWithEmail": "གློག་འཕྲིན་གིས་ཐོ་འགོད",
@@ -98,5 +96,24 @@
   "chooseYourReadingHabits": "ཁྱེད་རང་གི་ཀློག་ལུགས་སོར་བཞག",
   "profileDetails": "ཁྱེད་རང་གི་པར་བརྡ",
   "howDidYouLearnAbout": "ཁྱེད་ཀྱིས་Elorམངོན་སུམ་འདི་ག་དུས་ཤེས་སོང་།",
-  "selectMultipleOptions": "དགའ་གདམ་མང་པོ་གདམ་རྐྱབས།"
+  "selectMultipleOptions": "དགའ་གདམ་མང་པོ་གདམ་རྐྱབས།",
+
+  "YourBookshelfEmpty": "ཁྱོད་ཀྱི་དཔེ་ཆ་ཁང་བདེན་ཡོད་མིན་པའི་དོན།",
+  "ExploreLibraryNow": "དེ་འབད་རང་དཔེ་ཆ་ཁང་འཚོལ་ཞིབ་འབད།",
+  "StartExploring": "འཚོལ་ཞིབ་འགོ་བཙུགས།",
+  "listen": "ཉན།",
+  "backToHomePage": "ངོས་ངན་ཤོག་ངོས་འགྱོ།",
+  "thisPageNotfound": "འ་ནི་ཤོག་ངོས་འཚོལ་མི་ཐོབ།",
+  "error404": "ཨོམས་པ་འཁྲུངས་ 404!",
+  "orContinueWith": "ཡིན་ན་རང་མཐུན་འབད།",
+  "Upload Your Picture": "ཁྱོད་ཀྱི་དཔར་ཡིག་བཏང་རོགས།",
+  "male": "ཕོ་རིགས།",
+  "female": "མོ་རིགས།",
+  "yourVariant": "ཁྱོད་ཀྱི་དབྱེ་རིགས།",
+  "ContinueWithGoogle": "Google ལག་ལེན་རང་མཐུན།",
+  "emailSent": "གློག་འཕྲིན་བཏང་ཡོད།",
+  "emailSentTo": "ཁྱོད་ཀྱི་གསར་བཅོས་གྲོགས་སྟེགས་གནས་སྟེར་དང་།",
+  "pleaseFollowInstructions": "བཀའ་བཀྲིས་ལེན་རོགས།",
+  "resend": "ཡང་བསྐྱར་བཏང།",
+  "resources": "དོན་འབད།"
 }

@@ -40,7 +40,6 @@
   "password": "Iphasiwedi",
   "confirmPassword": "Qinisekisa Iphasiwedi",
   "dateOfBirth": "Usuku Lokuzalwa",
-
   "titleTopBooks": "Izincwadi Ezidume Kakhulu",
   "categoryNotFound": "Iklasi ayitholakalanga",
   "readLink": "Funda",
@@ -77,7 +76,6 @@
   "saveBtn": "Londoloza",
   "askNow": "Buza manje",
   "stop": "Misa",
-
   "alreadyHaveAnAccount": "Inakele i-akhawunti?",
   "logInWithEmail": "Ngena nge-imeyili",
   "signUpWithEmail": "Bhalisa nge-imeyili",
@@ -104,5 +102,24 @@
   "chooseYourReadingHabits": "Khetha Izindlela Zokufunda Zakho",
   "profileDetails": "Imininingwane yephrofayela",
   "howDidYouLearnAbout": "Wazifunda kanjani nge-Elor?",
-  "selectMultipleOptions": "Ungakhetha izinketho eziningi"
+  "selectMultipleOptions": "Ungakhetha izinketho eziningi",
+
+  "YourBookshelfEmpty": "Ibhuku lakho alinalutho manje",
+  "ExploreLibraryNow": "Hlola umtapo wolwazi wethu manje",
+  "StartExploring": "Qala ukuhlola",
+  "listen": "Lalela",
+  "backToHomePage": "Buyela ekhasini lasekhaya",
+  "thisPageNotfound": "Le khasi alitholakali",
+  "error404": "Hawu, iphutha 404!",
+  "orContinueWith": "Noma qhubeka no-",
+  "Upload Your Picture": "Layisha Isithombe Sakho",
+  "male": "Owesilisa",
+  "female": "Owesifazane",
+  "yourVariant": "Uhlobo lwakho",
+  "ContinueWithGoogle": "Qhubeka nge-Google",
+  "emailSent": "I-imeyili ithunyelwe",
+  "emailSentTo": "I-imeyili echaza indlela yokusetha kabusha iphasiwedi ithunyelwe ku-",
+  "pleaseFollowInstructions": "Sicela ulandele imiyalelo.",
+  "resend": "Thumela futhi",
+  "resources": "Izinsiza"
 }

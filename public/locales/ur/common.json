@@ -40,7 +40,6 @@
   "password": "پاسورڈ",
   "confirmPassword": "پاسورڈ کی تصدیق کریں",
   "dateOfBirth": "تاریخ پیدائش",
-
   "titleTopBooks": "مقبول کتابیں",
   "categoryNotFound": "زمرہ نہیں ملا",
   "readLink": "پڑھیں",
@@ -76,7 +75,6 @@
   "saveBtn": "محفوظ کریں",
   "askNow": "ابھی پوچھیں",
   "stop": "روکیں",
-
   "alreadyHaveAnAccount": "کیا آپ کا پہلے سے اکاؤنٹ ہے؟",
   "logInWithEmail": "ای میل کے ذریعے لاگ ان کریں",
   "signUpWithEmail": "ای میل کے ذریعے سائن اپ کریں",
@@ -103,5 +101,24 @@
   "chooseYourReadingHabits": "اپنے پڑھنے کے عادات منتخب کریں",
   "profileDetails": "پروفائل کی تفصیلات",
   "howDidYouLearnAbout": "آپ کو ایلور کے بارے میں کیسے پتہ چلا؟",
-  "selectMultipleOptions": "آپ متعدد اختیارات منتخب کر سکتے ہیں"
+  "selectMultipleOptions": "آپ متعدد اختیارات منتخب کر سکتے ہیں",
+
+  "YourBookshelfEmpty": "آپ کی کتابوں کی شیلف اب خالی ہے",
+  "ExploreLibraryNow": "ابھی ہماری لائبریری کو دریافت کریں",
+  "StartExploring": "دریافت شروع کریں",
+  "listen": "سنیں",
+  "backToHomePage": "ہوم پیج پر واپس جائیں",
+  "thisPageNotfound": "یہ صفحہ نہیں ملا",
+  "error404": "اوہو، غلطی 404!",
+  "orContinueWith": "یا اس کے ساتھ جاری رکھیں",
+  "Upload Your Picture": "اپنی تصویر اپ لوڈ کریں",
+  "male": "مرد",
+  "female": "عورت",
+  "yourVariant": "آپ کا ورژن",
+  "ContinueWithGoogle": "Google کے ساتھ جاری رکھیں",
+  "emailSent": "ای میل بھیج دیا گیا",
+  "emailSentTo": "پاس ورڈ ری سیٹ کرنے کا طریقہ ای میل میں بھیج دیا گیا ہے ",
+  "pleaseFollowInstructions": "براہ کرم ہدایات پر عمل کریں۔",
+  "resend": "دوبارہ بھیجیں",
+  "resources": "وسائل"
 }

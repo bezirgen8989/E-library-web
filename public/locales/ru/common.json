@@ -40,7 +40,6 @@
   "password": "Пароль",
   "confirmPassword": "Подтвердите пароль",
   "dateOfBirth": "Дата рождения",
-
   "titleTopBooks": "Лучшие книги",
   "categoryNotFound": "Категория не найдена",
   "readLink": "Читать",
@@ -76,7 +75,6 @@
   "saveBtn": "Сохранить",
   "askNow": "Спросить сейчас",
   "stop": "Остановить",
-
   "alreadyHaveAnAccount": "Уже есть аккаунт?",
   "logInWithEmail": "Войти с помощью Email",
   "signUpWithEmail": "Зарегистрироваться с помощью Email",
@@ -103,5 +101,24 @@
   "chooseYourReadingHabits": "Выберите ваши привычки чтения",
   "profileDetails": "Данные профиля",
   "howDidYouLearnAbout": "Как вы узнали о Elor?",
-  "selectMultipleOptions": "Вы можете выбрать несколько вариантов"
+  "selectMultipleOptions": "Вы можете выбрать несколько вариантов",
+
+  "YourBookshelfEmpty": "Ваша книжная полка пуста",
+  "ExploreLibraryNow": "Исследуйте нашу библиотеку прямо сейчас",
+  "StartExploring": "Начать исследование",
+  "listen": "Слушать",
+  "backToHomePage": "Вернуться на главную страницу",
+  "thisPageNotfound": "Эта страница не найдена",
+  "error404": "Упс, ошибка 404!",
+  "orContinueWith": "Или продолжить с",
+  "Upload Your Picture": "Загрузить ваше фото",
+  "male": "Мужчина",
+  "female": "Женщина",
+  "yourVariant": "Ваш вариант",
+  "ContinueWithGoogle": "Продолжить с Google",
+  "emailSent": "Письмо отправлено",
+  "emailSentTo": "Письмо о сбросе пароля отправлено на адрес ",
+  "pleaseFollowInstructions": "Пожалуйста, следуйте инструкциям.",
+  "resend": "Отправить снова",
+  "resources": "Ресурсы"
 }

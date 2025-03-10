@@ -40,7 +40,6 @@
   "password": "Kata Sandi",
   "confirmPassword": "Konfirmasi Kata Sandi",
   "dateOfBirth": "Tanggal Lahir",
-
   "titleTopBooks": "Buku Terbaik",
   "categoryNotFound": "Kategori tidak ditemukan",
   "readLink": "Baca",
@@ -76,7 +75,6 @@
   "saveBtn": "Simpan",
   "askNow": "Tanya sekarang",
   "stop": "Berhenti",
-
   "alreadyHaveAnAccount": "Sudah memiliki akun?",
   "logInWithEmail": "Masuk dengan Email",
   "signUpWithEmail": "Daftar dengan Email",
@@ -103,5 +101,24 @@
   "chooseYourReadingHabits": "Pilih Kebiasaan Membaca Anda",
   "profileDetails": "Detail Profil",
   "howDidYouLearnAbout": "Bagaimana Anda mengetahui tentang Elor?",
-  "selectMultipleOptions": "Anda dapat memilih beberapa opsi"
+  "selectMultipleOptions": "Anda dapat memilih beberapa opsi",
+
+  "YourBookshelfEmpty": "Rak buku Anda kosong sekarang",
+  "ExploreLibraryNow": "Jelajahi perpustakaan kami sekarang",
+  "StartExploring": "Mulai menjelajah",
+  "listen": "Dengarkan",
+  "backToHomePage": "Kembali ke Halaman Utama",
+  "thisPageNotfound": "Halaman ini tidak ditemukan",
+  "error404": "Oops, kesalahan 404!",
+  "orContinueWith": "Atau lanjutkan dengan",
+  "Upload Your Picture": "Unggah Gambar Anda",
+  "male": "Laki-laki",
+  "female": "Perempuan",
+  "yourVariant": "Varian Anda",
+  "ContinueWithGoogle": "Lanjutkan dengan Google",
+  "emailSent": "Email terkirim",
+  "emailSentTo": "Email tentang pengaturan ulang kata sandi telah dikirim ke ",
+  "pleaseFollowInstructions": "Silakan ikuti instruksi.",
+  "resend": "Kirim ulang",
+  "resources": "Sumber daya"
 }

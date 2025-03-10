@@ -77,7 +77,6 @@
   "saveBtn": "حفظ",
   "askNow": "اطلب الآن",
   "stop": "توقف",
-
   "alreadyHaveAnAccount": "هل لديك حساب بالفعل؟",
   "logInWithEmail": "تسجيل الدخول بالبريد الإلكتروني",
   "signUpWithEmail": "اشترك بالبريد الإلكتروني",
@@ -104,5 +103,24 @@
   "chooseYourReadingHabits": "اختر عاداتك في القراءة",
   "profileDetails": "تفاصيل الملف الشخصي",
   "howDidYouLearnAbout": "كيف عرفت عن Elor؟",
-  "selectMultipleOptions": "يمكنك تحديد عدة خيارات"
+  "selectMultipleOptions": "يمكنك تحديد عدة خيارات",
+
+  "YourBookshelfEmpty": "مكتبتك فارغة الآن",
+  "ExploreLibraryNow": "استكشف مكتبتنا الآن",
+  "StartExploring": "ابدأ الاستكشاف",
+  "listen": "استمع",
+  "backToHomePage": "العودة إلى الصفحة الرئيسية",
+  "thisPageNotfound": "لا يمكن العثور على هذه الصفحة",
+  "error404": "عذرًا، خطأ 404!",
+  "orContinueWith": "أو تابع باستخدام",
+  "Upload Your Picture": "رفع صورتك",
+  "male": "ذكر",
+  "female": "أنثى",
+  "yourVariant": "نوعك",
+  "ContinueWithGoogle": "المتابعة باستخدام جوجل",
+  "emailSent": "تم إرسال البريد الإلكتروني",
+  "emailSentTo": "تم إرسال بريد إلكتروني حول كيفية إعادة تعيين كلمة المرور إلى ",
+  "pleaseFollowInstructions": "يرجى اتباع التعليمات.",
+  "resend": "إعادة الإرسال",
+  "resources": "الموارد"
 }

@@ -40,7 +40,6 @@
   "password": "Passord",
   "confirmPassword": "Bekreft Passord",
   "dateOfBirth": "Fødselsdato",
-
   "titleTopBooks": "Toppbøker",
   "categoryNotFound": "Kategori ikke funnet",
   "readLink": "Les",
@@ -77,7 +76,6 @@
   "saveBtn": "Lagre",
   "askNow": "Spør nå",
   "stop": "Stopp",
-
   "alreadyHaveAnAccount": "Har du allerede en konto?",
   "logInWithEmail": "Logg inn med e-post",
   "signUpWithEmail": "Registrer deg med e-post",
@@ -104,5 +102,24 @@
   "chooseYourReadingHabits": "Velg dine lesevaner",
   "profileDetails": "Profilinformasjon",
   "howDidYouLearnAbout": "Hvordan hørte du om Elor?",
-  "selectMultipleOptions": "Du kan velge flere alternativer"
+  "selectMultipleOptions": "Du kan velge flere alternativer",
+
+  "YourBookshelfEmpty": "Bokhyllen din er tom nå",
+  "ExploreLibraryNow": "Utforsk biblioteket vårt nå",
+  "StartExploring": "Begynn å utforske",
+  "listen": "Lytt",
+  "backToHomePage": "Tilbake til hjemmesiden",
+  "thisPageNotfound": "Denne siden kan ikke finnes",
+  "error404": "Oops, feil 404!",
+  "orContinueWith": "Eller fortsett med",
+  "Upload Your Picture": "Last opp bildet ditt",
+  "male": "Mann",
+  "female": "Kvinne",
+  "yourVariant": "Din variant",
+  "ContinueWithGoogle": "Fortsett med Google",
+  "emailSent": "E-post sendt",
+  "emailSentTo": "En e-post om hvordan du tilbakestiller passordet ditt er sendt til ",
+  "pleaseFollowInstructions": "Vennligst følg instruksjonene.",
+  "resend": "Send på nytt",
+  "resources": "Ressurser"
 }

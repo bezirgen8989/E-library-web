@@ -40,7 +40,6 @@
   "password": "Parol",
   "confirmPassword": "Parolni tasdiqlang",
   "dateOfBirth": "Tug'ilgan sana",
-
   "titleTopBooks": "Eng Yaxshi Kitoblar",
   "categoryNotFound": "Kategoriyalar topilmadi",
   "readLink": "O'qish",
@@ -76,7 +75,6 @@
   "saveBtn": "Saqlash",
   "askNow": "Hozir so'rang",
   "stop": "To'xtatish",
-
   "alreadyHaveAnAccount": "Hozirda hisobingiz bormi?",
   "logInWithEmail": "Email orqali kirish",
   "signUpWithEmail": "Email orqali ro'yxatdan o'tish",
@@ -103,5 +101,24 @@
   "chooseYourReadingHabits": "O'qish odatlaringizni tanlang",
   "profileDetails": "Profil tafsilotlari",
   "howDidYouLearnAbout": "Siz Elor haqida qanday bilib oldingiz?",
-  "selectMultipleOptions": "Bir nechta variantni tanlashingiz mumkin"
+  "selectMultipleOptions": "Bir nechta variantni tanlashingiz mumkin",
+
+  "YourBookshelfEmpty": "Sizning kitob javoningiz hozir bo'sh",
+  "ExploreLibraryNow": "Kutubxonamizni hozir o‘rganing",
+  "StartExploring": "O‘rganishni boshlang",
+  "listen": "Tinglang",
+  "backToHomePage": "Bosh sahifaga qayting",
+  "thisPageNotfound": "Bu sahifa topilmadi",
+  "error404": "Voy, xato 404!",
+  "orContinueWith": "Yoki davom eting",
+  "Upload Your Picture": "Rasmingizni yuklang",
+  "male": "Erkak",
+  "female": "Ayol",
+  "yourVariant": "Sizning varianti",
+  "ContinueWithGoogle": "Google bilan davom eting",
+  "emailSent": "Email yuborildi",
+  "emailSentTo": "Parolni tiklash usuli haqida email yuborildi ",
+  "pleaseFollowInstructions": "Iltimos, ko'rsatmalarga amal qiling.",
+  "resend": "Qayta yuborish",
+  "resources": "Resurslar"
 }

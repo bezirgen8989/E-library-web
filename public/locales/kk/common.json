@@ -40,7 +40,6 @@
   "password": "Құпия сөз",
   "confirmPassword": "Құпия сөзді растау",
   "dateOfBirth": "Туған күні",
-
   "titleTopBooks": "Үздік кітаптар",
   "categoryNotFound": "Санат табылмады",
   "readLink": "Оқу",
@@ -76,7 +75,6 @@
   "saveBtn": "Сақтау",
   "askNow": "Қазір сұрау",
   "stop": "Тоқтату",
-
   "alreadyHaveAnAccount": "Жеке есептік жазбаңыз бар ма?",
   "logInWithEmail": "Электрондық пошта арқылы кіру",
   "signUpWithEmail": "Электрондық пошта арқылы тіркелу",
@@ -103,5 +101,24 @@
   "chooseYourReadingHabits": "Оқу әдеттеріңізді таңдаңыз",
   "profileDetails": "Профиль мәліметтері",
   "howDidYouLearnAbout": "Elor туралы қалай білдіңіз?",
-  "selectMultipleOptions": "Бірнеше нұсқаны таңдай аласыз"
+  "selectMultipleOptions": "Бірнеше нұсқаны таңдай аласыз",
+
+  "YourBookshelfEmpty": "Сіздің кітап сөреңіз қазір бос",
+  "ExploreLibraryNow": "Кітапханамызды қазір зерттеңіз",
+  "StartExploring": "Зерттеуді бастау",
+  "listen": "Тыңдау",
+  "backToHomePage": "Басты бетке оралу",
+  "thisPageNotfound": "Бұл бет табылмады",
+  "error404": "Қате 404!",
+  "orContinueWith": "Немесе жалғастыру",
+  "Upload Your Picture": "Суретіңізді жүктеңіз",
+  "male": "Ер адам",
+  "female": "Әйел адам",
+  "yourVariant": "Сіздің таңдауыңыз",
+  "ContinueWithGoogle": "Google арқылы жалғастыру",
+  "emailSent": "Электрондық пошта жіберілді",
+  "emailSentTo": "Құпия сөзді қалпына келтіру туралы электрондық пошта жіберілді: ",
+  "pleaseFollowInstructions": "Нұсқауларды орындаңыз.",
+  "resend": "Қайта жіберу",
+  "resources": "Ресурстар"
 }

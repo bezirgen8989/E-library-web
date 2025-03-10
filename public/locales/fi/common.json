@@ -40,7 +40,6 @@
   "password": "Salasana",
   "confirmPassword": "Vahvista salasana",
   "dateOfBirth": "Syntymäaika",
-
   "titleTopBooks": "Parhaat kirjat",
   "categoryNotFound": "Kategoriaa ei löytynyt",
   "readLink": "Lue",
@@ -76,7 +75,6 @@
   "saveBtn": "Tallenna",
   "askNow": "Kysy nyt",
   "stop": "Lopeta",
-
   "alreadyHaveAnAccount": "Onko sinulla jo tili?",
   "logInWithEmail": "Kirjaudu sisään sähköpostilla",
   "signUpWithEmail": "Rekisteröidy sähköpostilla",
@@ -103,5 +101,24 @@
   "chooseYourReadingHabits": "Valitse lukutottumuksesi",
   "profileDetails": "Profiilin tiedot",
   "howDidYouLearnAbout": "Miten sait tietää Elorista?",
-  "selectMultipleOptions": "Voit valita useita vaihtoehtoja"
+  "selectMultipleOptions": "Voit valita useita vaihtoehtoja",
+
+  "YourBookshelfEmpty": "Kirjahyllysi on nyt tyhjä",
+  "ExploreLibraryNow": "Tutustu kirjastoomme nyt",
+  "StartExploring": "Aloita tutkiminen",
+  "listen": "Kuuntele",
+  "backToHomePage": "Takaisin kotisivulle",
+  "thisPageNotfound": "Tätä sivua ei löytynyt",
+  "error404": "Hups, virhe 404!",
+  "orContinueWith": "Tai jatka seuraavalla",
+  "Upload Your Picture": "Lataa kuvasi",
+  "male": "Mies",
+  "female": "Nainen",
+  "yourVariant": "Sinun vaihtoehtosi",
+  "ContinueWithGoogle": "Jatka Googlella",
+  "emailSent": "Sähköposti lähetetty",
+  "emailSentTo": "Sähköposti salasanan nollaamisesta on lähetetty osoitteeseen ",
+  "pleaseFollowInstructions": "Noudata ohjeita.",
+  "resend": "Lähetä uudelleen",
+  "resources": "Resurssit"
 }

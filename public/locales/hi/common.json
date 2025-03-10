@@ -40,7 +40,6 @@
   "password": "पासवर्ड",
   "confirmPassword": "पासवर्ड की पुष्टि करें",
   "dateOfBirth": "जन्म तिथि",
-
   "titleTopBooks": "शीर्ष पुस्तकें",
   "categoryNotFound": "श्रेणी नहीं मिली",
   "readLink": "पढ़ें",
@@ -76,7 +75,6 @@
   "saveBtn": "सहेजें",
   "askNow": "अभी पूछें",
   "stop": "रोकें",
-
   "alreadyHaveAnAccount": "क्या आपके पास पहले से एक खाता है?",
   "logInWithEmail": "ईमेल से लॉग इन करें",
   "signUpWithEmail": "ईमेल से साइन अप करें",
@@ -103,5 +101,24 @@
   "chooseYourReadingHabits": "अपनी पढ़ने की आदतें चुनें",
   "profileDetails": "प्रोफ़ाइल विवरण",
   "howDidYouLearnAbout": "आपने Elor के बारे में कैसे जाना?",
-  "selectMultipleOptions": "आप कई विकल्प चुन सकते हैं"
+  "selectMultipleOptions": "आप कई विकल्प चुन सकते हैं",
+
+  "YourBookshelfEmpty": "आपका पुस्तकालय अभी खाली है",
+  "ExploreLibraryNow": "अभी हमारी लाइब्रेरी का अन्वेषण करें",
+  "StartExploring": "अन्वेषण शुरू करें",
+  "listen": "सुनें",
+  "backToHomePage": "मुख्य पृष्ठ पर वापस जाएं",
+  "thisPageNotfound": "यह पृष्ठ नहीं मिला",
+  "error404": "उफ़, त्रुटि 404!",
+  "orContinueWith": "या जारी रखें",
+  "Upload Your Picture": "अपनी तस्वीर अपलोड करें",
+  "male": "पुरुष",
+  "female": "महिला",
+  "yourVariant": "आपका विकल्प",
+  "ContinueWithGoogle": "गूगल के साथ जारी रखें",
+  "emailSent": "ईमेल भेजा गया",
+  "emailSentTo": "पासवर्ड रीसेट के लिए ईमेल भेजा गया है ",
+  "pleaseFollowInstructions": "कृपया निर्देशों का पालन करें।",
+  "resend": "पुनः भेजें",
+  "resources": "संसाधन"
 }
