@@ -36,6 +36,7 @@ type LanguageType = {
 
 type UserType = {
   userName: string;
+  id: string;
 };
 
 type ReviewType = {
@@ -118,7 +119,6 @@ const Book: React.FC<BookProps> = ({
   const [selectedLanguage, setSelectedLanguage] = useState(
     value?.bookLanguage || defaultLanguage
   );
-  console.log(33333, selectedLanguage);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
@@ -575,6 +575,7 @@ const Book: React.FC<BookProps> = ({
                     rating={review.rating}
                     text={review.text}
                     reviewer={review?.user?.userName || "Anonymous"}
+                    reviewerId={review?.user?.id}
                     deleteReview={deleteReview}
                   />
                 ))
