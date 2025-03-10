@@ -6,9 +6,7 @@ import tempAi from "../../../../assets/images/testAiImg.png";
 import LanguageModal from "../../../Auth/components/LanguageModal";
 import { Switch } from "antd";
 import NotificationsModal from "../common/NotificationModal/NotificationsModal";
-import { useTranslation } from "react-i18next";
 import { UserContext } from "../../../../core/contexts";
-import i18n from "i18next";
 
 export type LanguageType = {
   id: number;
@@ -29,6 +27,7 @@ type RecoverProps = {
   language?: LanguageType;
   handleAppLanguage: any;
   handleBookLanguage: any;
+  localization: any;
 };
 
 type FormValues = {
@@ -50,14 +49,15 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   language,
   handleAppLanguage,
   handleBookLanguage,
+  localization,
 }) => {
-  const { t } = useTranslation();
   const defaultLanguage = languages.find((lang) => lang.name === "English") || {
     id: 0,
     name: "English",
     flag: { link: NoAvatar },
     isoCode2char: "en",
   };
+
   const value = useContext(UserContext);
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
   const [selectedBookLanguage, setSelectedBookLanguage] = useState(
@@ -110,13 +110,9 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   const handleLanguageChange = (language: LanguageType) => {
     if (modalType === "language") {
       setSelectedLanguage(language);
-      sessionStorage.setItem(
-        "appLanguage",
-        JSON.stringify(language.isoCode2char)
-      );
+      sessionStorage.setItem("appLanguage", JSON.stringify(language));
       handleAppLanguage(language); // Dispatch the action
       setValue("language", language.name); // Update the form value
-      i18n.changeLanguage(language.isoCode2char.toLowerCase());
     } else if (modalType === "bookLanguage") {
       setSelectedBookLanguage(language);
       handleBookLanguage(language); // Dispatch the action
@@ -177,7 +173,9 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
                   </div>
                 )}
               />
-              <label className={styles.inputLabel}>{t("appLanguage")}</label>
+              <label className={styles.inputLabel}>
+                {localization?.appLanguage}
+              </label>
             </div>
           )}
         </div>
@@ -207,14 +205,16 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
                   </div>
                 )}
               />
-              <label className={styles.inputLabel}>{t("bookLanguage")}</label>
+              <label className={styles.inputLabel}>
+                {localization?.bookLanguage}
+              </label>
             </div>
           )}
         </div>
 
         {/* Kids Mode */}
         <div className={styles.kidsSelectWrapper}>
-          <span>{t("kidsMode")}</span>
+          <span>{localization?.kidsMode}</span>
           <Switch checked={userKidsMode} onChange={kidsModeChange} />
         </div>
 
@@ -226,7 +226,7 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
             setIsNotificationsModalOpen(true);
           }}
         >
-          <span>{t("notificationSettings")}</span>
+          <span>{localization?.notificationSettings}</span>
         </div>
 
         {/* AI Librarian */}
@@ -246,7 +246,7 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
               alt="avatar"
             />
           </div>
-          <span>{t("aILibrarian")}</span>
+          <span>{localization?.aILibrarian}</span>
         </div>
       </form>
 

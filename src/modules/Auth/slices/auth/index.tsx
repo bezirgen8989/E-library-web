@@ -477,6 +477,10 @@ export const setAppLanguage = createAsyncThunk(
   "appLang/api/v1/auth/me",
   async (userParams: any, { dispatch }) => {
     const response = await setUserProfile(userParams);
+    const { success } = response;
+    if (success) {
+      dispatch(getMe());
+    }
     return response;
   }
 );

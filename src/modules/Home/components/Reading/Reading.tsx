@@ -108,7 +108,7 @@ const Reading: React.FC<ReadingProps> = ({
         className={styles.backBtnRelativePage}
       >
         <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
-        {localization.backBtn}
+        {localization?.backBtn}
       </div>
 
       <div

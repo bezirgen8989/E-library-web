@@ -1,9 +1,10 @@
 import ProfileUserComponent from "../components/ProfileUserComponent";
 import { useLazySelector } from "../../../hooks";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useContext, useEffect, useRef } from "react";
 import {
   deleteUserAccount,
   getLanguages,
+  getLocalization,
   getMe,
   setAppLanguage,
   setBookLanguage,
@@ -17,9 +18,11 @@ import { useDispatch } from "react-redux";
 import { routes } from "../../Home/routing";
 import { routes as userManagementRoutes } from "../../UserManagement/routing";
 import { useHistory } from "react-router-dom";
+import { UserContext } from "../../../core/contexts";
 
 const ProfileUserContainer: React.FC = () => {
   const dispatch = useDispatch();
+  const value = useContext(UserContext);
   const history = useHistory();
   const prevPath = useRef(history.location.pathname);
 
@@ -47,6 +50,12 @@ const ProfileUserContainer: React.FC = () => {
       photoId,
     };
   });
+
+  useEffect(() => {
+    if (value?.language?.isoCode2char) {
+      dispatch(getLocalization(value?.language?.isoCode2char));
+    }
+  }, [dispatch, value?.language?.isoCode2char]);
 
   const setUserAvatar = async (avatarId: number) => {
     try {

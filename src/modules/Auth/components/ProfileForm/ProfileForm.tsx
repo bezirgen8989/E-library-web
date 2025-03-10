@@ -89,10 +89,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
 
   const onLanguageSelect = (language: LanguageType) => {
     setSelectedLanguage(language);
-    sessionStorage.setItem(
-      "appLanguage",
-      JSON.stringify(language.isoCode2char)
-    );
+    sessionStorage.setItem("appLanguage", JSON.stringify(language));
     setValue("language", language.name);
   };
 

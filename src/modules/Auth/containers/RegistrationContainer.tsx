@@ -13,7 +13,7 @@ const RegistrationContainer: React.FC = () => {
   const parsedAppLanguage = appLanguage ? JSON.parse(appLanguage) : "en";
 
   useEffect(() => {
-    dispatch(getLocalization(parsedAppLanguage));
+    dispatch(getLocalization(parsedAppLanguage.isoCode2char));
   }, [dispatch, parsedAppLanguage]);
 
   const onSubmit = useCallback(

@@ -8,11 +8,7 @@ import { UserContext } from "../../../core/contexts";
 import { useHistory } from "react-router-dom";
 import { routes } from "../routing";
 import { clearBooks } from "../slices/home";
-import {
-  getLanguages,
-  getLocalization,
-  setAppLanguage,
-} from "../../Auth/slices/auth";
+import { getLanguages, getLocalization } from "../../Auth/slices/auth";
 
 const HomeContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -49,9 +45,14 @@ const HomeContainer: React.FC = () => {
   );
   console.log("languages", languages?.data);
 
+  const appLanguage = sessionStorage.getItem("appLanguage");
+  const parsedAppLanguage = appLanguage
+    ? JSON.parse(appLanguage)
+    : value?.language?.isoCode2char;
+
   useEffect(() => {
     if (value?.language?.isoCode2char) {
-      dispatch(getLocalization(value?.language?.isoCode2char));
+      dispatch(getLocalization(parsedAppLanguage.isoCode2char));
     }
   }, [dispatch, value?.language?.isoCode2char]);
 
@@ -99,32 +100,6 @@ const HomeContainer: React.FC = () => {
       );
     }
   }, [dispatch, suggestedFilter]);
-
-  useEffect(() => {
-    console.log("languages.data:", languages?.data);
-
-    if (!languages?.data || languages.data.length === 0) return;
-
-    const appLanguage = sessionStorage.getItem("appLanguage") || "en";
-    const parsedAppLanguage = appLanguage ? JSON.parse(appLanguage) : "en";
-    console.log("appLanguage from sessionStorage:", appLanguage);
-
-    const selectedLanguage = languages.data.find(
-      (lang: any) => lang.isoCode2char === parsedAppLanguage
-    );
-    console.log("selectedLanguage:", selectedLanguage);
-
-    if (selectedLanguage) {
-      dispatch(
-        setAppLanguage({
-          language: { id: selectedLanguage.id },
-        })
-      );
-    } else {
-      console.warn("No matching language found, defaulting to English.");
-      dispatch(setAppLanguage({ language: { id: "7" } }));
-    }
-  }, [dispatch, languages?.data]);
 
   useEffect(() => {
     dispatch(getLanguages());
