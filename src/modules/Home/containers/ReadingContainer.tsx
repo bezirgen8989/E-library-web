@@ -36,6 +36,8 @@ const ReadingContainer: React.FC = () => {
       currentBookshelfBook: home.currentBookshelfBook,
     })
   );
+  console.log("currentReadBook", currentReadBook);
+  console.log("currentBookshelfBook", currentBookshelfBook);
 
   useEffect(() => {
     if (value?.language?.isoCode2char) {
