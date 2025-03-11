@@ -15,8 +15,10 @@ const RecoverPasswordContainer: React.FC = () => {
 
   const handleSubmit = useCallback(
     (values) => {
-      console.log("RecoverValue", values);
       dispatch(recoverPassword(values));
+      if (values.email) {
+        localStorage.setItem("recoveryEmail", values.email);
+      }
     },
     [dispatch]
   );
