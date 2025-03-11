@@ -6,7 +6,13 @@ import logo from "../../../../assets/images/ConfirmIcon.svg";
 import React from "react";
 import { useLazySelector } from "../../../../hooks";
 
-const VerifyEmailSuccess: React.FC = () => {
+type VerifyEmailSuccessProps = {
+  recoveryEmail: string | null;
+};
+
+const VerifyEmailSuccess: React.FC<VerifyEmailSuccessProps> = ({
+  recoveryEmail,
+}) => {
   const history = useHistory();
   const { result: localization } = useLazySelector(
     ({ auth }) => auth.appLocalization || {}
@@ -38,8 +44,8 @@ const VerifyEmailSuccess: React.FC = () => {
           </div>
           <div className={commonStyles.recover_name}>Email sent</div>
           <div className={commonStyles.success_subtitle}>
-            Email on how to reset your password has been sent to
-            davidm1970@gmail.com. Please follow instructions.
+            Email on how to reset your password has been sent to {recoveryEmail}
+            . Please follow instructions.
           </div>
           <Button variant="Transparent" to="/onboarding">
             Back to Home

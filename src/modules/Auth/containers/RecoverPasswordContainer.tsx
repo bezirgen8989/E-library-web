@@ -17,6 +17,9 @@ const RecoverPasswordContainer: React.FC = () => {
     (values) => {
       console.log("RecoverValue", values);
       dispatch(recoverPassword(values));
+      if (values.email) {
+        localStorage.setItem("recoveryEmail", values.email);
+      }
     },
     [dispatch]
   );
