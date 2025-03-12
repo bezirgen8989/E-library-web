@@ -4,6 +4,7 @@ import { PublicRoute } from "routing/components";
 import routes from "./routes";
 // import { Loading } from "../components";
 import { Spinner } from "../../../components/common";
+import Deeplink from "../components/Deeplink/Deeplink";
 
 export { routes };
 
@@ -162,6 +163,8 @@ const AuthRouting = () => (
         path={routes.privacyPolicy}
         component={PrivacyPolicy}
       />
+
+      <PublicRoute exact path={routes.deeplink} component={Deeplink} />
 
       <Redirect path="*" to={routes.onboarding} />
     </Switch>
