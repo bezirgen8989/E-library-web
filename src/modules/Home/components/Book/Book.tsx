@@ -123,8 +123,6 @@ const Book: React.FC<BookProps> = ({
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const dispatch = useDispatch();
-  console.log("selectedLanguage", selectedLanguage);
-  console.log("currentBookVersion?.result", currentBookVersion?.result);
 
   useEffect(() => {
     if (value?.language?.isoCode2char) {
@@ -223,6 +221,24 @@ const Book: React.FC<BookProps> = ({
   //     }
   //   }
   // }, [languages]);
+
+  const formatFileSize = (bytesStr: string): string => {
+    const bytesNum = Number(bytesStr);
+    if (isNaN(bytesNum) || bytesNum <= 0) {
+      return "Введите корректное число";
+    }
+
+    const sizes = ["bytes", "KB", "MB"];
+    let value = bytesNum;
+    let index = 0;
+
+    while (value >= 1024 && index < sizes.length - 1) {
+      value /= 1024;
+      index++;
+    }
+
+    return `${value.toFixed(2)} ${sizes[index]}`;
+  };
 
   if (!languages) {
     return (
@@ -520,29 +536,51 @@ const Book: React.FC<BookProps> = ({
                   ))}
                 </div>
               </div>
-              <Button
-                style={{
-                  color: "#996C42",
-                  border: "2px solid rgba(153, 108, 66, 0.2)",
-                  background: "transparent",
-                  borderRadius: "14px",
-                }}
-                variant="Transparent"
-                icon={<img src={Download} alt="icon" />}
-              >
-                {localization?.downloadBtn}
-                <div
+              {currentBookVersion?.result?.data[0]?.bookFile?.link && (
+                <a
+                  href={currentBookVersion?.result?.data[0]?.bookFile?.link}
+                  download
+                  rel="noopener noreferrer"
+                  className={styles.downloadLink}
                   style={{
-                    background: "rgba(153, 108, 66, 0.1)",
-                    fontSize: "12px",
-                    borderRadius: "24px",
-                    padding: "2px 6px",
-                    marginLeft: "5px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#996C42",
+                    border: "2px solid rgba(153, 108, 66, 0.2)",
+                    background: "transparent",
+                    borderRadius: "14px",
+                    padding: "10px 16px",
+                    cursor: "pointer",
+                    textDecoration: "none",
+                    width: "100%",
+                    fontWeight: "700",
+                    fontSize: "17px",
+                    textAlign: "center",
                   }}
                 >
-                  2MB
-                </div>
-              </Button>
+                  <img
+                    src={Download}
+                    alt="download icon"
+                    style={{ marginRight: "8px" }}
+                  />
+                  {localization?.downloadBtn}
+                  <div
+                    style={{
+                      background: "rgba(153, 108, 66, 0.1)",
+                      fontSize: "12px",
+                      borderRadius: "24px",
+                      padding: "2px 6px",
+                      marginLeft: "5px",
+                    }}
+                  >
+                    {" "}
+                    {formatFileSize(
+                      currentBookVersion?.result?.data[0]?.bookFile?.fileSize
+                    )}
+                  </div>
+                </a>
+              )}
             </section>
             <section className={styles.reviewsSection}>
               <div className={styles.section_title}>
