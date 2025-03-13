@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 // import { GoogleLogin } from "@react-oauth/google";
 import { useLazySelector } from "../../../../hooks";
 import useAuthSocial from "../../../../hooks/useAuthSocial";
+import { AppleOutlined } from "@ant-design/icons";
 
 type LoginFormProps = {
   onSubmit: (values: any) => void;
@@ -32,7 +33,6 @@ const OnboardingForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   // };
 
   return (
-    // <GoogleOAuthProvider clientId="739797713062-bos5gumeckgjdsi5v3hhviiih5ttjrjn.apps.googleusercontent.com">
     <div style={{ display: "flex", width: "100%", height: "100vh" }}>
       <div className={commonStyles.centeredWrapper}>
         <div style={{ height: "58px", width: "100%" }} />
@@ -46,22 +46,6 @@ const OnboardingForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
           <Button variant="Blue" onClick={() => loginViaSocial("google")}>
             Continue with Google test
           </Button>
-          <div className={styles.googleButton}>
-            <div className={styles.googleButtonAbsolute}>
-              {/*<img*/}
-              {/*  style={{ marginRight: "12px", marginTop: "-3px" }}*/}
-              {/*  src={GoogleIcon}*/}
-              {/*  alt="icon"*/}
-              {/*/>*/}
-              <div style={{ display: "inline-block", paddingTop: "3px" }}>
-                Continue with Google
-              </div>
-            </div>
-            {/*<GoogleLogin*/}
-            {/*  onSuccess={handleGoogleSuccess}*/}
-            {/*  onError={handleGoogleFailure}*/}
-            {/*/>*/}
-          </div>
           <div
             style={{
               display: "flex",
@@ -72,7 +56,7 @@ const OnboardingForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
           >
             <div className={styles.subtitle_line}></div>
             <div className={commonStyles.login_subtitle}>
-              localization?.orContinueWith
+              {localization?.orContinueWith}
             </div>
             <div className={styles.subtitle_line}></div>
           </div>
@@ -84,11 +68,26 @@ const OnboardingForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
               justifyContent: "center",
             }}
           >
-            <Link to="#" className={styles.soc_fb}>
+            <Link
+              to="#"
+              className={styles.soc_fb}
+              onClick={() => loginViaSocial("facebook")}
+            >
               <img src={Social_1} alt="Facebook logo" />
             </Link>
-            <Link to="#" className={styles.soc_tw}>
+            <Link
+              to="#"
+              className={styles.soc_tw}
+              onClick={() => loginViaSocial("twitter")}
+            >
               <img src={Social_2} alt="Twitter logo" />
+            </Link>
+            <Link
+              to="#"
+              className={styles.soc_ap}
+              onClick={() => loginViaSocial("apple")}
+            >
+              <AppleOutlined style={{ fontSize: "29px", color: "black" }} />
             </Link>
           </div>
         </div>
@@ -105,7 +104,6 @@ const OnboardingForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
         <img style={{ height: "100%" }} src={Onboarding} alt="Onboarding" />
       </div>
     </div>
-    // </GoogleOAuthProvider>
   );
 };
 

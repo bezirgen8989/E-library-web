@@ -1,14 +1,13 @@
 import { API_PREFIX } from "api/apiHelpers";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 // import { TokenManager } from 'utils';
-// import contactsRoutes from 'modules/Contacts/routing/routes';
+import homeRoutes from "routing/routes";
 
 type Social = "facebook" | "google" | "twitter" | "apple";
 
 const useAuthSocial = () => {
   const location = useLocation();
-  // const history = useHistory();
-  // const navigate = useNavigate();
+  const history = useHistory();
 
   const finishSocialLogin = () => {
     const params = new URLSearchParams(location.search);
@@ -20,7 +19,7 @@ const useAuthSocial = () => {
       // TokenManager.setAccessToken(token);
       // TokenManager.setRefreshToken(refreshToken);
       //
-      // navigate(contactsRoutes.root);
+      history.push(homeRoutes.root);
     }
   };
 
