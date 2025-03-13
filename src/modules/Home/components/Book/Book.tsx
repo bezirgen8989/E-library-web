@@ -473,7 +473,7 @@ const Book: React.FC<BookProps> = ({
                 }}
                 icon={<img src={ListenIcon} alt="icon" />}
               >
-                localization?.listen
+                {localization?.listen}
               </Button>
               <div className={styles.divider} />
               <Button

@@ -27,17 +27,31 @@ const AudioBookContainer: React.FC = () => {
     }
   }, [dispatch, value?.language?.isoCode2char]);
 
-  const { currentAudioBook, currentBookVersion, currentBook } = useLazySelector(
-    ({ home }) => ({
-      currentAudioBook: home.currentAudioBook,
-      currentBookVersion: home.currentBookVersion,
-      currentBook: home.currentBook,
-    })
-  );
+  const {
+    currentAudioBook,
+    currentBookVersion,
+    currentBook,
+    currentBookshelfBook,
+  } = useLazySelector(({ home }) => ({
+    currentAudioBook: home.currentAudioBook,
+    currentBookVersion: home.currentBookVersion,
+    currentBook: home.currentBook,
+    currentBookshelfBook: home.currentBookshelfBook,
+  }));
   const [currentPage, setCurrentPage] = useState("1");
+  const [maxLoadPage, setMaxLoadPage] = useState<number>(0);
+
+  useEffect(() => {
+    if (currentBookshelfBook?.result?.lastPage) {
+      setCurrentPage(currentBookshelfBook.result.lastPage.toString());
+      setMaxLoadPage(currentBookshelfBook.result.lastPage);
+    }
+  }, [currentBookshelfBook?.result?.lastPage]);
+
   console.log("currentAudioBook", currentAudioBook);
   console.log("currentBookVersion", currentBookVersion);
   console.log("currentBook", currentBook);
+  console.log("currentBookshelfBook", currentBookshelfBook?.result?.lastPage);
 
   useEffect(() => {
     const fetchBookshelfData = async () => {
@@ -88,7 +102,7 @@ const AudioBookContainer: React.FC = () => {
     const langId = sessionStorage.getItem("selectedLanguageId") || "7";
     dispatch(getAudioBook({ bookId: id, langId, page: currentPage }));
   }, [id, dispatch, currentPage]);
-  const [maxLoadPage, setMaxLoadPage] = useState<number>(0);
+
   const saveProgress = () => {
     if (value?.id && id) {
       const totalPages = currentBookVersion?.result?.data?.[0]?.totalPages;

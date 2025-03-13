@@ -187,7 +187,6 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
               onEnded={() => {
                 setIsPlaying(false);
                 setProgress(0);
-
                 const totalPages =
                   currentBookVersion?.result?.data?.[0]?.totalPages || 1;
                 setCurrentPage((prev: string) => {
