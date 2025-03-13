@@ -4,12 +4,13 @@ import logo from "../../../../assets/images/ErrorImg_1.png";
 import TopLogo from "../../../../assets/images/icons/logo.svg";
 import Button from "../../../../components/common/Buttons/Button";
 import React from "react";
+import { useLazySelector } from "../../../../hooks";
 // import {useLazySelector} from "../../../../hooks";
 
 const Error404Component: React.FC = () => {
-  // const { result: localization } = useLazySelector(
-  //     ({ auth }) => auth.appLocalization || {}
-  // );
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
   return (
     <div
       style={{
@@ -31,13 +32,13 @@ const Error404Component: React.FC = () => {
           <div className={styles.error_logo}>
             <img src={logo} alt="logo" />
           </div>
-          <div className={styles.logo_name}>localization?.error404</div>
+          <div className={styles.logo_name}>{localization?.error404}</div>
           <div className={styles.error_subtitle}>
-            localization?.thisPageNotfound
+            {localization?.thisPageNotfound}
           </div>
 
           <Button variant="White" to="/auth/">
-            localization?.backToHomePage
+            {localization?.backToHomePage}
           </Button>
         </div>
         <div style={{ height: "58px", width: "100%" }} />

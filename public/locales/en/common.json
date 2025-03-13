@@ -121,5 +121,9 @@
   "emailSentTo": "Email on how to reset your password has been sent to ",
   "pleaseFollowInstructions": "Please follow instructions.",
   "resend": "Resend",
-  "resources": "Resources"
+  "resources": "Resources",
+  "errors": {
+    "incorrectEmailOrPassword":"Incorrect email or password",
+    "loginError": "Login Error"
+  }
 }

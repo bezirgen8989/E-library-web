@@ -38,6 +38,7 @@ import homeRoutes from "modules/Home/routing/routes";
 import { notification } from "antd";
 import routes from "../../routing/routes";
 import Alert from "../../../../assets/images/icons/notificationIcon.svg";
+import { t } from "i18next";
 
 const initialState: AuthState = {
   loginRequest: {},
@@ -229,12 +230,9 @@ export const LoginUser = createAsyncThunk(
           icon: <img src={Alert} alt="icon" />,
         });
       } else if (status === 422) {
-        const validationErrors = error?.errors || "Validation error";
-        const parseError: any = JSON.stringify(validationErrors);
-        console.log("parseError", parseError);
         notification.error({
-          message: "Login Error",
-          description: `Validation error: ${parseError?.email}`,
+          message: t("errors.loginError"),
+          description: t("errors.incorrectEmailOrPassword"),
           duration: 4,
           placement: "top",
           icon: <img src={Alert} alt="icon" />,
@@ -243,7 +241,7 @@ export const LoginUser = createAsyncThunk(
         const errorMessage =
           error?.detail || "An error occurred, please try again later.";
         notification.error({
-          message: "Login Error",
+          message: t("errors.loginError"),
           description: errorMessage,
           duration: 4,
           placement: "top",
@@ -268,8 +266,8 @@ export const googleLoginUser = createAsyncThunk(
     if (!success) {
       if (status === 401) {
         notification.error({
-          message: "Login Error",
-          description: "Invalid email or password.",
+          message: t("errors.loginError"),
+          description: t("errors.incorrectEmailOrPassword"),
           duration: 4,
           placement: "top",
           icon: <img src={Alert} alt="icon" />,
@@ -277,7 +275,7 @@ export const googleLoginUser = createAsyncThunk(
       } else if (status === 422) {
         const validationErrors = error?.errors || "Validation error";
         notification.error({
-          message: "Login Error",
+          message: t("errors.loginError"),
           description: `Validation error: ${JSON.stringify(validationErrors)}`,
           duration: 4,
           placement: "top",
@@ -287,7 +285,7 @@ export const googleLoginUser = createAsyncThunk(
         const errorMessage =
           error?.detail || "An error occurred, please try again later.";
         notification.error({
-          message: "Login Error",
+          message: t("errors.loginError"),
           description: errorMessage,
           duration: 4,
           placement: "top",
