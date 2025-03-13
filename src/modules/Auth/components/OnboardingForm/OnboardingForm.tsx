@@ -66,7 +66,7 @@ const OnboardingForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
             >
               <div className={styles.subtitle_line}></div>
               <div className={commonStyles.login_subtitle}>
-                localization?.orContinueWith
+                {localization?.orContinueWith}
               </div>
               <div className={styles.subtitle_line}></div>
             </div>

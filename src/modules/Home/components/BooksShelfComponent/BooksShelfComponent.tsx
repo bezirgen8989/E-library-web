@@ -90,12 +90,14 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
             <div className={styles.innerImg}>
               <img src={EmptyImg} alt="empty" />
             </div>
-            <div className={styles.title}>localization?.YourBookshelfEmpty</div>
+            <div className={styles.title}>
+              {localization?.YourBookshelfEmpty}
+            </div>
             <div className={styles.subTitle}>
-              localization?.ExploreLibraryNow
+              {localization?.ExploreLibraryNow}
             </div>
             <Button variant="Brown" to={routes.root}>
-              localization?.StartExploring
+              {localization?.StartExploring}
             </Button>
           </div>
         </div>
