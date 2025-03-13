@@ -182,7 +182,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
               </div>
             </div>
             <span className={commonStyles.uploadSubtitle}>
-              localization?.profileDetails
+              {localization?.profileDetails}
             </span>
             <div style={{ marginTop: 15 }}>
               <div className={commonStyles.inputWrapper}>
