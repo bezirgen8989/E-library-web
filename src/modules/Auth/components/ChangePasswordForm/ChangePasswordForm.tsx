@@ -29,7 +29,6 @@ const ChangePasswordForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   const password = watch("password");
 
   const onSubmitForm = ({ confirmPassword, ...values }: any) => {
-    console.log("Change password form", { ...values, hash });
     onSubmit({ ...values, hash });
   };
 
