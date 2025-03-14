@@ -394,15 +394,18 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const stopAvatarGeneration = async (params: any) => {
     try {
       // const response = await fetch("https://genavatars.plavno.app:50956/stop", {
-      const response = await fetch("https://c18457970.plavno.app:20448/stop", {
-        method: "POST",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(params),
-      });
+      const response = await fetch(
+        "https://avatar18822879.plavno.app:11849/stop",
+        {
+          method: "POST",
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(params),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
