@@ -1,6 +1,6 @@
 import styles from "../EnterCodeForm/EnterCodeForm.module.scss";
 import commonStyles from "../../../../assets/css/commonStyles/CommonStyles.module.scss";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import BackIcon from "../../../../assets/images/icons/goBackIcon.svg";
 import Onboarding from "../../../../assets/images/Onboarding-img.png";
 import { useForm } from "react-hook-form";
@@ -10,10 +10,15 @@ import { useLazySelector } from "../../../../hooks";
 
 type RecoverProps = {
   onSubmit: (values: any) => void;
+  onResendCode?: () => void;
   currentEmail?: string | null;
 };
 
-const EnterCodeForm: React.FC<RecoverProps> = ({ onSubmit, currentEmail }) => {
+const EnterCodeForm: React.FC<RecoverProps> = ({
+  onSubmit,
+  currentEmail,
+  onResendCode,
+}) => {
   const history = useHistory();
   const { register, handleSubmit, watch, setValue } = useForm();
   const code = watch([
@@ -134,9 +139,17 @@ const EnterCodeForm: React.FC<RecoverProps> = ({ onSubmit, currentEmail }) => {
           <div>
             <div className={commonStyles.login_subtitle}>
               {localization?.DidntReceiveCode}
-              <Link style={{ color: "#FFEA84", marginLeft: 8 }} to="">
+              <div
+                style={{
+                  color: "#FFEA84",
+                  marginLeft: 8,
+                  display: "inline-block",
+                  cursor: "pointer",
+                }}
+                onClick={onResendCode}
+              >
                 Resend
-              </Link>
+              </div>
             </div>
           </div>
         </div>

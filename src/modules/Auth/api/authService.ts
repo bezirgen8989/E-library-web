@@ -6,6 +6,7 @@ import {
   usingPut,
 } from "api/apiHelpers";
 import {
+  confirmationParamsProps,
   ConfirmParams,
   EditUserParams,
   GoogleLoginUserParams,
@@ -21,6 +22,9 @@ export const authGoogleLogin = (formParams: GoogleLoginUserParams) =>
   usingPost("/api/v1/auth/google/login", formParams);
 export const authRegister = (userParams: RegisterUserParams) =>
   usingPost("/api/v1/auth/email/register", userParams);
+export const resendConfirmation = (
+  confirmationParams: confirmationParamsProps
+) => usingPost("/api/v1/auth/email/resendConfirmation", confirmationParams);
 export const authConfirm = (codeParams: ConfirmParams) =>
   usingPost("/api/v1/auth/email/confirm", codeParams);
 export const getHabitsCategory = () =>
