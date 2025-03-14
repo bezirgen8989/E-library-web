@@ -23,6 +23,7 @@ import {
   getSurveyOptions,
   setRegistrationOptionsAbout,
   getAppLocalization,
+  resendConfirmation,
 } from "../../api/authService";
 import {
   EditUserParams,
@@ -339,6 +340,15 @@ export const registerUser = createAsyncThunk(
         });
       }
     }
+    return response;
+  }
+);
+
+export const codeResend = createAsyncThunk(
+  "/api/v1/auth/email/resendConfirmation",
+  async (confirmationParams: { email: string }) => {
+    console.log("emailsend", confirmationParams);
+    const response = await resendConfirmation(confirmationParams);
     return response;
   }
 );

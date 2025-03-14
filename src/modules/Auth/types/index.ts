@@ -1,37 +1,42 @@
 export type LoginUserParams = {
-  email: string,
-  password: string
-}
+  email: string;
+  password: string;
+};
 
 export type GoogleLoginUserParams = {
-  idToken: string,
-}
+  idToken: string;
+};
 export type ConfirmParams = {
-  codeOrHash: string,
-}
+  codeOrHash: string;
+};
 export type RegisterUserParams = {
-  photo_url?: string
-  name: string,
-  password: string,
-  confirm?: string,
-  position?: string,
-  location?: string,
-  email: string,
-  phone?: string
-}
+  photo_url?: string;
+  name: string;
+  password: string;
+  confirm?: string;
+  position?: string;
+  location?: string;
+  email: string;
+  phone?: string;
+};
+
+export type confirmationParamsProps = {
+  email: string;
+};
+
 export type EditUserParams = {
-  name: string,
-  email: string,
-  old_password?: string,
-  password?: string,
-  photo_url?: string
-}
+  name: string;
+  email: string;
+  old_password?: string;
+  password?: string;
+  photo_url?: string;
+};
 
 export type RecoverData = {
-  token: string
-  new_password: string,
-}
+  token: string;
+  new_password: string;
+};
 
 export type TokenData = {
-  token: string
-}
+  token: string;
+};
