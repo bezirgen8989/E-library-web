@@ -28,6 +28,7 @@ type RecoverProps = {
   handleAppLanguage: any;
   handleBookLanguage: any;
   localization: any;
+  isChangeKidsMode?: boolean;
 };
 
 type FormValues = {
@@ -50,6 +51,7 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   handleAppLanguage,
   handleBookLanguage,
   localization,
+  isChangeKidsMode,
 }) => {
   const defaultLanguage = languages.find((lang) => lang.name === "English") || {
     id: 0,
@@ -215,7 +217,11 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
         {/* Kids Mode */}
         <div className={styles.kidsSelectWrapper}>
           <span>{localization?.kidsMode}</span>
-          <Switch checked={userKidsMode} onChange={kidsModeChange} />
+          <Switch
+            checked={userKidsMode}
+            disabled={isChangeKidsMode}
+            onChange={kidsModeChange}
+          />
         </div>
 
         {/* Notification Settings */}

@@ -57,6 +57,11 @@
   @media (max-width: 1400px) {
     display: none;
   }
+
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
 }
 .inputField {
   width: 100%;
