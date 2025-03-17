@@ -128,6 +128,9 @@ const homeSlice = createSlice({
       state.currentBookshelfBook = {};
       state.currentReadBook = {};
     },
+    clearCurrentVersion: (state) => {
+      state.currentBookVersion = {};
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -714,5 +717,6 @@ export const {
   setAvatarStreamShow,
   setIsStopQuestion,
   setStreamDone,
+  clearCurrentVersion,
 } = homeSlice.actions;
 export default homeSlice.reducer;

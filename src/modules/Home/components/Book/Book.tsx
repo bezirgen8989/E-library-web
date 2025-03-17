@@ -240,7 +240,11 @@ const Book: React.FC<BookProps> = ({
     return `${value.toFixed(2)} ${sizes[index]}`;
   };
 
-  if (!languages) {
+  if (
+    (!languages.length && currentBook) ||
+    currentBookVersion.isLoading ||
+    !currentBook?.result?.id
+  ) {
     return (
       <div className={styles.home_page}>
         <div className={styles.home_page}>

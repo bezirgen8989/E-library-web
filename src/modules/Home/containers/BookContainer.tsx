@@ -7,6 +7,7 @@ import {
   addReview,
   addToShelf,
   clearBooks,
+  clearCurrentVersion,
   deleteFromShelf,
   deleteYourReview,
   getBookById,
@@ -64,6 +65,9 @@ const BookContainer: React.FC = () => {
   );
   useEffect(() => {
     dispatch(clearBooks());
+    return () => {
+      dispatch(clearCurrentVersion());
+    };
   }, []);
 
   const addToBookShelf = useCallback(

@@ -80,12 +80,12 @@ const BookShelfContainer: React.FC = () => {
   }, []);
 
   const isAgeRestricted = authState.userData.result?.kidsMode
-    ? `[book.isAgeRestricted][eq]=0`
+    ? `filter[book.isAgeRestricted][eq]=0`
     : "";
 
-  const startedFilter = `${isAgeRestricted}[readingState][eq]=reading&filter[book.id][lte]=223`;
-  const favouriteFilter = `${isAgeRestricted}[readingState][eq]=added&filter[book.id][lte]=223`;
-  const finishedFilter = `${isAgeRestricted}[readingState][eq]=finished&filter[book.id][lte]=223`;
+  const startedFilter = `[readingState][eq]=reading&${isAgeRestricted}`;
+  const favouriteFilter = `[readingState][eq]=added&${isAgeRestricted}`;
+  const finishedFilter = `[readingState][eq]=finished&${isAgeRestricted}`;
   useEffect(() => {
     dispatch(clearBooks());
   }, []);
