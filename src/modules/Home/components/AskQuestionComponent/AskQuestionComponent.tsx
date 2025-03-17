@@ -395,7 +395,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     try {
       // const response = await fetch("https://genavatars.plavno.app:50956/stop", {
       const response = await fetch(
-        "https://avatar18822879.plavno.app:11849/stop",
+        "https://avatar18877404.plavno.app:24000/stop",
         {
           method: "POST",
           headers: {
