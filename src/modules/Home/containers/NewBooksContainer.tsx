@@ -17,6 +17,10 @@ const NewBooksContainer: React.FC = () => {
     ({ auth }) => auth.appLocalization || {}
   );
 
+  const authState = useLazySelector(({ auth }) => {
+    return auth;
+  });
+
   useEffect(() => {
     if (value?.language?.isoCode2char) {
       dispatch(getLocalization(value?.language?.isoCode2char));
@@ -48,6 +52,10 @@ const NewBooksContainer: React.FC = () => {
     [dispatch, history]
   );
 
+  const getBooksFilter = `${
+    authState.userData.result?.kidsMode ? "[isAgeRestricted][eq]=0" : null
+  }&filter[id][lte]=223`;
+
   useEffect(() => {
     dispatch(clearBooks());
     dispatch(
@@ -55,7 +63,7 @@ const NewBooksContainer: React.FC = () => {
         limit: limit.toString(),
         page: "1",
         order: "[dateAdded]=desc",
-        filter: null,
+        filter: getBooksFilter,
       })
     );
   }, [dispatch]);
@@ -70,7 +78,7 @@ const NewBooksContainer: React.FC = () => {
           limit: limit.toString(),
           page: nextPage.toString(),
           order: "[dateAdded]=desc",
-          filter: null,
+          filter: getBooksFilter,
         })
       );
       setPage(nextPage);

@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "hooks";
 import { logoutUser } from "core/session/slices/session";
@@ -40,6 +40,18 @@ const HomeContainer: React.FC = () => {
     };
   });
 
+  const authState = useLazySelector(({ auth }) => {
+    return auth;
+  });
+
+  const [loadingKidsMode, setLoadingKidsMode] = useState(true);
+
+  useEffect(() => {
+    if (authState.userData?.result?.kidsMode !== undefined) {
+      setLoadingKidsMode(false);
+    }
+  }, [authState.userData?.result?.kidsMode]);
+
   const { result: languages } = useLazySelector(
     ({ auth }) => auth.languages || {}
   );
@@ -64,29 +76,39 @@ const HomeContainer: React.FC = () => {
     history.push(`${routes.book}/${id}`);
   }, []);
 
-  const suggestedFilter = `[categories.id][in]=${habitsCategories}`;
-  console.log("suggestedFilter", suggestedFilter);
+  const isAgeRestricted = authState.userData.result?.kidsMode
+    ? `[isAgeRestricted][eq]=0`
+    : "";
+
+  const suggestedFilter = `${isAgeRestricted}[categories.id][in]=${habitsCategories}&filter[id][lte]=223`;
+  const getBooksFilter = `${
+    authState.userData.result?.kidsMode ? "[isAgeRestricted][eq]=0" : null
+  }&filter[id][lte]=223`;
+
   // const ratingOrder = "[rating]=desc";
 
   useEffect(() => {
-    dispatch(clearBooks());
-    dispatch(
-      getTopBooks({
-        limit: "3",
-        page: "1",
-        order: "",
-        filter: null,
-      })
-    );
-    dispatch(
-      getNewBooks({
-        limit: "6",
-        page: "1",
-        order: "[dateAdded]=desc",
-        filter: null,
-      })
-    );
-  }, [dispatch]);
+    if (!loadingKidsMode) {
+      dispatch(clearBooks());
+      dispatch(
+        getTopBooks({
+          limit: "3",
+          page: "1",
+          order: "",
+          filter: getBooksFilter,
+        })
+      );
+
+      dispatch(
+        getNewBooks({
+          limit: "6",
+          page: "1",
+          order: "[dateAdded]=desc",
+          filter: getBooksFilter,
+        })
+      );
+    }
+  }, [dispatch, loadingKidsMode]);
 
   useEffect(() => {
     if (habitsCategories) {
