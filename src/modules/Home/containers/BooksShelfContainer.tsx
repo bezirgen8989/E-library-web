@@ -41,6 +41,10 @@ const BookShelfContainer: React.FC = () => {
     };
   });
 
+  const authState = useLazySelector(({ auth }) => {
+    return auth;
+  });
+
   useEffect(() => {
     if (value?.language?.isoCode2char) {
       dispatch(getLocalization(value?.language?.isoCode2char));
@@ -75,9 +79,13 @@ const BookShelfContainer: React.FC = () => {
     history.push(`${routes.reading}/${id}`);
   }, []);
 
-  const startedFilter = "[readingState][eq]=reading";
-  const favouriteFilter = "[readingState][eq]=added";
-  const finishedFilter = "[readingState][eq]=finished";
+  const isAgeRestricted = authState.userData.result?.kidsMode
+    ? `filter[book.isAgeRestricted][eq]=0`
+    : "";
+
+  const startedFilter = `[readingState][eq]=reading&${isAgeRestricted}`;
+  const favouriteFilter = `[readingState][eq]=added&${isAgeRestricted}`;
+  const finishedFilter = `[readingState][eq]=finished&${isAgeRestricted}`;
   useEffect(() => {
     dispatch(clearBooks());
   }, []);

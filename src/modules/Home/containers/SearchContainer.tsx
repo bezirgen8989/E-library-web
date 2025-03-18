@@ -25,6 +25,10 @@ const SearchContainer: React.FC = () => {
     };
   });
 
+  const authState = useLazySelector(({ auth }) => {
+    return auth;
+  });
+
   const { result: localization } = useLazySelector(
     ({ auth }) => auth.appLocalization || {}
   );
@@ -65,13 +69,17 @@ const SearchContainer: React.FC = () => {
     [dispatch]
   );
 
+  const isAgeRestricted = authState.userData.result?.kidsMode
+    ? `[isAgeRestricted][eq]=0`
+    : "";
+
   const getBooksByName = (name: string) => {
     dispatch(
       getBooksByQueryName({
         limit: "12",
         page: "1",
         order: "",
-        filter: `[title|description][contains]=${name}`,
+        filter: `${isAgeRestricted}[title|description][contains]=${name}&filter[id][lte]=223`,
       })
     );
   };

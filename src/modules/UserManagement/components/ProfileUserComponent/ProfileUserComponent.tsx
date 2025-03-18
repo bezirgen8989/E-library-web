@@ -45,7 +45,26 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
   const onLogout = () => {
     dispatch(logoutUser());
   };
-  console.log("VALUE", value);
+
+  const calculateAge = (birthDate: string): number => {
+    const today = new Date();
+    const birthDateObj = new Date(birthDate);
+    let age = today.getFullYear() - birthDateObj.getFullYear();
+    const monthDiff = today.getMonth() - birthDateObj.getMonth();
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDateObj.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
+  };
+
+  const isChangeKidsMode = value?.dateBirth
+    ? calculateAge(value.dateBirth) <= 16
+    : false;
   return (
     <div className={styles.profile_page_wrap}>
       <div className={styles.profile_page}>
@@ -92,6 +111,7 @@ const ProfileUserComponent: FC<ProfileUserComponentProps> = ({
             bookLanguage={value?.bookLanguage}
             setUserAvatar={setUserAvatar}
             language={value?.language}
+            isChangeKidsMode={isChangeKidsMode}
           />
         </div>
         <div onClick={onLogout} className={styles.logOutBtn}>

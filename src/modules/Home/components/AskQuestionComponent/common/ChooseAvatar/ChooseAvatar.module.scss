@@ -20,17 +20,18 @@
   font-weight: 600;
   text-align: center;
   line-height: 25px;
+  margin-bottom: 10px;
 }
 .subTitle {
   font-size: 21px;
   color: rgba(251,241,234, 0.5);
   text-align: center;
+  margin-bottom: 17px;
 }
 .askQuestionAvatar {
   max-width: 1050px;
   margin: 0 auto;
   padding: 0 10px 10px;
-  //min-height: calc(100vh - 74px);
   background-image: url('../../../../../../assets/images/AvatarBg.png');
   background-repeat: no-repeat;
   background-position: center center;

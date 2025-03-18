@@ -27,6 +27,9 @@ const SuggestedBooksContainer: React.FC = () => {
       isLoading: suggestedBooks.isLoading,
     };
   });
+  const authState = useLazySelector(({ auth }) => {
+    return auth;
+  });
 
   useEffect(() => {
     if (value?.language?.isoCode2char) {
@@ -38,7 +41,6 @@ const SuggestedBooksContainer: React.FC = () => {
     ({ auth }) => auth.appLocalization || {}
   );
 
-  console.log("suggestedBooks", suggestedBooks?.result?.data);
   const limit = 6;
 
   const hasMoreBooks =
@@ -50,7 +52,11 @@ const SuggestedBooksContainer: React.FC = () => {
     history.push(`${routes.book}/${id}`);
   }, []);
 
-  const suggestedFilter = `[categories.id][in]=${habitsCategories}`;
+  const isAgeRestricted = authState.userData.result?.kidsMode
+    ? `[isAgeRestricted][eq]=0`
+    : "";
+
+  const suggestedFilter = `${isAgeRestricted}[categories.id][in]=${habitsCategories}&filter[id][lte]=223`;
 
   useEffect(() => {
     dispatch(clearBooks());

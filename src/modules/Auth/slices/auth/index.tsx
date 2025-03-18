@@ -23,6 +23,7 @@ import {
   getSurveyOptions,
   setRegistrationOptionsAbout,
   getAppLocalization,
+  resendConfirmation,
 } from "../../api/authService";
 import {
   EditUserParams,
@@ -343,6 +344,15 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+export const codeResend = createAsyncThunk(
+  "/api/v1/auth/email/resendConfirmation",
+  async (confirmationParams: { email: string }) => {
+    console.log("emailsend", confirmationParams);
+    const response = await resendConfirmation(confirmationParams);
+    return response;
+  }
+);
+
 export const emailConfirm = createAsyncThunk(
   "api/v1/auth/email/confirm",
   async (confirmParams: { codeOrHash: string }) => {
@@ -541,42 +551,11 @@ export const resetPassword = createAsyncThunk(
   "api/v1/auth/reset/password",
   async (formParams: any) => {
     const response = await resetUserPassword(formParams);
-    const { success, status, error, content } = response;
-    console.log("response", response);
-
-    if (!success) {
-      if (status === 401) {
-        notification.error({
-          message: "Login Error",
-          description: "Invalid email or password.",
-          duration: 4,
-          placement: "top",
-          icon: <img src={Alert} alt="icon" />,
-        });
-      } else if (status === 422) {
-        const validationErrors = error?.errors || "Validation error";
-        notification.error({
-          message: "Login Error",
-          description: `Validation error: ${JSON.stringify(validationErrors)}`,
-          duration: 4,
-          placement: "top",
-          icon: <img src={Alert} alt="icon" />,
-        });
-      } else {
-        const errorMessage =
-          error?.detail || "An error occurred, please try again later.";
-        notification.error({
-          message: "Login Error",
-          description: errorMessage,
-          duration: 4,
-          placement: "top",
-          icon: <img src={Alert} alt="icon" />,
-        });
-      }
-    } else if (content && content.token) {
-      SessionUtils.storeSession(content.token);
-      history.push(homeRoutes.root);
+    const { error } = response;
+    if (error?.status === 204) {
+      history.push(routes.onboarding);
     }
+
     return response;
   }
 );
