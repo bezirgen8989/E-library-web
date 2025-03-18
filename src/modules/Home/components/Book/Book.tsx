@@ -205,7 +205,6 @@ const Book: React.FC<BookProps> = ({
   useEffect(() => {
     if (currentBook?.result) {
       setBook(currentBook.result);
-      console.log("Current Reading Set:", currentBook.result);
     }
   }, [currentBook]);
 
@@ -403,7 +402,10 @@ const Book: React.FC<BookProps> = ({
                 </div>
               </div>
             </div>
-            <div className={styles.author_title}>
+            <div
+              className={styles.author_title}
+              style={{ marginBottom: "28px" }}
+            >
               {book?.author?.map((author: any, index: number) => {
                 const isLast = index === book.author.length - 1;
                 const isSecondLast = index === book.author.length - 2;
@@ -660,6 +662,7 @@ const Book: React.FC<BookProps> = ({
           languages={languages}
           defaultLanguage={defaultLanguage}
           onLanguageSelect={onLanguageSelect}
+          currentSelectedLanguage={selectedLanguage}
         />
         <ReviewModal
           reviewSubmit={reviewSubmit}

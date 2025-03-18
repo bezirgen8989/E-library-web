@@ -11,7 +11,21 @@ interface LanguageModalProps {
   languages: any;
   defaultLanguage: any;
   onLanguageSelect: any;
+  currentSelectedLanguage?: {
+    id: number;
+    name: string;
+    isoCode: string;
+    isoCode2char: string;
+    flag: {
+      id: string;
+      prefix: string;
+      postfix: string;
+      name: string;
+    };
+    translationType: string;
+  };
 }
+
 type LanguageType = {
   id: number;
   name: string;
@@ -24,11 +38,13 @@ const LanguageModal: FC<LanguageModalProps> = ({
   isModalOpen,
   setIsModalOpen,
   languages,
-
+  currentSelectedLanguage,
   defaultLanguage,
   onLanguageSelect,
 }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    currentSelectedLanguage || defaultLanguage
+  );
   const [searchTerm, setSearchTerm] = useState("");
   const hideModal = () => {
     setIsModalOpen(false); // исправлено: закрытие окна
