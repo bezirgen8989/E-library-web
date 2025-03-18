@@ -5,7 +5,7 @@ import Button from "../../../../components/common/Buttons/Button";
 import Social_1 from "../../../../assets/images/icons/facebook.svg";
 import Social_2 from "../../../../assets/images/icons/twitter.svg";
 import Onboarding from "../../../../assets/images/Onboarding-img.png";
-// import GoogleIcon from "../../../../assets/images/icons/google.png";
+import GoogleIcon from "../../../../assets/images/icons/google.png";
 import { Link } from "react-router-dom";
 // import { GoogleLogin } from "@react-oauth/google";
 import { useLazySelector } from "../../../../hooks";
@@ -44,7 +44,12 @@ const OnboardingForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
             {localization?.signUpWithEmail}
           </Button>
           <Button variant="Blue" onClick={() => loginViaSocial("google")}>
-            Continue with Google test
+            <img
+              style={{ marginRight: "12px", marginTop: "-3px" }}
+              src={GoogleIcon}
+              alt="icon"
+            />
+            Continue with Google
           </Button>
           <div
             style={{
