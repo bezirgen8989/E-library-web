@@ -60,8 +60,6 @@ export const useVoice = ({
   let timeoutId: any = null;
   let lastQuestionText = "";
 
-  // console.log("chatHistory", chatHistory)
-
   const connectToWhisper = () => {
     socketRef.current = new WebSocket(urlSocket);
 
