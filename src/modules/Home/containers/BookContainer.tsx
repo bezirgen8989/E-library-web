@@ -101,7 +101,6 @@ const BookContainer: React.FC = () => {
       );
     }
   }, [dispatch, currentBook?.result?.id]);
-  console.log("currentBook?.result?.id", currentBook?.result?.id);
 
   useEffect(() => {
     const unlisten = history.listen((location) => {
