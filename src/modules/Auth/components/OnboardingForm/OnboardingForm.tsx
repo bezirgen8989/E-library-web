@@ -48,7 +48,7 @@ const OnboardingForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                   alt="icon"
                 />
                 <div style={{ display: "inline-block", paddingTop: "3px" }}>
-                  Continue with Google
+                  {localization?.ContinueWithGoogle}
                 </div>
               </div>
               <GoogleLogin

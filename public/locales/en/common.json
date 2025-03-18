@@ -84,8 +84,7 @@
   "termsAndConditions": "Terms and Conditions",
   "privacyPolicy": "Privacy Policy",
   "and": "and",
-  "pleaseInputYourEmail!": "Please input your Email!",
-  "passwordMustBeAtLeast8CharactersLong!": "Password must be at least 8 characters long!",
+  "passwordMustBeAtLeast8CharactersLong": "Password must be at least 8 characters long!",
   "pleaseConfirmYourPassword!": "Please confirm your password!",
   "Log In": "Log In",
   "DontHaveAnAccount": "Don’t have an account?",
@@ -103,7 +102,7 @@
   "profileDetails": "Profile Details",
   "howDidYouLearnAbout": "How did you learn about Elor?",
   "selectMultipleOptions": "You can select multiple options",
-
+  "pleaseInputYourEmail": "Please input your Email!",
   "YourBookshelfEmpty": "Your Bookshelf is empty now",
   "ExploreLibraryNow": "Explore our library right now",
   "StartExploring": "Start exploring",
@@ -124,7 +123,11 @@
   "resources": "Resources",
   "errors": {
     "incorrectEmailOrPassword":"Incorrect email or password",
-    "loginError": "Login Error"
+    "loginError": "Login Error",
+    "theInputIsNotValidEmail!": "The input is not valid E-mail!",
+    "passwordMustContainAtLeastOneUppercaseLetter": "Password must contain at least one uppercase letter!",
+    "passwordsDoNotMatch": "Passwords do not match!"
   },
-  "deleteAccount": "Delete Account"
+  "deleteAccount": "Delete Account",
+  "selectLanguage": "Select language"
 }
