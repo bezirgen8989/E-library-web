@@ -260,21 +260,6 @@ export const useVoice = ({
         .forEach((track: MediaStreamTrack) => track.stop());
       streamRef.current = null;
     }
-
-    // if (recorderRef.current) {
-    //   recorderRef.current.disconnect();
-    //   recorderRef.current = null;
-    // }
-
-    // if (audioCtxRef.current) {
-    //   audioCtxRef.current.close();
-    //   audioCtxRef.current = null;
-    // }
-    //
-    // if (socketRef.current) {
-    //   socketRef.current.close();
-    //   socketRef.current = null;
-    // }
   };
 
   useEffect(() => {

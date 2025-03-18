@@ -125,5 +125,6 @@
   "errors": {
     "incorrectEmailOrPassword":"Incorrect email or password",
     "loginError": "Login Error"
-  }
+  },
+  "deleteAccount": "Delete Account"
 }
