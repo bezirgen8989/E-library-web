@@ -85,12 +85,14 @@ export const useVoice = ({
       console.log("[WebSocket Response]", data);
 
       if (data?.type === "question" && data?.segments) {
-        // Get the last segment of the question
-        const lastSegment = data.segments[data.segments.length - 1];
-        const questionText = lastSegment?.text || "";
+        const lastSegment = data.segments;
 
-        questionTexts.push(questionText);
-        lastQuestionText = questionText;
+        if (data?.last === true) {
+          const questionText = lastSegment?.text || "";
+
+          questionTexts.push(questionText);
+          lastQuestionText = questionText;
+        }
 
         if (timeoutId) {
           clearTimeout(timeoutId);
@@ -115,12 +117,13 @@ export const useVoice = ({
           }
         }, 1000);
       }
+
       setMessageClass(styles.messageSystem);
 
       if (data?.type === "answer" && data?.text) {
         const chunkText = data.text;
 
-        // Add the chunk to messages
+        // Добавляем текст в массив сообщений
         setMessages((prev) => [...prev, chunkText]);
 
         setChatHistory((prev: any) => {
@@ -136,7 +139,6 @@ export const useVoice = ({
           return updatedHistory;
         });
 
-        // setTextAreaValue((prev) => prev + chunkText);
         dispatch(setIsStreamShow(true));
       }
     };
