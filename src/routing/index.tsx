@@ -7,6 +7,7 @@ import { ErrorBoundary, ApplicationError } from "components/errors";
 import { InitializationLayer } from "core/layers";
 import authRoutes from "modules/Auth/routing/routes";
 import { BackgroundUpdater } from "../helpers/BackgroundUpdater";
+import Deeplink from "../modules/Auth/components/Deeplink/Deeplink";
 
 const RootRouting = () => {
   return (
@@ -17,6 +18,8 @@ const RootRouting = () => {
           <Switch>
             <Route path={authRoutes.root} component={ExternalRouting} />
             <Route path={rootRoutes.root} component={PrivateRouting} />
+            {/* for social login */}
+            <Route path={"/deeplink"} component={Deeplink} />
           </Switch>
         </InitializationLayer>
       </ErrorBoundary>
