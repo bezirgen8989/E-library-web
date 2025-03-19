@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { float32ArrayToBase64, resampleTo16kHZ } from "../helpers/helper";
 import { urlSocket } from "../envConstants";
 import { useDispatch } from "react-redux";
-import { setIsStreamShow } from "../modules/Home/slices/home";
+import { setIsStreamShow, setStreamDone } from "../modules/Home/slices/home";
 import styles from "../modules/Home/components/AskQuestionComponent/AskQuestionComponent.module.scss";
+import { useLazySelector } from "./index";
 
 interface IUseVoiceHook {
   language?: string;
@@ -40,6 +41,14 @@ export const useVoice = ({
   const [userLanguage, setUserLanguage] = useState("en");
   const [state, setState] = useState(0);
   const stateRef = useRef(state);
+
+  const { isStopQuestion } = useLazySelector(({ home }) => {
+    const { isStopQuestion } = home;
+    return {
+      isStopQuestion,
+    };
+  });
+
   console.log(userLanguage);
 
   useEffect(() => {
@@ -55,10 +64,6 @@ export const useVoice = ({
   const [messages, setMessages] = useState<string[]>([]);
   // const [chatHistory, setChatHistory] = useState<any>([]);
   console.log("messages", messages);
-
-  let questionTexts = [];
-  let timeoutId: any = null;
-  let lastQuestionText = "";
 
   const connectToWhisper = () => {
     socketRef.current = new WebSocket(urlSocket);
@@ -78,42 +83,53 @@ export const useVoice = ({
       }
     };
 
+    let questionTexts: string[] = [];
+    let timeoutId: any = null;
+    let lastQuestionText = "";
+    let lastStart = -1;
+
     socketRef.current.onmessage = (event: MessageEvent) => {
       const data = JSON.parse(event.data);
       console.log("[WebSocket Response]", data);
 
       if (data?.type === "question" && data?.segments) {
-        const lastSegment = data.segments;
+        const { text, start } = data.segments;
 
-        if (data?.last === true) {
-          const questionText = lastSegment?.text || "";
+        if (data?.last === true && start > lastStart) {
+          dispatch(setStreamDone(true));
+          lastStart = start;
 
-          questionTexts.push(questionText);
-          lastQuestionText = questionText;
-        }
+          if (text !== lastQuestionText) {
+            lastQuestionText = text;
 
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-        }
+            if (!questionTexts.includes(text)) {
+              questionTexts.push(text);
+            }
 
-        timeoutId = setTimeout(() => {
-          if (lastQuestionText) {
-            setChatHistory((prev: any) => [
-              ...prev,
-              {
-                type: "user",
-                message: lastQuestionText,
-                timestamp: new Date().toLocaleTimeString(),
-              },
-              {
-                type: "response",
-                message: " ",
-                timestamp: new Date().toLocaleTimeString(),
-              },
-            ]);
-            questionTexts = [];
+            if (timeoutId) {
+              clearTimeout(timeoutId);
+            }
+
+            timeoutId = setTimeout(() => {
+              if (lastQuestionText) {
+                setChatHistory((prev: any) => [
+                  ...prev,
+                  {
+                    type: "user",
+                    message: lastQuestionText,
+                    timestamp: new Date().toLocaleTimeString(),
+                  },
+                  {
+                    type: "response",
+                    message: " ",
+                    timestamp: new Date().toLocaleTimeString(),
+                  },
+                ]);
+                questionTexts = [];
+              }
+            }, 1000);
           }
-        }, 1000);
+        }
       }
 
       setMessageClass(styles.messageSystem);
@@ -121,7 +137,6 @@ export const useVoice = ({
       if (data?.type === "answer" && data?.text) {
         const chunkText = data.text;
 
-        // Добавляем текст в массив сообщений
         setMessages((prev) => [...prev, chunkText]);
 
         setChatHistory((prev: any) => {

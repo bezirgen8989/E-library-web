@@ -119,6 +119,7 @@ const AskQuestionContainer: React.FC = () => {
   };
 
   useEffect(() => {
+    console.log(333, isStopQuestion);
     if (!question || isStopQuestion) return;
 
     const token = sessionStorage.getItem("SESSION_TOKEN");
@@ -172,6 +173,7 @@ const AskQuestionContainer: React.FC = () => {
                 const data = JSON.parse(event.data);
 
                 if (event.event === "MESSAGE" && data.chunk) {
+                  console.log("data.chunk", data.chunk);
                   setMessages((prev) => [...prev, data.chunk]);
 
                   setChatHistory((prev) => {
@@ -219,7 +221,6 @@ const AskQuestionContainer: React.FC = () => {
     };
   }, [question, currentBook, isStopQuestion]);
 
-  // Dispatch getMe() when leaving the "ask_question" route
   useEffect(() => {
     const unlisten = history.listen((location) => {
       if (!location.pathname.includes("ask_question")) {

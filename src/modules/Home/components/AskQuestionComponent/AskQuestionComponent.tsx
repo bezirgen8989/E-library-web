@@ -344,7 +344,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   };
 
   useEffect(() => {
-    let prevPath = location.pathname; // Сохраняем предыдущее значение
+    let prevPath = location.pathname;
 
     return () => {
       if (
@@ -393,9 +393,8 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   const stopAvatarGeneration = async (params: any) => {
     try {
-      // const response = await fetch("https://genavatars.plavno.app:50956/stop", {
       const response = await fetch(
-        "https://avatar18917229.plavno.app:12111/stop",
+        "https://avatar18877404.plavno.app:24000/stop",
         {
           method: "POST",
           headers: {

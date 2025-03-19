@@ -22,6 +22,8 @@ import SpinMic from "../SpinMic";
 import CustomIcon, { ICON_TYPES } from "../CustomIcon";
 import Button from "../../common/Buttons/Button";
 import { useLazySelector } from "../../../hooks";
+// import {setIsStopQuestion} from "../../../modules/Home/slices/home";
+// import {useDispatch} from "react-redux";
 
 interface IVoiceRecorder {
   isNonHealth?: boolean;
@@ -108,6 +110,8 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   const [hasMicrophoneAccess, setHasMicrophoneAccess] = useState<
     boolean | null
   >(null);
+
+  // const dispatch = useDispatch();
 
   // Function to check microphone access
   const checkMicrophoneAccess = async () => {
@@ -254,6 +258,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
       setPaused(false);
       stopStreaming();
       setIsFirst(true);
+      // dispatch(setIsStopQuestion(true));
       // setIsStreamConnect && setIsStreamConnect(false); // Stop stream connection when recording stops
       return;
     }
