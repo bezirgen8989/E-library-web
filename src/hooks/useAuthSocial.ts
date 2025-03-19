@@ -2,6 +2,7 @@ import { API_PREFIX } from "api/apiHelpers";
 import { useLocation, useHistory } from "react-router-dom";
 // import { TokenManager } from 'utils';
 import homeRoutes from "routing/routes";
+import { SESSION_TOKEN } from "../utils/SessionUtils";
 
 type Social = "facebook" | "google" | "twitter" | "apple";
 
@@ -13,9 +14,11 @@ const useAuthSocial = () => {
     const params = new URLSearchParams(location.search);
 
     const token = params.get("token");
-    const refreshToken = params.get("refreshToken");
+    // const refreshToken = params.get("refreshToken");
+    console.log("token", token);
 
-    if (token && refreshToken) {
+    if (token) {
+      sessionStorage.setItem(SESSION_TOKEN, token);
       // TokenManager.setAccessToken(token);
       // TokenManager.setRefreshToken(refreshToken);
       //
