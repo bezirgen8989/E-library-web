@@ -7,7 +7,7 @@ const routes = {
   registration: `${base}/registration`,
   forgot: `${base}/forgot`,
   recoverPassword: `${base}/recover_password`,
-  changePassword: `${base}/password-change`,
+  changePassword: `${base}/change-password`,
   verifyEmailSuccess: `${base}/success_email_verification`,
   enterCode: `${base}/enter_code`,
   ProfileHabits: `${base}/habits`,
@@ -15,6 +15,7 @@ const routes = {
   profileAbout: `${base}/profile_about`,
   termsAndConditions: `${base}/terms_and_conditions`,
   privacyPolicy: `${base}/privacy_policy`,
+  deeplink: `${base}/deeplink`,
 };
 
 export default routes;

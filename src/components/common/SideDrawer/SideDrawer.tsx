@@ -45,7 +45,9 @@ const SideDrawer = () => {
       };
     }
   );
-  console.log("notifications", notifications?.result?.data);
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
 
   const [readNotificationIds, setReadNotificationIds] = useState<string[]>([]);
   const [page, setPage] = useState<number>(1);
@@ -54,7 +56,6 @@ const SideDrawer = () => {
 
   // Закрытие боковой панели
   const onClose = () => {
-    console.log("readNotificationIds", readNotificationIds);
     if (readNotificationIds.length > 0) {
       dispatch(markAsRead({ ids: readNotificationIds }));
     }
@@ -64,7 +65,6 @@ const SideDrawer = () => {
 
   // Загрузка уведомлений при открытии панели
   useEffect(() => {
-    console.log("readNotificationIds", readNotificationIds);
     if (isDrawerOpen) {
       setPage(1);
       dispatch(
@@ -139,7 +139,7 @@ const SideDrawer = () => {
         title={
           <div className={styles.header}>
             <span className={styles.notificationsTitle}>
-              Notifications
+              {localization?.notifications}
               <span style={{ color: "#996C42", paddingLeft: 5 }}>
                 ({notifications?.result?.total || 0})
               </span>
@@ -173,7 +173,6 @@ const SideDrawer = () => {
                   className={styles.notificationWrap}
                 >
                   <div className={styles.notificationImage}>
-                    {/*{!readNotificationIds.includes(notification.id) && <div className={styles.readMarker} />}*/}
                     {!notification.isRead && (
                       <div className={styles.readMarker} />
                     )}

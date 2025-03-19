@@ -72,11 +72,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                   placeholder=""
                   autoComplete="off"
                   {...register("email", {
-                    required: "Please input your Email!",
+                    required: `${localization?.pleaseInputYourEmail}`,
                     pattern: {
                       value:
                         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                      message: "The input is not valid E-mail!",
+                      message: `${localization?.errors.pleaseInputYourEmail}`,
                     },
                   })}
                 />
@@ -102,15 +102,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                   inputMode="text"
                   placeholder=""
                   {...register("password", {
-                    required: "Password must be at least 8 characters long!",
+                    required: `${localization?.passwordMustBeAtLeast8CharactersLong}`,
                     minLength: {
                       value: 8,
-                      message: "Password must be at least 8 characters long!",
+                      message: `${localization?.passwordMustBeAtLeast8CharactersLong}`,
                     },
                     pattern: {
                       value: /^(?=.*[A-Z]).+$/,
-                      message:
-                        "Password must contain at least one uppercase letter!",
+                      message: `${localization?.errors.passwordMustContainAtLeastOneUppercaseLetter}`,
                     },
                   })}
                 />
@@ -136,9 +135,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                   inputMode="text"
                   placeholder=""
                   {...register("confirmPassword", {
-                    required: "Please confirm your password!",
+                    required: `${localization?.pleaseConfirmYourPassword!}`,
                     validate: (value) =>
-                      value === password || "Passwords do not match!",
+                      value === password ||
+                      `${localization?.errors.passwordsDoNotMatch}`,
                   })}
                 />
                 <label

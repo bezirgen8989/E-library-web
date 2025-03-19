@@ -3,7 +3,8 @@ import Close from "../../../../assets/images/icons/Close.svg";
 import { Input, Modal } from "antd";
 import Search from "../../../../assets/images/icons/SearchIcon.svg";
 import Button from "../../../../components/common/Buttons/Button";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
+import { useLazySelector } from "../../../../hooks";
 
 interface LanguageModalProps {
   isModalOpen: any;
@@ -42,14 +43,24 @@ const LanguageModal: FC<LanguageModalProps> = ({
   defaultLanguage,
   onLanguageSelect,
 }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState(
-    currentSelectedLanguage || defaultLanguage
-  );
+  const initialLanguage = currentSelectedLanguage
+    ? currentSelectedLanguage
+    : defaultLanguage;
+
+  const [selectedLanguage, setSelectedLanguage] = useState(initialLanguage);
   const [searchTerm, setSearchTerm] = useState("");
   const hideModal = () => {
     setIsModalOpen(false); // исправлено: закрытие окна
     setSearchTerm("");
   };
+
+  useEffect(() => {
+    setSelectedLanguage(currentSelectedLanguage || defaultLanguage);
+  }, [currentSelectedLanguage, defaultLanguage]);
+
+  const { result: localization } = useLazySelector(
+    ({ auth }) => auth.appLocalization || {}
+  );
 
   const handleLanguageSelect = (lang: LanguageType) => {
     setSelectedLanguage(lang);
@@ -63,7 +74,7 @@ const LanguageModal: FC<LanguageModalProps> = ({
 
   return (
     <Modal
-      title={<div className="custom-modal-title">Select language</div>}
+      title={<div className="custom-modal-title">{localization?.password}</div>}
       visible={isModalOpen}
       onOk={hideModal}
       onCancel={hideModal}
