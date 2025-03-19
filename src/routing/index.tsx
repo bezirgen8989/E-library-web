@@ -14,12 +14,11 @@ const RootRouting = () => {
     <Router history={history}>
       <ErrorBoundary FallbackComponent={ApplicationError}>
         <InitializationLayer>
-          <BackgroundUpdater /> {/* Обновление фона */}
+          <BackgroundUpdater />
           <Switch>
+            <Route path={"/deeplink"} component={Deeplink} />
             <Route path={authRoutes.root} component={ExternalRouting} />
             <Route path={rootRoutes.root} component={PrivateRouting} />
-            {/* for social login */}
-            <Route path={"/deeplink"} component={Deeplink} />
           </Switch>
         </InitializationLayer>
       </ErrorBoundary>
