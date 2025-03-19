@@ -164,7 +164,12 @@ const AuthRouting = () => (
         component={PrivacyPolicy}
       />
 
-      <PublicRoute exact path={routes.deeplink} component={Deeplink} />
+      <PublicRoute
+        exact
+        path={routes.deeplink}
+        component={Deeplink}
+        restricted
+      />
 
       <Redirect path="*" to={routes.onboarding} />
     </Switch>

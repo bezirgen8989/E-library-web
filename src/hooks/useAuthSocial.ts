@@ -9,7 +9,7 @@ type Social = "facebook" | "google" | "twitter" | "apple";
 const useAuthSocial = () => {
   const location = useLocation();
   const history = useHistory();
-
+  debugger;
   const finishSocialLogin = () => {
     const params = new URLSearchParams(location.search);
 
