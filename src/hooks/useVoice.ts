@@ -4,7 +4,7 @@ import { urlSocket } from "../envConstants";
 import { useDispatch } from "react-redux";
 import { setIsStreamShow, setStreamDone } from "../modules/Home/slices/home";
 import styles from "../modules/Home/components/AskQuestionComponent/AskQuestionComponent.module.scss";
-import { useLazySelector } from "./index";
+// import { useLazySelector } from "./index";
 
 interface IUseVoiceHook {
   language?: string;
@@ -42,12 +42,12 @@ export const useVoice = ({
   const [state, setState] = useState(0);
   const stateRef = useRef(state);
 
-  const { isStopQuestion } = useLazySelector(({ home }) => {
-    const { isStopQuestion } = home;
-    return {
-      isStopQuestion,
-    };
-  });
+  // const { isStopQuestion } = useLazySelector(({ home }) => {
+  //   const { isStopQuestion } = home;
+  //   return {
+  //     isStopQuestion,
+  //   };
+  // });
 
   console.log(userLanguage);
 

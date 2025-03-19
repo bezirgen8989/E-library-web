@@ -61,7 +61,7 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
     setCurrentPage((prev: string) => {
       const nextPage = (parseInt(prev) + 1).toString();
 
-      setMaxLoadPage((prevMax: any) => Math.max(prevMax, parseInt(nextPage))); // обновление maxLoadPage
+      setMaxLoadPage((prevMax: any) => Math.max(prevMax, parseInt(nextPage)));
       return nextPage;
     });
     setProgress(0);
