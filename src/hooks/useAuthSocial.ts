@@ -9,13 +9,10 @@ type Social = "facebook" | "google" | "twitter" | "apple";
 const useAuthSocial = () => {
   const location = useLocation();
   const history = useHistory();
-  debugger;
   const finishSocialLogin = () => {
     const params = new URLSearchParams(location.search);
 
     const token = params.get("token");
-    // const refreshToken = params.get("refreshToken");
-    console.log("token", token);
 
     if (token) {
       sessionStorage.setItem(SESSION_TOKEN, token);

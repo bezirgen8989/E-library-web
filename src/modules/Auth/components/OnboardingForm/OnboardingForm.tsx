@@ -22,6 +22,8 @@ const OnboardingForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   //   onSubmit({ idToken: credentialResponse.credential });
   // };
 
+  console.log("test");
+
   const { loginViaSocial } = useAuthSocial();
 
   const { result: localization } = useLazySelector(
