@@ -1,13 +1,19 @@
 {
-  "applinks": {
-    "apps": [],
-    "details": [
-      {
-        "appID": "FKUM992XV8.com.qatsol.instanttranslation",
-        "paths": [
-          "/deeplink/*"
+    "applinks": {
+        "details": [
+            {
+                "appIDs": [
+                    "FKUM992XV8.com.elibrary"
+                ],
+                "paths": [
+                    "*"
+                ]
+            }
         ]
-      }
-    ]
-  }
+    },
+    "webcredentials": {
+        "apps": [
+            "FKUM992XV8.com.elibrary"
+        ]
+    }
 }
