@@ -14,7 +14,6 @@ import { useLazySelector } from "../../../hooks";
 import { UserContext } from "../../../core/contexts";
 import { SetReadingBookPayload } from "../slices/home/types";
 import { getLocalization } from "../../Auth/slices/auth";
-// import {getLanguages} from "../../Auth/slices/auth";
 
 const AudioBookContainer: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -48,15 +47,6 @@ const AudioBookContainer: React.FC = () => {
     }
   }, [currentBookshelfBook?.result?.lastPage]);
   console.log("currentBookshelfBook?.result", currentBookshelfBook?.result);
-
-  // useEffect(() => {
-  //   const savedLastPage = localStorage.getItem("lastPage");
-  //   if (savedLastPage) {
-  //     setCurrentPage(savedLastPage);
-  //     setMaxLoadPage(+savedLastPage);
-  //   }
-  // }, []);
-
   console.log("currentAudioBook", currentAudioBook);
   console.log("currentBookVersion", currentBookVersion);
   console.log("currentBook", currentBook);
@@ -95,12 +85,16 @@ const AudioBookContainer: React.FC = () => {
     fetchBookshelfData();
   }, [dispatch, value?.id, id]);
 
+  const currentBookLang: any = sessionStorage.getItem("currentBookLanguage");
+  const parseLang = JSON.parse(currentBookLang);
+  const langId = parseLang?.id || value?.bookLanguage?.id || "7";
+
   useEffect(() => {
     dispatch(
       getBookVersion({
         page: "1",
         limit: "1",
-        filterLanguage: `[language.id][eq]=7`,
+        filterLanguage: `[language.id][eq]=${langId}`,
         filterId: `[coreBook.id][eq]=${id}`,
       })
     );
@@ -111,7 +105,6 @@ const AudioBookContainer: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const langId = sessionStorage.getItem("selectedLanguageId") || "7";
     dispatch(getAudioBook({ bookId: id, langId, page: currentPage }));
   }, [id, dispatch, currentPage]);
 
@@ -133,6 +126,7 @@ const AudioBookContainer: React.FC = () => {
     const handleLeave = () => {
       if (!location.pathname.includes("audio_book")) {
         saveProgress();
+        sessionStorage.removeItem("currentBookLanguage");
       }
     };
 

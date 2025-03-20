@@ -30,7 +30,7 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
   const [playbackRate, setPlaybackRate] = useState(1);
   const [progress, setProgress] = useState(0);
   const history = useHistory();
-
+  console.log("currentBookVersion", currentBookVersion);
   const { result: localization } = useLazySelector(
     ({ auth }) => auth.appLocalization || {}
   );
