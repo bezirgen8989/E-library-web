@@ -39,52 +39,34 @@ const AudioBookContainer: React.FC = () => {
     currentBookshelfBook: home.currentBookshelfBook,
   }));
   const [currentPage, setCurrentPage] = useState("1");
-  const [maxLoadPage, setMaxLoadPage] = useState<number>(0);
-
-  useEffect(() => {
-    if (value?.id && id) {
-      dispatch(getBookshelfById({ userId: +value.id, bookId: +id }));
-    }
-  }, [id, value?.id]);
+  const [maxLoadPage, setMaxLoadPage] = useState<number>(1);
 
   useEffect(() => {
     if (currentBookshelfBook?.result?.lastPage) {
       setCurrentPage(currentBookshelfBook.result.lastPage.toString());
       setMaxLoadPage(currentBookshelfBook.result.lastPage);
-      localStorage.setItem(
-        "lastPage",
-        currentBookshelfBook.result.lastPage.toString()
-      );
     }
   }, [currentBookshelfBook?.result?.lastPage]);
+  console.log("currentBookshelfBook?.result", currentBookshelfBook?.result);
 
-  useEffect(() => {
-    const savedLastPage = localStorage.getItem("lastPage");
-    if (savedLastPage) {
-      setCurrentPage(savedLastPage);
-      setMaxLoadPage(+savedLastPage);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const savedLastPage = localStorage.getItem("lastPage");
+  //   if (savedLastPage) {
+  //     setCurrentPage(savedLastPage);
+  //     setMaxLoadPage(+savedLastPage);
+  //   }
+  // }, []);
 
   console.log("currentAudioBook", currentAudioBook);
   console.log("currentBookVersion", currentBookVersion);
   console.log("currentBook", currentBook);
   console.log("currentBookshelfBook", currentBookshelfBook?.result?.lastPage);
 
-  const [isBookLoaded, setIsBookLoaded] = useState(false);
-
-  useEffect(() => {
-    if (currentBook?.result) {
-      setIsBookLoaded(true);
-    }
-  }, [currentBook?.result]);
-
   useEffect(() => {
     const fetchBookshelfData = async () => {
-      if (value?.id && id && isBookLoaded) {
+      if (value?.id && id) {
         try {
           if (currentBook?.result?.isReading === false) {
-            // Явная проверка на false
             await dispatch(
               addToShelf({
                 user: { id: +value.id },
@@ -110,10 +92,8 @@ const AudioBookContainer: React.FC = () => {
       }
     };
 
-    if (isBookLoaded) {
-      fetchBookshelfData();
-    }
-  }, [dispatch, value?.id, id, isBookLoaded, currentBook?.result?.isReading]);
+    fetchBookshelfData();
+  }, [dispatch, value?.id, id]);
 
   useEffect(() => {
     dispatch(
@@ -151,7 +131,7 @@ const AudioBookContainer: React.FC = () => {
 
   useEffect(() => {
     const handleLeave = () => {
-      if (!location.pathname.includes("reading")) {
+      if (!location.pathname.includes("audio_book")) {
         saveProgress();
       }
     };

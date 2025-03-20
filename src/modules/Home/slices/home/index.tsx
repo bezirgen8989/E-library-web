@@ -432,11 +432,11 @@ const homeSlice = createSlice({
       })
 
       .addCase(setReadingBook.pending, (state) => {
-        state.testCurrentBookshelfBook = { isLoading: true };
+        state.currentBookshelfBook = { isLoading: true };
       })
       .addCase(setReadingBook.fulfilled, (state, action) => {
         const { content, error } = action.payload;
-        state.testCurrentBookshelfBook = {
+        state.currentBookshelfBook = {
           isLoading: false,
           result: content,
           error,
