@@ -80,10 +80,10 @@ const HomeContainer: React.FC = () => {
     ? `[isAgeRestricted][eq]=0`
     : "";
 
-  const suggestedFilter = `${isAgeRestricted}[categories.id][in]=${habitsCategories}&filter[id][lte]=223`;
+  const suggestedFilter = `${isAgeRestricted}[categories.id][in]=${habitsCategories}`;
   const getBooksFilter = `${
     authState.userData.result?.kidsMode ? "[isAgeRestricted][eq]=0" : null
-  }&filter[id][lte]=223`;
+  }`;
 
   // const ratingOrder = "[rating]=desc";
 

@@ -56,7 +56,7 @@ const SuggestedBooksContainer: React.FC = () => {
     ? `[isAgeRestricted][eq]=0`
     : "";
 
-  const suggestedFilter = `${isAgeRestricted}[categories.id][in]=${habitsCategories}&filter[id][lte]=223`;
+  const suggestedFilter = `${isAgeRestricted}[categories.id][in]=${habitsCategories}`;
 
   useEffect(() => {
     dispatch(clearBooks());
