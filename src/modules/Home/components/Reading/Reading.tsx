@@ -2,9 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./Reading.module.scss";
 import BackIcon from "../../../../assets/images/icons/backPage.svg";
 import { useHistory } from "react-router-dom";
-import SpinnerBrown from "../../../../components/common/SpinnerBrown";
-import { Progress } from "antd";
+import { Divider, List, Progress } from "antd";
 import { useTranslation } from "react-i18next";
+import InfiniteScroll from "react-infinite-scroll-component";
+import SpinnerBrown from "../../../../components/common/SpinnerBrown";
+import { ReaderByType } from "../../../../components/readerByType";
 
 interface ReadingProps {
   pagesContent: any;
@@ -38,45 +40,6 @@ const Reading: React.FC<ReadingProps> = ({
       setMaxLoadPage(featurePageFromServer);
     }
   }, [featurePageFromServer, setMaxLoadPage]);
-  // Function to sanitize HTML and inject custom styles
-  const sanitizeHtml = (html: string) => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");
-
-    const imgs = doc.querySelectorAll("img");
-    imgs.forEach((img) => img.remove());
-
-    let meta = doc.querySelector("meta[name='viewport']") as HTMLMetaElement;
-    if (!meta) {
-      meta = doc.createElement("meta") as HTMLMetaElement;
-      meta.name = "viewport";
-      meta.content =
-        "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no";
-      doc.head.appendChild(meta);
-    }
-
-    const style = doc.createElement("style");
-    style.innerHTML = `
-      body {
-        background-color: #FBF1EA;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        overflow: hidden;
-      }
-      p {
-        font-size: 16px;
-        line-height: 1.6;
-        color: #333;
-        white-space: pre-wrap;
-      }
-    `;
-    doc.head.appendChild(style);
-
-    return doc.body.innerHTML;
-  };
 
   useEffect(() => {
     if (pagesContent.length > 0 && containerRef.current && isFirstLoad) {
@@ -137,21 +100,6 @@ const Reading: React.FC<ReadingProps> = ({
     };
   }, [onNext, onPrev, isLoading, currentPage, totalPages, isFirstLoad]);
 
-  const renderPdf = (pdfBase64: string) => {
-    // Generate the data URI for embedding the PDF
-    const pdfUrl = `data:application/pdf;base64,${pdfBase64}#toolbar=0`; // Adding the `#toolbar=0` to hide the toolbar
-    return (
-      <iframe
-        src={pdfUrl}
-        width="100%"
-        height="1000px"
-        title="PDF Viewer"
-        frameBorder="0"
-        style={{ display: "block" }} // Ensure the iframe takes up full width
-      />
-    );
-  };
-
   return (
     <div>
       <div
@@ -163,38 +111,61 @@ const Reading: React.FC<ReadingProps> = ({
       </div>
 
       <div
-        ref={containerRef}
         className={styles.home_page}
-        style={{ maxHeight: "calc(100vh - 155px)", overflowY: "auto" }}
+        id="scrollableDiv"
+        style={{
+          height: "calc(100vh - 155px)",
+          overflow: "auto",
+          padding: "0 16px",
+          border: "1px solid rgba(140, 140, 140, 0.35)",
+        }}
       >
-        <div className={styles.content}>
-          {pagesContent.map((page: any, index: any) => (
-            <div key={index}>
-              {page.fileType === "html" ? (
-                <div
-                  className={styles.contentWrap}
-                  dangerouslySetInnerHTML={{
-                    __html: sanitizeHtml(page.content),
-                  }}
+        <InfiniteScroll
+          dataLength={pagesContent.length}
+          next={onNext}
+          hasMore={maxLoadPage <= totalPages}
+          loader={
+            <svg className="spinner" viewBox="0 0 50 50">
+              <circle
+                className={styles.path}
+                cx="25"
+                cy="25"
+                r="20"
+                fill="none"
+                strokeWidth="5"
+              />
+            </svg>
+          }
+          endMessage={<Divider />}
+          scrollableTarget="scrollableDiv"
+        >
+          <List
+            className={styles.listWrapper}
+            dataSource={pagesContent}
+            loading={{
+              spinning: false,
+              wrapperClassName: "noneSpinner",
+            }}
+            locale={{
+              emptyText: () => null,
+            }}
+            renderItem={(page: any, index) => (
+              <List.Item key={index} className={styles.listItem}>
+                <ReaderByType
+                  content={
+                    page.fileType === "html" ? page.content : page.pdfPage
+                  }
+                  fileType={page.fileType}
                 />
-              ) : page.fileType === "pdf" ? (
-                <div className={styles.pdfWrap}>
-                  {page.pdfPage && renderPdf(page.pdfPage)}
-                </div>
-              ) : (
-                <div className={styles.contentWrap}>
-                  <pre>{page.content}</pre>
-                </div>
-              )}
+              </List.Item>
+            )}
+          />
+          {isLoading && (
+            <div style={{ textAlign: "center", padding: "10px" }}>
+              <SpinnerBrown />
             </div>
-          ))}
-        </div>
-
-        {isLoading && (
-          <div style={{ textAlign: "center", padding: "10px" }}>
-            <SpinnerBrown />
-          </div>
-        )}
+          )}
+        </InfiniteScroll>
       </div>
 
       <div className={styles.progressContent} style={{ marginTop: "20px" }}>
