@@ -5,12 +5,15 @@ import authRoutes from "../modules/Auth/routing/routes";
 import { SESSION_TOKEN } from "../utils/SessionUtils";
 import { useLazySelector } from "./index";
 import homeRoutes from "routing/routes";
+import { getMe } from "../modules/Auth/slices/auth";
+import { useDispatch } from "react-redux";
 
 type Social = "facebook" | "google" | "twitter" | "apple";
 
 const useAuthSocial = () => {
   const location = useLocation();
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const userName = useLazySelector(
     ({ auth }) => auth?.userData?.result?.userName
@@ -24,7 +27,7 @@ const useAuthSocial = () => {
     const params = new URLSearchParams(location.search);
 
     const token = params.get("token");
-
+    dispatch(getMe());
     if (token) {
       sessionStorage.setItem(SESSION_TOKEN, token);
       // TokenManager.setAccessToken(token);
