@@ -111,14 +111,14 @@ const Reading: React.FC<ReadingProps> = ({
         const { scrollTop, clientHeight } = scrollableDiv;
 
         // @ts-ignore
-        const test =
+        const offsetHeight =
           scrollableDiv.getElementsByTagName("ul")[0].childNodes[0]
             .offsetHeight;
 
         const scrollPosition = scrollTop + clientHeight;
         // const pageHeight = scrollHeight / totalPages;
 
-        const newPage = Math.floor(scrollPosition / test) + 1;
+        const newPage = Math.floor(scrollPosition / offsetHeight) + 1;
         setCurrentPageNumber(newPage);
       }
     };
