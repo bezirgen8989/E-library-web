@@ -3,9 +3,6 @@ export type LoginUserParams = {
   password: string;
 };
 
-export type GoogleLoginUserParams = {
-  idToken: string;
-};
 export type ConfirmParams = {
   codeOrHash: string;
 };
