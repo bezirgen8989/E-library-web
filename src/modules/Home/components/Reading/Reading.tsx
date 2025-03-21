@@ -100,6 +100,40 @@ const Reading: React.FC<ReadingProps> = ({
     };
   }, [onNext, onPrev, isLoading, currentPage, totalPages, isFirstLoad]);
 
+  const [currentPageNumber, setCurrentPageNumber] = useState(1);
+  const scrollableDivRef = useRef<any>(undefined);
+
+  useEffect(() => {
+    const scrollableDiv = scrollableDivRef.current.el as HTMLDivElement;
+
+    const handleScroll = () => {
+      if (scrollableDiv) {
+        const { scrollTop, clientHeight } = scrollableDiv;
+
+        // @ts-ignore
+        const test =
+          scrollableDiv.getElementsByTagName("ul")[0].childNodes[0]
+            .offsetHeight;
+
+        const scrollPosition = scrollTop + clientHeight;
+        // const pageHeight = scrollHeight / totalPages;
+
+        const newPage = Math.floor(scrollPosition / test) + 1;
+        setCurrentPageNumber(newPage);
+      }
+    };
+
+    if (scrollableDiv) {
+      scrollableDiv.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (scrollableDiv) {
+        scrollableDiv.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [totalPages]);
+
   return (
     <div>
       <div
@@ -138,6 +172,7 @@ const Reading: React.FC<ReadingProps> = ({
           }
           endMessage={<Divider />}
           scrollableTarget="scrollableDiv"
+          ref={scrollableDivRef}
         >
           <List
             className={styles.listWrapper}
@@ -170,10 +205,10 @@ const Reading: React.FC<ReadingProps> = ({
 
       <div className={styles.progressContent} style={{ marginTop: "20px" }}>
         <div style={{ textAlign: "center" }}>
-          {maxLoadPage} of {totalPages}
+          {currentPageNumber} of {totalPages}
         </div>
         <Progress
-          percent={(maxLoadPage / totalPages) * 100}
+          percent={(currentPageNumber / totalPages) * 100}
           status="active"
           showInfo={false}
           strokeColor="#1890ff" // Customize the progress bar color if needed
