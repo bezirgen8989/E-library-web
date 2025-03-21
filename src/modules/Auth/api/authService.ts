@@ -9,7 +9,6 @@ import {
   confirmationParamsProps,
   ConfirmParams,
   EditUserParams,
-  GoogleLoginUserParams,
   LoginUserParams,
   RecoverData,
   RegisterUserParams,
@@ -18,8 +17,6 @@ import {
 
 export const authLogin = (formParams: LoginUserParams) =>
   usingPost("/api/v1/auth/email/login", formParams);
-export const authGoogleLogin = (formParams: GoogleLoginUserParams) =>
-  usingPost("/api/v1/auth/google/login", formParams);
 export const authRegister = (userParams: RegisterUserParams) =>
   usingPost("/api/v1/auth/email/register", userParams);
 export const resendConfirmation = (

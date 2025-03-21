@@ -16,7 +16,6 @@ import {
   setUserProfile,
   uploadUserAvatar,
   authRegister,
-  authGoogleLogin,
   resetUserPassword,
   deleteAccount,
   setUserAvatar,
@@ -27,7 +26,6 @@ import {
 } from "../../api/authService";
 import {
   EditUserParams,
-  GoogleLoginUserParams,
   LoginUserParams,
   RecoverData,
   RegisterUserParams,
@@ -79,14 +77,6 @@ const authSlice = createSlice({
         const { content, error } = action.payload;
         state.userData = action.payload;
         state.loginRequest = { isLoading: false, result: content, error };
-      })
-      .addCase(googleLoginUser.pending, (state) => {
-        state.googleTokenId = { isLoading: true };
-      })
-      .addCase(googleLoginUser.fulfilled, (state, action) => {
-        const { content, error } = action.payload;
-        state.userData = action.payload;
-        state.googleTokenId = { isLoading: false, result: content, error };
       })
       .addCase(registerUser.pending, (state) => {
         state.userLoginRequest = { isLoading: true };
@@ -257,50 +247,6 @@ export const LoginUser = createAsyncThunk(
   }
 );
 
-export const googleLoginUser = createAsyncThunk(
-  "api/v1/auth/google/login",
-  async (formParams: GoogleLoginUserParams) => {
-    const response = await authGoogleLogin(formParams);
-    const { success, status, error, content } = response;
-    console.log("response", response);
-
-    if (!success) {
-      if (status === 401) {
-        notification.error({
-          message: t("errors.loginError"),
-          description: t("errors.incorrectEmailOrPassword"),
-          duration: 4,
-          placement: "top",
-          icon: <img src={Alert} alt="icon" />,
-        });
-      } else if (status === 422) {
-        const validationErrors = error?.errors || "Validation error";
-        notification.error({
-          message: t("errors.loginError"),
-          description: `Validation error: ${JSON.stringify(validationErrors)}`,
-          duration: 4,
-          placement: "top",
-          icon: <img src={Alert} alt="icon" />,
-        });
-      } else {
-        const errorMessage =
-          error?.detail || "An error occurred, please try again later.";
-        notification.error({
-          message: t("errors.loginError"),
-          description: errorMessage,
-          duration: 4,
-          placement: "top",
-          icon: <img src={Alert} alt="icon" />,
-        });
-      }
-    } else if (content && content.token) {
-      SessionUtils.storeSession(content.token);
-      history.push(homeRoutes.root);
-    }
-    return response;
-  }
-);
-
 export const registerUser = createAsyncThunk(
   "api/v1/auth/email/register",
   async (userParams: RegisterUserParams) => {
@@ -347,7 +293,6 @@ export const registerUser = createAsyncThunk(
 export const codeResend = createAsyncThunk(
   "/api/v1/auth/email/resendConfirmation",
   async (confirmationParams: { email: string }) => {
-    console.log("emailsend", confirmationParams);
     const response = await resendConfirmation(confirmationParams);
     return response;
   }
