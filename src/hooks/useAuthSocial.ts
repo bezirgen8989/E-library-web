@@ -16,7 +16,10 @@ const useAuthSocial = () => {
     ({ auth }) => auth?.userData?.result?.userName
   );
 
-  console.log("userLanguage", userName);
+  const userSate = useLazySelector(({ auth }) => auth);
+
+  console.log("userSate", userSate);
+  console.log("userName", userName);
   const finishSocialLogin = () => {
     const params = new URLSearchParams(location.search);
 
