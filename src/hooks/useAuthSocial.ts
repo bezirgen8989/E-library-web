@@ -2,6 +2,8 @@ import { API_PREFIX } from "api/apiHelpers";
 import { useLocation, useHistory } from "react-router-dom";
 import authRoutes from "../modules/Auth/routing/routes";
 import { SESSION_TOKEN } from "../utils/SessionUtils";
+import { authMe } from "../modules/Auth/api/authService";
+import homeRoutes from "routing/routes";
 
 type Social = "facebook" | "google" | "twitter" | "apple";
 
@@ -16,19 +18,16 @@ const useAuthSocial = () => {
 
     if (token) {
       sessionStorage.setItem(SESSION_TOKEN, token);
-      // const response = await authMe();
+      const response = await authMe();
 
-      // if (response.success && response.content.userName) {
-      //   history.push(homeRoutes.root)
-      // } else {
-      history.push(authRoutes.ProfileHabits);
-      // }
+      if (response.success && response.content.userName) {
+        history.push(homeRoutes.root);
+      } else {
+        history.push(authRoutes.ProfileHabits);
+      }
       // TokenManager.setAccessToken(token);
       // TokenManager.setRefreshToken(refreshToken);
       //
-      // userName
-      //   ? history.push(homeRoutes.root)
-      //   : history.push(authRoutes.ProfileHabits);
     }
   };
 
