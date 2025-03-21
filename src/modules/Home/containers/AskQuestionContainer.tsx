@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../hooks";
 import { getLanguages, getMe, setAvatar } from "../../Auth/slices/auth";
 import { useSocket } from "../../../hooks/useSocket";
+import TokenManager from "../../../utils/TokenManager";
 
 type Chat = {
   type: "user" | "response";
@@ -121,7 +122,7 @@ const AskQuestionContainer: React.FC = () => {
   useEffect(() => {
     if (!question || isStopQuestion) return;
 
-    const token = sessionStorage.getItem("SESSION_TOKEN");
+    const token = TokenManager.getAccessToken();
     const controller = new AbortController();
 
     const fetchData = async () => {
@@ -241,7 +242,7 @@ const AskQuestionContainer: React.FC = () => {
   const { connected, subscribeToEvent, unsubscribeFromEvent } = useSocket({
     url: "https://elib.plavno.io:8080/srs",
     getAuthToken: async () => {
-      const token = sessionStorage.getItem("SESSION_TOKEN");
+      const token = TokenManager.getAccessToken();
       return token ?? "";
     },
   });

@@ -31,6 +31,7 @@ import { UserContext } from "../../../../core/contexts";
 import silentAvatar from "../../../../assets/videos/silent.mp4";
 import { useLazySelector } from "../../../../hooks";
 import { getLocalization } from "../../../Auth/slices/auth";
+import { TokenManager } from "../../../../utils";
 // import {useSocket} from "../../../../hooks/useSocket";
 
 type Chat = {
@@ -223,7 +224,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   useEffect(() => {
     const fetchStreamUrl = async () => {
-      const token = sessionStorage.getItem("SESSION_TOKEN");
+      const token = TokenManager.getAccessToken();
       try {
         const response = await fetch(
           "https://elib.plavno.io:8080/api/v1/srs/url",
@@ -389,7 +390,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     );
   }, [chatHistory, voiceChatHistory]);
 
-  const token = sessionStorage.getItem("SESSION_TOKEN");
+  const token = TokenManager.getAccessToken();
 
   const stopAvatarGeneration = async (params: any) => {
     try {

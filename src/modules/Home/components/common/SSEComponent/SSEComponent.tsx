@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import {
   fetchEventSource,
   EventSourceMessage,
-} from "@microsoft/fetch-event-source"; // Импортируем необходимые типы
+} from "@microsoft/fetch-event-source";
+import { TokenManager } from "../../../../../utils"; // Импортируем необходимые типы
 
 interface SSEComponentProps {
   question: string; // Получаем вопрос как пропс
@@ -15,7 +16,7 @@ const SSEComponent: React.FC<SSEComponentProps> = ({ question }) => {
 
   useEffect(() => {
     if (question) {
-      const token = sessionStorage.getItem("SESSION_TOKEN");
+      const token = TokenManager.getAccessToken();
 
       // Отправляем POST запрос с вопросом и Bearer токеном через fetchEventSource
       const fetchData = async () => {
