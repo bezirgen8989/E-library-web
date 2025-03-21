@@ -49,7 +49,7 @@ export const getAllFinishedBooks = (params: BooksParams) =>
   );
 export const getCurrentReadBook = (params: ReadBooksParams) =>
   usingGet(
-    `/api/v1/books/readBook/${params.bookId}/${params.langId}/${params.page}`
+    `/api/v1/books/readBookNew/${params.bookId}/${params.langId}/${params.page}`
   );
 export const getCurrentAudioBook = (params: ReadBooksParams) =>
   usingGet(

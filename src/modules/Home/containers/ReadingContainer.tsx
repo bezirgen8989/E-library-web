@@ -14,20 +14,25 @@ import { UserContext } from "../../../core/contexts";
 import { SetReadingBookPayload } from "../slices/home/types";
 import { getLocalization } from "../../Auth/slices/auth";
 
+interface PageContent {
+  fileType: "txt" | "html" | "pdf";
+  content: string;
+}
+
 const ReadingContainer: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const value = useContext(UserContext);
   const dispatch = useDispatch();
 
   const [page, setPage] = useState<number | null>(null);
-  const [pagesContent, setPagesContent] = useState<string[]>([]);
+  const [pagesContent, setPagesContent] = useState<PageContent[]>([]);
   const [loadedPages, setLoadedPages] = useState<Set<number>>(new Set());
   const [totalPages, setTotalPages] = useState<number>(0);
   const prevTotalPages = useRef<number>(0);
   const [maxLoadPage, setMaxLoadPage] = useState<number>(0);
   const [featurePageFromServer, setFeaturePageFromServer] = useState<
     number | null
-  >(null);
+  >(1);
 
   const { currentReadBook, isLoading, currentBookshelfBook } = useLazySelector(
     ({ home }) => ({
@@ -36,9 +41,7 @@ const ReadingContainer: React.FC = () => {
       currentBookshelfBook: home.currentBookshelfBook,
     })
   );
-  console.log("currentReadBook", currentReadBook);
-  console.log("currentBookshelfBook", currentBookshelfBook);
-
+  console.log(1111, pagesContent);
   useEffect(() => {
     if (value?.language?.isoCode2char) {
       dispatch(getLocalization(value?.language?.isoCode2char));
@@ -98,8 +101,8 @@ const ReadingContainer: React.FC = () => {
   }, [dispatch, id, featurePageFromServer]);
 
   useEffect(() => {
-    const currentBookLang: any = sessionStorage.getItem("currentBookLanguage");
-    const parseLang = JSON.parse(currentBookLang);
+    const currentBookLang = sessionStorage.getItem("currentBookLanguage");
+    const parseLang = JSON.parse(currentBookLang || "{}");
     const langId = parseLang?.id || value?.bookLanguage?.id || "7";
 
     if (page !== null && !loadedPages.has(page)) {
@@ -108,23 +111,60 @@ const ReadingContainer: React.FC = () => {
   }, [id, dispatch, page, loadedPages]);
 
   useEffect(() => {
-    if (currentReadBook?.result?.html) {
-      if (!pagesContent.includes(currentReadBook.result.html)) {
+    if (currentReadBook?.result) {
+      const {
+        fileType,
+        text,
+        html,
+        pdfPage,
+        totalPages: newTotalPages,
+      } = currentReadBook.result;
+
+      if (fileType && (text || html)) {
+        const newPageContent: PageContent = {
+          fileType,
+          content: fileType === "txt" ? text : html,
+        };
+
         setPagesContent((prev) => {
-          if (page && page < featurePageFromServer!) {
-            return [currentReadBook.result.html, ...prev];
+          if (!prev.some((p) => p.content === newPageContent.content)) {
+            if (page && page < featurePageFromServer!) {
+              return [newPageContent, ...prev];
+            }
+            return [...prev, newPageContent];
           }
-          return [...prev, currentReadBook.result.html];
+          return prev;
         });
         setLoadedPages((prev) => new Set(prev.add(page!)));
       }
 
-      if (currentReadBook.result.totalPages !== prevTotalPages.current) {
-        setTotalPages(currentReadBook.result.totalPages);
-        prevTotalPages.current = currentReadBook.result.totalPages;
+      // Handle PDF content
+      if (fileType === "pdf" && pdfPage) {
+        const newPageContent: PageContent = {
+          fileType,
+          content: "PDF content",
+          pdfPage,
+        };
+
+        setPagesContent((prev) => {
+          if (!prev.some((p) => p.pdfPage === newPageContent.pdfPage)) {
+            if (page && page < featurePageFromServer!) {
+              return [newPageContent, ...prev];
+            }
+            return [...prev, newPageContent];
+          }
+          return prev;
+        });
+        setLoadedPages((prev) => new Set(prev.add(page!)));
+      }
+
+      // Update total pages
+      if (newTotalPages !== prevTotalPages.current) {
+        setTotalPages(newTotalPages);
+        prevTotalPages.current = newTotalPages;
       }
     }
-  }, [currentReadBook, page, pagesContent, featurePageFromServer]);
+  }, [currentReadBook, page, featurePageFromServer]);
 
   const handleNext = () => {
     setPage((prevPage) => (prevPage !== null ? prevPage + 1 : 1));

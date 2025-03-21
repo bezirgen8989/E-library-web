@@ -35,9 +35,49 @@ const Reading: React.FC<ReadingProps> = ({
     ({ auth }) => auth.appLocalization || {}
   );
 
-  const getPageNumberFromHTML = (html: string) => {
-    const match = html.match(/<title>Page (\d+)<\/title>/);
-    return match ? parseInt(match[1], 10) : null;
+  useEffect(() => {
+    if (featurePageFromServer) {
+      setMaxLoadPage(featurePageFromServer);
+    }
+  }, [featurePageFromServer, setMaxLoadPage]);
+  // Function to sanitize HTML and inject custom styles
+  const sanitizeHtml = (html: string) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+    const imgs = doc.querySelectorAll("img");
+    imgs.forEach((img) => img.remove());
+
+    let meta = doc.querySelector("meta[name='viewport']");
+    if (!meta) {
+      meta = doc.createElement("meta");
+      meta.name = "viewport";
+      meta.content =
+        "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no";
+      doc.head.appendChild(meta);
+    }
+
+    const style = doc.createElement("style");
+    style.innerHTML = `
+      body {
+        background-color: #FBF1EA;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
+      }
+      p {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #333;
+        white-space: pre-wrap;
+      }
+    `;
+    doc.head.appendChild(style);
+
+    return doc.body.innerHTML;
   };
 
   useEffect(() => {
@@ -51,9 +91,9 @@ const Reading: React.FC<ReadingProps> = ({
 
   useEffect(() => {
     if (pagesContent.length > 0) {
-      const pageNumbers = pagesContent
-        .map(getPageNumberFromHTML)
-        .filter((num) => num !== null) as number[];
+      const pageNumbers = pagesContent;
+      // .map(getPageNumberFromHTML)
+      // .filter((num) => num !== null) as number[];
 
       if (pageNumbers.length > 0) {
         const maxPage = Math.max(...pageNumbers);
@@ -101,6 +141,21 @@ const Reading: React.FC<ReadingProps> = ({
     };
   }, [onNext, onPrev, isLoading, currentPage, totalPages, isFirstLoad]);
 
+  const renderPdf = (pdfBase64: string) => {
+    // Generate the data URI for embedding the PDF
+    const pdfUrl = `data:application/pdf;base64,${pdfBase64}#toolbar=0`; // Adding the `#toolbar=0` to hide the toolbar
+    return (
+      <iframe
+        src={pdfUrl}
+        width="100%"
+        height="1000px"
+        title="PDF Viewer"
+        frameBorder="0"
+        style={{ display: "block" }} // Ensure the iframe takes up full width
+      />
+    );
+  };
+
   return (
     <div>
       <div
@@ -117,22 +172,26 @@ const Reading: React.FC<ReadingProps> = ({
         style={{ maxHeight: "calc(100vh - 155px)", overflowY: "auto" }}
       >
         <div className={styles.content}>
-          {pagesContent.map((pageHtml, index) => {
-            const pageNumber = getPageNumberFromHTML(pageHtml);
-            return (
-              <div key={index}>
+          {pagesContent.map((page, index) => (
+            <div key={index}>
+              {page.fileType === "html" ? (
                 <div
                   className={styles.contentWrap}
-                  dangerouslySetInnerHTML={{ __html: pageHtml }}
+                  dangerouslySetInnerHTML={{
+                    __html: sanitizeHtml(page.content),
+                  }}
                 />
-                {pageNumber !== null && (
-                  <div style={{ textAlign: "center", marginTop: "10px" }}>
-                    Page {pageNumber}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+              ) : page.fileType === "pdf" ? (
+                <div className={styles.pdfWrap}>
+                  {page.pdfPage && renderPdf(page.pdfPage)}
+                </div>
+              ) : (
+                <div className={styles.contentWrap}>
+                  <pre>{page.content}</pre>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
 
         {isLoading && (
