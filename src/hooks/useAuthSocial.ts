@@ -23,9 +23,6 @@ const useAuthSocial = () => {
   const finishSocialLogin = () => {
     const params = new URLSearchParams(location.search);
 
-    const userSate = useLazySelector(({ auth }) => auth);
-    console.log("userSate", userSate);
-
     const token = params.get("token");
     dispatch(getMe());
     if (token) {
