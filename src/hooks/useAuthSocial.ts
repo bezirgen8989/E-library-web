@@ -12,7 +12,7 @@ const useAuthSocial = () => {
   const location = useLocation();
   const history = useHistory();
 
-  const { userName } = useLazySelector(
+  const userName = useLazySelector(
     ({ auth }) => auth?.userData?.result?.userName
   );
 
