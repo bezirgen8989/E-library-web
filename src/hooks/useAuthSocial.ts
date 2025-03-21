@@ -19,12 +19,12 @@ const useAuthSocial = () => {
     ({ auth }) => auth?.userData?.result?.userName
   );
 
-  const userSate = useLazySelector(({ auth }) => auth);
-
-  console.log("userSate", userSate);
   console.log("userName", userName);
   const finishSocialLogin = () => {
     const params = new URLSearchParams(location.search);
+
+    const userSate = useLazySelector(({ auth }) => auth);
+    console.log("userSate", userSate);
 
     const token = params.get("token");
     dispatch(getMe());
