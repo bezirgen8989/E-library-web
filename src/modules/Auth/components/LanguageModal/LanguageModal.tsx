@@ -4,7 +4,7 @@ import { Input, Modal } from "antd";
 import Search from "../../../../assets/images/icons/SearchIcon.svg";
 import Button from "../../../../components/common/Buttons/Button";
 import { FC, useEffect, useState } from "react";
-import { useLazySelector } from "../../../../hooks";
+import { useTranslation } from "react-i18next";
 
 interface LanguageModalProps {
   isModalOpen: any;
@@ -43,6 +43,7 @@ const LanguageModal: FC<LanguageModalProps> = ({
   defaultLanguage,
   onLanguageSelect,
 }) => {
+  const { t } = useTranslation();
   const initialLanguage = currentSelectedLanguage
     ? currentSelectedLanguage
     : defaultLanguage;
@@ -58,10 +59,6 @@ const LanguageModal: FC<LanguageModalProps> = ({
     setSelectedLanguage(currentSelectedLanguage || defaultLanguage);
   }, [currentSelectedLanguage, defaultLanguage]);
 
-  const { result: localization } = useLazySelector(
-    ({ auth }) => auth.appLocalization || {}
-  );
-
   const handleLanguageSelect = (lang: LanguageType) => {
     setSelectedLanguage(lang);
     onLanguageSelect(lang);
@@ -74,7 +71,7 @@ const LanguageModal: FC<LanguageModalProps> = ({
 
   return (
     <Modal
-      title={<div className="custom-modal-title">{localization?.password}</div>}
+      title={<div className="custom-modal-title">{t("password")}</div>}
       visible={isModalOpen}
       onOk={hideModal}
       onCancel={hideModal}

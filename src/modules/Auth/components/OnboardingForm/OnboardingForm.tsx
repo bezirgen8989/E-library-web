@@ -10,15 +10,11 @@ import { Link } from "react-router-dom";
 import useAuthSocial from "../../../../hooks/useAuthSocial";
 import { AppleOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
 
 type LoginFormProps = {};
 
 const OnboardingForm: React.FC<LoginFormProps> = () => {
   const { loginViaSocial } = useAuthSocial();
-
-  console.log(45445455454545, i18n.store.data);
-
   const { t } = useTranslation();
 
   return (
