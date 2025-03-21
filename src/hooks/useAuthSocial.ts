@@ -13,7 +13,7 @@ const useAuthSocial = () => {
   const history = useHistory();
 
   const { userName } = useLazySelector(
-    ({ auth }) => auth?.userData?.result?.userName || {}
+    ({ auth }) => auth?.userData?.result?.userName
   );
 
   console.log("userLanguage", userName);
