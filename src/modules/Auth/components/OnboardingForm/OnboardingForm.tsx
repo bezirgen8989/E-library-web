@@ -7,32 +7,18 @@ import Social_2 from "../../../../assets/images/icons/twitter.svg";
 import Onboarding from "../../../../assets/images/Onboarding-img.png";
 import GoogleIcon from "../../../../assets/images/icons/google.png";
 import { Link } from "react-router-dom";
-// import { GoogleLogin } from "@react-oauth/google";
 import { useLazySelector } from "../../../../hooks";
 import useAuthSocial from "../../../../hooks/useAuthSocial";
 import { AppleOutlined } from "@ant-design/icons";
 
-type LoginFormProps = {
-  onSubmit: (values: any) => void;
-};
+type LoginFormProps = {};
 
-const OnboardingForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
-  // const handleGoogleSuccess = (credentialResponse: any) => {
-  //   console.log("Google User Token:", credentialResponse.credential);
-  //   onSubmit({ idToken: credentialResponse.credential });
-  // };
-
-  console.log("test");
-
+const OnboardingForm: React.FC<LoginFormProps> = () => {
   const { loginViaSocial } = useAuthSocial();
 
   const { result: localization } = useLazySelector(
     ({ auth }) => auth.appLocalization || {}
   );
-
-  // const handleGoogleFailure = () => {
-  //   console.error("Google login failed");
-  // };
 
   return (
     <div style={{ display: "flex", width: "100%", height: "100vh" }}>
@@ -51,7 +37,7 @@ const OnboardingForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
               src={GoogleIcon}
               alt="icon"
             />
-            Continue with Google
+            {localization?.ContinueWithGoogle}
           </Button>
           <div
             style={{

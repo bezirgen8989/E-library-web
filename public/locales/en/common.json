@@ -126,8 +126,10 @@
     "loginError": "Login Error",
     "theInputIsNotValidEmail!": "The input is not valid E-mail!",
     "passwordMustContainAtLeastOneUppercaseLetter": "Password must contain at least one uppercase letter!",
-    "passwordsDoNotMatch": "Passwords do not match!"
+    "passwordsDoNotMatch": "Passwords do not match!",
+    "pleaseConfirmYourPassword": "Please confirm your password!"
   },
   "deleteAccount": "Delete Account",
-  "selectLanguage": "Select language"
+  "selectLanguage": "Select language",
+  "noNotificationsAvailable": "No notifications available"
 }

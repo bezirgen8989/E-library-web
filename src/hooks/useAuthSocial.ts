@@ -1,14 +1,22 @@
 import { API_PREFIX } from "api/apiHelpers";
 import { useLocation, useHistory } from "react-router-dom";
 // import { TokenManager } from 'utils';
-import homeRoutes from "routing/routes";
+import authRoutes from "../modules/Auth/routing/routes";
 import { SESSION_TOKEN } from "../utils/SessionUtils";
+import { useLazySelector } from "./index";
+import homeRoutes from "routing/routes";
 
 type Social = "facebook" | "google" | "twitter" | "apple";
 
 const useAuthSocial = () => {
   const location = useLocation();
   const history = useHistory();
+
+  const { userName } = useLazySelector(
+    ({ auth }) => auth?.userData?.result?.userName || {}
+  );
+
+  console.log("userLanguage", userName);
   const finishSocialLogin = () => {
     const params = new URLSearchParams(location.search);
 
@@ -19,7 +27,9 @@ const useAuthSocial = () => {
       // TokenManager.setAccessToken(token);
       // TokenManager.setRefreshToken(refreshToken);
       //
-      history.push(homeRoutes.root);
+      userName
+        ? history.push(homeRoutes.root)
+        : history.push(authRoutes.ProfileHabits);
     }
   };
 
