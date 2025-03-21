@@ -53,7 +53,7 @@ export const getCurrentReadBook = (params: ReadBooksParams) =>
   );
 export const getCurrentAudioBook = (params: ReadBooksParams) =>
   usingGet(
-    `/api/v1/books/listenBook/${params.bookId}/${params.langId}/${params.page}`
+    `/api/v1/books/listenBookNew/${params.bookId}/${params.langId}/${params.page}`
   );
 
 export const askQuestion = (payload: ReadBooksParams) =>
