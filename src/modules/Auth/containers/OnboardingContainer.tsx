@@ -1,7 +1,7 @@
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { getLocalization, googleLoginUser } from "../slices/auth";
+import { getLocalization } from "../slices/auth";
 import OnboardingForm from "../components/OnboardingForm";
 
 const OnboardingContainer: React.FC = () => {
@@ -14,14 +14,7 @@ const OnboardingContainer: React.FC = () => {
     dispatch(getLocalization(parsedAppLanguage.isoCode2char));
   }, [dispatch, parsedAppLanguage]);
 
-  const handleSubmit = useCallback(
-    (values) => {
-      dispatch(googleLoginUser(values));
-    },
-    [dispatch]
-  );
-
-  return <OnboardingForm onSubmit={handleSubmit} />;
+  return <OnboardingForm />;
 };
 
 export default OnboardingContainer;

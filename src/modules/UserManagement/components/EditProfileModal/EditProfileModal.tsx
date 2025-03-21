@@ -254,7 +254,10 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
                     className={`${styles.inputField}`}
                     type="text"
                   />
-                  <label className={styles.inputLabel}>Date of Birth</label>
+                  <label className={styles.inputLabel}>
+                    {" "}
+                    {localization?.dateOfBirth}
+                  </label>
                 </>
               )}
             />

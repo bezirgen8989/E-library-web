@@ -135,7 +135,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                   inputMode="text"
                   placeholder=""
                   {...register("confirmPassword", {
-                    required: `${localization?.pleaseConfirmYourPassword!}`,
+                    required: `${localization?.errors.pleaseConfirmYourPassword}`,
                     validate: (value) =>
                       value === password ||
                       `${localization?.errors.passwordsDoNotMatch}`,
