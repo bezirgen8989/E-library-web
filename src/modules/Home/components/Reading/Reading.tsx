@@ -7,7 +7,7 @@ import { Progress } from "antd";
 import { useLazySelector } from "../../../../hooks"; // Import Ant Design's Progress component
 
 interface ReadingProps {
-  pagesContent: string[];
+  pagesContent: any;
   totalPages: number;
   isLoading: boolean;
   onNext: () => void;
@@ -48,9 +48,9 @@ const Reading: React.FC<ReadingProps> = ({
     const imgs = doc.querySelectorAll("img");
     imgs.forEach((img) => img.remove());
 
-    let meta = doc.querySelector("meta[name='viewport']");
+    let meta = doc.querySelector("meta[name='viewport']") as HTMLMetaElement;
     if (!meta) {
-      meta = doc.createElement("meta");
+      meta = doc.createElement("meta") as HTMLMetaElement;
       meta.name = "viewport";
       meta.content =
         "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no";
@@ -89,18 +89,16 @@ const Reading: React.FC<ReadingProps> = ({
     }
   }, [pagesContent, isFirstLoad]);
 
-  useEffect(() => {
-    if (pagesContent.length > 0) {
-      const pageNumbers = pagesContent;
-      // .map(getPageNumberFromHTML)
-      // .filter((num) => num !== null) as number[];
+  if (pagesContent.length > 0) {
+    const pageNumbers = pagesContent
+      .map((page: any) => Number(page))
+      .filter((num: any) => !isNaN(num)); // Filter out NaN values
 
-      if (pageNumbers.length > 0) {
-        const maxPage = Math.max(...pageNumbers);
-        setMaxLoadPage(maxPage);
-      }
+    if (pageNumbers.length > 0) {
+      const maxPage = Math.max(...pageNumbers);
+      setMaxLoadPage(maxPage);
     }
-  }, [pagesContent, setMaxLoadPage]);
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -172,7 +170,7 @@ const Reading: React.FC<ReadingProps> = ({
         style={{ maxHeight: "calc(100vh - 155px)", overflowY: "auto" }}
       >
         <div className={styles.content}>
-          {pagesContent.map((page, index) => (
+          {pagesContent.map((page: any, index: any) => (
             <div key={index}>
               {page.fileType === "html" ? (
                 <div

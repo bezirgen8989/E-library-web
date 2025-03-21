@@ -17,6 +17,7 @@ import { getLocalization } from "../../Auth/slices/auth";
 interface PageContent {
   fileType: "txt" | "html" | "pdf";
   content: string;
+  pdfPage?: number; // Add pdfPage as an optional field
 }
 
 const ReadingContainer: React.FC = () => {

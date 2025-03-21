@@ -114,7 +114,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [, setIsShowSilent] = useState();
   const [isFirst, setIsFirst] = useState(true);
   const [isEmpty, setIsEmpty] = useState(true);
-  // const [showStopButton, setShowStopButton] = useState(false);
   const [voiceChatHistory, setVoiceChatHistory] = useState<any>([]);
   const { result: localization } = useLazySelector(
     ({ auth }) => auth.appLocalization || {}

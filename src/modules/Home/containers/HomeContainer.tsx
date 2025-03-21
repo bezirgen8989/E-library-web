@@ -39,6 +39,7 @@ const HomeContainer: React.FC = () => {
       isSuggestedBooksLoading,
     };
   });
+  console.log("VALUE", value?.language?.id);
 
   const authState = useLazySelector(({ auth }) => {
     return auth;
