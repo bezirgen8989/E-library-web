@@ -3,7 +3,7 @@ import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import HttpBackend, { HttpBackendOptions } from "i18next-http-backend";
 import { API_PREFIX } from "api/apiHelpers";
-// import * as jsonEn from './locales/en.json';
+import * as jsonEn from "./locales/en/common.json";
 
 type TTranslations = { [key: string]: any };
 
@@ -11,7 +11,7 @@ type TTranslations = { [key: string]: any };
 // (tip move them in a JSON file and import them,
 // or even better, manage them separated from your code: https://react.i18next.com/guides/multiple-translation-files)
 const resources: TTranslations = {
-  // en: jsonEn,
+  en: jsonEn,
 };
 
 const fallbackLng = "en";
