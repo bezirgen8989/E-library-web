@@ -64,26 +64,24 @@ const PageBooksList: FC<PageBooksListProps> = ({
       <div className={styles.newBooksList}>
         {books &&
           books.slice(0, displayCount).map((book) => (
-            <div
-              key={book.id}
-              className={styles.newBook}
-              onClick={() => getBook(book.id)}
-            >
-              <div className={styles.imgWrap}>
-                {book.bookCover?.link ? (
-                  <img
-                    src={book.bookCover.link}
-                    alt={book.title}
-                    className={styles.bookCoverImage}
-                  />
-                ) : (
-                  <img
-                    src={NoImg}
-                    alt={book.title}
-                    className={styles.bookCoverImage}
-                  />
-                )}
-              </div>
+            <div key={book.id} className={styles.newBook}>
+              <Link to={`/book/${book.id}`}>
+                <div className={styles.imgWrap}>
+                  {book.bookCover?.link ? (
+                    <img
+                      src={book.bookCover.link}
+                      alt={book.title}
+                      className={styles.bookCoverImage}
+                    />
+                  ) : (
+                    <img
+                      src={NoImg}
+                      alt={book.title}
+                      className={styles.bookCoverImage}
+                    />
+                  )}
+                </div>
+              </Link>
               <div className={styles.newBookTitle}>{book.title}</div>
               <div className={styles.newBookAuthor}>
                 {book.author.map((author) => author.name).join(", ")}
