@@ -20,25 +20,6 @@ export const ReaderByType = ({ fileType, content }: Props) => {
       doc.head.appendChild(meta);
     }
 
-    const style = doc.createElement("style");
-    style.innerHTML = `
-      body {
-        background-color: #FBF1EA;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0;
-        overflow: hidden;
-      }
-      p {
-        font-size: 16px;
-        line-height: 1.6;
-        color: #333;
-        white-space: pre-wrap;
-      }
-    `;
-    doc.head.appendChild(style);
-
     return doc.body.innerHTML;
   };
 
@@ -58,7 +39,7 @@ export const ReaderByType = ({ fileType, content }: Props) => {
   const reader = {
     html: <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }} />,
     pdf: renderPdf(),
-    null: <div> {content}</div>,
+    null: <div>{content}</div>,
   };
 
   return <div>{reader[fileType]}</div>;

@@ -75,7 +75,7 @@ const ProfileUserContainer: React.FC = () => {
 
   useEffect(() => {
     dispatch(getLanguages());
-    dispatch(getMe());
+    // dispatch(getMe());
   }, [dispatch]);
 
   const handleSubmit = useCallback(
