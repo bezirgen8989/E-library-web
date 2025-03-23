@@ -33,10 +33,11 @@
   border-radius: 8px;
   overflow: hidden;
   margin: 0 12px;
-  a {
+  & > a {
     color: #996C42;
     font-weight: 700;
-    background-image: url('../../../../../assets/images/icons/readArrow.svg');
+    // TODO need to check
+    //background-image: url('../../../../../assets/images/icons/readArrow.svg');
     background-repeat: no-repeat;
     background-position: right center;
     padding-right: 20px;
@@ -51,7 +52,7 @@
   border-radius: 8px;
   margin: 0 12px !important;
   box-sizing: border-box;
-  a {
+  & > a {
     color: #996C42;
     font-weight: 700;
     background-image: url('../../../../../assets/images/icons/readArrow.svg');
