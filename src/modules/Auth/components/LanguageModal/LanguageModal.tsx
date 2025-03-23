@@ -88,7 +88,7 @@ const LanguageModal: FC<LanguageModalProps> = ({
       title={
         <div className={commonStyles.selectLangModalHeader}>
           <div className="custom-modal-title">{t("selectLanguage")}</div>
-          <img src={Close} alt="close" />
+          <img src={Close} alt="close" onClick={hideModal} />
         </div>
       }
       visible={isModalOpen}

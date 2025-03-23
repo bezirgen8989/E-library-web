@@ -385,7 +385,7 @@ export const setProfile = createAsyncThunk(
         icon: <img src={Alert} alt="icon" />,
       });
     } else {
-      dispatch(getMe());
+      // dispatch(getMe());
       history.push(routes.profileAbout);
     }
     return response;
@@ -437,7 +437,7 @@ export const setAppLanguage = createAsyncThunk(
     const response = await setUserProfile(userParams);
     const { success } = response;
     if (success) {
-      dispatch(getMe());
+      // dispatch(getMe());
     }
     return response;
   }
