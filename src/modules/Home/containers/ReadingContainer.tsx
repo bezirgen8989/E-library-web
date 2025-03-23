@@ -30,11 +30,30 @@ const ReadingContainer: React.FC = () => {
   const [loadedPages, setLoadedPages] = useState<Set<number>>(new Set());
   const [totalPages, setTotalPages] = useState<number>(0);
   const prevTotalPages = useRef<number>(0);
-  const [maxLoadPage, setMaxLoadPage] = useState<number>(0);
+  const [maxLoadPage, setMaxLoadPage] = useState<any>(0);
+
+  const [pagesVisited, setPagesVisited] = useState<number[]>([]);
+  console.log(pagesVisited);
+  useEffect(() => {
+    if (page !== null) {
+      setPagesVisited((prev) => {
+        if (!prev.includes(page)) {
+          const updated = [...prev, page];
+          const maxPage = Math.max(...updated);
+          setMaxLoadPage(maxPage);
+          return updated;
+        }
+        return prev;
+      });
+    }
+  }, [page]);
+
   const [featurePageFromServer, setFeaturePageFromServer] = useState<
     number | null
-  >(1);
-
+  >(null);
+  console.log("maxLoadPage", maxLoadPage);
+  console.log("featurePageFromServer", featurePageFromServer);
+  console.log("page", page);
   const { currentReadBook, isLoading, currentBookshelfBook } = useLazySelector(
     ({ home }) => ({
       currentReadBook: home.currentReadBook,
@@ -42,7 +61,11 @@ const ReadingContainer: React.FC = () => {
       currentBookshelfBook: home.currentBookshelfBook,
     })
   );
-  console.log(1111, pagesContent);
+
+  useEffect(() => {
+    setMaxLoadPage(featurePageFromServer);
+  }, [featurePageFromServer]);
+
   useEffect(() => {
     if (value?.language?.isoCode2char) {
       dispatch(getLocalization(value?.language?.isoCode2char));
@@ -105,7 +128,6 @@ const ReadingContainer: React.FC = () => {
     const currentBookLang = sessionStorage.getItem("currentBookLanguage");
     const parseLang = JSON.parse(currentBookLang || "{}");
     const langId = parseLang?.id || value?.bookLanguage?.id || "7";
-
     if (page !== null && !loadedPages.has(page)) {
       dispatch(getReadBook({ bookId: id, langId, page: page.toString() }));
     }
