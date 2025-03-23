@@ -84,7 +84,8 @@
   "termsAndConditions": "Terms and Conditions",
   "privacyPolicy": "Privacy Policy",
   "and": "and",
-  "passwordMustBeAtLeast8CharactersLong": "Password must be at least 8 characters long!",
+  "pleaseInputYourEmail!": "Please input your Email!",
+  "passwordMustBeAtLeast8CharactersLong!": "Password must be at least 8 characters long!",
   "pleaseConfirmYourPassword!": "Please confirm your password!",
   "Log In": "Log In",
   "DontHaveAnAccount": "Don’t have an account?",
@@ -102,7 +103,6 @@
   "profileDetails": "Profile Details",
   "howDidYouLearnAbout": "How did you learn about Elor?",
   "selectMultipleOptions": "You can select multiple options",
-  "pleaseInputYourEmail": "Please input your Email!",
   "YourBookshelfEmpty": "Your Bookshelf is empty now",
   "ExploreLibraryNow": "Explore our library right now",
   "StartExploring": "Start exploring",
@@ -121,15 +121,17 @@
   "pleaseFollowInstructions": "Please follow instructions.",
   "resend": "Resend",
   "resources": "Resources",
+  "deleteAccount": "Delete Account",
+  "selectLanguage": "Select language",
+  "passwordMustBeAtLeast8CharactersLong": "Password must be at least 8 characters long!",
+  "pleaseInputYourEmail": "Please input your Email!",
+  "noNotificationsAvailable": "No notifications available",
   "errors": {
-    "incorrectEmailOrPassword":"Incorrect email or password",
+    "pleaseConfirmYourPassword": "Please confirm your password!",
+    "incorrectEmailOrPassword": "Incorrect email or password",
     "loginError": "Login Error",
     "theInputIsNotValidEmail!": "The input is not valid E-mail!",
     "passwordMustContainAtLeastOneUppercaseLetter": "Password must contain at least one uppercase letter!",
-    "passwordsDoNotMatch": "Passwords do not match!",
-    "pleaseConfirmYourPassword": "Please confirm your password!"
-  },
-  "deleteAccount": "Delete Account",
-  "selectLanguage": "Select language",
-  "noNotificationsAvailable": "No notifications available"
+    "passwordsDoNotMatch": "Passwords do not match!"
+  }
 }
