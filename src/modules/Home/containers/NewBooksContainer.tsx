@@ -53,7 +53,7 @@ const NewBooksContainer: React.FC = () => {
 
   const getBooksFilter = `${
     authState.userData.result?.kidsMode ? "[isAgeRestricted][eq]=0" : null
-  }&filter[id][lte]=223`;
+  }`;
 
   useEffect(() => {
     dispatch(clearBooks());
