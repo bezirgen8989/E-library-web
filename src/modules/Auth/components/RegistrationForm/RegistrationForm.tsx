@@ -97,7 +97,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                   inputMode="text"
                   placeholder=""
                   {...register("password", {
-                    required: t("passwordMustBeAtLeast8CharactersLongl"),
+                    required: t("passwordMustBeAtLeast8CharactersLong"),
                     minLength: {
                       value: 8,
                       message: t("passwordMustBeAtLeast8CharactersLong"),
@@ -132,7 +132,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                   inputMode="text"
                   placeholder=""
                   {...register("confirmPassword", {
-                    required: t("errors.pleaseConfirmYourPasswordl"),
+                    required: t("errors.pleaseConfirmYourPassword"),
                     validate: (value) =>
                       value === password || t("errors.passwordsDoNotMatch"),
                   })}
