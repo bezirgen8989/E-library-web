@@ -21,7 +21,6 @@ import {
   setUserAvatar,
   getSurveyOptions,
   setRegistrationOptionsAbout,
-  // getAppLocalization,
   resendConfirmation,
 } from "../../api/authService";
 import {
@@ -32,7 +31,7 @@ import {
   TokenData,
 } from "../../types";
 import { history } from "store";
-import { SessionUtils } from "utils";
+import { TokenManager } from "utils";
 import homeRoutes from "modules/Home/routing/routes";
 import { notification } from "antd";
 import routes from "../../routing/routes";
@@ -240,7 +239,10 @@ export const LoginUser = createAsyncThunk(
         });
       }
     } else if (content && content.token) {
-      SessionUtils.storeSession(content.token);
+      TokenManager.setAccessToken(content.token);
+      if (content.refreshToken) {
+        TokenManager.setRefreshToken(content.refreshToken);
+      }
       history.push(homeRoutes.root);
     }
     return response;
@@ -251,7 +253,6 @@ export const registerUser = createAsyncThunk(
   "api/v1/auth/email/register",
   async (userParams: RegisterUserParams) => {
     const response = await authRegister(userParams);
-    console.log("response", response);
     const { success, status, error } = response;
     const errors = error?.errors;
 
@@ -313,7 +314,7 @@ export const emailConfirm = createAsyncThunk(
         icon: <img src={Alert} alt="icon" />,
       });
     } else {
-      SessionUtils.storeSession(content.token);
+      TokenManager.setAccessToken(content.token);
       history.push(routes.ProfileHabits);
     }
     return response;
