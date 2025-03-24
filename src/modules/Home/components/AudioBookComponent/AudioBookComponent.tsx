@@ -7,6 +7,7 @@ import commonStyles from "../../../../assets/css/commonStyles/CommonStyles.modul
 import BackIcon from "../../../../assets/images/icons/goBackIcon.svg";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import SpinnerButton from "../../../../components/common/SpinnerButton";
 
 interface AudioBookComponentProps {
   currentAudioBook: any;
@@ -15,6 +16,7 @@ interface AudioBookComponentProps {
   book: any;
   currentPage: any;
   setMaxLoadPage: any;
+  isFetchingAudio: boolean;
 }
 
 const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
@@ -24,14 +26,16 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
   book,
   currentPage,
   setMaxLoadPage,
+  isFetchingAudio,
 }) => {
   const { t } = useTranslation();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [progress, setProgress] = useState(0);
+  const [isLoadingAudio, setIsLoadingAudio] = useState(false); // ✅ состояние для отслеживания загрузки
   const history = useHistory();
-  console.log("currentBookVersion", currentBookVersion);
+  const [autoPlayAfterLoad, setAutoPlayAfterLoad] = useState(false);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -58,7 +62,6 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
   const handleNextPage = () => {
     setCurrentPage((prev: string) => {
       const nextPage = (parseInt(prev) + 1).toString();
-
       setMaxLoadPage((prevMax: any) => Math.max(prevMax, parseInt(nextPage)));
       return nextPage;
     });
@@ -69,10 +72,16 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        setIsPlaying(false);
+        setAutoPlayAfterLoad(false); // Отключаем автозапуск
       } else {
-        audioRef.current.play();
+        if (isLoadingAudio) {
+          setAutoPlayAfterLoad(true); // ✅ Если загружается — ждем и запускаем
+        } else {
+          audioRef.current.play();
+          setIsPlaying(true);
+        }
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
@@ -163,8 +172,12 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
               <button onClick={skipBackward} className={styles.control_button}>
                 <img src={BackS} alt="" />
               </button>
-              <button onClick={togglePlay} className={styles.play_button}>
-                {isPlaying ? "⏸" : "▶"}
+              <button
+                onClick={togglePlay}
+                className={styles.play_button}
+                disabled={isFetchingAudio} // ✅ Отключаем кнопку во время загрузки
+              >
+                {isFetchingAudio ? <SpinnerButton /> : isPlaying ? "||" : "▶"}
               </button>
               <button onClick={skipForward} className={styles.control_button}>
                 <img src={ForwardS} alt="" />
@@ -182,21 +195,19 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
             <audio
               ref={audioRef}
               src={currentAudioBook?.result?.audioUrl}
+              onLoadStart={() => setIsLoadingAudio(true)}
+              onCanPlay={() => {
+                setIsLoadingAudio(false);
+                if (autoPlayAfterLoad) {
+                  audioRef.current?.play();
+                  setIsPlaying(true);
+                  setAutoPlayAfterLoad(false);
+                }
+              }}
               onEnded={() => {
                 setIsPlaying(false);
                 setProgress(0);
-                const totalPages =
-                  currentBookVersion?.result?.data?.[0]?.totalPages || 1;
-                setCurrentPage((prev: string) => {
-                  const nextPage = parseInt(prev) + 1;
-                  const updatedPage =
-                    nextPage <= totalPages ? nextPage.toString() : prev;
-
-                  setMaxLoadPage((prevMax: any) =>
-                    Math.max(prevMax, parseInt(updatedPage))
-                  );
-                  return updatedPage;
-                });
+                handleNextPage();
               }}
             />
           </div>

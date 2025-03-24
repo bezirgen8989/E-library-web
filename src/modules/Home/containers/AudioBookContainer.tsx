@@ -39,6 +39,26 @@ const AudioBookContainer: React.FC = () => {
   }));
   const [currentPage, setCurrentPage] = useState("1");
   const [maxLoadPage, setMaxLoadPage] = useState<number>(1);
+  const [isFetchingAudio, setIsFetchingAudio] = useState(false);
+
+  useEffect(() => {
+    const fetchAudioBook = async () => {
+      if (id) {
+        setIsFetchingAudio(true);
+        try {
+          await dispatch(
+            getAudioBook({ bookId: id, langId, page: currentPage })
+          );
+        } catch (error) {
+          console.error("Error fetching audio book:", error);
+        } finally {
+          setIsFetchingAudio(false);
+        }
+      }
+    };
+
+    fetchAudioBook();
+  }, [id, dispatch, currentPage]);
 
   useEffect(() => {
     if (currentBookshelfBook?.result?.lastPage) {
@@ -141,6 +161,7 @@ const AudioBookContainer: React.FC = () => {
       book={currentBook}
       currentPage={currentPage}
       setMaxLoadPage={setMaxLoadPage}
+      isFetchingAudio={isFetchingAudio}
     />
   );
 };
