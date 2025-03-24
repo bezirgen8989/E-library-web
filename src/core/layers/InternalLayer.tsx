@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { SessionUtils } from "utils";
+import { TokenManager } from "utils";
 import { clearSessionInfo } from "core/session/slices/session";
 import { getMe } from "../../modules/Auth/slices/auth";
 import { useLazySelector } from "../../hooks";
@@ -24,7 +24,7 @@ const InternalLayer: React.FC = ({ children }) => {
 
   // Check session on page refresh
   useEffect(() => {
-    const sessionToken = SessionUtils.getSessionToken();
+    const sessionToken = TokenManager.getAccessToken();
     if (sessionToken) {
       // Check token alive
     } else {
