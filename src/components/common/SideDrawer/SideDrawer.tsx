@@ -67,7 +67,7 @@ const NotificationTime = ({ sentAt }: NotificationTimeProps) => {
                   : t("over_years_ago", { count });
 
               default:
-                return t("time_ago");
+                return " ";
             }
           },
         },
