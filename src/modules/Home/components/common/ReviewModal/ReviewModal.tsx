@@ -1,6 +1,6 @@
 import commonStyles from "../../../../../assets/css/commonStyles/CommonStyles.module.scss";
 import Close from "../../../../../assets/images/icons/Close.svg";
-import { Modal } from "antd";
+import { Modal, Rate } from "antd";
 import { FC, useContext, useEffect, useState } from "react";
 import Button from "../../../../../components/common/Buttons/Button";
 // @ts-ignore
@@ -16,6 +16,7 @@ interface ReviewModalProps {
   setIsModalOpen: (open: boolean) => void;
   book: BookType | null;
   reviewSubmit: any;
+  customClass: any;
 }
 
 const ReviewModal: FC<ReviewModalProps> = ({
@@ -23,6 +24,7 @@ const ReviewModal: FC<ReviewModalProps> = ({
   setIsModalOpen,
   book,
   reviewSubmit,
+  customClass,
 }) => {
   const { t } = useTranslation();
   const [reviewText, setReviewText] = useState<string>("");
@@ -101,23 +103,11 @@ const ReviewModal: FC<ReviewModalProps> = ({
         style={{ display: "flex", alignItems: "center", marginBottom: "16px" }}
       >
         <span style={{ marginRight: "8px" }}>{t("rating").toLowerCase()}:</span>
-        <Rating
-          count={5}
+        <Rate
+          defaultValue={5}
           value={rating}
           onChange={(newRating: number) => setRating(newRating)}
-          size={24}
-          activeColor="#F17933"
-          filledIcon={
-            <span
-              style={{
-                fontSize: "24px",
-                color: "#F17933",
-                borderRadius: "50%",
-              }}
-            >
-              ★
-            </span>
-          }
+          className={customClass}
         />
       </div>
       <div style={{ textAlign: "center" }}>

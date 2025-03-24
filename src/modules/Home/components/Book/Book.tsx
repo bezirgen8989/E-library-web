@@ -20,7 +20,7 @@ import { routes } from "../../routing";
 import PageBooksList from "../common/PageBooksList/PageBooksList";
 import BackIcon from "../../../../assets/images/icons/backPage.svg";
 import Review from "../common/Review/Review";
-import { Skeleton } from "antd";
+import { Rate, Skeleton } from "antd";
 import { useDispatch } from "react-redux";
 import { getBookVersion } from "../../slices/home";
 import { getLocalization } from "../../../Auth/slices/auth";
@@ -585,24 +585,23 @@ const Book: React.FC<BookProps> = ({
             </section>
             <section className={styles.reviewsSection}>
               <div className={styles.section_title}>{t("reviews")}</div>
-              <div className={styles.overallRating}>
+              <div
+                className={styles.overallRating}
+                style={{ marginBottom: "25px" }}
+              >
                 {book?.rating !== undefined && (
-                  <Rating
-                    count={5}
+                  <Rate
+                    disabled
                     value={Number(book.rating) > 0 ? Number(book.rating) : 0}
-                    size={24}
-                    edit={false}
-                    activeColor="#996C42"
-                    emptyColor="#ccc"
-                    half={true}
+                    allowHalf
                   />
                 )}
                 <div className={styles.rating_count}>
                   {book?.rating ? Number(book.rating).toFixed(1) : "N/A"}
                 </div>
-                <span>
-                  ({book?.reviewCount} {t("reviews").toLowerCase()})
-                </span>
+                <div>
+                  ({reviews?.length} {t("reviews").toLowerCase()})
+                </div>
               </div>
               {reviews.length > 0 ? (
                 reviews.map((review) => (
@@ -625,6 +624,7 @@ const Book: React.FC<BookProps> = ({
                   border: "2px solid rgba(153, 108, 66, 0.2)",
                   borderRadius: "14px",
                   background: "transparent",
+                  maxWidth: "196px",
                 }}
                 onClick={() => {
                   setIsReviewModalOpen(true);
@@ -662,6 +662,7 @@ const Book: React.FC<BookProps> = ({
           book={book}
           isModalOpen={isReviewModalOpen}
           setIsModalOpen={setIsReviewModalOpen}
+          customClass={styles.overallRating}
         />
       </div>
     </div>
