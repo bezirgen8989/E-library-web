@@ -147,16 +147,23 @@
   font-size: 19px;
   font-weight: 700;
   color: #121212;
+  margin-bottom: 8px;
 }
 
 .overallRating {
   display: flex;
   align-items: center;
   font-size: 20px;
-  margin-bottom: 10px;
-  span {
-    margin-left: 8px;
-    color: #996C42 ;
+
+  :global(.anticon.anticon-star svg) {
+    width: 24px;
+    height: 24px;
+  }
+  :global(.ant-rate-star), :global(.ant-rate-star-zero .ant-rate-star-second) {
+    color: #B3B3B3;
+  }
+  :global(.ant-rate-star.ant-rate-star-full) {
+    color: #996C42;
   }
 }
 
@@ -165,7 +172,7 @@
 }
 
 .rating_count {
-  margin-left: 5px;
+  margin: 0 5px;
   color: #121212 !important;
 }
 

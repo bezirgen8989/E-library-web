@@ -14,6 +14,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../hooks";
 import { getLanguages, getMe, setAvatar } from "../../Auth/slices/auth";
+import { TokenManager } from "../../../utils";
 
 type Chat = {
   type: "user" | "response";
@@ -98,7 +99,7 @@ const AskQuestionContainer: React.FC = () => {
 
   useEffect(() => {
     if (question) {
-      const token = sessionStorage.getItem("SESSION_TOKEN");
+      const token = TokenManager.getAccessToken();
 
       const fetchData = async () => {
         setIsLoading(true);

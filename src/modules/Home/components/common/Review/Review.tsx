@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import styles from "./Review.module.scss";
-import { Popconfirm } from "antd";
+import { Popconfirm, Rate } from "antd";
 import DeleteIcon from "../../../../../assets/images/icons/delete_icon.svg";
 import { UserContext } from "../../../../../core/contexts";
 
@@ -34,7 +34,8 @@ const Review: React.FC<ReviewType> = ({
     <div className={styles.review}>
       <div>
         <div className={styles.review_star}>
-          ★<span>{rating}</span>
+          <Rate disabled count={1} defaultValue={1} />
+          <span>{rating}</span>
         </div>
       </div>
       <span style={{ fontSize: "18px" }}>{text}</span>
