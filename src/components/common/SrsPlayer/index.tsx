@@ -63,6 +63,7 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
   const videoOptions = {
     ...defaultVideoOptions,
     ...options,
+    controls: false,
   };
   const srsSdkRef = useRef<typeof SrsRtcWhipWhepAsync | any>(null);
 
@@ -121,9 +122,9 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
       style={{
         width: `${displayedWidth}px`,
         height: `${displayedHeight}px`,
+        pointerEvents: "none", // Отключаем события мыши
       }}
       {...videoOptions}
-      controls={true}
     />
   );
 };

@@ -84,9 +84,9 @@ export const useVoice = ({
     };
 
     let questionTexts: string[] = [];
-    let timeoutId: any = null;
     let lastQuestionText = "";
     let lastStart = -1;
+    let isLastQuestionProcessed = false; // Flag for processing the last question
 
     socketRef.current.onmessage = (event: MessageEvent) => {
       const data = JSON.parse(event.data);
@@ -106,29 +106,23 @@ export const useVoice = ({
               questionTexts.push(text);
             }
 
-            if (timeoutId) {
-              clearTimeout(timeoutId);
-            }
-
-            timeoutId = setTimeout(() => {
-              if (lastQuestionText) {
-                setChatHistory((prev: any) => [
-                  ...prev,
-                  {
-                    type: "user",
-                    message: lastQuestionText,
-                    timestamp: new Date().toLocaleTimeString(),
-                  },
-                  {
-                    type: "response",
-                    message: " ",
-                    timestamp: new Date().toLocaleTimeString(),
-                  },
-                ]);
-                questionTexts = [];
-              }
-            }, 1000);
+            // Check if we need to update the chat
+            setChatHistory((prev: any) => [
+              ...prev,
+              {
+                type: "user",
+                message: lastQuestionText,
+                timestamp: new Date().toLocaleTimeString(),
+              },
+              {
+                type: "response",
+                message: " ",
+                timestamp: new Date().toLocaleTimeString(),
+              },
+            ]);
           }
+
+          isLastQuestionProcessed = true; // Mark that the last question has been processed
         }
       }
 
@@ -153,6 +147,12 @@ export const useVoice = ({
         });
 
         dispatch(setIsStreamShow(true));
+      }
+
+      // Handling the last question (with last: true) if it wasn't processed
+      if (data?.last === true && !isLastQuestionProcessed) {
+        console.warn("Last question missed! Trying again...");
+        dispatch(setStreamDone(true));
       }
     };
   };
