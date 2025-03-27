@@ -7,9 +7,22 @@ import * as jsonEn from "./locales/en/common.json";
 
 type TTranslations = { [key: string]: any };
 
-// the translations
-// (tip move them in a JSON file and import them,
-// or even better, manage them separated from your code: https://react.i18next.com/guides/multiple-translation-files)
+type I18NextHttpBackendRequestOptions = {
+  lng?: string;
+  ns?: string | string[];
+  addPath?: string;
+  multiSeparator?: string;
+  allowMultiLoading?: boolean;
+  parse?: (data: string, languages?: string | string[]) => TTranslations;
+  stringify?: (data: TTranslations) => string;
+  requestOptions?: any;
+};
+
+type I18NextHttpBackendRequestCallback = (
+  error: Error | null,
+  result: { status: number; data: string } | null
+) => void;
+
 const resources: TTranslations = {
   en: jsonEn,
 };
@@ -18,18 +31,42 @@ const fallbackLng = "en";
 const defaultLng = localStorage.getItem("i18nextLng") ?? fallbackLng;
 
 i18n
-  // Enables the i18next backend
   .use(HttpBackend)
-  // Enable automatic language detection
   .use(LanguageDetector)
-  // Enables the hook initialization module
-  .use(initReactI18next) // passes i18n down to react-i18next
+  .use(initReactI18next)
   .init<HttpBackendOptions>({
-    lng: defaultLng, // language to use, more information here: https://www.i18next.com/overview/configuration-options#languages-namespaces-resources
+    lng: defaultLng,
     backend: {
-      // translation file path
-      // the returned path will interpolate lng, ns if provided like giving a static path
       loadPath: `${API_PREFIX}/api/v1/localization/web/{{lng}}`,
+
+      request: (
+        options: I18NextHttpBackendRequestOptions,
+        url: string,
+        payload: Record<string, any> | string | null,
+        callback: I18NextHttpBackendRequestCallback
+      ) => {
+        fetch(url)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(
+                `Failed to load translations: ${response.status}`
+              );
+            }
+            return response.text();
+          })
+          .then((data) => callback(null, { status: 200, data }))
+          .catch((error) => {
+            console.error(
+              "Failed to fetch translations, using local resources:",
+              error
+            );
+            const localTranslations = JSON.stringify(
+              resources[options.lng || defaultLng] || {}
+            );
+            callback(null, { status: 200, data: localTranslations });
+          });
+      },
+
       parse: (data: string, languages?: string | string[]): TTranslations => {
         const mergeDeep = (target: any, source: any): any => {
           for (const key in source) {
@@ -51,9 +88,6 @@ i18n
 
           if (typeof languages === "string") {
             const baseTranslations = resources[languages] || {};
-
-            console.log(mergeDeep({ ...baseTranslations }, parsedData));
-
             return mergeDeep({ ...baseTranslations }, parsedData);
           }
 
@@ -61,7 +95,6 @@ i18n
             const mergedTranslations = languages.reduce((acc) => {
               return mergeDeep(acc, resources[defaultLng] || {});
             }, {});
-
             return mergeDeep(mergedTranslations, parsedData);
           }
         }
@@ -74,10 +107,8 @@ i18n
     react: {
       useSuspense: true,
     },
-    // you can use the i18n.changeLanguage function to change the language manually: https://www.i18next.com/overview/api#changelanguage
-    // if you're using a language detector, do not define the lng option
     interpolation: {
-      escapeValue: false, // react already safes from xss
+      escapeValue: false,
       formatSeparator: ",",
     },
   });
