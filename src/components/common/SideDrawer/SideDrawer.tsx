@@ -12,6 +12,8 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { formatDistanceToNow } from "date-fns";
 import ChatSpinner from "../ChatSpinner";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
+import routes from "../../../modules/Home/routing/routes";
 
 interface NotificationTimeProps {
   sentAt: string | Date;
@@ -25,13 +27,54 @@ interface Notification {
   sentAt: string;
   content: string;
   isRead: boolean;
+  notificationSubjectId: number;
 }
 
-const NotificationTime = ({ sentAt }: NotificationTimeProps) => (
-  <div className={styles.timeSent}>
-    {formatDistanceToNow(new Date(sentAt), { addSuffix: true })}
-  </div>
-);
+const NotificationTime = ({ sentAt }: NotificationTimeProps) => {
+  const { t, i18n } = useTranslation();
+
+  return (
+    <div>
+      {formatDistanceToNow(new Date(sentAt), {
+        addSuffix: true,
+        locale: {
+          code: i18n.language,
+          formatDistance: (token, count) => {
+            switch (token) {
+              case "xMinutes":
+                return count === 1
+                  ? `t('minute_ago')`
+                  : t("minutes_ago", { count });
+
+              case "aboutXHours":
+                return count === 1
+                  ? t("about_hour_ago")
+                  : t("about_hours_ago", { count });
+
+              case "xDays":
+                return count === 1 ? t("day_ago") : t("days_ago", { count });
+
+              case "xMonths":
+                return count === 1
+                  ? t("month_ago")
+                  : t("months_ago", { count });
+
+              case "xYears":
+                return count === 1 ? t("year_ago") : t("years_ago", { count });
+              case "overXYears":
+                return count === 1
+                  ? t("over_year_ago")
+                  : t("over_years_ago", { count });
+
+              default:
+                return " ";
+            }
+          },
+        },
+      })}
+    </div>
+  );
+};
 
 const SideDrawer = () => {
   const { t } = useTranslation();
@@ -52,6 +95,7 @@ const SideDrawer = () => {
   const [page, setPage] = useState<number>(1);
   const notificationListRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const history = useHistory();
 
   // Закрытие боковой панели
   const onClose = () => {
@@ -93,6 +137,11 @@ const SideDrawer = () => {
         return nextPage;
       });
     }
+  };
+
+  const onNotificationClick = (id: number) => {
+    history.push(`${routes.book}/${id}`);
+    dispatch(setDrawerOpen(false));
   };
 
   // Callback для IntersectionObserver
@@ -139,9 +188,11 @@ const SideDrawer = () => {
           <div className={styles.header}>
             <span className={styles.notificationsTitle}>
               {t("notifications")}
-              <span style={{ color: "#996C42", paddingLeft: 5 }}>
-                ({notifications?.result?.total || 0})
-              </span>
+              {!isLoading && (
+                <span style={{ color: "#996C42", paddingLeft: 5 }}>
+                  ({notifications?.result?.total || 0})
+                </span>
+              )}
             </span>
             <span style={{ cursor: "pointer" }} onClick={onClose}>
               <img src={Close} alt="Close" />
@@ -182,10 +233,17 @@ const SideDrawer = () => {
                       {notification.content}
                     </div>
                     <div className={styles.notificationsBottom}>
-                      <div className={styles.notificationLink}>
+                      <div
+                        onClick={() =>
+                          onNotificationClick(
+                            notification.notificationSubjectId
+                          )
+                        }
+                        className={styles.notificationLink}
+                      >
                         {notification.content.includes("Continue Reading")
-                          ? "Continue Reading"
-                          : "Start Reading"}
+                          ? t("continueReading")
+                          : t("startReading")}
                       </div>
                       <NotificationTime sentAt={notification.sentAt} />
                     </div>
@@ -193,7 +251,7 @@ const SideDrawer = () => {
                 </div>
               ))
             ) : (
-              <div>No notifications available.</div>
+              <div> {t("noNotificationsAvailable")}</div>
             )}
           </div>
         )}
