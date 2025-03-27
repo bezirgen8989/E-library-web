@@ -206,6 +206,7 @@ const SideDrawer = () => {
         getContainer={false}
         style={{ position: "absolute" }}
         width={486}
+        className={styles.drawerWrapper}
       >
         {isLoading && page === 1 ? (
           <ChatSpinner />
