@@ -393,6 +393,18 @@ export const setProfile = createAsyncThunk(
   }
 );
 
+export const setProfileApp = createAsyncThunk(
+  "profileInner/api/v1/auth/me",
+  async (userParams: any, { dispatch }) => {
+    const response = await setUserProfile(userParams);
+    const { success } = response;
+    if (success) {
+      dispatch(getMe());
+    }
+    return response;
+  }
+);
+
 export const getOptionsAbout = createAsyncThunk(
   "/api/v1/survey/options",
   async () => {

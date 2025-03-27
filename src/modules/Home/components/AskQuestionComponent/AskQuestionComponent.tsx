@@ -351,7 +351,9 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
         prevPath.includes("ask_question") &&
         !location.pathname.includes("ask_question")
       ) {
-        stopAvatarGeneration({ client_id: String(value.id) });
+        if (value?.id) {
+          stopAvatarGeneration({ client_id: String(value.id) });
+        }
         setAvatarStreamShow(false);
         dispatch(setIsStopQuestion(true));
         dispatch(setStreamDone(false));
@@ -362,7 +364,9 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   useEffect(() => {
     const handleRouteChange = () => {
       if (!location.pathname.includes("ask_question") && videoRef.current) {
-        stopAvatarGeneration({ client_id: String(value.id) });
+        if (value?.id) {
+          stopAvatarGeneration({ client_id: String(value.id) });
+        }
         videoRef.current.srcObject = null;
         setIsStreamConnect(false);
       }

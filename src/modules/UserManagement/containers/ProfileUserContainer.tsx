@@ -11,7 +11,7 @@ import {
   // getMe,
   // setAvatar,
   setKidsMode,
-  setProfile,
+  setProfileApp,
   uploadUserPhotoId,
 } from "../../Auth/slices/auth";
 import { useDispatch } from "react-redux";
@@ -81,7 +81,7 @@ const ProfileUserContainer: React.FC = () => {
   const handleSubmit = useCallback(
     (values) => {
       console.log("SUBMIT_VALUES", values);
-      dispatch(setProfile(values));
+      dispatch(setProfileApp(values));
     },
     [dispatch]
   );
