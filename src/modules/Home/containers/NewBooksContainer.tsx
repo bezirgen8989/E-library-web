@@ -38,7 +38,7 @@ const NewBooksContainer: React.FC = () => {
     };
   });
 
-  const limit = 6;
+  const limit = 12;
 
   const hasMoreBooks =
     (newBooks?.result?.total || 0) > (newBooks?.result?.data?.length || 0);

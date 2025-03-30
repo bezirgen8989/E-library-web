@@ -39,7 +39,7 @@ const SuggestedBooksContainer: React.FC = () => {
     }
   }, [dispatch, value?.language?.isoCode2char]);
 
-  const limit = 6;
+  const limit = 12;
 
   const hasMoreBooks =
     (suggestedBooks?.result?.total || 0) >

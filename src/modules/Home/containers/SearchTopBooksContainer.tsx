@@ -35,7 +35,7 @@ const SearchTopBooksContainer: React.FC = () => {
     }
   }, [dispatch, value?.language?.isoCode2char]);
 
-  const limit = 6;
+  const limit = 12;
 
   const hasMoreBooks =
     (topBooks?.result?.total || 0) > (topBooks?.result?.data?.length || 0);

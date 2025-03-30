@@ -26,7 +26,7 @@ const NotStartedBooksContainer: React.FC = () => {
     };
   });
 
-  const limit = 6;
+  const limit = 12;
 
   const hasMoreBooks =
     (notStartedBooks?.result?.total || 0) >
