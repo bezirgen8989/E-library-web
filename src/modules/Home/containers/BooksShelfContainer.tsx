@@ -122,7 +122,7 @@ const BookShelfContainer: React.FC = () => {
             userFilter: userIdFilter,
           })
         );
-      }, 500); // Задержка в 1 секунду
+      }, 500);
 
       return () => clearTimeout(timeoutId); // Очистка таймера при размонтировании или изменении value.id
     }

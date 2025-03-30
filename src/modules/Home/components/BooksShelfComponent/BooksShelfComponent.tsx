@@ -1,5 +1,5 @@
 import styles from "./BooksShelfComponent.module.scss";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AllBooksSlider from "../common/AllBooksSlider/AllBooksSlider";
 import { routes } from "../../routing";
 import EmptyImg from "../../../../assets/images/emptyImg.jpg";
@@ -29,60 +29,57 @@ const BooksShelfComponent: React.FC<HomeProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const isEmptyShelf =
-    (!started || started.length === 0) &&
-    (!notStarted || notStarted.length === 0) &&
-    (!finished || finished.length === 0);
+  const [showEmptyShelf, setShowEmptyShelf] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowEmptyShelf(true);
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  const showStarted = isStartedBooksLoading || (started && started.length > 0);
+  const showNotStarted =
+    isNotStartedBooksLoading || (notStarted && notStarted.length > 0);
+  const showFinished =
+    isFinishedBooksLoading || (finished && finished.length > 0);
+
+  const isEmptyShelf = !showStarted && !showNotStarted && !showFinished;
 
   return (
     <div className={styles.home_page}>
-      {!isEmptyShelf && (
-        <>
-          {started && started.length > 0 && (
-            <AllBooksSlider
-              books={started}
-              title={
-                <span style={{ fontSize: "44px", fontWeight: "600" }}>
-                  {t("started")}
-                </span>
-              }
-              seeAllLink={routes.startedBooks}
-              getBook={getBook}
-              continueReadingBook={continueReadingBook}
-              isLoading={isStartedBooksLoading}
-            />
-          )}
-          {notStarted && notStarted.length > 0 && (
-            <AllBooksSlider
-              books={notStarted}
-              title={
-                <span style={{ fontSize: "44px", fontWeight: "600" }}>
-                  {t("notStarted")}
-                </span>
-              }
-              seeAllLink={routes.notStartedBooks}
-              getBook={getBook}
-              isLoading={isNotStartedBooksLoading}
-              continueReadingBook={continueReadingBook}
-            />
-          )}
-          {finished && finished.length > 0 && (
-            <AllBooksSlider
-              books={finished}
-              title={
-                <span style={{ fontSize: "44px", fontWeight: "600" }}>
-                  {t("finished")}
-                </span>
-              }
-              seeAllLink={routes.finishedBooks}
-              getBook={getBook}
-              isLoading={isFinishedBooksLoading}
-            />
-          )}
-        </>
+      {showStarted && (
+        <AllBooksSlider
+          books={started}
+          title={<span className={styles.title}>{t("started")}</span>}
+          seeAllLink={routes.startedBooks}
+          getBook={getBook}
+          continueReadingBook={continueReadingBook}
+          isLoading={isStartedBooksLoading}
+        />
+      )}
+      {showNotStarted && (
+        <AllBooksSlider
+          books={notStarted}
+          title={<span className={styles.title}>{t("notStarted")}</span>}
+          seeAllLink={routes.notStartedBooks}
+          getBook={getBook}
+          continueReadingBook={continueReadingBook}
+          isLoading={isNotStartedBooksLoading}
+        />
+      )}
+      {showFinished && (
+        <AllBooksSlider
+          books={finished}
+          title={<span className={styles.title}>{t("finished")}</span>}
+          seeAllLink={routes.finishedBooks}
+          getBook={getBook}
+          isLoading={isFinishedBooksLoading}
+        />
       )}
 
-      {isEmptyShelf && (
+      {isEmptyShelf && showEmptyShelf && (
         <div className={styles.emptyBookShelf}>
           <div className={styles.emptyInner}>
             <div className={styles.innerImg}>
