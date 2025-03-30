@@ -22,6 +22,7 @@ import SpinMic from "../SpinMic";
 import CustomIcon, { ICON_TYPES } from "../CustomIcon";
 import Button from "../../common/Buttons/Button";
 import { useTranslation } from "react-i18next";
+import { useLazySelector } from "../../../hooks";
 // import {setIsStopQuestion} from "../../../modules/Home/slices/home";
 // import {useDispatch} from "react-redux";
 
@@ -70,6 +71,13 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
 }) => {
   // const { open } = useNotification();
 
+  const { avatarLanguage } = useLazySelector(({ home }) => {
+    const { avatarLanguage } = home;
+    return {
+      avatarLanguage,
+    };
+  });
+
   const { t } = useTranslation();
   const [recording, setRecording] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -113,6 +121,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   // const dispatch = useDispatch();
 
   // Function to check microphone access
+
   const checkMicrophoneAccess = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -245,6 +254,10 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
       return t("askNow");
     }
   };
+
+  useEffect(() => {
+    handleRecordClick();
+  }, [avatarLanguage]);
 
   const handleRecordClick = async () => {
     if (!hasMicrophoneAccess) {

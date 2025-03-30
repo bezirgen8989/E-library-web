@@ -334,9 +334,9 @@ const Book: React.FC<BookProps> = ({
               )}
               <div
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  display: "grid",
+                  gridTemplateColumns: "repeat(2, 1fr)",
+                  gap: "16px",
                   paddingTop: "16px",
                 }}
               >
@@ -432,7 +432,7 @@ const Book: React.FC<BookProps> = ({
               })}
             </div>
             <div className={styles.mobileView}>
-              <div style={{ display: "flex" }}>
+              <div style={{ display: "flex", marginBottom: "20px" }}>
                 <div
                   onMouseDown={(e) => {
                     e.preventDefault();
@@ -447,6 +447,8 @@ const Book: React.FC<BookProps> = ({
                     }}
                   ></div>
                   <span>{selectedLanguage.name}</span>
+                  {currentBookVersion?.result?.data[0]?.translationType !==
+                    "official" && <div className={styles.aiMarker}>AI</div>}
                 </div>
               </div>
             </div>
