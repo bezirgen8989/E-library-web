@@ -313,6 +313,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
         </div>
         <div style={{ height: "58px", width: "100%" }} />
         <LanguageModal
+          modalType="language"
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           languages={languages}

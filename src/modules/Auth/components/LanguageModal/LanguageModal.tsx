@@ -26,6 +26,7 @@ interface LanguageModalProps {
     };
     translationType: string;
   };
+  modalType?: string;
 }
 
 type LanguageType = {
@@ -44,11 +45,13 @@ const LanguageModal: FC<LanguageModalProps> = ({
   currentSelectedLanguage,
   defaultLanguage,
   onLanguageSelect,
+  modalType,
 }) => {
   const { t } = useTranslation();
   const initialLanguage = currentSelectedLanguage
     ? currentSelectedLanguage
     : defaultLanguage;
+  console.log("modalType111111", modalType);
 
   const [selectedLanguage, setSelectedLanguage] = useState(initialLanguage);
   const [searchTerm, setSearchTerm] = useState("");
@@ -69,7 +72,9 @@ const LanguageModal: FC<LanguageModalProps> = ({
 
   const handleChangeAppLang = async (lang: LanguageType) => {
     try {
-      await i18next.changeLanguage(lang.isoCode2char);
+      if (modalType === "language") {
+        await i18next.changeLanguage(lang.isoCode2char);
+      }
     } catch (err) {
       console.log(err);
     } finally {

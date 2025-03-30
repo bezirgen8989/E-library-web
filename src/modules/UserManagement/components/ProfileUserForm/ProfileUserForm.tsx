@@ -112,7 +112,6 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   const handleLanguageChange = (language: LanguageType) => {
     if (modalType === "language") {
       setSelectedLanguage(language);
-      sessionStorage.setItem("appLanguage", JSON.stringify(language));
       handleAppLanguage(language); // Dispatch the action
       setValue("language", language.name); // Update the form value
     } else if (modalType === "bookLanguage") {
@@ -256,6 +255,7 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         languages={languages}
+        modalType={modalType}
         defaultLanguage={
           modalType === "language" ? selectedLanguage : selectedBookLanguage
         }
