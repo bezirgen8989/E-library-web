@@ -85,7 +85,7 @@ export const useVoice = ({
 
     let questionTexts: string[] = [];
     let lastQuestionText = "";
-    let lastStart = -1;
+    // let lastStart = -1;
     let isLastQuestionProcessed = false; // Flag for processing the last question
 
     socketRef.current.onmessage = (event: MessageEvent) => {
@@ -93,11 +93,12 @@ export const useVoice = ({
       console.log("[WebSocket Response]", data);
 
       if (data?.type === "question" && data?.segments) {
-        const { text, start } = data.segments;
+        // const { text, start } = data.segments;
+        const { text } = data.segments;
 
-        if (data?.last === true && start > lastStart) {
+        if (data?.last === true) {
           dispatch(setStreamDone(true));
-          lastStart = start;
+          // lastStart = start;
 
           if (text !== lastQuestionText) {
             lastQuestionText = text;
