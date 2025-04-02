@@ -144,7 +144,7 @@
     "pleaseConfirmYourPassword": "Please confirm your password!",
     "incorrectEmailOrPassword": "Incorrect email or password",
     "loginError": "Login Error",
-    "theInputIsNotValidEmail!": "The input is not valid E-mail!",
+    "theInputIsNotValidEmail": "The input is not valid E-mail!",
     "passwordMustContainAtLeastOneUppercaseLetter": "Password must contain at least one uppercase letter!",
     "passwordsDoNotMatch": "Passwords do not match!"
   }
