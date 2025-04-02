@@ -77,6 +77,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
       avatarLanguage,
     };
   });
+  const [disconnected, setDisconnected] = useState(false);
 
   const { t } = useTranslation();
   const [recording, setRecording] = useState(false);
@@ -110,6 +111,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     setIsShowSilent,
     setChatHistory,
     setMessageClass,
+    disconnected,
   });
 
   console.log(deleteStreaming, pauseStreaming);
@@ -266,6 +268,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
 
     if (recording || paused) {
       recordRef.current?.stopRecording();
+      setDisconnected(!disconnected);
       setRecording(false);
       setPaused(false);
       stopStreaming();

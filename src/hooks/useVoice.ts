@@ -4,6 +4,7 @@ import { urlSocket } from "../envConstants";
 import { useDispatch } from "react-redux";
 import { setIsStreamShow, setStreamDone } from "../modules/Home/slices/home";
 import styles from "../modules/Home/components/AskQuestionComponent/AskQuestionComponent.module.scss";
+import { useLazySelector } from "./index";
 // import { useLazySelector } from "./index";
 
 interface IUseVoiceHook {
@@ -18,6 +19,7 @@ interface IUseVoiceHook {
   setIsShowSilent: any;
   setChatHistory?: any;
   setMessageClass: any;
+  disconnected: boolean;
 }
 
 export const useVoice = ({
@@ -31,6 +33,7 @@ export const useVoice = ({
   setIsShowSilent,
   setChatHistory,
   setMessageClass,
+  disconnected,
 }: IUseVoiceHook) => {
   const socketRef = useRef<WebSocket | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -60,6 +63,20 @@ export const useVoice = ({
   useEffect(() => {
     stateRef.current = state;
   }, [state]);
+
+  const { avatarLanguage } = useLazySelector(({ home }) => {
+    const { avatarLanguage } = home;
+    return {
+      avatarLanguage,
+    };
+  });
+
+  useEffect(() => {
+    if (socketRef.current) {
+      socketRef.current.close();
+      socketRef.current = null;
+    }
+  }, [avatarLanguage, disconnected]);
 
   const [messages, setMessages] = useState<string[]>([]);
   // const [chatHistory, setChatHistory] = useState<any>([]);
