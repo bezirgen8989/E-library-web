@@ -63,11 +63,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                   placeholder=""
                   autoComplete="off"
                   {...register("email", {
-                    required: "Please input your Email!",
+                    required: t("pleaseInputYourEmail"),
                     pattern: {
                       value:
                         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                      message: "The input is not valid E-mail!",
+                      message: t("errors.theInputIsNotValidEmail"),
                     },
                   })}
                 />
@@ -94,15 +94,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                   autoComplete="off"
                   inputMode="text"
                   {...register("password", {
-                    required: "Password must be at least 8 characters long!",
+                    required: t("passwordMustBeAtLeast8CharactersLong"),
                     minLength: {
                       value: 8,
-                      message: "Password must be at least 8 characters long!",
+                      message: t("passwordMustBeAtLeast8CharactersLong"),
                     },
                     pattern: {
                       value: /^(?=.*[A-Z]).+$/,
-                      message:
-                        "Password must contain at least one uppercase letter!",
+                      message: t(
+                        "errors.passwordMustContainAtLeastOneUppercaseLetter"
+                      ),
                     },
                   })}
                 />
