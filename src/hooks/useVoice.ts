@@ -4,8 +4,6 @@ import { urlSocket } from "../envConstants";
 import { useDispatch } from "react-redux";
 import { setIsStreamShow, setStreamDone } from "../modules/Home/slices/home";
 import styles from "../modules/Home/components/AskQuestionComponent/AskQuestionComponent.module.scss";
-import { useLazySelector } from "./index";
-// import { useLazySelector } from "./index";
 
 interface IUseVoiceHook {
   language?: string;
@@ -64,19 +62,22 @@ export const useVoice = ({
     stateRef.current = state;
   }, [state]);
 
-  const { avatarLanguage } = useLazySelector(({ home }) => {
-    const { avatarLanguage } = home;
-    return {
-      avatarLanguage,
-    };
-  });
+  // useEffect(() => {
+  //   if (socketRef.current) {
+  //     socketRef.current.close();
+  //     socketRef.current = null;
+  //   }
+  //
+  // }, [avatarLanguage]);
 
   useEffect(() => {
-    if (socketRef.current) {
+    if (socketRef.current && disconnected) {
+      console.log("Disconnect Socket");
       socketRef.current.close();
       socketRef.current = null;
     }
-  }, [avatarLanguage, disconnected]);
+  }, [disconnected]);
+  console.log("socketRef.current", socketRef.current);
 
   const [messages, setMessages] = useState<string[]>([]);
   // const [chatHistory, setChatHistory] = useState<any>([]);

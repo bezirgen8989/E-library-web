@@ -133,6 +133,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [initialSlide, setInitialSlide] = useState<number>(0);
   const [defaultAvatarId] = useState(value?.avatarSettings?.id || 1);
   const [currentImage, setCurrentImage] = useState<AvatarData | null>(null);
+  const [recording, setRecording] = useState(false);
 
   useEffect(() => {
     if (value?.language?.isoCode2char) {
@@ -398,7 +399,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const stopAvatarGeneration = async (params: any) => {
     try {
       const response = await fetch(
-        "https://avatar19116467.plavno.app:22013/stop",
+        "https://avatar19172204.plavno.app:41234/stop",
         {
           method: "POST",
           headers: {
@@ -470,6 +471,10 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                 showModal();
               }}
               className={styles.languageSelectWrapper}
+              style={{
+                opacity: !recording ? "1" : "0.5",
+                pointerEvents: recording ? "none" : "auto",
+              }}
             >
               <div
                 className={styles.languageSelect}
@@ -545,6 +550,8 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                 setChatHistory={setVoiceChatHistory}
                 setMessageClass={setMessageClass}
                 streamDone={streamDone}
+                recording={recording}
+                setRecording={setRecording}
               />
             </div>
             <div className={styles.chatContainer}>

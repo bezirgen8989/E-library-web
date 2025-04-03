@@ -22,7 +22,6 @@ import SpinMic from "../SpinMic";
 import CustomIcon, { ICON_TYPES } from "../CustomIcon";
 import Button from "../../common/Buttons/Button";
 import { useTranslation } from "react-i18next";
-import { useLazySelector } from "../../../hooks";
 // import {setIsStopQuestion} from "../../../modules/Home/slices/home";
 // import {useDispatch} from "react-redux";
 
@@ -46,6 +45,8 @@ interface IVoiceRecorder {
   setChatHistory: any;
   setMessageClass: any;
   streamDone: any;
+  recording: any;
+  setRecording: any;
 }
 
 const VoiceRecorder: React.FC<IVoiceRecorder> = ({
@@ -68,25 +69,26 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   setChatHistory,
   setMessageClass,
   streamDone,
+  recording,
+  setRecording,
 }) => {
   // const { open } = useNotification();
 
-  const { avatarLanguage } = useLazySelector(({ home }) => {
-    const { avatarLanguage } = home;
-    return {
-      avatarLanguage,
-    };
-  });
-  const [disconnected, setDisconnected] = useState(false);
+  // const { avatarLanguage } = useLazySelector(({ home }) => {
+  //   const { avatarLanguage } = home;
+  //   return {
+  //     avatarLanguage,
+  //   };
+  // });
 
   const { t } = useTranslation();
-  const [recording, setRecording] = useState(false);
+  // const [recording, setRecording] = useState(false);
   const [paused, setPaused] = useState(false);
   const [recordingUrl] = useState<string | null>(null);
   const wavesurferRef = useRef<WaveSurfer | null>(null);
   const recordRef = useRef<any>(null);
   const progressRef = useRef<HTMLParagraphElement>(null);
-
+  const [disconnected, setDisconnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
 
   const [isReadyPaused, setIsReadyPaused] = useState(false);
@@ -257,9 +259,22 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     }
   };
 
+  // useEffect(() => {
+  //   handleRecordClick();
+  // }, [avatarLanguage]);
+
   useEffect(() => {
-    handleRecordClick();
-  }, [avatarLanguage]);
+    if (recording || paused) {
+      recordRef.current?.stopRecording();
+      setDisconnected(true);
+      setRecording(false);
+      setPaused(false);
+      stopStreaming();
+      setIsFirst(true);
+      return;
+    }
+    setDisconnected(false);
+  }, [disconnected]);
 
   const handleRecordClick = async () => {
     if (!hasMicrophoneAccess) {
@@ -268,7 +283,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
 
     if (recording || paused) {
       recordRef.current?.stopRecording();
-      setDisconnected(!disconnected);
+      setDisconnected(true);
       setRecording(false);
       setPaused(false);
       stopStreaming();
@@ -277,7 +292,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
       // setIsStreamConnect && setIsStreamConnect(false); // Stop stream connection when recording stops
       return;
     }
-
+    setDisconnected(false);
     setRecording(true);
     setIsStreamConnect && setIsStreamConnect(true); // Start stream connection
     await recordRef.current?.startRecording();
