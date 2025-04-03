@@ -1,7 +1,7 @@
-import { NewBooksContainer } from 'modules/Home/containers'
+import { NewBooksContainer } from "modules/Home/containers";
 
 const NewBooks: React.FC = () => {
-  return <NewBooksContainer />
-}
+  return <NewBooksContainer />;
+};
 
-export default NewBooks
+export default NewBooks;

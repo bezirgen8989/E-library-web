@@ -55,7 +55,7 @@ export interface NotificationSettings {
 export type BooksParams = {
   page: string;
   limit: string;
-  filter: string | null;
+  filter?: string | null;
   order?: string | null;
   userFilter?: string | null;
 };
