@@ -10,7 +10,9 @@ import {
 
 export const getBooks = (params: BooksParams) =>
   usingGet(
-    `/api/v1/books?limit=${params.limit}&order${params.order}&page=${params.page}&filter${params.filter}`
+    `/api/v1/books?limit=${params.limit}&order${params.order}&page=${
+      params.page
+    }${params.filter ? "&filter" + params.filter : ""}`
   );
 export const addBookToShelf = (params: AddBookToShelfParams) =>
   usingPost(`/api/v1/bookshelf`, params);

@@ -52,11 +52,14 @@ const NewBooksContainer: React.FC = () => {
   );
 
   const getBooksFilter = `${
-    authState.userData.result?.kidsMode ? "[isAgeRestricted][eq]=0" : null
+    authState.userData.result?.kidsMode
+      ? "filter[isAgeRestricted][eq]=false"
+      : null
   }`;
 
   useEffect(() => {
     dispatch(clearBooks());
+    console.log("getBooksFilter", getBooksFilter);
     dispatch(
       getNewBooks({
         limit: limit.toString(),

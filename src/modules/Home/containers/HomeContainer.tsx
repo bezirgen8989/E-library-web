@@ -77,17 +77,16 @@ const HomeContainer: React.FC = () => {
     history.push(`${routes.book}/${id}`);
   }, []);
 
-  const isAgeRestricted = authState.userData.result?.kidsMode
-    ? `[isAgeRestricted][eq]=0`
-    : "";
+  const isAgeRestricted =
+    authState.userData.result?.kidsMode && `[isAgeRestricted][eq]=false`;
 
-  const suggestedFilter = `${isAgeRestricted}[categories.id][in]=${habitsCategories}`;
-  const getBooksFilter = `${
-    authState.userData.result?.kidsMode ? "[isAgeRestricted][eq]=0" : null
+  const suggestedFilter = `[categories.id][in]=${habitsCategories}${
+    isAgeRestricted ? isAgeRestricted : ""
   }`;
-
-  // const ratingOrder = "[rating]=desc";
-
+  const getBooksFilter = authState.userData.result?.kidsMode
+    ? "filter[isAgeRestricted][eq]=false"
+    : false;
+  console.log("suggestedFilter", suggestedFilter);
   useEffect(() => {
     if (!loadingKidsMode) {
       dispatch(clearBooks());
@@ -96,16 +95,15 @@ const HomeContainer: React.FC = () => {
           limit: "3",
           page: "1",
           order: "",
-          filter: getBooksFilter,
+          ...(!!getBooksFilter && { filter: getBooksFilter.toString() }),
         })
       );
-
       dispatch(
         getNewBooks({
           limit: "6",
           page: "1",
           order: "[dateAdded]=desc",
-          filter: getBooksFilter,
+          ...(!!getBooksFilter && { filter: getBooksFilter.toString() }),
         })
       );
     }
