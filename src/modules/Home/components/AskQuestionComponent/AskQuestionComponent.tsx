@@ -399,7 +399,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const stopAvatarGeneration = async (params: any) => {
     try {
       const response = await fetch(
-        "https://avatar19172204.plavno.app:41234/stop",
+        "https://avatar19305625.plavno.app:10116/stop",
         {
           method: "POST",
           headers: {
