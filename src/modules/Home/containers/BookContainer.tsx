@@ -134,6 +134,9 @@ const BookContainer: React.FC = () => {
     try {
       await dispatch(addReview(params));
       fetchReviews();
+      if (currentBook?.result?.id) {
+        getBook(currentBook.result.id); // перезапрашиваем книгу
+      }
     } catch (error) {
       console.error("Error adding review or fetching reviews:", error);
     }
@@ -144,11 +147,14 @@ const BookContainer: React.FC = () => {
       try {
         await dispatch(deleteYourReview(id.toString()));
         fetchReviews();
+        if (currentBook?.result?.id) {
+          getBook(currentBook.result.id); // перезапрашиваем книгу
+        }
       } catch (error) {
         console.error("Error deleting review or fetching reviews:", error);
       }
     },
-    [dispatch, fetchReviews]
+    [dispatch, fetchReviews, getBook, currentBook]
   );
 
   const habitsCategories = currentBook?.result?.categories

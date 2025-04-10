@@ -601,7 +601,8 @@ const Book: React.FC<BookProps> = ({
                   {reviewsRating ? Number(reviewsRating).toFixed(1) : ""}
                 </div>
                 <div>
-                  ({reviews?.length} {t("reviews").toLowerCase()})
+                  {/*({reviews?.length ?? 0} {t("reviews").toLowerCase()})*/}(
+                  {book?.reviewCount} {t("reviews").toLowerCase()})
                 </div>
               </div>
               {reviews.length > 0 ? (
