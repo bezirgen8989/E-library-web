@@ -253,6 +253,7 @@ export const registerUser = createAsyncThunk(
   "api/v1/auth/email/register",
   async (userParams: RegisterUserParams) => {
     const response = await authRegister(userParams);
+    console.log("RESPONCE123", response);
     const { success, status, error } = response;
     const errors = error?.errors;
 
@@ -265,8 +266,6 @@ export const registerUser = createAsyncThunk(
           placement: "top",
           icon: <img src={Alert} alt="icon" />,
         });
-      } else if (error?.status === 204) {
-        history.push(routes.enterCode);
       } else if (status === 422 && errors) {
         notification.error({
           message: "Registration Error",
@@ -286,6 +285,9 @@ export const registerUser = createAsyncThunk(
           icon: <img src={Alert} alt="icon" />,
         });
       }
+    }
+    if (success && status === 204) {
+      history.push(routes.enterCode);
     }
     return response;
   }

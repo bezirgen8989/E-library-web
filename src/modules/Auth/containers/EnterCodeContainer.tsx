@@ -1,12 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useCallback, useEffect } from "react";
 import { EnterCodeForm } from "../components";
-import {
-  codeResend,
-  emailConfirm,
-  getLocalization,
-  getMe,
-} from "../slices/auth";
+import { codeResend, emailConfirm, getLocalization } from "../slices/auth";
 import { useLazySelector } from "../../../hooks";
 
 const EnterCodeContainer: React.FC = () => {
@@ -32,9 +27,6 @@ const EnterCodeContainer: React.FC = () => {
     },
     [dispatch]
   );
-  useEffect(() => {
-    dispatch(getMe());
-  }, []);
 
   const onResendCode = useCallback(() => {
     dispatch(codeResend({ email: currentEmail }));
