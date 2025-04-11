@@ -17,6 +17,7 @@ interface AudioBookComponentProps {
   currentPage: any;
   setMaxLoadPage: any;
   isFetchingAudio: boolean;
+  aiTotalPages: number;
 }
 
 const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
@@ -27,15 +28,23 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
   currentPage,
   setMaxLoadPage,
   isFetchingAudio,
+  aiTotalPages,
 }) => {
   const { t } = useTranslation();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [progress, setProgress] = useState(0);
-  const [isLoadingAudio, setIsLoadingAudio] = useState(false); // ✅ состояние для отслеживания загрузки
+  const [isLoadingAudio, setIsLoadingAudio] = useState(false);
   const history = useHistory();
   const [autoPlayAfterLoad, setAutoPlayAfterLoad] = useState(false);
+  const [totalPagesOnInit, setTotalPagesOnInit] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (aiTotalPages) {
+      setTotalPagesOnInit(aiTotalPages);
+    }
+  }, [aiTotalPages, book?.result?.id]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -60,12 +69,14 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
   };
 
   const handleNextPage = () => {
-    setCurrentPage((prev: string) => {
-      const nextPage = (parseInt(prev) + 1).toString();
-      setMaxLoadPage((prevMax: any) => Math.max(prevMax, parseInt(nextPage)));
-      return nextPage;
-    });
-    setProgress(0);
+    if (parseInt(currentPage) < (totalPagesOnInit || 1)) {
+      setCurrentPage((prev: string) => {
+        const nextPage = (parseInt(prev) + 1).toString();
+        setMaxLoadPage((prevMax: any) => Math.max(prevMax, parseInt(nextPage)));
+        return nextPage;
+      });
+      setProgress(0);
+    }
   };
 
   const togglePlay = () => {
@@ -73,10 +84,10 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
       if (isPlaying) {
         audioRef.current.pause();
         setIsPlaying(false);
-        setAutoPlayAfterLoad(false); // Отключаем автозапуск
+        setAutoPlayAfterLoad(false);
       } else {
         if (isLoadingAudio) {
-          setAutoPlayAfterLoad(true); // ✅ Если загружается — ждем и запускаем
+          setAutoPlayAfterLoad(true);
         } else {
           audioRef.current.play();
           setIsPlaying(true);
@@ -135,8 +146,7 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
             </div>
             <div className={styles.pageProgress}>
               <div className={styles.pageInfo}>
-                {currentPage} of{" "}
-                {currentBookVersion?.result?.data?.[0]?.totalPages || 1}
+                {currentPage} of {totalPagesOnInit || 1}
               </div>
               <div className={styles.pageProgressBar}>
                 <div
@@ -185,6 +195,7 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
               <button
                 onClick={handleNextPage}
                 className={styles.control_button}
+                disabled={parseInt(currentPage) >= (totalPagesOnInit || 1)}
               >
                 <img src={PrevPage} alt="prev" className={styles.flipIcon} />
               </button>
@@ -207,6 +218,7 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
               onEnded={() => {
                 setIsPlaying(false);
                 setProgress(0);
+                setAutoPlayAfterLoad(true);
                 handleNextPage();
               }}
             />

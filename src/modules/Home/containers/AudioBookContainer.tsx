@@ -66,11 +66,6 @@ const AudioBookContainer: React.FC = () => {
       setMaxLoadPage(currentBookshelfBook.result.lastPage);
     }
   }, [currentBookshelfBook?.result?.lastPage]);
-  console.log("currentBookshelfBook?.result", currentBookshelfBook?.result);
-  console.log("currentAudioBook", currentAudioBook);
-  console.log("currentBookVersion", currentBookVersion);
-  console.log("currentBook", currentBook);
-  console.log("currentBookshelfBook", currentBookshelfBook?.result?.lastPage);
 
   useEffect(() => {
     const fetchBookshelfData = async () => {
@@ -162,6 +157,7 @@ const AudioBookContainer: React.FC = () => {
       currentPage={currentPage}
       setMaxLoadPage={setMaxLoadPage}
       isFetchingAudio={isFetchingAudio}
+      aiTotalPages={currentAudioBook?.result?.totalPages}
     />
   );
 };

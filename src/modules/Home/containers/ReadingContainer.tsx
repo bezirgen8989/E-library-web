@@ -51,9 +51,7 @@ const ReadingContainer: React.FC = () => {
   const [featurePageFromServer, setFeaturePageFromServer] = useState<
     number | null
   >(null);
-  console.log("maxLoadPage", maxLoadPage);
-  console.log("featurePageFromServer", featurePageFromServer);
-  console.log("page", page);
+
   const { currentReadBook, isLoading, currentBookshelfBook } = useLazySelector(
     ({ home }) => ({
       currentReadBook: home.currentReadBook,
