@@ -51,7 +51,8 @@ const SearchBooks: FC<HomeProps> = ({
       </div>
       <div className={styles.title}>
         {selectedCategory
-          ? t(`category${selectedCategory.name}`) || selectedCategory.name
+          ? // ? t(`category${selectedCategory.name}`) || selectedCategory.name
+            selectedCategory.name
           : t("categoryNotFound")}
       </div>
       <div className={styles.search_page}>
