@@ -79,7 +79,7 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    padding: 20px 0;
+    padding: 20px 0 50px;
     max-height: calc(100vh - 94px);
     scrollbar-color: #8E8E93 rgba(255, 255, 255, 0.1);
     scrollbar-width: thin;
@@ -109,7 +109,7 @@
   .messageUser {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 16px;
+    //margin-bottom: 16px;
     .userMessage {
       background-color: #996C42;
       color: #fff;
@@ -172,7 +172,7 @@
       //max-width: 95%;
       margin: 0;
       border: 1px solid rgba(181, 202, 221, 0.24);
-      margin-bottom: 24px;
+      //margin-bottom: 24px;
     }
     .messageTime {
       color: #8E8E93;

@@ -100,6 +100,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const { register, handleSubmit, reset, setValue } = useForm<FormValues>();
   const [messageClass, setMessageClass] = useState(styles.messageSystemChange);
   const [messageTime, setMessageTime] = useState<string>("");
+  console.log(messageTime);
   const [isCollapseVisible] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const videoRef = useRef<HTMLVideoElement | any>(null);
@@ -189,7 +190,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   }, [languages]);
 
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
-
+  console.log("selectedLanguage", selectedLanguage);
   useEffect(() => {
     if (chatContentRef.current) {
       chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
@@ -203,7 +204,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const onLanguageSelect = (language: LanguageType) => {
     setSelectedLanguage(language);
     dispatch(selectAvatarLanguage(language));
-    sessionStorage.setItem("selectedLanguage", JSON.stringify(language.id));
+    // sessionStorage.setItem("selectedLanguage", JSON.stringify(language.id));
   };
 
   const addTextWithDelay = async (res: string) => {
@@ -580,13 +581,13 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                           isLoading &&
                           !chat.message && <ChatSpinner />}
                         {chat.message}
-                        {chat.type === "user" && (
-                          <div className={styles.messageSystemBottom}>
-                            <span className={styles.messageTime}>
-                              {messageTime}
-                            </span>
-                          </div>
-                        )}
+                        {/*{chat.type === "user" && (*/}
+                        {/*  <div className={styles.messageSystemBottom}>*/}
+                        {/*    <span className={styles.messageTime}>*/}
+                        {/*      {messageTime}*/}
+                        {/*    </span>*/}
+                        {/*  </div>*/}
+                        {/*)}*/}
                       </div>
                     </div>
                   );
