@@ -40,6 +40,7 @@ const AudioBookContainer: React.FC = () => {
   const [currentPage, setCurrentPage] = useState("1");
   const [maxLoadPage, setMaxLoadPage] = useState<number>(1);
   const [isFetchingAudio, setIsFetchingAudio] = useState(false);
+  const [totalPagesOnInit, setTotalPagesOnInit] = useState<number>(1);
 
   useEffect(() => {
     const fetchAudioBook = async () => {
@@ -124,21 +125,22 @@ const AudioBookContainer: React.FC = () => {
   }, [id, dispatch, currentPage]);
 
   const saveProgress = () => {
+    if (totalPagesOnInit <= 0) {
+      return;
+    }
     if (value?.id && id) {
-      const totalPages = currentBookVersion?.result?.data?.[0]?.totalPages;
+      // const totalPages = currentBookVersion?.result?.data?.[0]?.totalPages;
       const payload: SetReadingBookPayload = {
         user: { id: +value.id },
         book: { id: +id },
         lastPage: maxLoadPage,
-        progress: totalPages > 0 ? (maxLoadPage / totalPages) * 100 : 0,
+        progress:
+          totalPagesOnInit > 0 ? (maxLoadPage / totalPagesOnInit) * 100 : 0,
         readingState: "reading",
       };
       dispatch(setReadingBook(payload));
     }
   };
-  //   if (prevTotalPages?.current <= 0) {
-  //     return;
-  //   }
 
   useEffect(() => {
     const handleLeave = () => {
@@ -161,6 +163,8 @@ const AudioBookContainer: React.FC = () => {
       setMaxLoadPage={setMaxLoadPage}
       isFetchingAudio={isFetchingAudio}
       aiTotalPages={currentAudioBook?.result?.totalPages}
+      totalPagesOnInit={totalPagesOnInit}
+      setTotalPagesOnInit={setTotalPagesOnInit}
     />
   );
 };

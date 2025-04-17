@@ -18,6 +18,8 @@ interface AudioBookComponentProps {
   setMaxLoadPage: any;
   isFetchingAudio: boolean;
   aiTotalPages: number;
+  totalPagesOnInit: any;
+  setTotalPagesOnInit: any;
 }
 
 const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
@@ -29,6 +31,8 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
   setMaxLoadPage,
   isFetchingAudio,
   aiTotalPages,
+  totalPagesOnInit,
+  setTotalPagesOnInit,
 }) => {
   const { t } = useTranslation();
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -38,7 +42,6 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
   const [isLoadingAudio, setIsLoadingAudio] = useState(false);
   const history = useHistory();
   const [autoPlayAfterLoad, setAutoPlayAfterLoad] = useState(false);
-  const [totalPagesOnInit, setTotalPagesOnInit] = useState<number | null>(null);
 
   useEffect(() => {
     if (aiTotalPages) {
@@ -62,6 +65,7 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
   }, []);
 
   const handlePrevPage = () => {
+    setIsPlaying(false);
     setCurrentPage((prev: string) =>
       parseInt(prev) > 1 ? (parseInt(prev) - 1).toString() : prev
     );
@@ -69,6 +73,7 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
   };
 
   const handleNextPage = () => {
+    setIsPlaying(false);
     if (parseInt(currentPage) < (totalPagesOnInit || 1)) {
       setCurrentPage((prev: string) => {
         const nextPage = (parseInt(prev) + 1).toString();
@@ -176,6 +181,7 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
               <button
                 onClick={handlePrevPage}
                 className={styles.control_button}
+                disabled={isFetchingAudio || parseInt(currentPage) <= 1}
               >
                 <img src={PrevPage} alt="prev" />
               </button>
@@ -185,7 +191,7 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
               <button
                 onClick={togglePlay}
                 className={styles.play_button}
-                disabled={isFetchingAudio} // ✅ Отключаем кнопку во время загрузки
+                disabled={isFetchingAudio}
               >
                 {isFetchingAudio ? <SpinnerButton /> : isPlaying ? "||" : "▶"}
               </button>
@@ -195,7 +201,10 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
               <button
                 onClick={handleNextPage}
                 className={styles.control_button}
-                disabled={parseInt(currentPage) >= (totalPagesOnInit || 1)}
+                disabled={
+                  isFetchingAudio ||
+                  parseInt(currentPage) >= (totalPagesOnInit || 1)
+                }
               >
                 <img src={PrevPage} alt="prev" className={styles.flipIcon} />
               </button>
