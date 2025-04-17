@@ -47,14 +47,16 @@ const BookContainer: React.FC = () => {
 
   const allTranslations =
     (bookVersions &&
-      bookVersions?.result?.data.map((book: any) => ({
-        id: book.language.id,
-        name: book.language.name,
-        isoCode: book.language.isoCode,
-        isoCode2char: book.language.isoCode2char,
-        flag: book.language.flag,
-        translationType: book.translationType,
-      }))) ||
+      bookVersions?.result?.data
+        .filter((book: any) => book.language.id !== 5)
+        .map((book: any) => ({
+          id: book.language.id,
+          name: book.language.name,
+          isoCode: book.language.isoCode,
+          isoCode2char: book.language.isoCode2char,
+          flag: book.language.flag,
+          translationType: book.translationType,
+        }))) ||
     [];
 
   const getBook = useCallback(
