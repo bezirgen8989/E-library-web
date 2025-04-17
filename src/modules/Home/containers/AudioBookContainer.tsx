@@ -136,6 +136,9 @@ const AudioBookContainer: React.FC = () => {
       dispatch(setReadingBook(payload));
     }
   };
+  //   if (prevTotalPages?.current <= 0) {
+  //     return;
+  //   }
 
   useEffect(() => {
     const handleLeave = () => {

@@ -32,6 +32,7 @@ const FinishedBooksContainer: React.FC = () => {
   const finishedBooksList = finishedBooks?.result?.data.map((item: any) => {
     return {
       ...item.book,
+      progress: item.progress,
       dateFinished: item.dateFinished,
       isBookshelfFinished: true,
     };

@@ -198,12 +198,18 @@ const ReadingContainer: React.FC = () => {
   };
 
   const saveProgress = () => {
+    if (prevTotalPages?.current <= 0) {
+      return;
+    }
     if (value?.id && id) {
       const payload: SetReadingBookPayload = {
         user: { id: +value.id },
         book: { id: +id },
         lastPage: maxLoadPage,
-        progress: totalPages > 0 ? (maxLoadPage / totalPages) * 100 : 0,
+        progress:
+          prevTotalPages?.current > 0
+            ? (maxLoadPage / prevTotalPages?.current) * 100
+            : 0,
         readingState: "reading",
       };
 

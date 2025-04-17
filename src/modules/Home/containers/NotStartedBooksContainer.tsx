@@ -35,6 +35,7 @@ const NotStartedBooksContainer: React.FC = () => {
   const notStartedBooksList = notStartedBooks?.result?.data.map((item: any) => {
     return {
       ...item.book,
+      progress: item.progress,
       isBookshelfNotStarted: true,
     };
   });

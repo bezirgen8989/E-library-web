@@ -47,6 +47,7 @@ const StartedBooksContainer: React.FC = () => {
   const startedBooksList = startedBooks?.result?.data.map((item: any) => {
     return {
       ...item.book,
+      progress: item.progress,
       isBookshelfStarted: true,
     };
   });

@@ -4,13 +4,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import NoImg from "../../../../../assets/images/NoImagePlaceholder.jpg";
-import { FC, ReactNode, useContext, useEffect, useState } from "react";
+import { FC, ReactNode } from "react";
 import { Progress, Skeleton } from "antd";
-import { getBookshelfById } from "../../../slices/home";
-import { useDispatch } from "react-redux";
-import { useLazySelector } from "../../../../../hooks";
-import { UserContext } from "../../../../../core/contexts";
-import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 interface Author {
@@ -20,6 +15,7 @@ interface Author {
 interface Book {
   id: number;
   title: string;
+  progress: number;
   bookCover: {
     link: string;
   };
@@ -33,7 +29,7 @@ interface Book {
 interface AllBooksSliderProps {
   title: any;
   seeAllLink?: string;
-  books?: Book[]; // null or undefined indicates loading state
+  books?: Book[];
   titleImage?: ReactNode | null;
   getBook: (id: number) => void;
   isLoading?: boolean;
@@ -78,43 +74,6 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
   continueReadingBook,
 }) => {
   const { t } = useTranslation();
-  const value = useContext(UserContext);
-  const dispatch = useDispatch();
-
-  const { currentBookshelfBook } = useLazySelector(({ home }) => ({
-    currentBookshelfBook: home.currentBookshelfBook,
-  }));
-
-  const [bookProgress, setBookProgress] = useState<Record<number, number>>({});
-  const processedBooks = useRef<Set<number>>(new Set());
-
-  useEffect(() => {
-    if (books && value?.id) {
-      books.forEach((book) => {
-        if (book.isBookshelfStarted) {
-          const bookshelfBook = currentBookshelfBook?.result?.book;
-
-          if (bookshelfBook && bookshelfBook.id === book.id) {
-            if (currentBookshelfBook?.result?.progress !== undefined) {
-              setBookProgress((prev) => ({
-                ...prev,
-                [book.id]: currentBookshelfBook.result.progress,
-              }));
-            }
-          } else if (!processedBooks.current.has(book.id)) {
-            processedBooks.current.add(book.id);
-            dispatch(
-              getBookshelfById({
-                // @ts-ignore
-                userId: +value.id,
-                bookId: book.id,
-              })
-            );
-          }
-        }
-      });
-    }
-  }, [books, dispatch, value, currentBookshelfBook]);
 
   const formatDate = (isoDate: string): string => {
     const date = new Date(isoDate);
@@ -191,7 +150,7 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
             style={{ display: "flex", alignItems: "center" }}
           >
             <Progress
-              percent={bookProgress[book.id]}
+              percent={Number(book?.progress)}
               style={{ padding: 0, flex: 1 }}
               status="active"
               showInfo={false}
@@ -204,7 +163,7 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
                 color: "#996C42",
               }}
             >
-              {Math.round(bookProgress[book.id])}%
+              {Math.round(Number(book?.progress))}%
             </span>
           </div>
         )}

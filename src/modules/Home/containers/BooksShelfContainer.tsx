@@ -54,18 +54,21 @@ const BookShelfContainer: React.FC = () => {
   const startedBooksList = startedBooks?.result?.data.map((item: any) => {
     return {
       ...item.book,
+      progress: item.progress,
       isBookshelfStarted: true,
     };
   });
   const notStartedBooksList = notStartedBooks?.result?.data.map((item: any) => {
     return {
       ...item.book,
+      progress: item.progress,
       isBookshelfNotStarted: true,
     };
   });
   const finishedBooksList = finishedBooks?.result?.data.map((item: any) => {
     return {
       ...item.book,
+      progress: item.progress,
       dateFinished: item.dateFinished,
       isBookshelfFinished: true,
     };
