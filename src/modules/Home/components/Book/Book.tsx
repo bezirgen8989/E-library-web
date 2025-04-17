@@ -377,7 +377,9 @@ const Book: React.FC<BookProps> = ({
                           backgroundImage: `url(${selectedLanguage.flag.link})`,
                         }}
                       ></div>
-                      <span>{selectedLanguage.name}</span>
+                      <span style={{ whiteSpace: "nowrap" }}>
+                        {selectedLanguage.name}
+                      </span>
                       {currentBookVersion?.result?.data[0]?.translationType !==
                         "official" && <div className={styles.aiMarker}>AI</div>}
                     </div>
@@ -443,7 +445,9 @@ const Book: React.FC<BookProps> = ({
                       backgroundImage: `url(${selectedLanguage.flag.link})`,
                     }}
                   ></div>
-                  <span>{selectedLanguage.name}</span>
+                  <span style={{ whiteSpace: "nowrap" }}>
+                    {selectedLanguage.name}
+                  </span>
                   {currentBookVersion?.result?.data[0]?.translationType !==
                     "official" && <div className={styles.aiMarker}>AI</div>}
                 </div>
