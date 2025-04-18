@@ -422,7 +422,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       console.error("Error stopping avatar generation:", error);
     }
   };
-  console.log("stream_DONE", streamDone);
+  console.log("selectedAvatar", selectedAvatar);
 
   return (
     <>
@@ -443,19 +443,24 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       {currentStep === 2 && (
         <ChooseAvatarStep2
           setCurrentStep={setCurrentStep}
-          selectedAvatar={selectedAvatar}
+          // selectedAvatar={selectedAvatar}
+          selectedAvatar={
+            "https://elore.sfo3.cdn.digitaloceanspaces.com/avatarsImages/avatars/male2.jpg"
+          }
         />
       )}
       {currentStep === 3 && (
         <ChooseAvatarStep3
           setCurrentStep={setCurrentStep}
-          selectedAvatar={selectedAvatar}
+          // selectedAvatar={selectedAvatar}
+          selectedAvatar="https://elore.sfo3.cdn.digitaloceanspaces.com/avatarsImages/avatars/male2.jpg"
         />
       )}
       {currentStep === 4 && (
         <ChooseAvatarStep4
           setCurrentStep={setCurrentStep}
-          selectedAvatar={selectedAvatar}
+          // selectedAvatar={selectedAvatar}
+          selectedAvatar="https://elore.sfo3.cdn.digitaloceanspaces.com/avatarsImages/avatars/male2.jpg"
         />
       )}
       {currentStep === 5 && (

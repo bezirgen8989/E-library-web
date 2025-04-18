@@ -5,8 +5,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { FC } from "react";
 import Button from "../../../../../../components/common/Buttons/Button";
 import Spinner from "../../../../../../components/common/Spinner";
-import { routes as profileRoutes } from "../../../../../UserManagement/routing";
-import { useHistory } from "react-router-dom";
+// import { routes as profileRoutes } from "../../../../../UserManagement/routing";
+// import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 interface AvatarData {
@@ -46,7 +46,7 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
   isChooseAvatarPage,
 }) => {
   const { t } = useTranslation();
-  const history = useHistory();
+  // const history = useHistory();
 
   const settings = {
     infinite: true,
@@ -92,11 +92,14 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
 
   const handleNextStep = () => {
     if (isChooseAvatarPage) {
-      setUserAvatar(currentImage.id);
-      history.push(profileRoutes.profile);
+      // setUserAvatar(currentImage.id);
+      setUserAvatar(3);
+      // history.push(profileRoutes.profile);
+      setCurrentStep(3);
     } else {
       setCurrentStep(2);
-      setUserAvatar(currentImage.id);
+      // setUserAvatar(currentImage.id);
+      setUserAvatar(3);
     }
   };
 

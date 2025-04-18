@@ -74,7 +74,8 @@ const AskQuestionContainer: React.FC = () => {
     dispatch(
       setAvatar({
         avatarSettings: {
-          id: avatarId,
+          // id: avatarId,
+          id: 3,
         },
       })
     );
