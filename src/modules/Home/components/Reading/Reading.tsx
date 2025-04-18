@@ -33,6 +33,7 @@ const Reading: React.FC<ReadingProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState<number>(10);
   const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
+  console.log("pageContent", pagesContent);
 
   useEffect(() => {
     if (featurePageFromServer !== null) {
@@ -51,7 +52,7 @@ const Reading: React.FC<ReadingProps> = ({
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!containerRef.current || isLoading) return; // Если загрузка идет, не запускаем следующий запрос
+      if (!containerRef.current || isLoading) return;
 
       const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
 
@@ -66,7 +67,7 @@ const Reading: React.FC<ReadingProps> = ({
       if (scrollTop < 50 && currentPage > 1) {
         const previousScrollHeight = scrollHeight;
 
-        onPrev(); // Загружаем предыдущую страницу
+        onPrev();
         setCurrentPage((prev) => Math.max(prev - 1, 1));
 
         setTimeout(() => {
@@ -102,7 +103,6 @@ const Reading: React.FC<ReadingProps> = ({
         {t("backBtn")}
       </div>
 
-      {/* Контейнер со скроллом */}
       <div
         ref={containerRef}
         className={styles.home_page}
@@ -122,7 +122,11 @@ const Reading: React.FC<ReadingProps> = ({
           renderItem={(page: any, index) => (
             <List.Item key={index} className={styles.listItem}>
               <ReaderByType
-                content={page.fileType === "html" ? page.content : page.pdfPage}
+                content={
+                  page.fileType === "html"
+                    ? page.content
+                    : page.pdfPage ?? page.content
+                }
                 fileType={page.fileType}
               />
             </List.Item>
@@ -135,7 +139,6 @@ const Reading: React.FC<ReadingProps> = ({
         )}
       </div>
 
-      {/* Прогресс */}
       <div className={styles.progressContent} style={{ marginTop: "20px" }}>
         <div style={{ textAlign: "center" }}>
           {maxLoadPage} of {totalPages}

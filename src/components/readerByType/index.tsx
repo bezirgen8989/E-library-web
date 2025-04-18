@@ -1,5 +1,5 @@
 type Props = {
-  fileType: "pdf" | "html" | "null";
+  fileType: "pdf" | "html" | "txt" | "null";
   content: string;
 };
 
@@ -39,6 +39,17 @@ export const ReaderByType = ({ fileType, content }: Props) => {
   const reader = {
     html: <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }} />,
     pdf: renderPdf(),
+    txt: (
+      <div
+        style={{
+          whiteSpace: "pre-wrap",
+          padding: "16px",
+          fontFamily: "monospace",
+        }}
+      >
+        {content}
+      </div>
+    ),
     null: <div>{content}</div>,
   };
 
