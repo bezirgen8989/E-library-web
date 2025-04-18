@@ -95,18 +95,6 @@ const BooksComponent: React.FC<HomeProps> = ({
                   <div className={styles.imgWrap}>
                     <img src={book.bookCover?.link} alt={book.title} />
                   </div>
-                  <div className={styles.newBookTitle}>{book.title}</div>
-                  <div
-                    style={{
-                      color:
-                        book?.isBookshelfNotStarted || book?.isBookshelfStarted
-                          ? "grey"
-                          : "#996C42",
-                    }}
-                    className={styles.newBookAuthor}
-                  >
-                    {book.author.map((author) => author.name).join(", ")}
-                  </div>
 
                   {book?.isBookshelfStarted && (
                     <div
@@ -131,6 +119,18 @@ const BooksComponent: React.FC<HomeProps> = ({
                       </span>
                     </div>
                   )}
+                  <div className={styles.newBookTitle}>{book.title}</div>
+                  <div
+                    style={{
+                      color:
+                        book?.isBookshelfNotStarted || book?.isBookshelfStarted
+                          ? "grey"
+                          : "#996C42",
+                    }}
+                    className={styles.newBookAuthor}
+                  >
+                    {book.author.map((author) => author.name).join(", ")}
+                  </div>
                 </div>
                 {book?.isBookshelfStarted && (
                   <div

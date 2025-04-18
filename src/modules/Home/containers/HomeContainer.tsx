@@ -8,7 +8,6 @@ import { UserContext } from "../../../core/contexts";
 import { useHistory } from "react-router-dom";
 import { routes } from "../routing";
 import { clearBooks } from "../slices/home";
-import { getLanguages, getLocalization } from "../../Auth/slices/auth";
 
 const HomeContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -52,22 +51,6 @@ const HomeContainer: React.FC = () => {
       setLoadingKidsMode(false);
     }
   }, [authState.userData?.result?.kidsMode]);
-
-  const { result: languages } = useLazySelector(
-    ({ auth }) => auth.languages || {}
-  );
-  console.log("languages", languages?.data);
-
-  const appLanguage = sessionStorage.getItem("appLanguage");
-  const parsedAppLanguage = appLanguage
-    ? JSON.parse(appLanguage)
-    : value?.language?.isoCode2char;
-
-  useEffect(() => {
-    if (value?.language?.isoCode2char) {
-      dispatch(getLocalization(parsedAppLanguage.isoCode2char));
-    }
-  }, [dispatch, value?.language?.isoCode2char]);
 
   const handleLogout = useCallback(() => {
     dispatch(logoutUser());
@@ -121,10 +104,6 @@ const HomeContainer: React.FC = () => {
       );
     }
   }, [dispatch, suggestedFilter]);
-
-  useEffect(() => {
-    dispatch(getLanguages());
-  }, [dispatch]);
 
   return (
     <>

@@ -167,6 +167,23 @@
   }
 }
 
+.overallModalRating {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+
+  :global(.anticon.anticon-star svg) {
+    width: 24px;
+    height: 24px;
+  }
+  :global(.ant-rate-star), :global(.ant-rate-star-zero .ant-rate-star-second) {
+    color: #B3B3B3;
+  }
+  :global(.ant-rate-star.ant-rate-star-full) {
+    color: #F17933;
+  }
+}
+
 .reviewsSection {
   margin-top: 20px;
 }

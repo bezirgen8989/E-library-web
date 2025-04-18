@@ -669,7 +669,7 @@ const Book: React.FC<BookProps> = ({
           book={book}
           isModalOpen={isReviewModalOpen}
           setIsModalOpen={setIsReviewModalOpen}
-          customClass={styles.overallRating}
+          customClass={styles.overallModalRating}
         />
       </div>
     </div>

@@ -102,7 +102,10 @@ const ReviewModal: FC<ReviewModalProps> = ({
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "16px" }}
       >
-        <span style={{ marginRight: "8px" }}>{t("rating").toLowerCase()}:</span>
+        {/*<span style={{ marginRight: "8px", fontWeight: 600 }}>{t("rating").toLowerCase()}:</span>*/}
+        <span style={{ marginRight: "8px", fontWeight: 600 }}>
+          {t("rating").charAt(0).toUpperCase() + t("rating").slice(1)}:
+        </span>
         <Rate
           defaultValue={5}
           value={rating}

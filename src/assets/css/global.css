@@ -278,6 +278,7 @@ p {
   background: rgba(226, 217, 211, 0.5) !important;
   padding: 0 5px !important;
   border-radius: 18px !important;
+  margin-bottom: 10px;
 }
 .shelf-progress .ant-progress-outer{
   padding: 0 !important;

@@ -116,6 +116,29 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
               />
             )}
           </div>
+          {book?.isBookshelfStarted && (
+            <div
+              className="shelf-progress"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <Progress
+                percent={Number(book?.progress)}
+                style={{ padding: 0, flex: 1 }}
+                status="active"
+                showInfo={false}
+                strokeColor="#1890ff"
+              />
+              <span
+                style={{
+                  marginLeft: "8px",
+                  whiteSpace: "nowrap",
+                  color: "#996C42",
+                }}
+              >
+                {Math.round(Number(book?.progress))}%
+              </span>
+            </div>
+          )}
           {book.dateFinished && (
             <div className={styles.finishedDate}>
               Finished on {formatDate(book.dateFinished)}
@@ -141,30 +164,6 @@ const AllBooksSlider: FC<AllBooksSliderProps> = ({
             className={styles.startBtn}
           >
             {t("startReading")}
-          </div>
-        )}
-
-        {book?.isBookshelfStarted && (
-          <div
-            className="shelf-progress"
-            style={{ display: "flex", alignItems: "center" }}
-          >
-            <Progress
-              percent={Number(book?.progress)}
-              style={{ padding: 0, flex: 1 }}
-              status="active"
-              showInfo={false}
-              strokeColor="#1890ff"
-            />
-            <span
-              style={{
-                marginLeft: "8px",
-                whiteSpace: "nowrap",
-                color: "#996C42",
-              }}
-            >
-              {Math.round(Number(book?.progress))}%
-            </span>
           </div>
         )}
 
