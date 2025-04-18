@@ -3,7 +3,7 @@ import commonStyles from "../../../../assets/css/commonStyles/CommonStyles.modul
 import logo from "../../../../assets/images/icons/logo.svg";
 import Button from "../../../../components/common/Buttons/Button";
 import Social_1 from "../../../../assets/images/icons/facebook.svg";
-import Social_2 from "../../../../assets/images/icons/twitter.svg";
+// import Social_2 from "../../../../assets/images/icons/twitter.svg";
 import Onboarding from "../../../../assets/images/Onboarding-img.png";
 import GoogleIcon from "../../../../assets/images/icons/google.png";
 import { Link } from "react-router-dom";
@@ -65,13 +65,13 @@ const OnboardingForm: React.FC<LoginFormProps> = () => {
             >
               <img src={Social_1} alt="Facebook logo" />
             </Link>
-            <Link
-              to="#"
-              className={styles.soc_tw}
-              onClick={() => loginViaSocial("twitter")}
-            >
-              <img src={Social_2} alt="Twitter logo" />
-            </Link>
+            {/*<Link*/}
+            {/*  to="#"*/}
+            {/*  className={styles.soc_tw}*/}
+            {/*  onClick={() => loginViaSocial("twitter")}*/}
+            {/*>*/}
+            {/*  <img src={Social_2} alt="Twitter logo" />*/}
+            {/*</Link>*/}
             <Link
               to="#"
               className={styles.soc_ap}

@@ -80,7 +80,7 @@ const HomeContainer: React.FC = () => {
   const isAgeRestricted =
     authState.userData.result?.kidsMode && `[isAgeRestricted][eq]=false`;
 
-  const suggestedFilter = `[categories.id][in]=${habitsCategories}${
+  const suggestedFilter = `[categories.id][in]=${habitsCategories}&filter${
     isAgeRestricted ? isAgeRestricted : ""
   }`;
   const getBooksFilter = authState.userData.result?.kidsMode

@@ -51,10 +51,10 @@ const SuggestedBooksContainer: React.FC = () => {
   }, []);
 
   const isAgeRestricted = authState.userData.result?.kidsMode
-    ? `[isAgeRestricted][eq]=0`
+    ? `[isAgeRestricted][eq]=false`
     : "";
 
-  const suggestedFilter = `${isAgeRestricted}[categories.id][in]=${habitsCategories}`;
+  const suggestedFilter = `${isAgeRestricted}&filter[categories.id][in]=${habitsCategories}`;
 
   useEffect(() => {
     dispatch(clearBooks());
