@@ -68,7 +68,7 @@ const SearchContainer: React.FC = () => {
   );
 
   const isAgeRestricted = authState.userData.result?.kidsMode
-    ? `[isAgeRestricted][eq]=0`
+    ? `[isAgeRestricted][eq]=false`
     : "";
 
   const getBooksByName = (name: string) => {
@@ -77,7 +77,7 @@ const SearchContainer: React.FC = () => {
         limit: "12",
         page: "1",
         order: "",
-        filter: `${isAgeRestricted}[title|description][contains]=${name}`,
+        filter: `${isAgeRestricted}&filter[title|description][contains]=${name}`,
       })
     );
   };

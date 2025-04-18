@@ -2,7 +2,7 @@ import styles from "./OnboardingForm.module.scss";
 import commonStyles from "../../../../assets/css/commonStyles/CommonStyles.module.scss";
 import logo from "../../../../assets/images/icons/logo.svg";
 import Button from "../../../../components/common/Buttons/Button";
-import Social_1 from "../../../../assets/images/icons/facebook.svg";
+// import Social_1 from "../../../../assets/images/icons/facebook.svg";
 // import Social_2 from "../../../../assets/images/icons/twitter.svg";
 import Onboarding from "../../../../assets/images/Onboarding-img.png";
 import GoogleIcon from "../../../../assets/images/icons/google.png";
@@ -58,13 +58,13 @@ const OnboardingForm: React.FC<LoginFormProps> = () => {
               justifyContent: "center",
             }}
           >
-            <Link
-              to="#"
-              className={styles.soc_fb}
-              onClick={() => loginViaSocial("facebook")}
-            >
-              <img src={Social_1} alt="Facebook logo" />
-            </Link>
+            {/*<Link*/}
+            {/*  to="#"*/}
+            {/*  className={styles.soc_fb}*/}
+            {/*  onClick={() => loginViaSocial("facebook")}*/}
+            {/*>*/}
+            {/*  <img src={Social_1} alt="Facebook logo" />*/}
+            {/*</Link>*/}
             {/*<Link*/}
             {/*  to="#"*/}
             {/*  className={styles.soc_tw}*/}
