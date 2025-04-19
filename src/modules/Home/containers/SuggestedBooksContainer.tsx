@@ -57,16 +57,18 @@ const SuggestedBooksContainer: React.FC = () => {
   const suggestedFilter = `${isAgeRestricted}&filter[categories.id][in]=${habitsCategories}`;
 
   useEffect(() => {
-    dispatch(clearBooks());
-    dispatch(
-      getSuggestedBooks({
-        limit: limit.toString(),
-        page: "1",
-        order: "",
-        filter: suggestedFilter,
-      })
-    );
-  }, [dispatch, suggestedFilter]);
+    if (habitsCategories) {
+      dispatch(clearBooks());
+      dispatch(
+        getSuggestedBooks({
+          limit: limit.toString(),
+          page: "1",
+          order: "",
+          filter: suggestedFilter,
+        })
+      );
+    }
+  }, [dispatch, suggestedFilter, habitsCategories]);
 
   const loadMoreBooks = async () => {
     setLoadingMore(true);

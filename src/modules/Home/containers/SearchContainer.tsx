@@ -45,9 +45,6 @@ const SearchContainer: React.FC = () => {
     }
   );
 
-  console.log("isLoading", isLoading);
-  console.log("booksByQueryName", booksByQueryName);
-
   useEffect(() => {
     dispatch(getCategories());
   }, [dispatch]);

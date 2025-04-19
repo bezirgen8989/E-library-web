@@ -56,15 +56,17 @@ const SimilarBooksContainer: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(clearBooks());
-    dispatch(
-      getSimilarBooks({
-        limit: limit.toString(),
-        page: "1",
-        order: ratingOrder,
-        filter: suggestedFilter,
-      })
-    );
+    if (habitsCategories) {
+      dispatch(clearBooks());
+      dispatch(
+        getSimilarBooks({
+          limit: limit.toString(),
+          page: "1",
+          order: ratingOrder,
+          filter: suggestedFilter,
+        })
+      );
+    }
   }, [dispatch, suggestedFilter]);
 
   const loadMoreBooks = async () => {

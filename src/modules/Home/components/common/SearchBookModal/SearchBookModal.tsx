@@ -61,12 +61,22 @@ const SearchBookModal: FC<NotificationsModalProps> = ({
     setSearchTerm(value);
 
     if (value.trim() === "") {
-      setDropdownVisible(false); // Скрываем dropdown
-      setHasSearched(false); // Сбрасываем состояние поиска
-      getBooksByName({}); // Сбрасываем booksByQueryName
+      setDropdownVisible(false);
+      setHasSearched(false);
+      getBooksByName({});
     } else {
       getSearchBooks(value);
-      setDropdownVisible(true); // Показываем dropdown при вводе текста
+      setDropdownVisible(true);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      if (searchTerm.trim() !== "") {
+        setHasSearched(true);
+        setDropdownVisible(false);
+        getBooksByName(searchTerm);
+      }
     }
   };
 
@@ -97,6 +107,7 @@ const SearchBookModal: FC<NotificationsModalProps> = ({
               id="search-input"
               value={searchTerm}
               onChange={handleSearchChange}
+              onKeyDown={handleKeyDown}
               className={styles.searchBookInput}
               autoComplete="off"
             />

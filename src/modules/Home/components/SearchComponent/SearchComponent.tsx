@@ -67,6 +67,12 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && searchTerm.trim() !== "") {
+      handleBookSelect(searchTerm);
+    }
+  };
+
   const handleBookSelect = (title: string) => {
     setSearchTerm(title);
     setHasSearched(true);
@@ -88,6 +94,7 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
             id="search-input"
             value={searchTerm}
             onChange={handleSearchChange}
+            onKeyDown={handleKeyDown}
             className={styles.searchBookInput}
             autoComplete="off"
           />
