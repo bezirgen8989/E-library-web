@@ -17,7 +17,6 @@ const PrivateRouting: React.FC = () => (
       <Switch>
         <PrivateRoute path={usersRoutes.root} component={UsersRouting} />
         <PrivateRoute path={homeRoutes.root} component={HomeRouting} />
-
         <Redirect path="*" to={homeRoutes.root} />
       </Switch>
       <FooterMobile />

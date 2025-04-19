@@ -3,6 +3,7 @@ import styles from "./Review.module.scss";
 import { Popconfirm, Rate } from "antd";
 import DeleteIcon from "../../../../../assets/images/icons/delete_icon.svg";
 import { UserContext } from "../../../../../core/contexts";
+import { useTranslation } from "react-i18next";
 
 type UserType = {
   userName: string;
@@ -29,6 +30,7 @@ const Review: React.FC<ReviewType> = ({
   const [okButtonOpacity, setOkButtonOpacity] = useState(1);
   const [cancelButtonOpacity, setCancelButtonOpacity] = useState(1);
   const value = useContext(UserContext);
+  const { t } = useTranslation();
 
   return (
     <div className={styles.review}>
@@ -45,13 +47,11 @@ const Review: React.FC<ReviewType> = ({
           <div className={styles.deleteBtn}>
             <Popconfirm
               title={
-                <span style={{ paddingLeft: "0" }}>
-                  Are you sure you want to delete this review?
-                </span>
+                <span style={{ paddingLeft: "0" }}>{t("deleteReview")}</span>
               }
               onConfirm={() => deleteReview(id)}
-              okText="Delete"
-              cancelText="Cancel"
+              okText={t("deleteBtn")}
+              cancelText={t("cancelBtn")}
               icon={null}
               okButtonProps={{
                 style: {

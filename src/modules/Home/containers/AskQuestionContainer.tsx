@@ -36,6 +36,7 @@ const AskQuestionContainer: React.FC = () => {
   const [chatHistory, setChatHistory] = useState<Chat[]>([]);
 
   useEffect(() => {
+    if (!id) return; // Если id нет — выходим
     dispatch(getBookById(id));
   }, [dispatch, id]);
 
@@ -69,8 +70,6 @@ const AskQuestionContainer: React.FC = () => {
       isStopQuestion,
     };
   });
-
-  console.log("avatarLanguage", avatarLanguage.id);
 
   const { languages } = useLazySelector(({ auth }) => {
     const { languages } = auth;
@@ -121,7 +120,6 @@ const AskQuestionContainer: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(333, isStopQuestion);
     if (!question || isStopQuestion) return;
 
     const token = TokenManager.getAccessToken();

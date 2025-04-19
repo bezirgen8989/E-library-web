@@ -51,7 +51,7 @@ const LanguageModal: FC<LanguageModalProps> = ({
   const initialLanguage = currentSelectedLanguage
     ? currentSelectedLanguage
     : defaultLanguage;
-  console.log("modalType111111", modalType);
+  console.log("languages", languages);
 
   const [selectedLanguage, setSelectedLanguage] = useState(initialLanguage);
   const [searchTerm, setSearchTerm] = useState("");

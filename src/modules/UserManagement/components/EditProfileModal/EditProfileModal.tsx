@@ -1,5 +1,5 @@
-import { FC, useEffect, useRef } from "react";
-import { Modal } from "antd";
+import { FC, useEffect, useRef, useState } from "react";
+import { Modal, Popconfirm } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import Button from "../../../../components/common/Buttons/Button";
 import styles from "./EditProfile.module.scss";
@@ -60,6 +60,8 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
       dateBirth: "",
     },
   });
+  const [okButtonOpacity, setOkButtonOpacity] = useState(1);
+  const [cancelButtonOpacity, setCancelButtonOpacity] = useState(1);
 
   const profilePicture = watch("photo");
   const uploadRef = useRef<any>(null);
@@ -99,6 +101,7 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
       gender: data.gender,
     };
     onSubmit(formattedData);
+    hideModal();
   };
 
   const uploadPhoto = (file: File) => {
@@ -164,7 +167,9 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
                     className={commonStyles.uploadedImage}
                   />
                 ) : (
-                  <img src={NoAvatar} alt="avatar" />
+                  <div className={styles.noAvatarWrap}>
+                    <img src={NoAvatar} alt="avatar" />
+                  </div>
                 )}
               </>
             )}
@@ -260,15 +265,55 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
           {t("saveBtn")}
         </Button>
       </form>
-      <Button
-        style={{ width: 249, margin: "30px auto 0 auto" }}
-        variant="Error"
-        type="button"
-        icon={<img src={Delete} alt="delete-icon" />}
-        onClick={deleteAccount}
+      <Popconfirm
+        title={
+          <span style={{ paddingLeft: "0" }}>{t("deleteYourAccount")}</span>
+        }
+        onConfirm={deleteAccount}
+        okText={t("deleteBtn")}
+        cancelText={t("cancelBtn")}
+        icon={null}
+        okButtonProps={{
+          style: {
+            width: "100%",
+            background: "transparent",
+            borderRadius: "6px",
+            border: "1px solid #929292",
+            color: "#CF1B1B",
+            height: "35px",
+            marginLeft: "0",
+            opacity: okButtonOpacity,
+          },
+          onMouseEnter: () => setOkButtonOpacity(0.7),
+          onMouseLeave: () => setOkButtonOpacity(1),
+        }}
+        cancelButtonProps={{
+          style: {
+            width: "100%",
+            background: "transparent",
+            borderRadius: "6px",
+            border: "1px solid #929292",
+            color: "#198216",
+            marginBottom: "10px",
+            height: "35px",
+            marginLeft: "0",
+            opacity: cancelButtonOpacity,
+          },
+          onMouseEnter: () => setCancelButtonOpacity(0.7),
+          onMouseLeave: () => setCancelButtonOpacity(1),
+        }}
       >
-        {t("deleteAccount")}
-      </Button>
+        <div style={{ marginTop: 40 }}>
+          <Button
+            style={{ width: 249, margin: "30px auto 0 auto" }}
+            variant="Error"
+            type="button"
+            icon={<img src={Delete} alt="delete-icon" />}
+          >
+            {t("deleteAccount")}
+          </Button>
+        </div>
+      </Popconfirm>
     </Modal>
   );
 };

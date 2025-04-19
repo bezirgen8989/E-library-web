@@ -217,42 +217,47 @@ const SideDrawer = () => {
             ref={notificationListRef}
           >
             {notifications?.result?.data?.length > 0 ? (
-              notifications.result.data.map((notification: Notification) => (
-                <div
-                  key={notification.id}
-                  data-id={notification.id}
-                  className={styles.notificationWrap}
-                >
-                  <div className={styles.notificationImage}>
-                    {!notification.isRead && (
-                      <div className={styles.readMarker} />
-                    )}
-                    <img src={notification.imageUrl} alt={notification.title} />
-                  </div>
-                  <div className={styles.notificationContent}>
-                    <div className={styles.infoTitle}>
-                      {notification.content}
+              [...notifications.result.data]
+                .reverse()
+                .map((notification: Notification) => (
+                  <div
+                    key={notification.id}
+                    data-id={notification.id}
+                    className={styles.notificationWrap}
+                  >
+                    <div className={styles.notificationImage}>
+                      {!notification.isRead && (
+                        <div className={styles.readMarker} />
+                      )}
+                      <img
+                        src={notification.imageUrl}
+                        alt={notification.title}
+                      />
                     </div>
-                    <div className={styles.notificationsBottom}>
-                      <div
-                        onClick={() =>
-                          onNotificationClick(
-                            notification.notificationSubjectId
-                          )
-                        }
-                        className={styles.notificationLink}
-                      >
-                        {notification.content.includes("Continue Reading")
-                          ? t("continueReading")
-                          : t("startReading")}
+                    <div className={styles.notificationContent}>
+                      <div className={styles.infoTitle}>
+                        {notification.content}
                       </div>
-                      <NotificationTime sentAt={notification.sentAt} />
+                      <div className={styles.notificationsBottom}>
+                        <div
+                          onClick={() =>
+                            onNotificationClick(
+                              notification.notificationSubjectId
+                            )
+                          }
+                          className={styles.notificationLink}
+                        >
+                          {notification.content.includes("Continue Reading")
+                            ? t("continueReading")
+                            : t("startReading")}
+                        </div>
+                        <NotificationTime sentAt={notification.sentAt} />
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
+                ))
             ) : (
-              <div> {t("noNotificationsAvailable")}</div>
+              <div>{t("noNotificationsAvailable")}</div>
             )}
           </div>
         )}

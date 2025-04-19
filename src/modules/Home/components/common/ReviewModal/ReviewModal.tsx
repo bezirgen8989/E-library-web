@@ -86,7 +86,7 @@ const ReviewModal: FC<ReviewModalProps> = ({
         }}
         style={{
           width: "100%",
-          height: "100px",
+          height: "70px",
           padding: "8px",
           borderRadius: "4px",
           border: "1px solid #ddd",

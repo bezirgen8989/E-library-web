@@ -147,9 +147,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       const initialAvatarIndex = avatars?.result?.data.findIndex(
         (avatar: AvatarData) => avatar.id === value?.avatarSettings?.id
       );
-      console.log("initialAvatarIndex", initialAvatarIndex);
       const foundIndex = initialAvatarIndex !== -1 ? initialAvatarIndex : 0;
-      console.log("foundIndex", foundIndex);
       setInitialSlide(foundIndex);
 
       const initialAvatar = avatars?.result?.data[foundIndex];
@@ -190,7 +188,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   }, [languages]);
 
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
-  console.log("selectedLanguage", selectedLanguage);
+
   useEffect(() => {
     if (chatContentRef.current) {
       chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;

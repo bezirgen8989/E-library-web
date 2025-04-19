@@ -93,7 +93,7 @@ const ChooseAvatarStep4: FC<ChooseAvatarStep2Props> = ({
               style={{ width: "341px", margin: "30px auto 20px" }}
               variant="White"
             >
-              {t("searchInAllBooksBtn")}
+              {t("useAllBooks")}
             </Button>
           </>
         ) : (

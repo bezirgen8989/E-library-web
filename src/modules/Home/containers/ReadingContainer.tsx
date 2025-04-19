@@ -52,13 +52,17 @@ const ReadingContainer: React.FC = () => {
     number | null
   >(null);
 
-  const { currentReadBook, isLoading, currentBookshelfBook } = useLazySelector(
-    ({ home }) => ({
+  const { currentReadBook, isLoading, currentBookshelfBook, currentBook } =
+    useLazySelector(({ home }) => ({
       currentReadBook: home.currentReadBook,
       isLoading: home.currentReadBook.isLoading,
+      currentBook: home.currentBook,
       currentBookshelfBook: home.currentBookshelfBook,
-    })
-  );
+    }));
+  console.log("currentBook", currentBook);
+  // useEffect(() => {
+  //   dispatch(getBookById(id.toString()));
+  // }, [dispatch]);
 
   useEffect(() => {
     setMaxLoadPage(featurePageFromServer);
@@ -69,19 +73,21 @@ const ReadingContainer: React.FC = () => {
       dispatch(getLocalization(value?.language?.isoCode2char));
     }
   }, [dispatch, value?.language?.isoCode2char]);
-
+  console.log("currentBookshelfBook", currentBookshelfBook);
   useEffect(() => {
     const fetchBookshelfData = async () => {
       if (value?.id && id) {
         try {
-          await dispatch(
-            addToShelf({
-              user: { id: +value.id },
-              book: { id: +id },
-              isFavourited: true,
-              readingState: "added",
-            })
-          );
+          if (currentBook?.result?.isReading === false) {
+            await dispatch(
+              addToShelf({
+                user: { id: +value.id },
+                book: { id: +id },
+                isFavourited: true,
+                readingState: "added",
+              })
+            );
+          }
           await dispatch(
             getBookshelfById({
               userId: +value.id,

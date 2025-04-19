@@ -28,7 +28,9 @@ const resources: TTranslations = {
 };
 
 const fallbackLng = "en";
-const defaultLng = localStorage.getItem("i18nextLng") ?? fallbackLng;
+const savedLanguage = localStorage.getItem("i18nextLng");
+const defaultLng =
+  savedLanguage && savedLanguage !== "undefined" ? savedLanguage : fallbackLng;
 
 i18n
   .use(HttpBackend)
