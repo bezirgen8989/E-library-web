@@ -40,9 +40,9 @@ const AskQuestionContainer: React.FC = () => {
     dispatch(getBookById(id));
   }, [dispatch, id]);
 
-  useEffect(() => {
-    dispatch(getMe());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getMe());
+  // }, [dispatch]);
 
   useEffect(() => {
     dispatch(getLanguages());
