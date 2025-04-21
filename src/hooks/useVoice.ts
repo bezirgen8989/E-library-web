@@ -221,7 +221,7 @@ export const useVoice = ({
         const rms = Math.sqrt(
           inputData.reduce((sum, val) => sum + val * val, 0) / inputData.length
         );
-        if (rms < 0.015) return; // Порог чувствительности, подбери нужное значение
+        if (rms < 0.01) return; // Порог чувствительности, подбери нужное значение
 
         const audioData16kHz = resampleTo16kHZ(inputData, audioCtx.sampleRate);
         const packet = {
