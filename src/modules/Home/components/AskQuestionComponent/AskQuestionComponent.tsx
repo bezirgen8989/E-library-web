@@ -37,6 +37,7 @@ import { useTranslation } from "react-i18next";
 import { TokenManager } from "../../../../utils";
 import { useHistory, useLocation } from "react-router-dom";
 import { useQuery } from "../../../../hooks/useQuery";
+import { useAuthState } from "../../../Auth/slices/auth";
 // import {useSocket} from "../../../../hooks/useSocket";
 
 type Chat = {
@@ -112,7 +113,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const videoRef = useRef<HTMLVideoElement | any>(null);
   // const [currentStep, setCurrentStep] = useState(1);
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
-  const [, setIsRecordingInProcess] = useState(false);
   const [, setFormData] = useState<FormData | undefined>();
   const quillRef = useRef<ReactQuill>(null);
   const cursorPositionRef = useRef<null | number>(null);
@@ -121,12 +121,15 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const chatContentRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMetaModalOpen, setIsMetaModalOpen] = useState(false);
-  const [, setIsShowSilent] = useState();
   const [isFirst, setIsFirst] = useState(true);
   const [isEmpty, setIsEmpty] = useState(true);
   const [voiceChatHistory, setVoiceChatHistory] = useState<any>([]);
   const currentStep = useQuery("currentStep");
   const selectedBookId = useQuery("selectedBook");
+
+  const { userData } = useAuthState();
+
+  console.log("111111111111111111111", userData?.result?.language);
 
   const token = TokenManager.getAccessToken();
 
@@ -547,10 +550,10 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                         <div
                           className={styles.languageSelect}
                           style={{
-                            backgroundImage: `url(${selectedLanguage.flag.link})`,
+                            backgroundImage: `url(${userData?.result?.language.flag.link})`,
                           }}
                         />
-                        <span>{selectedLanguage.name}</span>
+                        <span>{userData?.result?.language.name}</span>
                       </div>
                       <div className={styles.muteBtn}>
                         <img
@@ -701,19 +704,14 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                     </div>
                   </div>
                   <VoiceRecorder
-                    setIsRecordingInProcess={setIsRecordingInProcess}
                     addTextWithDelay={addTextWithDelay}
-                    selectedLanguage=""
                     clickCursor={clickCursor}
-                    setFormData={setFormData}
                     isLoadingData={false}
                     setQuestion={setQuestion}
-                    link=""
                     setIsStreamConnect={setIsStreamConnect}
                     userId={value?.id?.toString()}
                     selectedLanguageCode={selectedLanguage.isoCode2char}
                     indexName={indexName}
-                    setIsShowSilent={setIsShowSilent}
                     isFirst={isFirst}
                     setIsFirst={setIsFirst}
                     setChatHistory={setVoiceChatHistory}
@@ -971,7 +969,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
             languages={languages || []}
-            defaultLanguage={defaultLanguage}
+            defaultLanguage={userData?.result?.language}
             onLanguageSelect={onLanguageSelect}
           />
           <MetaModal
