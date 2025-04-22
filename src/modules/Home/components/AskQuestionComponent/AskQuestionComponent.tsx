@@ -7,7 +7,7 @@ import CollapseIcon from "../../../../assets/images/icons/CollapseIcon.svg";
 import DocumentIcon from "../../../../assets/images/icons/document.svg";
 // import SoundOnIcon from "../../../../assets/images/icons/SoundOn.svg";
 import SoundOffIcon from "../../../../assets/images/icons/SoundOff.svg";
-// import BookIcon from "../../../../assets/images/icons/Book.svg";
+import BookIcon from "../../../../assets/images/icons/Book.svg";
 import ClearIcon from "../../../../assets/images/icons/Clear.svg";
 import ArrowDown from "../../../../assets/images/icons/arrowProfile.svg";
 import ChatSpinner from "../../../../components/common/ChatSpinner";
@@ -481,53 +481,63 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
           <div className={styles.askQuestionPage}>
             <div className={styles.askQuestionWrapper}>
               <div className={styles.askQuestionVideo}>
-                <div className={styles.avatarSide}>
+                <div
+                  style={{
+                    position: "relative",
+                    height: 290,
+                    marginBottom: 24,
+                  }}
+                >
                   <div
-                    style={{ position: "relative", width: 300, height: 300 }}
+                    style={{
+                      opacity: avatarStreamShow ? 1 : 0,
+                      pointerEvents: avatarStreamShow ? "auto" : "none",
+                    }}
+                    className={styles.shadowBG}
                   >
-                    <div
-                      style={{
-                        opacity: avatarStreamShow ? 1 : 0,
-                        pointerEvents: avatarStreamShow ? "auto" : "none",
-                        transition: "opacity 0.3s ease-in-out",
-                      }}
-                    >
-                      {url && (
-                        <SrsPlayer
-                          url={url}
-                          width={0}
-                          height={0}
-                          videoRef={videoRef}
-                          options={{
-                            autoPlay: true,
-                            playsInline: true,
-                            muted: false,
-                            controls: true,
-                          }}
-                          rtcOpts={{
-                            audio: {
-                              enable: true,
-                            },
-                          }}
-                        />
-                      )}
-                    </div>
-                    <div
-                      style={{
-                        opacity: avatarStreamShow ? 0 : 1,
-                        pointerEvents: avatarStreamShow ? "none" : "auto",
-                        transition: "opacity 0.3s ease-in-out",
-                      }}
-                    >
-                      <video width={430} height={290} loop autoPlay>
-                        <source src={silentAvatar} type="video/mp4" />
-                      </video>
-                    </div>
+                    {url && (
+                      <SrsPlayer
+                        url={url}
+                        width={0}
+                        height={0}
+                        videoRef={videoRef}
+                        options={{
+                          autoPlay: true,
+                          playsInline: true,
+                          muted: false,
+                          controls: true,
+                        }}
+                        rtcOpts={{
+                          audio: {
+                            enable: true,
+                          },
+                        }}
+                      />
+                    )}
+                  </div>
+                  <div
+                    style={{
+                      opacity: avatarStreamShow ? 0 : 1,
+                      pointerEvents: avatarStreamShow ? "none" : "auto",
+                    }}
+                    className={styles.shadowBG}
+                  >
+                    <video width={430} loop autoPlay>
+                      <source src={silentAvatar} type="video/mp4" />
+                    </video>
                   </div>
                 </div>
                 <div className={styles.askQuestionBookTitle}>
                   <div className={styles.bookTitle}>
-                    <div style={{ marginRight: 10 }}>
+                    <div
+                      className={styles.bookTitle__wrapper}
+                      style={{ marginRight: 10 }}
+                    >
+                      <img
+                        src={BookIcon}
+                        alt="Sound Off Icon"
+                        className={styles.bookIcon}
+                      />
                       {pathname.includes("ask_global_question")
                         ? t("askGlobalTitle")
                         : title}

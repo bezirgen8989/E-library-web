@@ -1,22 +1,39 @@
-.askQuestionPage{
+.askQuestionPage {
   display: flex;
   justify-content: center;
   max-width: 916px;
-  .askQuestionWrapper{
+
+  .askQuestionWrapper {
     display: grid;
     grid-template-columns:repeat(2, 1fr);
     gap: 34px;
     width: 100%;
+    padding-top: 32px;
 
-    .askQuestionVideo{
+    .askQuestionVideo {
 
     }
-    .askQuestionChat{
+
+    .askQuestionChat {
 
     }
   }
 
   .bookTitle {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+
+    &__wrapper {
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+    }
 
     &__speachBlock {
       display: flex;
@@ -35,8 +52,29 @@
       align-items: center;
     }
   }
+  video {
+    height: 100%;
+  }
+  .shadowBG {
+    position: absolute;
+    transition: opacity 0.3s ease-in-out;
+    height: 290px;
+    border-radius: 32px;
+    overflow: hidden;
+    border: 1px solid #FFFFFF1F;
+    background-color: #060606;
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 72px;
+      background: linear-gradient(180deg, rgba(3, 24, 29, 0) 0%, #03181D 100%);
+      z-index: 1;
+    }
+  }
 }
-
 
 
 .askQuestionWrap {
@@ -56,6 +94,7 @@
     flex-direction: column;
   }
 }
+
 .avatarSide {
   align-items: center;
   flex-grow: 0;
@@ -65,27 +104,32 @@
   min-height: 500px;
   justify-content: space-between;
   padding-bottom: 50px;
+
   img {
     margin-bottom: 20px;
   }
+
   @media (max-width: 964px) {
     width: 100%;
     min-height: auto;
     padding-bottom: 10px;
   }
 }
+
 .desktopView {
   display: block;
   @media (max-width: 968px) {
     display: none;
   }
 }
+
 .mobileView {
   display: none;
   @media (max-width: 968px) {
     display: block;
   }
 }
+
 .flex_wrap {
   width: 100%;
   display: flex;
@@ -94,6 +138,7 @@
     align-items: center;
   }
 }
+
 .chatContainer {
   flex-grow: 0;
   min-height: 84vh;
@@ -133,10 +178,12 @@
     ::-webkit-scrollbar {
       width: 8px;
     }
+
     ::-webkit-scrollbar-thumb {
       background: #8E8E93;
       border-radius: 5px;
     }
+
     ::-webkit-scrollbar-track {
       background: rgba(255, 255, 255, 0.1);
     }
@@ -159,6 +206,7 @@
       max-width: 95%;
       text-align: left;
     }
+
     .messageTime {
       margin-left: auto;
       color: #fff;
@@ -166,10 +214,12 @@
       font-style: italic;
       align-self: flex-end;
     }
+
     .readMoreBtn {
       color: #fff;
       font-size: 14px;
       cursor: pointer;
+
       &:hover {
         opacity: 0.8;
       }
@@ -205,6 +255,7 @@
 
   .messageSystem {
     margin: 16px 0;
+
     .messageSystemContent {
       color: #fff;
       background: rgba(0, 0, 0, 0.12);
@@ -215,16 +266,19 @@
       border: 1px solid rgba(181, 202, 221, 0.24);
       //margin-bottom: 24px;
     }
+
     .messageTime {
       color: #8E8E93;
       font-size: 12px;
       font-style: italic;
       margin-left: auto;
     }
+
     .readMoreBtn {
       color: #996C42;
       font-size: 14px;
       cursor: pointer;
+
       &:hover {
         opacity: 0.8;
       }
@@ -237,6 +291,7 @@
     align-items: center;
     margin-top: 5px;
   }
+
   .messageTime {
     color: #8E8E93;
     font-size: 12px;
@@ -252,7 +307,7 @@
     background-position: 15px 50%;
     padding: 6px 10px;
     border-radius: 12px;
-    background-color: rgba(199,204,205, 0.2);
+    background-color: rgba(199, 204, 205, 0.2);
 
     .chatInput {
       flex-grow: 1;
@@ -277,6 +332,7 @@
     }
   }
 }
+
 .submitButton {
   border: none;
   height: 28px;
@@ -288,10 +344,12 @@
   align-items: center;
   cursor: pointer;
   padding-left: 8px;
+
   &:hover {
     opacity: 0.8;
   }
 }
+
 .stopButton {
   position: relative;
   border: none;
@@ -304,16 +362,19 @@
   align-items: center;
   cursor: pointer;
   padding-left: 8px;
+
   &:hover {
     opacity: 0.8;
   }
 }
+
 .beforeIcon {
   width: 10px;
   height: 10px;
   margin-left: 1px;
   background: #996C42;
 }
+
 .clearButton {
   background: none;
   border: none;
@@ -323,24 +384,27 @@
   margin: 0 10px 0 0;
   cursor: pointer;
 }
+
 .micButton {
   height: 28px;
   width: 28px;
   margin-right: 10px;
 }
-.bookTitle {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content:space-between;
-  max-width: 1050px;
-  margin: 0 auto;
-  font-size: 19px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 1);
-  text-align: center;
-  padding: 0 10px 20px 15px;
-}
+
+//.bookTitle {
+//  display: flex;
+//  width: 100%;
+//  align-items: center;
+//  justify-content: space-between;
+//  max-width: 1050px;
+//  margin: 0 auto;
+//  font-size: 19px;
+//  font-weight: 700;
+//  color: rgba(255, 255, 255, 1);
+//  text-align: center;
+//  padding: 0 10px 20px 15px;
+//}
+
 .spinner {
   width: 24px;
   height: 24px;
@@ -358,6 +422,7 @@
     transform: rotate(360deg);
   }
 }
+
 .avatarFace {
   height: 60vh;
   opacity: 0.4;
@@ -368,16 +433,19 @@
   margin-bottom: 15px;
   position: relative;
 }
+
 .collapseButton {
   color: #996C42;
   padding: 10px 0 0 0;
   font-size: 14px;
   font-weight: 600;
+
   &:hover {
     opacity: 0.8;
     cursor: pointer;
   }
 }
+
 .collapseContent {
 
   max-height: 300px;
@@ -389,19 +457,23 @@
   ::-webkit-scrollbar {
     width: 8px; /* Ширина скроллбара */
   }
+
   ::-webkit-scrollbar-thumb {
     background: #8E8E93; /* Цвет ползунка */
     border-radius: 5px;
   }
+
   ::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.1); /* Цвет трека */
   }
 }
+
 .panelHeader {
   display: flex;
   align-items: center;
   gap: 10px; /* Расстояние между иконкой и текстом */
 }
+
 .chatWrap {
   display: flex;
   align-items: center;
@@ -424,6 +496,7 @@
   outline: none;
   background-color: rgba(199, 204, 205, 0.2);
   font-weight: 700;
+
   img {
     width: 25px;
     height: 25px;
@@ -431,6 +504,7 @@
     margin-top: -3px;
   }
 }
+
 .languageSelect {
   width: 25px;
   height: 25px;
@@ -440,6 +514,7 @@
   background-size: 140%;
   margin-right: 7px;
 }
+
 //.gradientOverlay {
 //  position: absolute;
 //  top: 0;
