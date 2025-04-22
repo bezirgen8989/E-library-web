@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import WaveSurfer from "wavesurfer.js";
 // import { Mic } from "lucide-react";
 import RecordPlugin from "wavesurfer.js/dist/plugins/record";
-import MicIcon from "../../../assets/images/icons/Mic.svg";
+import MicIcon from "../../../assets/images/icons/Microphone.svg";
 
 // import { useNotification } from '@refinedev/core';
-import { Spin, Tooltip } from "antd";
+import { Button, Spin, Tooltip } from "antd";
 import classNames from "classnames";
 
 // import { CUSTOM_BUTTONS_TYPES, CustomButton } from '@components/Button';
@@ -20,20 +20,19 @@ import { useVoice } from "../../../hooks/useVoice";
 import { CustomButton } from "../Button";
 import SpinMic from "../SpinMic";
 import CustomIcon, { ICON_TYPES } from "../CustomIcon";
-import Button from "../../common/Buttons/Button";
+// import Button from "../../common/Buttons/Button";
 import { useTranslation } from "react-i18next";
+import cn from "classnames";
+import { useAuthState } from "../../../modules/Auth/slices/auth";
 // import {setIsStopQuestion} from "../../../modules/Home/slices/home";
 // import {useDispatch} from "react-redux";
 
 interface IVoiceRecorder {
   isNonHealth?: boolean;
   addTextWithDelay: (values: string) => void;
-  selectedLanguage: string;
-  setIsRecordingInProcess: (isInProcess: boolean) => void;
   clickCursor: () => void;
   isLoadingData?: boolean;
   link: string;
-  setFormData: (formData: any) => void;
   setQuestion: (text: string) => void;
   setIsStreamConnect?: (value: boolean) => void;
   userId: any;
@@ -41,12 +40,12 @@ interface IVoiceRecorder {
   isFirst: boolean;
   setIsFirst: (value: boolean) => void;
   indexName: string;
-  setIsShowSilent: any;
   setChatHistory: any;
   setMessageClass: any;
   streamDone: any;
   recording: any;
   setRecording: any;
+  stopAvatarGeneration: (params: any) => void;
 }
 
 const VoiceRecorder: React.FC<IVoiceRecorder> = ({
@@ -54,16 +53,12 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   clickCursor,
   addTextWithDelay,
   isNonHealth,
-  selectedLanguage,
-  setIsRecordingInProcess,
-  setFormData,
   setQuestion,
   link,
   setIsStreamConnect,
   userId,
   indexName,
   selectedLanguageCode,
-  setIsShowSilent,
   setIsFirst,
   isFirst,
   setChatHistory,
@@ -71,6 +66,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   streamDone,
   recording,
   setRecording,
+  stopAvatarGeneration,
 }) => {
   // const { open } = useNotification();
 
@@ -82,8 +78,8 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   // });
 
   const { t } = useTranslation();
+  const { userData } = useAuthState();
   // const [recording, setRecording] = useState(false);
-  const [paused, setPaused] = useState(false);
   const [recordingUrl] = useState<string | null>(null);
   const wavesurferRef = useRef<WaveSurfer | null>(null);
   const recordRef = useRef<any>(null);
@@ -93,7 +89,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
 
   const [isReadyPaused, setIsReadyPaused] = useState(false);
 
-  const language = renderLangCodes(selectedLanguage);
+  const language = renderLangCodes(selectedLanguageCode);
 
   const [
     stopStreaming,
@@ -104,17 +100,27 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   ] = useVoice({
     language,
     setTextAreaValue: addTextWithDelay,
-    paused,
-    setIsRecordingInProcess,
     // setQuestion,
     userId,
     indexName,
     selectedLanguageCode,
-    setIsShowSilent,
+    setIsShowSilent: () => console.log("setIsShowSilent"),
     setChatHistory,
     setMessageClass,
     disconnected,
   });
+
+  useEffect(() => {
+    return () => {
+      deleteStreaming();
+      stopStreaming();
+      if (userData?.result?.id) {
+        stopAvatarGeneration({
+          client_id: String(userData?.result?.id),
+        });
+      }
+    };
+  }, [userData?.result?.id]);
 
   console.log(deleteStreaming, pauseStreaming);
 
@@ -125,7 +131,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   // const dispatch = useDispatch();
 
   // Function to check microphone access
-
   const checkMicrophoneAccess = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -174,7 +179,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
       waveColor: "white",
       progressColor: "white",
       height: 24,
-      width: isNonHealth ? "850px" : "220px",
+      width: isNonHealth ? "850px" : "270px",
       barGap: 1,
       barWidth: 1.5,
       barHeight: 15,
@@ -245,30 +250,29 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     progressRef.current.textContent = formattedTime;
   };
 
-  const renderText = () => {
-    if (recordingUrl) {
-      return "Recording is ready!";
-    }
-
-    if (!isFirst && paused) {
-      return "Paused";
-    }
-
-    if (!isFirst && !paused) {
-      return t("askNow");
-    }
-  };
+  // const renderText = () => {
+  //   if (recordingUrl) {
+  //     return "Recording is ready!";
+  //   }
+  //
+  //   if (!isFirst && paused) {
+  //     return "Paused";
+  //   }
+  //
+  //   if (!isFirst && !paused) {
+  //     return t("askNow");
+  //   }
+  // };
 
   // useEffect(() => {
   //   handleRecordClick();
   // }, [avatarLanguage]);
 
   useEffect(() => {
-    if (recording || paused) {
+    if (recording) {
       recordRef.current?.stopRecording();
       setDisconnected(true);
       setRecording(false);
-      setPaused(false);
       stopStreaming();
       setIsFirst(true);
       return;
@@ -281,11 +285,10 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
       return;
     }
 
-    if (recording || paused) {
+    if (recording) {
       recordRef.current?.stopRecording();
       setDisconnected(true);
       setRecording(false);
-      setPaused(false);
       stopStreaming();
       setIsFirst(true);
       // dispatch(setIsStopQuestion(true));
@@ -328,8 +331,52 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     );
   }
 
+  // const startRecording = async () => {
+  //   if (!isConnecting) {
+  //     return;
+  //   }
+  //
+  //   connectToWhisper();
+  //
+  //   const start = setTimeout(async () => {
+  //     setIsFirst(false);
+  //     startStreaming();
+  //     setIsConnecting(false);
+  //   }, 3000);
+  //
+  //   return () => {
+  //     clearTimeout(start);
+  //   };
+  // }
+
+  // const stopRecording = async () => {
+  //   if (!hasMicrophoneAccess) {
+  //     return;
+  //   }
+  //
+  //   if (recording) {
+  //     recordRef.current?.stopRecording();
+  //     setDisconnected(true);
+  //     setRecording(false);
+  //     stopStreaming();
+  //     setIsFirst(true);
+  //     // dispatch(setIsStopQuestion(true));
+  //     // setIsStreamConnect && setIsStreamConnect(false); // Stop stream connection when recording stops
+  //     return;
+  //   }
+  //   setDisconnected(false);
+  //   setRecording(true);
+  //   setIsStreamConnect && setIsStreamConnect(true); // Start stream connection
+  //   await recordRef.current?.startRecording();
+  // }
+
   return (
-    <div className={styles.wrapper}>
+    <div
+      className={cn(
+        styles.wrapper,
+        !link && !isFirst ? styles.wrapperRecording : null
+      )}
+    >
       <div className={styles.playBtnForReadyAudio}>
         <CustomButton
           onClick={() => {
@@ -348,94 +395,71 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
         />
       </div>
 
-      {link ? (
-        <div className={styles.blockForReadyAudio}>
-          <div className={styles.voiceBlock}>
-            <p className={styles.name}>Your Recording </p>
-            <div
-              className={styles.recordingForReadyAudio}
-              id="recordings"
-            ></div>{" "}
-          </div>
-        </div>
-      ) : isFirst ? (
+      {isFirst ? (
         <div className={styles.initialBlock}>
           <div className={styles.btnMic}>
             <Button
-              variant="Brown"
+              type="default"
               disabled={streamDone}
               style={{
-                marginBottom: 0,
-                minHeight: 88,
-                marginTop: 0,
-                width: "100%",
-                justifyContent: "space-between",
-                background:
-                  "linear-gradient(to bottom, #d3a171, #c18a5b, #a66744)",
-                borderRadius: "16px",
+                justifyContent: "center",
+                alignItems: "center",
+                background: "#BC845A",
+                padding: "0",
+                border: "none",
+                borderRadius: "50%",
+                display: "flex",
               }}
+              // onClick={startRecording}
               onClick={() => {
                 setIsConnecting(true);
               }}
             >
-              <span>{t("talkToAvatar")}</span>
-
-              <div className={styles.startRecording}>
-                <div
-                  className={classNames(
-                    styles.stopBtnIconWrapper,
-                    !paused && styles.stopBtnIconWrapperPaused
-                  )}
-                >
-                  {isConnecting ? (
-                    <SpinMic />
-                  ) : (
-                    <img style={{ margin: 0 }} src={MicIcon} alt="" />
-                  )}
-                </div>
-              </div>
+              {isConnecting ? (
+                <SpinMic />
+              ) : (
+                <img style={{ margin: 0 }} src={MicIcon} alt="" />
+              )}
             </Button>
           </div>
         </div>
       ) : (
         <div className={styles.voiceBlock}>
-          <span className={styles.name}>{renderText()}</span>
+          {/*<span className={styles.name}>{renderText()}</span>*/}
           {!recordingUrl && (
             <>
-              <div className={styles.readyRecordingWrapper}>
-                <div id="mic" className={styles.stopBtn}></div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "minmax(100px, 276px) 40px",
+                }}
+              >
+                <div className={styles.readyRecordingWrapper}>
+                  <div id="mic" className={styles.stopBtn}></div>
+                </div>
+                {recording ? (
+                  <span
+                    style={{ color: "white" }}
+                    className={styles.progressBlock}
+                    id="progress"
+                    ref={progressRef}
+                  >
+                    00:00
+                  </span>
+                ) : (
+                  ""
+                )}
               </div>
-              <div style={{ display: "flex" }}>
-                <Tooltip title={t("stop")} placement="top">
-                  <div>
-                    <div
-                      className={styles.stopRecording}
-                      onClick={handleRecordClick}
-                    >
-                      <div
-                        className={classNames(
-                          styles.stopBtnIconWrapper,
-                          !paused && styles.stopBtnIconWrapperPaused
-                        )}
-                      >
-                        <div className={styles.StopIcon} />
-                      </div>
-                      {recording ? (
-                        <span
-                          style={{ color: "white" }}
-                          className={styles.progressBlock}
-                          id="progress"
-                          ref={progressRef}
-                        >
-                          00:00
-                        </span>
-                      ) : (
-                        ""
-                      )}
-                    </div>
+              <Tooltip title={t("stop")} placement="top">
+                <div
+                  className={styles.stopRecording}
+                  onClick={handleRecordClick}
+                >
+                  <div className={classNames(styles.stopBtnIconWrapper)}>
+                    <div className={styles.StopIcon} />
                   </div>
-                </Tooltip>
-              </div>
+                </div>
+              </Tooltip>
             </>
           )}
         </div>

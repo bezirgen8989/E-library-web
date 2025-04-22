@@ -4,12 +4,14 @@ import commonStyles from "../../../../../assets/css/commonStyles/CommonStyles.mo
 import Close from "../../../../../assets/images/icons/Close.svg";
 import styles from "./SearchBookModal.module.scss";
 import Search from "../../../../../assets/images/icons/SearchIcon.svg";
-import { routes } from "../../../routing";
-import { Link } from "react-router-dom";
+// import {Link, useLocation} from "react-router-dom";
 import { UserContext } from "../../../../../core/contexts";
 import { getLocalization } from "../../../../Auth/slices/auth";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+// import {useQuery} from "../../../../../hooks/useQuery";
+
+// import {useHomeState} from "../../../slices/home";
 
 interface Author {
   name: string;
@@ -32,6 +34,7 @@ interface NotificationsModalProps {
   getBooksByName: any;
   booksByQueryName: any;
   isLoading: boolean;
+  onSelectBook?: (selectedBookId?: string | number) => void;
 }
 
 const SearchBookModal: FC<NotificationsModalProps> = ({
@@ -42,13 +45,16 @@ const SearchBookModal: FC<NotificationsModalProps> = ({
   getBooksByName,
   booksByQueryName,
   isLoading,
+  onSelectBook,
 }) => {
   const { t } = useTranslation();
+  // const {pathname} = useLocation();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [hasSearched, setHasSearched] = useState<boolean>(false);
   const [isDropdownVisible, setDropdownVisible] = useState<boolean>(false);
   const value = useContext(UserContext);
   const dispatch = useDispatch();
+  // const currentStep = useQuery('currentStep');
 
   useEffect(() => {
     if (value?.language?.isoCode2char) {
@@ -165,11 +171,17 @@ const SearchBookModal: FC<NotificationsModalProps> = ({
                   </div>
                 ))
               : booksByQueryName.map((book: Book) => (
-                  <Link
+                  <div
                     key={book.id}
                     className={styles.newBook}
-                    to={`${routes.askQuestion}/${book.id}`}
+                    // to={{
+                    //   pathname: `${pathname}?currentStep=${currentStep}&selectedBook=${book.id}`,
+                    // }}
+                    // to={`${pathname}&selectedBook=${book.id}`}
                     onClick={() => {
+                      if (onSelectBook) {
+                        onSelectBook(book.id);
+                      }
                       setIsModalOpen(false);
                     }}
                   >
@@ -180,7 +192,7 @@ const SearchBookModal: FC<NotificationsModalProps> = ({
                     <div className={styles.newBookAuthor}>
                       {book.author.map((author) => author.name).join(", ")}
                     </div>
-                  </Link>
+                  </div>
                 ))}
           </div>
         )}

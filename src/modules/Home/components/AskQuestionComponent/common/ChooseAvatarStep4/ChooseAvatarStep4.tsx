@@ -3,28 +3,33 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Button from "../../../../../../components/common/Buttons/Button";
 import { FC, useCallback, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import SearchBookModal from "../../../common/SearchBookModal/SearchBookModal";
 import { useLazySelector } from "../../../../../../hooks";
 import { getCategories } from "../../../../../Auth/slices/auth";
-import { findBooks, getBooksByQueryName } from "../../../../slices/home";
+import {
+  findBooks,
+  getBookById,
+  getBooksByQueryName,
+} from "../../../../slices/home";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 interface ChooseAvatarStep2Props {
-  setCurrentStep: (value: number) => void;
+  // setCurrentStep: (value: number) => void;
   selectedAvatar: string;
 }
 
 const ChooseAvatarStep4: FC<ChooseAvatarStep2Props> = ({
-  setCurrentStep,
+  // setCurrentStep,
   selectedAvatar,
 }) => {
   const { t } = useTranslation();
-  const location = useLocation();
+  const { pathname } = useLocation();
+  const { push } = useHistory();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const isGlobalQuestion = location.pathname.includes("ask_global_question");
+  // const isGlobalQuestion = pathname.includes("ask_global_question");
 
   const dispatch = useDispatch();
 
@@ -58,13 +63,22 @@ const ChooseAvatarStep4: FC<ChooseAvatarStep2Props> = ({
     );
   };
 
+  const onSelectBookHandler = (bookId?: string | number) => {
+    setIsModalOpen(false);
+    // setCurrentStep(5);
+    // push(`${pathname}?currentStep=${5}`)
+    dispatch(getBookById(bookId as string));
+
+    push(`${pathname}?currentStep=${5}&selectedBook=${bookId}`);
+  };
+
   return (
     <div className={styles.askQuestionAvatar}>
       <div className={styles.avatarSliderWrap}>
         <div
           className={styles.sliderBackground}
           style={{ backgroundImage: `url(${selectedAvatar})` }}
-        ></div>
+        />
         <div className={styles.messageSystemContent}>
           <strong style={{ color: "#fff" }}>{t("avatarExamples1")}</strong>
           <br />
@@ -75,38 +89,59 @@ const ChooseAvatarStep4: FC<ChooseAvatarStep2Props> = ({
           {t("avatarExamples4")}
         </div>
 
-        {isGlobalQuestion ? (
-          <>
-            <Button
-              onClick={() => {
-                setIsModalOpen(true);
-              }}
-              style={{ width: "341px", margin: "30px auto 20px" }}
-              variant="Brown"
-            >
-              {t("selectBookBtn")}
-            </Button>
-            <Button
-              onClick={() => {
-                setCurrentStep(5);
-              }}
-              style={{ width: "341px", margin: "30px auto 20px" }}
-              variant="White"
-            >
-              {t("useAllBooks")}
-            </Button>
-          </>
-        ) : (
+        <>
           <Button
             onClick={() => {
-              setCurrentStep(5);
+              setIsModalOpen(true);
             }}
             style={{ width: "341px", margin: "30px auto 20px" }}
             variant="Brown"
           >
-            Continue
+            {t("selectBookBtn")}
           </Button>
-        )}
+          <Button
+            onClick={() => {
+              push(`${pathname}?currentStep=${5}`);
+            }}
+            style={{ width: "341px", margin: "30px auto 20px" }}
+            variant="White"
+          >
+            {t("useAllBooks")}
+          </Button>
+        </>
+
+        {/*{isGlobalQuestion ? (*/}
+        {/*  <>*/}
+        {/*    <Button*/}
+        {/*      onClick={() => {*/}
+        {/*        setIsModalOpen(true);*/}
+        {/*      }}*/}
+        {/*      style={{ width: "341px", margin: "30px auto 20px" }}*/}
+        {/*      variant="Brown"*/}
+        {/*    >*/}
+        {/*      {t("selectBookBtn")}*/}
+        {/*    </Button>*/}
+        {/*    <Button*/}
+        {/*      onClick={() => {*/}
+        {/*        setCurrentStep(5);*/}
+        {/*      }}*/}
+        {/*      style={{ width: "341px", margin: "30px auto 20px" }}*/}
+        {/*      variant="White"*/}
+        {/*    >*/}
+        {/*      {t("useAllBooks")}*/}
+        {/*    </Button>*/}
+        {/*  </>*/}
+        {/*) : (*/}
+        {/*  <Button*/}
+        {/*    onClick={() => {*/}
+        {/*      setCurrentStep(5);*/}
+        {/*    }}*/}
+        {/*    style={{ width: "341px", margin: "30px auto 20px" }}*/}
+        {/*    variant="Brown"*/}
+        {/*  >*/}
+        {/*    Continue*/}
+        {/*  </Button>*/}
+        {/*)}*/}
       </div>
       <SearchBookModal
         isModalOpen={isModalOpen}
@@ -116,6 +151,7 @@ const ChooseAvatarStep4: FC<ChooseAvatarStep2Props> = ({
         getBooksByName={getBooksByName}
         booksByQueryName={booksByQueryName?.result?.data}
         isLoading={isLoading}
+        onSelectBook={onSelectBookHandler}
       />
     </div>
   );

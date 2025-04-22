@@ -10,7 +10,6 @@ interface IUseVoiceHook {
   setTextAreaValue: (values: string) => void;
   paused?: boolean;
   isTrascribe?: boolean;
-  setIsRecordingInProcess?: (isRecordingInProcess: boolean) => void;
   userId: string;
   indexName: string;
   selectedLanguageCode: string;
@@ -23,7 +22,6 @@ interface IUseVoiceHook {
 export const useVoice = ({
   language = "en",
   setTextAreaValue,
-  setIsRecordingInProcess,
   isTrascribe = false,
   userId,
   indexName,
@@ -245,8 +243,6 @@ export const useVoice = ({
     recorderRef.current = recorder;
   };
   const startStreaming = async () => {
-    setIsRecordingInProcess && setIsRecordingInProcess(true);
-
     if (!audioCtxRef.current) {
       audioCtxRef.current = new AudioContext();
     }
@@ -286,8 +282,6 @@ export const useVoice = ({
   };
 
   const stopStreaming = () => {
-    setIsRecordingInProcess && setIsRecordingInProcess(false);
-
     if (streamRef.current) {
       streamRef.current
         .getTracks()

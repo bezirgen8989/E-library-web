@@ -4,16 +4,19 @@ import "slick-carousel/slick/slick-theme.css";
 import Button from "../../../../../../components/common/Buttons/Button";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
+import { useHistory, useLocation } from "react-router-dom";
 
 interface ChooseAvatarStep2Props {
-  setCurrentStep: (value: number) => void;
+  // setCurrentStep: (value: number) => void;
   selectedAvatar: string;
 }
 const ChooseAvatarStep2: FC<ChooseAvatarStep2Props> = ({
-  setCurrentStep,
+  // setCurrentStep,
   selectedAvatar,
 }) => {
   const { t } = useTranslation();
+  const { pathname } = useLocation();
+  const { push } = useHistory();
 
   return (
     <div className={styles.askQuestionAvatar}>
@@ -37,7 +40,8 @@ const ChooseAvatarStep2: FC<ChooseAvatarStep2Props> = ({
         </div>
         <Button
           onClick={() => {
-            setCurrentStep(3);
+            // setCurrentStep(3);
+            push(`${pathname}?currentStep=${3}`);
           }}
           style={{ width: "341px", margin: "30px auto 20px" }}
           variant="Brown"

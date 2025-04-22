@@ -122,8 +122,9 @@ const HomeRouting = () => (
       <Route exact path={routes.newBooks} component={NewBooks} />
       <Route exact path={`${routes.reading}/:id`} component={Reading} />
       <Route exact path={`${routes.book}/:id`} component={Book} />
-      <Route exact path={`${routes.askQuestion}/:id`} component={AskQuestion} />
-      <Route exact path={routes.askQuestionAll} component={AskQuestion} />
+      {/* Ты блять ебаный долбан у тебя тут нету параметра и что бы обойти это ты решил насрать на принципы DRY */}
+      <Route path={routes.askQuestion} component={AskQuestion} />
+      {/*<Route path={routes.askQuestionAll} component={AskQuestion} />*/}
       <Route exact path={routes.chooseAvatar} component={ChooseAvatar} />
       <Route exact path={`${routes.audioBook}/:id`} component={AudioBook} />
       <Route exact path={routes.error404} component={Error404Route} />

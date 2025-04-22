@@ -1,10 +1,15 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Collapse } from "antd";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import styles from "./AskQuestionComponent.module.scss";
 import Send from "../../../../assets/images/icons/sendIcon.svg";
 import CollapseIcon from "../../../../assets/images/icons/CollapseIcon.svg";
 import DocumentIcon from "../../../../assets/images/icons/document.svg";
+import SoundOnIcon from "../../../../assets/images/icons/SoundOn.svg";
+import SoundOffIcon from "../../../../assets/images/icons/SoundOff.svg";
+import BookIcon from "../../../../assets/images/icons/Book.svg";
 import ClearIcon from "../../../../assets/images/icons/Clear.svg";
 import ArrowDown from "../../../../assets/images/icons/arrowProfile.svg";
 import ChatSpinner from "../../../../components/common/ChatSpinner";
@@ -20,7 +25,7 @@ import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
 import { useDispatch } from "react-redux";
 import {
   selectAvatarLanguage,
-  setAvatarStreamShow,
+  // setAvatarStreamShow,
   setIsStopQuestion,
   setIsStreamShow,
   setStreamDone,
@@ -30,9 +35,13 @@ import { UserContext } from "../../../../core/contexts";
 // @ts-ignore
 import silentAvatar from "../../../../assets/videos/silent.mp4";
 import { useLazySelector } from "../../../../hooks";
-import { getLocalization } from "../../../Auth/slices/auth";
 import { useTranslation } from "react-i18next";
 import { TokenManager } from "../../../../utils";
+import { useHistory, useLocation } from "react-router-dom";
+import { useQuery } from "hooks/useQuery";
+// import {getLocalization} from "../../../Auth/slices/auth";
+// import { useQuery } from "../../../../hooks/useQuery";
+// import { useAuthState } from "../../../Auth/slices/auth";
 // import {useSocket} from "../../../../hooks/useSocket";
 
 type Chat = {
@@ -81,6 +90,8 @@ type AskQuestionComponentProps = {
 
 const { Panel } = Collapse;
 
+dayjs.extend(customParseFormat);
+
 const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   setQuestion,
   clearMessages,
@@ -95,18 +106,24 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   isChooseAvatarPage,
 }) => {
   const { t } = useTranslation();
+  const { pathname } = useLocation();
+  const { push } = useHistory();
   const dispatch = useDispatch();
   const value = useContext(UserContext);
-  const { register, handleSubmit, reset, setValue } = useForm<FormValues>();
+  const { register, handleSubmit, reset, setValue, watch } =
+    useForm<FormValues>();
+
+  const isTextInInput = !!watch()?.question?.length;
+
+  console.log(isTextInInput);
+
   const [messageClass, setMessageClass] = useState(styles.messageSystemChange);
   const [messageTime, setMessageTime] = useState<string>("");
   console.log(messageTime);
   const [isCollapseVisible] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const videoRef = useRef<HTMLVideoElement | any>(null);
-  const [currentStep, setCurrentStep] = useState(1);
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
-  const [, setIsRecordingInProcess] = useState(false);
   const [, setFormData] = useState<FormData | undefined>();
   const quillRef = useRef<ReactQuill>(null);
   const cursorPositionRef = useRef<null | number>(null);
@@ -115,13 +132,22 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const chatContentRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMetaModalOpen, setIsMetaModalOpen] = useState(false);
-  const [, setIsShowSilent] = useState();
   const [isFirst, setIsFirst] = useState(true);
   const [isEmpty, setIsEmpty] = useState(true);
   const [voiceChatHistory, setVoiceChatHistory] = useState<any>([]);
+  const [isMuted, setIsMuted] = useState(false);
 
+  const currentStep = useQuery("currentStep");
+  const selectedBookId = useQuery("selectedBook");
+
+  console.log("selectedBookId", selectedBookId);
   console.log("chatHistory", chatHistory);
   console.log("voiceChatHistory", voiceChatHistory);
+  useEffect(() => {
+    if (!currentStep) {
+      push(`${pathname}?currentStep=${4}`);
+    }
+  }, [currentStep]);
 
   const { avatarStreamShow, streamDone } = useLazySelector(({ home }) => {
     const { avatarStreamShow, streamDone } = home;
@@ -136,11 +162,11 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [currentImage, setCurrentImage] = useState<AvatarData | null>(null);
   const [recording, setRecording] = useState(false);
 
-  useEffect(() => {
-    if (value?.language?.isoCode2char) {
-      dispatch(getLocalization(value?.language?.isoCode2char));
-    }
-  }, [dispatch, value?.language?.isoCode2char]);
+  // useEffect(() => {
+  //   if (value?.language?.isoCode2char) {
+  //     dispatch(getLocalization(value?.language?.isoCode2char));
+  //   }
+  // }, [dispatch, value?.language?.isoCode2char]);
 
   useEffect(() => {
     if (avatars?.result?.data?.length && value) {
@@ -155,19 +181,19 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       setSelectedAvatar(initialAvatar.avatarPicture.link);
 
       if (isChooseAvatarPage) {
-        setCurrentStep(1);
+        push(`${pathname}?currentStep=${1}`);
       } else {
-        setCurrentStep(foundIndex === 0 ? 1 : 4);
+        const selectedBookQuery = selectedBookId
+          ? `&currentStep=${currentStep}`
+          : "";
+        push(
+          `${pathname}?currentStep=${
+            foundIndex === 0 ? 1 : 4
+          }${selectedBookQuery}`
+        );
       }
     }
-  }, [
-    avatars,
-    defaultAvatarId,
-    setSelectedAvatar,
-    setCurrentStep,
-    value,
-    isChooseAvatarPage,
-  ]);
+  }, [defaultAvatarId, isChooseAvatarPage]);
 
   const defaultLanguage = (languages || []).find(
     (lang) => lang.name === "English"
@@ -354,7 +380,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
         if (value?.id) {
           stopAvatarGeneration({ client_id: String(value.id) });
         }
-        setAvatarStreamShow(false);
+        // setAvatarStreamShow(false);
         dispatch(setIsStopQuestion(true));
         dispatch(setStreamDone(false));
       }
@@ -385,11 +411,11 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   useEffect(() => {
     setChatMessages(
-      [...voiceChatHistory, ...chatHistory].sort(
-        (a, b) =>
-          new Date(`1970-01-01T${a.timestamp}Z`).getTime() -
-          new Date(`1970-01-01T${b.timestamp}Z`).getTime()
-      )
+      [...voiceChatHistory, ...chatHistory].sort((a, b) => {
+        const timeA = dayjs(a.timestamp, "h:mm:ss A", true).unix();
+        const timeB = dayjs(b.timestamp, "h:mm:ss A", true).unix();
+        return timeA - timeB;
+      })
     );
   }, [chatHistory, voiceChatHistory]);
 
@@ -422,265 +448,341 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   };
   console.log("selectedAvatar", selectedAvatar);
 
+  const chooseAvatarSteps = {
+    "1": (
+      <ChooseAvatar
+        avatars={avatars.result}
+        // setCurrentStep={setCurrentStep}
+        setSelectedAvatar={setSelectedAvatar}
+        setUserAvatar={setUserAvatar}
+        initialSlide={initialSlide}
+        setInitialSlide={setInitialSlide}
+        defaultAvatarId={defaultAvatarId}
+        currentImage={currentImage}
+        setCurrentImage={setCurrentImage}
+        isChooseAvatarPage
+      />
+    ),
+    "2": (
+      <ChooseAvatarStep2
+        // setCurrentStep={setCurrentStep}
+        // selectedAvatar={selectedAvatar}
+        selectedAvatar={
+          "https://elore.sfo3.cdn.digitaloceanspaces.com/avatarsImages/avatars/male2.jpg"
+        }
+      />
+    ),
+    "3": (
+      <ChooseAvatarStep3
+        // setCurrentStep={setCurrentStep}
+        // selectedAvatar={selectedAvatar}
+        selectedAvatar="https://elore.sfo3.cdn.digitaloceanspaces.com/avatarsImages/avatars/male2.jpg"
+      />
+    ),
+    "4": (
+      <ChooseAvatarStep4
+        // setCurrentStep={setCurrentStep}
+        // selectedAvatar={selectedAvatar}
+        selectedAvatar="https://elore.sfo3.cdn.digitaloceanspaces.com/avatarsImages/avatars/male2.jpg"
+      />
+    ),
+  };
+
   return (
     <>
-      {currentStep === 1 && (
-        <ChooseAvatar
-          avatars={avatars.result}
-          setCurrentStep={setCurrentStep}
-          setSelectedAvatar={setSelectedAvatar}
-          setUserAvatar={setUserAvatar}
-          initialSlide={initialSlide}
-          setInitialSlide={setInitialSlide}
-          defaultAvatarId={defaultAvatarId}
-          currentImage={currentImage}
-          setCurrentImage={setCurrentImage}
-          isChooseAvatarPage
-        />
-      )}
-      {currentStep === 2 && (
-        <ChooseAvatarStep2
-          setCurrentStep={setCurrentStep}
-          // selectedAvatar={selectedAvatar}
-          selectedAvatar={
-            "https://elore.sfo3.cdn.digitaloceanspaces.com/avatarsImages/avatars/male2.jpg"
-          }
-        />
-      )}
-      {currentStep === 3 && (
-        <ChooseAvatarStep3
-          setCurrentStep={setCurrentStep}
-          // selectedAvatar={selectedAvatar}
-          selectedAvatar="https://elore.sfo3.cdn.digitaloceanspaces.com/avatarsImages/avatars/male2.jpg"
-        />
-      )}
-      {currentStep === 4 && (
-        <ChooseAvatarStep4
-          setCurrentStep={setCurrentStep}
-          // selectedAvatar={selectedAvatar}
-          selectedAvatar="https://elore.sfo3.cdn.digitaloceanspaces.com/avatarsImages/avatars/male2.jpg"
-        />
-      )}
-      {currentStep === 5 && (
-        <div className={styles.askQuestionWrap}>
-          <div className={styles.bookTitle}>
-            <div style={{ marginRight: 10 }}>
-              {location.pathname.includes("ask_global_question")
-                ? t("askGlobalTitle")
-                : title}
-            </div>
-            <div
-              onMouseDown={(e) => {
-                e.preventDefault();
-                showModal();
-              }}
-              className={styles.languageSelectWrapper}
-              style={{
-                opacity: !recording ? "1" : "0.5",
-                pointerEvents: recording ? "none" : "auto",
-              }}
-            >
-              <div
-                className={styles.languageSelect}
-                style={{
-                  backgroundImage: `url(${selectedLanguage.flag.link})`,
-                }}
-              ></div>
-              <span>{selectedLanguage.name}</span>
-            </div>
-          </div>
+      {chooseAvatarSteps[currentStep as keyof typeof chooseAvatarSteps]}
+      {currentStep === "5" && (
+        <div>
           <div className={styles.askQuestionPage}>
-            <div className={styles.avatarSide}>
-              <div style={{ position: "relative", width: 300, height: 300 }}>
+            <div className={styles.askQuestionWrapper}>
+              <div className={styles.askQuestionVideo}>
                 <div
                   style={{
-                    position: "absolute",
-                    width: "100%",
-                    height: "100%",
-                    opacity: avatarStreamShow ? 1 : 0,
-                    pointerEvents: avatarStreamShow ? "auto" : "none",
-                    transition: "opacity 0.3s ease-in-out",
+                    position: "relative",
+                    height: 290,
+                    marginBottom: 24,
                   }}
                 >
-                  <SrsPlayer
-                    url={url}
-                    width={300}
-                    height={300}
-                    videoRef={videoRef}
-                    options={{
-                      autoPlay: true,
-                      playsInline: true,
-                      muted: false,
-                      controls: true,
-                    }}
-                    rtcOpts={{
-                      audio: {
-                        enable: true,
-                      },
-                    }}
-                  />
-                </div>
-                <div
-                  style={{
-                    position: "absolute",
-                    width: "100%",
-                    height: "100%",
-                    opacity: avatarStreamShow ? 0 : 1,
-                    pointerEvents: avatarStreamShow ? "none" : "auto",
-                    transition: "opacity 0.3s ease-in-out",
-                  }}
-                >
-                  <video width={300} height={300} loop autoPlay>
-                    <source src={silentAvatar} type="video/mp4" />
-                  </video>
-                </div>
-              </div>
-              <VoiceRecorder
-                setIsRecordingInProcess={setIsRecordingInProcess}
-                addTextWithDelay={addTextWithDelay}
-                selectedLanguage=""
-                clickCursor={clickCursor}
-                setFormData={setFormData}
-                isLoadingData={false}
-                setQuestion={setQuestion}
-                link=""
-                setIsStreamConnect={setIsStreamConnect}
-                userId={value?.id?.toString()}
-                selectedLanguageCode={selectedLanguage.isoCode2char}
-                indexName={indexName}
-                setIsShowSilent={setIsShowSilent}
-                isFirst={isFirst}
-                setIsFirst={setIsFirst}
-                setChatHistory={setVoiceChatHistory}
-                setMessageClass={setMessageClass}
-                streamDone={streamDone}
-                recording={recording}
-                setRecording={setRecording}
-              />
-            </div>
-            <div className={styles.chatContainer}>
-              <div className={styles.gradientOverlay} />
-
-              <div className={styles.chatContent} ref={chatContentRef}>
-                {chatMessages.map((chat, index) => {
-                  const isLastMessage = index === chatMessages.length - 1;
-
-                  return (
-                    <div
-                      key={index}
-                      className={
-                        chat.type === "user" ? styles.messageUser : messageClass
-                      }
-                    >
-                      <div
-                        className={
-                          chat.type === "user"
-                            ? styles.userMessage
-                            : styles.messageSystemContent
-                        }
-                      >
-                        {chat.type !== "user" &&
-                          isLastMessage &&
-                          isLoading &&
-                          !chat.message && <ChatSpinner />}
-                        {chat.message}
-                        {/*{chat.type === "user" && (*/}
-                        {/*  <div className={styles.messageSystemBottom}>*/}
-                        {/*    <span className={styles.messageTime}>*/}
-                        {/*      {messageTime}*/}
-                        {/*    </span>*/}
-                        {/*  </div>*/}
-                        {/*)}*/}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {metaData && metaData.length > 0 && !isLoading && !isSending && (
-                <div
-                  className={styles.collapseButton}
-                  onClick={() => {
-                    setIsMetaModalOpen(true);
-                  }}
-                >
-                  <span style={{ paddingRight: 10 }}>
-                    {isCollapseVisible
-                      ? "Hide used resources"
-                      : "Show used resources"}
-                  </span>
-                  <img
+                  <div
                     style={{
-                      transform: `rotate(${isCollapseVisible ? 180 : 0}deg)`,
+                      opacity: avatarStreamShow ? 1 : 0,
+                      pointerEvents: avatarStreamShow ? "auto" : "none",
                     }}
-                    src={isCollapseVisible ? ArrowDown : CollapseIcon}
-                    alt="icon"
-                  />
+                    className={styles.shadowBG}
+                  >
+                    {url && (
+                      <SrsPlayer
+                        url={url}
+                        width={"100%"}
+                        height={"100%"}
+                        videoRef={videoRef}
+                        options={{
+                          autoPlay: true,
+                          playsInline: true,
+                          muted: isMuted,
+                          controls: true,
+                        }}
+                        rtcOpts={{
+                          audio: {
+                            enable: true,
+                          },
+                        }}
+                      />
+                    )}
+                  </div>
+                  <div
+                    style={{
+                      opacity: avatarStreamShow ? 0 : 1,
+                      pointerEvents: avatarStreamShow ? "none" : "auto",
+                    }}
+                    className={styles.shadowBG}
+                  >
+                    <video
+                      playsInline
+                      muted
+                      preload="auto"
+                      src={silentAvatar}
+                      width={430}
+                      loop={true}
+                      autoPlay={true}
+                      style={{ width: "100%" }}
+                    />
+                  </div>
                 </div>
-              )}
-
-              <div className={styles.collapseContent}>
-                {isCollapseVisible && <Collapse>{renderMetaData()}</Collapse>}
+                <div className={styles.askQuestionBookTitle}>
+                  <div className={styles.bookTitle}>
+                    <div
+                      className={styles.bookTitle__wrapper}
+                      style={{ marginRight: 10 }}
+                    >
+                      <img
+                        src={BookIcon}
+                        alt="Sound Off Icon"
+                        className={styles.bookIcon}
+                      />
+                      {pathname.includes("ask_global_question")
+                        ? t("askGlobalTitle")
+                        : title}
+                    </div>
+                    <div className={styles.bookTitle__speachBlock}>
+                      <div
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          showModal();
+                        }}
+                        className={styles.languageSelectWrapper}
+                        style={{
+                          opacity: !recording ? "1" : "0.5",
+                          pointerEvents: recording ? "none" : "auto",
+                        }}
+                      >
+                        <div
+                          className={styles.languageSelect}
+                          style={{
+                            backgroundImage: `url(${selectedLanguage.flag.link})`,
+                          }}
+                        />
+                        <span>{selectedLanguage?.name}</span>
+                      </div>
+                      <button
+                        type="button"
+                        className={styles.muteBtn}
+                        onClick={() => {
+                          setIsMuted(!isMuted);
+                          if (videoRef.current) {
+                            videoRef.current.muted = !isMuted;
+                          }
+                        }}
+                        disabled={!avatarStreamShow}
+                      >
+                        <img
+                          src={isMuted ? SoundOnIcon : SoundOffIcon}
+                          alt={isMuted ? "Sound On Icon" : "Sound Off Icon"}
+                          className={styles.soundOffIcon}
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div className={styles.chatWrap}>
-                <div className={styles.chatInputSection}>
-                  <input
-                    {...register("question", { required: true })}
-                    type="text"
-                    className={styles.chatInput}
-                    placeholder={t("questionPlaceholder")}
-                    autoComplete="off"
-                    onKeyDown={handleKeyDown}
-                    onInput={(e) => setIsEmpty(e.currentTarget.value === "")}
-                    disabled={!isFirst}
-                  />
+              <div className={styles.askQuestionChat}>
+                <div className={styles.chatContainer}>
+                  <div className={styles.gradientOverlay} />
 
-                  {!isEmpty && (
-                    <button
-                      type="button"
-                      className={styles.clearButton}
+                  <div className={styles.chatContent} ref={chatContentRef}>
+                    {chatMessages.map((chat, index) => {
+                      const isLastMessage = index === chatMessages.length - 1;
+
+                      return (
+                        <div
+                          key={index}
+                          className={
+                            chat.type === "user"
+                              ? styles.messageUser
+                              : messageClass
+                          }
+                        >
+                          <div
+                            className={
+                              chat.type === "user"
+                                ? styles.userMessage
+                                : styles.messageSystemContent
+                            }
+                          >
+                            {chat.type !== "user" &&
+                              isLastMessage &&
+                              isLoading &&
+                              !chat.message && <ChatSpinner />}
+                            {chat.message}
+                            {/*{chat.type === "user" && (*/}
+                            {/*  <div className={styles.messageSystemBottom}>*/}
+                            {/*    <span className={styles.messageTime}>*/}
+                            {/*      {messageTime}*/}
+                            {/*    </span>*/}
+                            {/*  </div>*/}
+                            {/*)}*/}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {metaData && metaData.length > 0 && !isLoading && !isSending && (
+                    <div
+                      className={styles.collapseButton}
                       onClick={() => {
-                        setValue("question", "");
-                        setIsEmpty(true);
+                        setIsMetaModalOpen(true);
                       }}
                     >
-                      <img src={ClearIcon} alt="clear" />
-                    </button>
+                      <span style={{ paddingRight: 10 }}>
+                        {isCollapseVisible
+                          ? "Hide used resources"
+                          : "Show used resources"}
+                      </span>
+                      <img
+                        style={{
+                          transform: `rotate(${
+                            isCollapseVisible ? 180 : 0
+                          }deg)`,
+                        }}
+                        src={isCollapseVisible ? ArrowDown : CollapseIcon}
+                        alt="icon"
+                      />
+                    </div>
                   )}
 
-                  {!streamDone ? (
-                    <button
-                      type="button"
-                      className={styles.submitButton}
-                      disabled={isSending}
-                      onClick={() => {
-                        handleSubmit((data) => {
-                          onSubmit(data);
-                          setIsStreamConnect(true);
-                          dispatch(setIsStreamShow(true));
-                          setIsEmpty(true);
-                          dispatch(setIsStopQuestion(false));
-                          dispatch(setStreamDone(true));
-                        })();
-                      }}
-                    >
-                      <img src={Send} alt="btn" />
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className={styles.stopButton}
-                      disabled={isSending}
-                      onClick={() => {
-                        stopAvatarGeneration({ client_id: String(value.id) });
-                        dispatch(setIsStopQuestion(true));
-                        dispatch(setStreamDone(false));
-                      }}
-                    >
-                      <div className={styles.beforeIcon} />
-                    </button>
-                  )}
+                  <div className={styles.collapseContent}>
+                    {isCollapseVisible && (
+                      <Collapse>{renderMetaData()}</Collapse>
+                    )}
+                  </div>
+
+                  <div className={styles.chatWrap}>
+                    <div className={styles.chatInputSection}>
+                      {!recording && (
+                        <input
+                          {...register("question", { required: true })}
+                          type="text"
+                          className={styles.chatInput}
+                          placeholder={t("questionPlaceholder")}
+                          autoComplete="off"
+                          onKeyDown={handleKeyDown}
+                          onInput={(e) =>
+                            setIsEmpty(e.currentTarget.value === "")
+                          }
+                          disabled={!isFirst}
+                        />
+                      )}
+
+                      {!isEmpty && (
+                        <button
+                          type="button"
+                          className={styles.clearButton}
+                          onClick={() => {
+                            setValue("question", "");
+                            setIsEmpty(true);
+                          }}
+                        >
+                          <img src={ClearIcon} alt="clear" />
+                        </button>
+                      )}
+                      {isTextInInput ? (
+                        <button
+                          type="button"
+                          className={styles.submitButton}
+                          disabled={isSending}
+                          onClick={() => {
+                            handleSubmit((data) => {
+                              onSubmit(data);
+                              setIsStreamConnect(true);
+                              dispatch(setIsStreamShow(true));
+                              setIsEmpty(true);
+                              dispatch(setIsStopQuestion(false));
+                              dispatch(setStreamDone(true));
+                            })();
+                          }}
+                        >
+                          <img src={Send} alt="btn" />
+                        </button>
+                      ) : (
+                        <VoiceRecorder
+                          link=""
+                          addTextWithDelay={addTextWithDelay}
+                          clickCursor={clickCursor}
+                          isLoadingData={false}
+                          setQuestion={setQuestion}
+                          setIsStreamConnect={setIsStreamConnect}
+                          userId={value?.id?.toString()}
+                          selectedLanguageCode={selectedLanguage.isoCode2char}
+                          indexName={indexName}
+                          isFirst={isFirst}
+                          setIsFirst={setIsFirst}
+                          setChatHistory={setVoiceChatHistory}
+                          setMessageClass={setMessageClass}
+                          streamDone={streamDone}
+                          recording={recording}
+                          setRecording={setRecording}
+                          stopAvatarGeneration={stopAvatarGeneration}
+                        />
+                      )}
+
+                      {/*{!streamDone ? (*/}
+                      {/*  <button*/}
+                      {/*    type="button"*/}
+                      {/*    className={styles.submitButton}*/}
+                      {/*    disabled={isSending}*/}
+                      {/*    onClick={() => {*/}
+                      {/*      handleSubmit((data) => {*/}
+                      {/*        onSubmit(data);*/}
+                      {/*        setIsStreamConnect(true);*/}
+                      {/*        dispatch(setIsStreamShow(true));*/}
+                      {/*        setIsEmpty(true);*/}
+                      {/*        dispatch(setIsStopQuestion(false));*/}
+                      {/*        dispatch(setStreamDone(true));*/}
+                      {/*      })();*/}
+                      {/*    }}*/}
+                      {/*  >*/}
+                      {/*    <img src={Send} alt="btn" />*/}
+                      {/*  </button>*/}
+                      {/*) : (*/}
+                      {/*  <button*/}
+                      {/*    type="button"*/}
+                      {/*    className={styles.stopButton}*/}
+                      {/*    disabled={isSending}*/}
+                      {/*    onClick={() => {*/}
+                      {/*      stopAvatarGeneration({*/}
+                      {/*        client_id: String(value.id),*/}
+                      {/*      });*/}
+                      {/*      dispatch(setIsStopQuestion(true));*/}
+                      {/*      dispatch(setStreamDone(false));*/}
+                      {/*    }}*/}
+                      {/*  >*/}
+                      {/*    <div className={styles.beforeIcon} />*/}
+                      {/*  </button>*/}
+                      {/*)}*/}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -688,7 +790,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
           <LanguageModal
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
-            languages={languages}
+            languages={languages || []}
             defaultLanguage={defaultLanguage}
             onLanguageSelect={onLanguageSelect}
           />

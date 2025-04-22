@@ -42,6 +42,8 @@ import {
 import axios from "axios";
 import { TokenManager } from "../../../../utils";
 import { API_PREFIX } from "../../../../api/apiHelpers";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../store";
 
 const initialState: HomeState = {
   counter: 0,
@@ -568,8 +570,7 @@ export const findBooks = createAsyncThunk(
 export const getBooksByQueryName = createAsyncThunk(
   "query/api/v1/books",
   async (books: BooksParams) => {
-    const response = await getBooks(books);
-    return response;
+    return await getBooks(books);
   }
 );
 
@@ -739,3 +740,7 @@ export const {
   clearCurrentVersion,
 } = homeSlice.actions;
 export default homeSlice.reducer;
+
+export const useHomeState = () => {
+  return useSelector((state: RootState) => state.home);
+};

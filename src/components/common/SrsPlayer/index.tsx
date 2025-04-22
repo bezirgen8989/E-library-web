@@ -17,8 +17,8 @@ export interface SrsWhepPlayerProps {
   url: string;
   options?: React.VideoHTMLAttributes<HTMLVideoElement>;
   rtcOpts?: any;
-  width: number;
-  height: number;
+  width: number | string;
+  height: number | string;
   videoRef: React.MutableRefObject<any>;
 }
 
@@ -32,18 +32,19 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const { avatarStreamShow } = useLazySelector(({ home }) => {
-    const { avatarStreamShow } = home;
+  const { avatarStreamShow, isStreamShow } = useLazySelector(({ home }) => {
+    const { avatarStreamShow, isStreamShow } = home;
     return {
       avatarStreamShow,
+      isStreamShow,
     };
   });
   console.log("avatarStreamShow123", avatarStreamShow);
 
-  const { isStreamShow } = useLazySelector(({ home }) => {
-    const { isStreamShow } = home;
-    return { isStreamShow };
-  });
+  // const { isStreamShow } = useLazySelector(({ home }) => {
+  //   const { isStreamShow } = home;
+  //   return { isStreamShow };
+  // });
 
   const checkTracksState = () => {
     if (srsSdkRef.current && srsSdkRef.current.stream) {
@@ -120,7 +121,7 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
     <video
       ref={videoRef}
       style={{
-        width: `${displayedWidth}px`,
+        width: `${displayedWidth}`,
         height: `${displayedHeight}px`,
         pointerEvents: "none", // Отключаем события мыши
       }}

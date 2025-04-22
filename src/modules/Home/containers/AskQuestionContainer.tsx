@@ -18,6 +18,7 @@ import { useLazySelector } from "../../../hooks";
 import { getLanguages, getMe, setAvatar } from "../../Auth/slices/auth";
 import { useSocket } from "../../../hooks/useSocket";
 import TokenManager from "../../../utils/TokenManager";
+import { useQuery } from "../../../hooks/useQuery";
 
 type Chat = {
   type: "user" | "response";
@@ -270,6 +271,13 @@ const AskQuestionContainer: React.FC = () => {
   }, [subscribeToEvent, unsubscribeFromEvent, connected, avatarStreamShow]);
 
   // const filteredLanguages = languages?.result?.data.filter(lang => lang.name !== "Dari");
+
+  const selectedBookId = useQuery("selectedBook");
+  useEffect(() => {
+    if (selectedBookId) {
+      dispatch(getBookById(selectedBookId));
+    }
+  }, [selectedBookId]);
 
   return (
     <AskQuestionComponent

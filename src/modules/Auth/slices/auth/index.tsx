@@ -30,13 +30,14 @@ import {
   RegisterUserParams,
   TokenData,
 } from "../../types";
-import { history } from "store";
+import { history, RootState } from "store";
 import { TokenManager } from "utils";
 import homeRoutes from "modules/Home/routing/routes";
 import { notification } from "antd";
 import routes from "../../routing/routes";
 import Alert from "../../../../assets/images/icons/notificationIcon.svg";
 import { t } from "i18next";
+import { useSelector } from "react-redux";
 
 const initialState: AuthState = {
   loginRequest: {},
@@ -358,8 +359,7 @@ export const addHabits = createAsyncThunk(
 );
 
 export const getMe = createAsyncThunk("api/v1/auth/me", async () => {
-  const response = await authMe();
-  return response;
+  return await authMe();
 });
 
 export const getLocalization = createAsyncThunk(
@@ -624,3 +624,7 @@ export const verifyEmail = createAsyncThunk(
 
 export const { updateCurrentEmail } = authSlice.actions;
 // export default authSlice.reducer
+
+export const useAuthState = () => {
+  return useSelector((state: RootState) => state.auth);
+};

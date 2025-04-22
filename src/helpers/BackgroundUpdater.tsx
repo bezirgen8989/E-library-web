@@ -72,7 +72,7 @@ export const BackgroundUpdater = () => {
       [homeRoutes.finishedBooks]: "#FBF1EA",
       [homeRoutes.searchTopBooks]: "#FBF1EA",
       [homeRoutes.searchNewBooks]: "#FBF1EA",
-      [homeRoutes.askQuestionAll]: "#00191e",
+      [homeRoutes.askQuestion]: "#00191e",
       [homeRoutes.chooseAvatar]: "#00191e",
     };
 

@@ -1,16 +1,17 @@
 .wrapper {
   display: flex;
   align-items: center;
-  width: 100%;
+
+  &.wrapperRecording {
+    width: 100%;
+  }
 }
 .voiceBlock {
   display: flex;
   align-items: center;
-  background: linear-gradient(to bottom, #d3a171, #c18a5b, #a66744);
-  padding: 0 20px;
   border-radius: 16px;
-  min-height: 88px;
   width: 100%;
+  justify-content: space-between;
   @media (max-width: 964px) {
     max-width: 420px;
     margin: 0 auto;
@@ -22,9 +23,9 @@
 }
 
 .stopBtnIconWrapper {
-  width: 60px;
-  min-width: 60px;
-  height: 60px;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
   background: #fff;
   flex-grow: 0;
   border-radius: 50%;
@@ -32,9 +33,6 @@
   align-items: center;
   justify-content: center;
   padding: 8px;
-  margin-right: 4px;
-  border: 8px solid #dcbba1;
-  //box-sizing: content-box;
   .progressBlock {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
@@ -52,9 +50,6 @@
   padding: 0 !important;
 }
 .stopRecording {
-  height: 62px;
-  width: 70px;
-  margin: 0 0 0 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -71,8 +66,10 @@
 .readyRecordingWrapper {
   display: flex;
   min-width: 140px;
-  margin-right: 10px;
+  margin-right: 12px;
   align-items: center;
+  width: 100%;
+  max-width: 276px;
 }
 .hiddenPlayBtn {
   position: absolute !important;
@@ -104,10 +101,11 @@
   padding: 6px;
 }
 .btnMic {
-  margin-left: 10px;
+  position: relative;
+  //margin-left: 10px;
   @media (max-width: 964px) {
-    max-width: 420px;
-    margin: 0 auto;
+    //max-width: 420px;
+    //margin: 0 auto;
   }
 }
 .StopIcon {
