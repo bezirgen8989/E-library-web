@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Collapse } from "antd";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import styles from "./AskQuestionComponent.module.scss";
 import Send from "../../../../assets/images/icons/sendIcon.svg";
 import CollapseIcon from "../../../../assets/images/icons/CollapseIcon.svg";
@@ -87,6 +89,8 @@ type AskQuestionComponentProps = {
 };
 
 const { Panel } = Collapse;
+
+dayjs.extend(customParseFormat);
 
 const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   setQuestion,
@@ -410,11 +414,11 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   useEffect(() => {
     setChatMessages(
-      [...voiceChatHistory, ...chatHistory].sort(
-        (a, b) =>
-          new Date(`1970-01-01T${a.timestamp}Z`).getTime() -
-          new Date(`1970-01-01T${b.timestamp}Z`).getTime()
-      )
+      [...voiceChatHistory, ...chatHistory].sort((a, b) => {
+        const timeA = dayjs(a.timestamp, "h:mm:ss A", true).unix();
+        const timeB = dayjs(b.timestamp, "h:mm:ss A", true).unix();
+        return timeA - timeB;
+      })
     );
   }, [chatHistory, voiceChatHistory]);
 
