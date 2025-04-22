@@ -501,8 +501,8 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                     {url && (
                       <SrsPlayer
                         url={url}
-                        width={0}
-                        height={0}
+                        width={430}
+                        height={"100%"}
                         videoRef={videoRef}
                         options={{
                           autoPlay: true,

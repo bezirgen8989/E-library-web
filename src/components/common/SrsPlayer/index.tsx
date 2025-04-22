@@ -18,7 +18,7 @@ export interface SrsWhepPlayerProps {
   options?: React.VideoHTMLAttributes<HTMLVideoElement>;
   rtcOpts?: any;
   width: number;
-  height: number;
+  height: number | string;
   videoRef: React.MutableRefObject<any>;
 }
 
