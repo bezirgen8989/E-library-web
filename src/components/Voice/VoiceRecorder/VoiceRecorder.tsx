@@ -114,7 +114,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     return () => {
       deleteStreaming();
       stopStreaming();
-      setIsConnecting(true);
       if (userData?.result?.id) {
         stopAvatarGeneration({
           client_id: String(userData?.result?.id),
@@ -309,15 +308,11 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
 
     connectToWhisper();
 
-    const start = setTimeout(async () => {
+    setTimeout(async () => {
       setIsFirst(false);
       startStreaming();
       setIsConnecting(false);
     }, 3000);
-
-    return () => {
-      clearTimeout(start);
-    };
   }, [isConnecting]);
 
   useEffect(() => {
