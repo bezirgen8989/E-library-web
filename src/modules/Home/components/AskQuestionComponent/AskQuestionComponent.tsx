@@ -185,7 +185,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
         );
       }
     }
-  }, [avatars, defaultAvatarId, setSelectedAvatar, value, isChooseAvatarPage]);
+  }, [defaultAvatarId, isChooseAvatarPage]);
 
   const defaultLanguage = (languages || []).find(
     (lang) => lang.name === "English"
