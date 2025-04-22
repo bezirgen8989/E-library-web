@@ -28,12 +28,8 @@ import { useTranslation } from "react-i18next";
 interface IVoiceRecorder {
   isNonHealth?: boolean;
   addTextWithDelay: (values: string) => void;
-  selectedLanguage: string;
-  setIsRecordingInProcess: (isInProcess: boolean) => void;
   clickCursor: () => void;
   isLoadingData?: boolean;
-  link: string;
-  setFormData: (formData: any) => void;
   setQuestion: (text: string) => void;
   setIsStreamConnect?: (value: boolean) => void;
   userId: any;
@@ -41,7 +37,6 @@ interface IVoiceRecorder {
   isFirst: boolean;
   setIsFirst: (value: boolean) => void;
   indexName: string;
-  setIsShowSilent: any;
   setChatHistory: any;
   setMessageClass: any;
   streamDone: any;
@@ -54,16 +49,11 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   clickCursor,
   addTextWithDelay,
   isNonHealth,
-  selectedLanguage,
-  setIsRecordingInProcess,
-  setFormData,
   setQuestion,
-  link,
   setIsStreamConnect,
   userId,
   indexName,
   selectedLanguageCode,
-  setIsShowSilent,
   setIsFirst,
   isFirst,
   setChatHistory,
@@ -93,7 +83,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
 
   const [isReadyPaused, setIsReadyPaused] = useState(false);
 
-  const language = renderLangCodes(selectedLanguage);
+  const language = renderLangCodes(selectedLanguageCode);
 
   const [
     stopStreaming,
@@ -105,16 +95,22 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     language,
     setTextAreaValue: addTextWithDelay,
     paused,
-    setIsRecordingInProcess,
     // setQuestion,
     userId,
     indexName,
     selectedLanguageCode,
-    setIsShowSilent,
+    setIsShowSilent: () => console.log("setIsShowSilent"),
     setChatHistory,
     setMessageClass,
     disconnected,
   });
+
+  useEffect(() => {
+    return () => {
+      deleteStreaming();
+      stopStreaming();
+    };
+  }, []);
 
   console.log(deleteStreaming, pauseStreaming);
 
@@ -141,11 +137,11 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     checkMicrophoneAccess();
   }, []);
 
-  useEffect(() => {
-    if (link) {
-      createRecordedWaveSurfer(link, "#playBtn", true);
-    }
-  }, [isLoadingData, hasMicrophoneAccess]);
+  // useEffect(() => {
+  //   if (link) {
+  //     createRecordedWaveSurfer(link, "#playBtn", true);
+  //   }
+  // }, [isLoadingData, hasMicrophoneAccess]);
 
   const createWaveSurfer = () => {
     // if (!hasMicrophoneAccess) {
@@ -194,42 +190,42 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     handleRecordClick();
   };
 
-  const createRecordedWaveSurfer = (
-    url: string,
-    id: string,
-    isReadyAudio = false
-  ) => {
-    if (!hasMicrophoneAccess) {
-      return;
-    }
-
-    const container = document.querySelector("#recordings");
-    const newWaveSurfer = WaveSurfer.create({
-      container: container! as any,
-      waveColor: "rgba(199, 204, 205, 0.6)",
-      progressColor: "rgba(199, 204, 205, 0.6)",
-      height: 24,
-      width: isNonHealth ? "860px" : "220px",
-      barGap: 1,
-      barWidth: 1.5,
-      barHeight: 15,
-      url,
-    });
-
-    if (isReadyAudio) {
-      newWaveSurfer.load(url);
-    }
-
-    const button = document.getElementById(id);
-
-    if (!button) {
-      return;
-    }
-
-    button.onclick = () => newWaveSurfer.playPause();
-
-    newWaveSurfer.on("finish", () => setIsReadyPaused(false));
-  };
+  // const createRecordedWaveSurfer = (
+  //   url: string,
+  //   id: string,
+  //   isReadyAudio = false
+  // ) => {
+  //   if (!hasMicrophoneAccess) {
+  //     return;
+  //   }
+  //
+  //   const container = document.querySelector("#recordings");
+  //   const newWaveSurfer = WaveSurfer.create({
+  //     container: container! as any,
+  //     waveColor: "rgba(199, 204, 205, 0.6)",
+  //     progressColor: "rgba(199, 204, 205, 0.6)",
+  //     height: 24,
+  //     width: isNonHealth ? "860px" : "220px",
+  //     barGap: 1,
+  //     barWidth: 1.5,
+  //     barHeight: 15,
+  //     url,
+  //   });
+  //
+  //   if (isReadyAudio) {
+  //     newWaveSurfer.load(url);
+  //   }
+  //
+  //   const button = document.getElementById(id);
+  //
+  //   if (!button) {
+  //     return;
+  //   }
+  //
+  //   button.onclick = () => newWaveSurfer.playPause();
+  //
+  //   newWaveSurfer.on("finish", () => setIsReadyPaused(false));
+  // };
 
   const updateProgress = (time: number) => {
     if (!progressRef.current) {
@@ -335,7 +331,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
           onClick={() => {
             setIsReadyPaused(!isReadyPaused);
           }}
-          className={!link ? styles.hiddenPlayBtn : styles.playBtn}
+          className={!"" ? styles.hiddenPlayBtn : styles.playBtn}
           title=""
           id={"#playBtn"}
           icon={
@@ -348,7 +344,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
         />
       </div>
 
-      {link ? (
+      {"" ? (
         <div className={styles.blockForReadyAudio}>
           <div className={styles.voiceBlock}>
             <p className={styles.name}>Your Recording </p>
