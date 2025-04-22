@@ -427,6 +427,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       console.error("Error stopping avatar generation:", error);
     }
   };
+
   console.log("selectedAvatar", selectedAvatar);
 
   const chooseAvatarSteps = {
