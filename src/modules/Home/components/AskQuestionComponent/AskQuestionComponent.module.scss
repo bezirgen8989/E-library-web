@@ -151,7 +151,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding-bottom: 50px;
+  padding-bottom: 10px;
   position: relative;
   @media (max-width: 964px) {
     width: 100%;
@@ -302,16 +302,21 @@
     width: 100%;
     display: flex;
     align-items: center;
-    background-image: url('../../../../assets/images/icons/inputQuestionIcon.svg');
-    background-repeat: no-repeat;
-    background-position: 15px 50%;
-    padding: 6px 10px;
-    border-radius: 12px;
+    padding: 16px;
+    border-radius: 20px;
     background-color: rgba(199, 204, 205, 0.2);
+
+    button {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
     .chatInput {
       flex-grow: 1;
-      padding: 10px 10px 10px 30px;
+      padding-right: 10px;
       border: none;
       border-radius: 5px;
       background: none;
@@ -324,6 +329,8 @@
       border: none;
       cursor: pointer;
       margin-left: 10px;
+
+
 
       img {
         width: 24px;
