@@ -19,7 +19,9 @@ const useAuthSocial = () => {
 
     if (token) {
       TokenManager.setAccessToken(token);
-      refreshToken && TokenManager.setRefreshToken(refreshToken);
+      if (refreshToken) {
+        TokenManager.setRefreshToken(refreshToken);
+      }
       const response = await authMe();
 
       if (response.success && response.content.userName) {
@@ -31,7 +33,7 @@ const useAuthSocial = () => {
   };
 
   const loginViaSocial = (social: Social) => {
-    window.open(`${API_PREFIX}/api/v1/auth/${social}`, "_blank");
+    window.location.href = `${API_PREFIX}/api/v1/auth/${social}`;
   };
 
   return { finishSocialLogin, loginViaSocial };
