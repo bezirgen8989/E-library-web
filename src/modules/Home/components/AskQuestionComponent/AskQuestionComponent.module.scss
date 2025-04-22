@@ -1,10 +1,11 @@
 .askQuestionPage{
   display: flex;
   justify-content: center;
-  max-width: 896px;
+  max-width: 916px;
   .askQuestionWrapper{
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap: 34px;
     width: 100%;
 
     .askQuestionVideo{
@@ -12,6 +13,26 @@
     }
     .askQuestionChat{
 
+    }
+  }
+
+  .bookTitle {
+
+    &__speachBlock {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .muteBtn {
+      background-color: #ffffff;
+      width: 40px;
+      height: 40px;
+      padding: 10px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 }
@@ -24,7 +45,7 @@
 }
 
 .askQuestionPage {
-  max-width: 1050px;
+  //max-width: 1050px;
   margin: 0 auto;
   padding: 0 10px 10px;
   display: flex;
@@ -77,8 +98,8 @@
   flex-grow: 0;
   min-height: 84vh;
   max-height: 84vh;
-  width: 50%;
-  max-width: 450px;
+  //width: 50%;
+  //max-width: 450px;
   color: #ffffff;
   font-family: Arial, sans-serif;
   border-radius: 10px;
