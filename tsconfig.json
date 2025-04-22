@@ -19,8 +19,12 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
     "baseUrl": "src",
-    "noUnusedLocals": true
+    "paths": {
+      "@layouts/*": ["layouts/*"],
+      "@layouts": ["layouts"]
+    }
   },
   "exclude": [
     "node_modules"

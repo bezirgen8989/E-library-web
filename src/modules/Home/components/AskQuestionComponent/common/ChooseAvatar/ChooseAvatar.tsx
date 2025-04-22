@@ -8,6 +8,7 @@ import Spinner from "../../../../../../components/common/Spinner";
 // import { routes as profileRoutes } from "../../../../../UserManagement/routing";
 // import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useHistory, useLocation } from "react-router-dom";
 
 interface AvatarData {
   id: number;
@@ -21,7 +22,7 @@ interface AvatarData {
 }
 
 interface ChooseAvatarProps {
-  setCurrentStep: (value: number) => void;
+  // setCurrentStep: (value: number) => void;
   avatars: { data: AvatarData[] };
   setSelectedAvatar: (link: string) => void;
   setUserAvatar: (id: number) => void;
@@ -34,7 +35,7 @@ interface ChooseAvatarProps {
 }
 
 const ChooseAvatar: FC<ChooseAvatarProps> = ({
-  setCurrentStep,
+  // setCurrentStep,
   avatars = { data: [] },
   setSelectedAvatar,
   setUserAvatar,
@@ -46,6 +47,8 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
   isChooseAvatarPage,
 }) => {
   const { t } = useTranslation();
+  const { pathname } = useLocation();
+  const { push } = useHistory();
   // const history = useHistory();
 
   const settings = {
@@ -95,9 +98,11 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
       // setUserAvatar(currentImage.id);
       setUserAvatar(3);
       // history.push(profileRoutes.profile);
-      setCurrentStep(3);
+      // setCurrentStep(3);
+      push(`${pathname}?currentStep=${3}`);
     } else {
-      setCurrentStep(2);
+      // setCurrentStep(2);
+      push(`${pathname}?currentStep=${2}`);
       // setUserAvatar(currentImage.id);
       setUserAvatar(3);
     }

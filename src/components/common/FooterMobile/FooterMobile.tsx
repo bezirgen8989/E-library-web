@@ -56,10 +56,10 @@ const FooterMobile: React.FC = () => {
           <span className={styles.itemText}>{t("menuItemMyBookshelf")}</span>
         </Link>
         <Link
-          to={routes.askQuestionAll}
+          to={routes.askQuestion}
           style={{ color: difStyles ? "#7C8482" : "#7C8482" }}
           className={`${styles.footerNavItem} ${
-            isActive(routes.askQuestionAll) ? styles.active : ""
+            isActive(routes.askQuestion) ? styles.active : ""
           }`}
         >
           <svg

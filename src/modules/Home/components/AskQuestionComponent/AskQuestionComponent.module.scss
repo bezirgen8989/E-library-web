@@ -1,3 +1,23 @@
+.askQuestionPage{
+  display: flex;
+  justify-content: center;
+  max-width: 896px;
+  .askQuestionWrapper{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    .askQuestionVideo{
+
+    }
+    .askQuestionChat{
+
+    }
+  }
+}
+
+
+
 .askQuestionWrap {
   max-width: 950px;
   margin: 0 auto;
