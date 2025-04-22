@@ -20,6 +20,8 @@ import { icons } from "@layouts/Header/menuItems/icons";
 
 type Props = {};
 
+const otherStyle = ["/ask_question", "/user/profile"];
+
 export const Header = ({ children }: PropsWithChildren<Props>) => {
   const { t } = useTranslation();
   const [hasNotifications] = useState(true);
@@ -37,7 +39,7 @@ export const Header = ({ children }: PropsWithChildren<Props>) => {
     dispatch(setDrawerOpen(true));
   };
 
-  const darkPage = pathname.includes("ask_question");
+  const darkPage = otherStyle.includes(pathname);
 
   // Анахуя? если оно не работает?
   // const difStyles =
