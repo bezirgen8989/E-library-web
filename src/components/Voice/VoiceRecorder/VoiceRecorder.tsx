@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import WaveSurfer from "wavesurfer.js";
 // import { Mic } from "lucide-react";
 import RecordPlugin from "wavesurfer.js/dist/plugins/record";
-import MicIcon from "../../../assets/images/icons/Mic.svg";
+import MicIcon from "../../../assets/images/icons/Microphone.svg";
 
 // import { useNotification } from '@refinedev/core';
 import { Button, Spin, Tooltip } from "antd";
@@ -367,7 +367,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
               style={{
                 justifyContent: "center",
                 alignItems: "center",
-                background: "#F5BE8D",
+                background: "#BC845A",
                 padding: "0",
                 border: "none",
                 borderRadius: "50%",
