@@ -5,10 +5,14 @@
 
   .askQuestionWrapper {
     display: grid;
-    grid-template-columns:repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(432px, 1fr));
     gap: 34px;
     width: 100%;
     padding-top: 32px;
+
+    @media (max-width: 964px) {
+      grid-template-columns: 1fr;
+    }
 
     .askQuestionVideo {
 
@@ -307,6 +311,8 @@
     border-radius: 20px;
     background-color: rgba(199, 204, 205, 0.2);
     position: relative;
+    max-width: 432px;
+    margin: 0 auto;
 
     button {
       width: 40px;
@@ -495,11 +501,11 @@
   align-items: center;
   text-align: start;
   border-radius: 22px;
-  padding: 3px 30px 3px 6px;
-  color: #996C42 !important;
-  background-image: url('../../../../assets/images/icons/arrowProfile.svg');
+  padding: 3px 35px 3px 6px;
+  color: #FFFFFF !important;
+  background-image: url('../../../../assets/images/icons/ArrowWhite.svg');
   background-repeat: no-repeat;
-  background-position: calc(100% - 8px) center;
+  background-position: calc(100% - 14px) center;
   font-size: 14px;
   box-sizing: border-box;
   outline: none;

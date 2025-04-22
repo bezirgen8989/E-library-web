@@ -22,6 +22,7 @@ import SpinMic from "../SpinMic";
 import CustomIcon, { ICON_TYPES } from "../CustomIcon";
 // import Button from "../../common/Buttons/Button";
 import { useTranslation } from "react-i18next";
+import cn from "classnames";
 // import {setIsStopQuestion} from "../../../modules/Home/slices/home";
 // import {useDispatch} from "react-redux";
 
@@ -171,7 +172,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
       waveColor: "white",
       progressColor: "white",
       height: 24,
-      width: isNonHealth ? "850px" : "220px",
+      width: isNonHealth ? "850px" : "270px",
       barGap: 1,
       barWidth: 1.5,
       barHeight: 15,
@@ -326,7 +327,12 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   }
 
   return (
-    <div className={styles.wrapper}>
+    <div
+      className={cn(
+        styles.wrapper,
+        !link && !isFirst ? styles.wrapperRecording : null
+      )}
+    >
       <div className={styles.playBtnForReadyAudio}>
         <CustomButton
           onClick={() => {
@@ -419,10 +425,29 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
           {/*<span className={styles.name}>{renderText()}</span>*/}
           {!recordingUrl && (
             <>
-              <div className={styles.readyRecordingWrapper}>
-                <div id="mic" className={styles.stopBtn}></div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "minmax(100px, 276px) 40px",
+                }}
+              >
+                <div className={styles.readyRecordingWrapper}>
+                  <div id="mic" className={styles.stopBtn}></div>
+                </div>
+                {recording ? (
+                  <span
+                    style={{ color: "white" }}
+                    className={styles.progressBlock}
+                    id="progress"
+                    ref={progressRef}
+                  >
+                    00:00
+                  </span>
+                ) : (
+                  ""
+                )}
               </div>
-              <div style={{ display: "flex" }}>
+              <>
                 <Tooltip title={t("stop")} placement="top">
                   <div>
                     <div
@@ -437,22 +462,10 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
                       >
                         <div className={styles.StopIcon} />
                       </div>
-                      {recording ? (
-                        <span
-                          style={{ color: "white" }}
-                          className={styles.progressBlock}
-                          id="progress"
-                          ref={progressRef}
-                        >
-                          00:00
-                        </span>
-                      ) : (
-                        ""
-                      )}
                     </div>
                   </div>
                 </Tooltip>
-              </div>
+              </>
             </>
           )}
         </div>
