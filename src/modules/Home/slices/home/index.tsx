@@ -32,7 +32,6 @@ import {
   getCurrentAudioBook,
   getCurrentBookshelfBookById,
   getCurrentBookVersion,
-  getCurrentReadBook,
   getSearchBooks,
   getStreamUrl,
   getUserNotifications,
@@ -40,6 +39,9 @@ import {
   setReadingBookParams,
   setUserNotifications,
 } from "../../api/homeService";
+import axios from "axios";
+import { TokenManager } from "../../../../utils";
+import { API_PREFIX } from "../../../../api/apiHelpers";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 
@@ -365,8 +367,12 @@ const homeSlice = createSlice({
         state.currentReadBook = { isLoading: true };
       })
       .addCase(getReadBook.fulfilled, (state, action) => {
-        const { content, error } = action.payload;
-        state.currentReadBook = { isLoading: false, result: content, error };
+        const { error } = action.payload;
+        state.currentReadBook = {
+          isLoading: false,
+          result: action.payload,
+          error,
+        };
       })
 
       .addCase(getAudioBook.pending, (state) => {
@@ -609,10 +615,23 @@ export const getFinishedBooks = createAsyncThunk(
 );
 
 export const getReadBook = createAsyncThunk(
-  "/api/v1/books/readBook",
-  async (books: ReadBooksParams) => {
-    const response = await getCurrentReadBook(books);
-    return response;
+  "home/getReadBook",
+  async (params: {
+    bookId: string;
+    langId: number;
+    page: string;
+    signal?: AbortSignal;
+  }) => {
+    const token = TokenManager.getAccessToken();
+    const response = await axios.get(
+      `${API_PREFIX}/api/v1/books/readBookNew/${params.bookId}/${params.langId}/${params.page}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        signal: params.signal,
+      }
+    );
+    console.log("response222", response);
+    return response.data;
   }
 );
 
