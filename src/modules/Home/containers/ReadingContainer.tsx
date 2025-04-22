@@ -31,6 +31,7 @@ const ReadingContainer: React.FC = () => {
   const [totalPages, setTotalPages] = useState<number>(0);
   const prevTotalPages = useRef<number>(0);
   const [maxLoadPage, setMaxLoadPage] = useState<any>(0);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const [pagesVisited, setPagesVisited] = useState<number[]>([]);
   console.log(pagesVisited);
@@ -132,10 +133,27 @@ const ReadingContainer: React.FC = () => {
     const currentBookLang = sessionStorage.getItem("currentBookLanguage");
     const parseLang = JSON.parse(currentBookLang || "{}");
     const langId = parseLang?.id || value?.bookLanguage?.id || "7";
+
     if (page !== null && !loadedPages.has(page)) {
-      dispatch(getReadBook({ bookId: id, langId, page: page.toString() }));
+      dispatch(
+        getReadBook({
+          bookId: id,
+          langId,
+          page: page.toString(),
+          signal: abortControllerRef.current?.signal,
+        })
+      );
     }
-  }, [id, dispatch, page, loadedPages]);
+  }, [id, dispatch, page, loadedPages, value?.bookLanguage?.id]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
 
   useEffect(() => {
     if (currentReadBook?.result) {
