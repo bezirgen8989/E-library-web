@@ -11,7 +11,7 @@ type HomeProps = {
   topBooks: any;
   newBooks: any;
   suggestedBooks: any;
-  getBook: (id: number) => void;
+  getBook: any;
   isTopBooksLoading: boolean;
   isNewBooksLoading: boolean;
   isSuggestedBooksLoading: boolean;

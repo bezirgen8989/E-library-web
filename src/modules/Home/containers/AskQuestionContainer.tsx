@@ -41,7 +41,6 @@ const AskQuestionContainer: React.FC = () => {
     dispatch(getBookById(id));
   }, [dispatch, id]);
 
-  // Анахуя? тебе тут getMe если ты их получил ранее ???
   // useEffect(() => {
   //   dispatch(getMe());
   // }, [dispatch]);

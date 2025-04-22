@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Book } from "../components";
 import { useLazySelector } from "../../../hooks";
-import { getLanguages, getMe } from "../../Auth/slices/auth";
+import { getLanguages } from "../../Auth/slices/auth";
 import {
   addReview,
   addToShelf,
@@ -89,7 +89,7 @@ const BookContainer: React.FC = () => {
 
   useEffect(() => {
     dispatch(getLanguages());
-    dispatch(getMe());
+    // dispatch(getMe());
   }, [dispatch]);
 
   useEffect(() => {

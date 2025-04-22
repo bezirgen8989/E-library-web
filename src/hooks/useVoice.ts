@@ -196,12 +196,12 @@ export const useVoice = ({
     // 1. Low-pass filter (удаляет высокочастотные шумы)
     const lowPassFilter = audioCtx.createBiquadFilter();
     lowPassFilter.type = "lowpass";
-    lowPassFilter.frequency.setValueAtTime(2000, audioCtx.currentTime); // было 3000
+    lowPassFilter.frequency.setValueAtTime(1000, audioCtx.currentTime); // было 3000
 
     // 2. High-pass filter (удаляет низкочастотные шумы)
     const highPassFilter = audioCtx.createBiquadFilter();
     highPassFilter.type = "highpass";
-    highPassFilter.frequency.setValueAtTime(150, audioCtx.currentTime); // было 85
+    highPassFilter.frequency.setValueAtTime(400, audioCtx.currentTime); // было 85
 
     // 3. Notch (band-stop) filter на 50/60 Гц (электрические шумы)
     const notchFilter = audioCtx.createBiquadFilter();
