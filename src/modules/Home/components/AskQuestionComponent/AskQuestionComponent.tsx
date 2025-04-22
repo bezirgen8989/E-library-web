@@ -501,7 +501,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                     {url && (
                       <SrsPlayer
                         url={url}
-                        width={430}
+                        width={"100%"}
                         height={"100%"}
                         videoRef={videoRef}
                         options={{
@@ -525,7 +525,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                     }}
                     className={styles.shadowBG}
                   >
-                    <video width={430} loop autoPlay>
+                    <video width={430} loop autoPlay style={{ width: "100%" }}>
                       <source src={silentAvatar} type="video/mp4" />
                     </video>
                   </div>

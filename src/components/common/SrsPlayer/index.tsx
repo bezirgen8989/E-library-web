@@ -17,7 +17,7 @@ export interface SrsWhepPlayerProps {
   url: string;
   options?: React.VideoHTMLAttributes<HTMLVideoElement>;
   rtcOpts?: any;
-  width: number;
+  width: number | string;
   height: number | string;
   videoRef: React.MutableRefObject<any>;
 }
@@ -120,7 +120,7 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
     <video
       ref={videoRef}
       style={{
-        width: `${displayedWidth}px`,
+        width: `${displayedWidth}`,
         height: `${displayedHeight}px`,
         pointerEvents: "none", // Отключаем события мыши
       }}
