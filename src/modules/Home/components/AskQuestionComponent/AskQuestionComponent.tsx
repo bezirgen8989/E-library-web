@@ -36,8 +36,10 @@ import { useLazySelector } from "../../../../hooks";
 import { useTranslation } from "react-i18next";
 import { TokenManager } from "../../../../utils";
 import { useHistory, useLocation } from "react-router-dom";
-import { useQuery } from "../../../../hooks/useQuery";
-import { useAuthState } from "../../../Auth/slices/auth";
+import { useQuery } from "hooks/useQuery";
+// import {getLocalization} from "../../../Auth/slices/auth";
+// import { useQuery } from "../../../../hooks/useQuery";
+// import { useAuthState } from "../../../Auth/slices/auth";
 // import {useSocket} from "../../../../hooks/useSocket";
 
 type Chat = {
@@ -113,6 +115,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const videoRef = useRef<HTMLVideoElement | any>(null);
   // const [currentStep, setCurrentStep] = useState(1);
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
+  // const [, setIsRecordingInProcess] = useState(false);
   const [, setFormData] = useState<FormData | undefined>();
   const quillRef = useRef<ReactQuill>(null);
   const cursorPositionRef = useRef<null | number>(null);
@@ -121,24 +124,17 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const chatContentRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMetaModalOpen, setIsMetaModalOpen] = useState(false);
+  // const [, setIsShowSilent] = useState();
   const [isFirst, setIsFirst] = useState(true);
   const [isEmpty, setIsEmpty] = useState(true);
   const [voiceChatHistory, setVoiceChatHistory] = useState<any>([]);
+
   const currentStep = useQuery("currentStep");
   const selectedBookId = useQuery("selectedBook");
 
-  const { userData } = useAuthState();
-
-  console.log("111111111111111111111", userData?.result?.language);
-
-  const token = TokenManager.getAccessToken();
-
-  console.log("pathname", pathname);
-  console.log("searchsearchsearchsearchsearchsearch", currentStep);
+  console.log("selectedBookId", selectedBookId);
   console.log("chatHistory", chatHistory);
   console.log("voiceChatHistory", voiceChatHistory);
-  console.log("selectedBookId", selectedBookId);
-
   useEffect(() => {
     if (!currentStep) {
       push(`${pathname}?currentStep=${4}`);
@@ -158,36 +154,40 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [currentImage, setCurrentImage] = useState<AvatarData | null>(null);
   const [recording, setRecording] = useState(false);
 
-  // НАХУЯ??? Блять НАХУЯ вызывать, дисапатч сетания глобального языка приложения i18n
   // useEffect(() => {
   //   if (value?.language?.isoCode2char) {
   //     dispatch(getLocalization(value?.language?.isoCode2char));
   //   }
   // }, [dispatch, value?.language?.isoCode2char]);
 
-  // useEffect(() => {
-  //   if (avatars?.result?.data?.length && value) {
-  //     const initialAvatarIndex = avatars?.result?.data.findIndex(
-  //       (avatar: AvatarData) => avatar.id === value?.avatarSettings?.id
-  //     );
-  //     const foundIndex = initialAvatarIndex !== -1 ? initialAvatarIndex : 0;
-  //     setInitialSlide(foundIndex);
-  //
-  //     const initialAvatar = avatars?.result?.data[foundIndex];
-  //     setCurrentImage(initialAvatar);
-  //     setSelectedAvatar(initialAvatar.avatarPicture.link);
-  //
-  //     if (isChooseAvatarPage) {
-  //       push(`${pathname}?currentStep=${1}`)
-  //     } else {
-  //       const selectedBookQuery = selectedBookId ? `&currentStep=${currentStep}` : ''
-  //       push(`${pathname}?currentStep=${foundIndex === 0 ? 1 : 4}${selectedBookQuery}`)
-  //
-  //     }
-  //   }
-  // }, [defaultAvatarId, setSelectedAvatar, isChooseAvatarPage]);
+  useEffect(() => {
+    if (avatars?.result?.data?.length && value) {
+      const initialAvatarIndex = avatars?.result?.data.findIndex(
+        (avatar: AvatarData) => avatar.id === value?.avatarSettings?.id
+      );
+      const foundIndex = initialAvatarIndex !== -1 ? initialAvatarIndex : 0;
+      setInitialSlide(foundIndex);
 
-  const defaultLanguage = languages?.find(
+      const initialAvatar = avatars?.result?.data[foundIndex];
+      setCurrentImage(initialAvatar);
+      setSelectedAvatar(initialAvatar.avatarPicture.link);
+
+      if (isChooseAvatarPage) {
+        push(`${pathname}?currentStep=${1}`);
+      } else {
+        const selectedBookQuery = selectedBookId
+          ? `&currentStep=${currentStep}`
+          : "";
+        push(
+          `${pathname}?currentStep=${
+            foundIndex === 0 ? 1 : 4
+          }${selectedBookQuery}`
+        );
+      }
+    }
+  }, [avatars, defaultAvatarId, setSelectedAvatar, value, isChooseAvatarPage]);
+
+  const defaultLanguage = (languages || []).find(
     (lang) => lang.name === "English"
   ) || {
     id: 0,
@@ -196,22 +196,22 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     isoCode2char: "code",
   };
 
-  // useEffect(() => {
-  //   if (languages && languages.length > 0) {
-  //     const englishLanguage = languages.find((lang) => lang.name === "English");
-  //     if (englishLanguage) {
-  //       setSelectedLanguage(englishLanguage);
-  //     }
-  //   }
-  // }, [languages]);
+  useEffect(() => {
+    if (languages && languages.length > 0) {
+      const englishLanguage = languages.find((lang) => lang.name === "English");
+      if (englishLanguage) {
+        setSelectedLanguage(englishLanguage);
+      }
+    }
+  }, [languages]);
 
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
 
-  // useEffect(() => {
-  //   if (chatContentRef.current) {
-  //     chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
-  //   }
-  // }, [chatHistory, isSending, voiceChatHistory]);
+  useEffect(() => {
+    if (chatContentRef.current) {
+      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
+    }
+  }, [chatHistory, isSending, voiceChatHistory]);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -361,40 +361,43 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     return null;
   };
 
-  // useEffect(() => {
-  //   let prevPath = location.pathname;
-  //    СУКАБЛЯТЬ ЧТОООООООО???? Если ask_question и если НЕ ask_question блять я пиздец мой мозг СДОХ
-  //   return () => {
-  //     if (prevPath.includes("ask_question") && !location.pathname.includes("ask_question")) {
-  //       if (value?.id) {
-  //         stopAvatarGeneration({ client_id: String(value.id) });
-  //       }
-  //       setAvatarStreamShow(false);
-  //       dispatch(setIsStopQuestion(true));
-  //       dispatch(setStreamDone(false));
-  //     }
-  //   };
-  // }, [location.pathname]);
+  useEffect(() => {
+    let prevPath = location.pathname;
 
-  // useEffect(() => {
-  //   const handleRouteChange = () => {
-  //     if (!location.pathname.includes("ask_question") && videoRef.current) {
-  //       if (value?.id) {
-  //         stopAvatarGeneration({ client_id: String(value.id) });
-  //       }
-  //       videoRef.current.srcObject = null;
-  //       setIsStreamConnect(false);
-  //     }
-  //   };
-  //
-  //   handleRouteChange();
-  //
-  //   return () => {
-  //     if (videoRef.current) {
-  //       videoRef.current.srcObject = null;
-  //     }
-  //   };
-  // }, [location.pathname]);
+    return () => {
+      if (
+        prevPath.includes("ask_question") &&
+        !location.pathname.includes("ask_question")
+      ) {
+        if (value?.id) {
+          stopAvatarGeneration({ client_id: String(value.id) });
+        }
+        // setAvatarStreamShow(false);
+        dispatch(setIsStopQuestion(true));
+        dispatch(setStreamDone(false));
+      }
+    };
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      if (!location.pathname.includes("ask_question") && videoRef.current) {
+        if (value?.id) {
+          stopAvatarGeneration({ client_id: String(value.id) });
+        }
+        videoRef.current.srcObject = null;
+        setIsStreamConnect(false);
+      }
+    };
+
+    handleRouteChange();
+
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+      }
+    };
+  }, [location.pathname]);
 
   const [chatMessages, setChatMessages] = useState<Chat[]>([]);
 
@@ -407,6 +410,8 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       )
     );
   }, [chatHistory, voiceChatHistory]);
+
+  const token = TokenManager.getAccessToken();
 
   const stopAvatarGeneration = async (params: any) => {
     try {
@@ -433,7 +438,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       console.error("Error stopping avatar generation:", error);
     }
   };
-
   console.log("selectedAvatar", selectedAvatar);
 
   const chooseAvatarSteps = {
@@ -560,10 +564,10 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                         <div
                           className={styles.languageSelect}
                           style={{
-                            backgroundImage: `url(${userData?.result?.language.flag.link})`,
+                            backgroundImage: `url(${selectedLanguage.flag.link})`,
                           }}
                         />
-                        <span>{userData?.result?.language.name}</span>
+                        <span>{selectedLanguage?.name}</span>
                       </div>
                       <div className={styles.muteBtn}>
                         <img
@@ -979,7 +983,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
             languages={languages || []}
-            defaultLanguage={userData?.result?.language}
+            defaultLanguage={defaultLanguage}
             onLanguageSelect={onLanguageSelect}
           />
           <MetaModal
