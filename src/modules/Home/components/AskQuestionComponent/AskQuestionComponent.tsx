@@ -5,7 +5,7 @@ import styles from "./AskQuestionComponent.module.scss";
 import Send from "../../../../assets/images/icons/sendIcon.svg";
 import CollapseIcon from "../../../../assets/images/icons/CollapseIcon.svg";
 import DocumentIcon from "../../../../assets/images/icons/document.svg";
-// import SoundOnIcon from "../../../../assets/images/icons/SoundOn.svg";
+import SoundOnIcon from "../../../../assets/images/icons/SoundOn.svg";
 import SoundOffIcon from "../../../../assets/images/icons/SoundOff.svg";
 import BookIcon from "../../../../assets/images/icons/Book.svg";
 import ClearIcon from "../../../../assets/images/icons/Clear.svg";
@@ -128,6 +128,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [isFirst, setIsFirst] = useState(true);
   const [isEmpty, setIsEmpty] = useState(true);
   const [voiceChatHistory, setVoiceChatHistory] = useState<any>([]);
+  const [isMuted, setIsMuted] = useState(false);
 
   const currentStep = useQuery("currentStep");
   const selectedBookId = useQuery("selectedBook");
@@ -511,7 +512,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                         options={{
                           autoPlay: true,
                           playsInline: true,
-                          muted: false,
+                          muted: isMuted,
                           controls: true,
                         }}
                         rtcOpts={{
@@ -569,13 +570,23 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                         />
                         <span>{selectedLanguage?.name}</span>
                       </div>
-                      <div className={styles.muteBtn}>
+                      <button
+                        type="button"
+                        className={styles.muteBtn}
+                        onClick={() => {
+                          setIsMuted(!isMuted);
+                          if (videoRef.current) {
+                            videoRef.current.muted = !isMuted;
+                          }
+                        }}
+                        disabled={!avatarStreamShow}
+                      >
                         <img
-                          src={SoundOffIcon}
-                          alt="Sound Off Icon"
+                          src={isMuted ? SoundOnIcon : SoundOffIcon}
+                          alt={isMuted ? "Sound On Icon" : "Sound Off Icon"}
                           className={styles.soundOffIcon}
                         />
-                      </div>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -738,247 +749,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
               </div>
             </div>
           </div>
-
-          {/*  <div className={styles.askQuestionWrap}>*/}
-          {/*    <div className={styles.bookTitle}>*/}
-          {/*      <div style={{ marginRight: 10 }}>*/}
-          {/*        {pathname.includes("ask_global_question")*/}
-          {/*          ? t("askGlobalTitle")*/}
-          {/*          : title}*/}
-          {/*      </div>*/}
-          {/*      <div*/}
-          {/*        onMouseDown={(e) => {*/}
-          {/*          e.preventDefault();*/}
-          {/*          showModal();*/}
-          {/*        }}*/}
-          {/*        className={styles.languageSelectWrapper}*/}
-          {/*        style={{*/}
-          {/*          opacity: !recording ? "1" : "0.5",*/}
-          {/*          pointerEvents: recording ? "none" : "auto",*/}
-          {/*        }}*/}
-          {/*      >*/}
-          {/*        <div*/}
-          {/*          className={styles.languageSelect}*/}
-          {/*          style={{*/}
-          {/*            backgroundImage: `url(${selectedLanguage.flag.link})`,*/}
-          {/*          }}*/}
-          {/*        />*/}
-          {/*        <span>{selectedLanguage.name}</span>*/}
-          {/*      </div>*/}
-          {/*    </div>*/}
-          {/*    <div className={styles.askQuestionPage}>*/}
-          {/*      <div className={styles.avatarSide}>*/}
-          {/*        <div style={{ position: "relative", width: 300, height: 300 }}>*/}
-          {/*          <div*/}
-          {/*            style={{*/}
-          {/*              position: "absolute",*/}
-          {/*              width: "100%",*/}
-          {/*              height: "100%",*/}
-          {/*              opacity: avatarStreamShow ? 1 : 0,*/}
-          {/*              pointerEvents: avatarStreamShow ? "auto" : "none",*/}
-          {/*              transition: "opacity 0.3s ease-in-out",*/}
-          {/*            }}*/}
-          {/*          >*/}
-          {/*            {url && (*/}
-          {/*              <SrsPlayer*/}
-          {/*                url={url}*/}
-          {/*                width={300}*/}
-          {/*                height={300}*/}
-          {/*                videoRef={videoRef}*/}
-          {/*                options={{*/}
-          {/*                  autoPlay: true,*/}
-          {/*                  playsInline: true,*/}
-          {/*                  muted: false,*/}
-          {/*                  controls: true,*/}
-          {/*                }}*/}
-          {/*                rtcOpts={{*/}
-          {/*                  audio: {*/}
-          {/*                    enable: true,*/}
-          {/*                  },*/}
-          {/*                }}*/}
-          {/*              />*/}
-          {/*            )}*/}
-          {/*          </div>*/}
-          {/*          <div*/}
-          {/*            style={{*/}
-          {/*              position: "absolute",*/}
-          {/*              width: "100%",*/}
-          {/*              height: "100%",*/}
-          {/*              opacity: avatarStreamShow ? 0 : 1,*/}
-          {/*              pointerEvents: avatarStreamShow ? "none" : "auto",*/}
-          {/*              transition: "opacity 0.3s ease-in-out",*/}
-          {/*            }}*/}
-          {/*          >*/}
-          {/*            <video width={300} height={300} loop autoPlay>*/}
-          {/*              <source src={silentAvatar} type="video/mp4" />*/}
-          {/*            </video>*/}
-          {/*          </div>*/}
-          {/*        </div>*/}
-          {/*        <VoiceRecorder*/}
-          {/*          setIsRecordingInProcess={setIsRecordingInProcess}*/}
-          {/*          addTextWithDelay={addTextWithDelay}*/}
-          {/*          selectedLanguage=""*/}
-          {/*          clickCursor={clickCursor}*/}
-          {/*          setFormData={setFormData}*/}
-          {/*          isLoadingData={false}*/}
-          {/*          setQuestion={setQuestion}*/}
-          {/*          link=""*/}
-          {/*          setIsStreamConnect={setIsStreamConnect}*/}
-          {/*          userId={value?.id?.toString()}*/}
-          {/*          selectedLanguageCode={selectedLanguage.isoCode2char}*/}
-          {/*          indexName={indexName}*/}
-          {/*          setIsShowSilent={setIsShowSilent}*/}
-          {/*          isFirst={isFirst}*/}
-          {/*          setIsFirst={setIsFirst}*/}
-          {/*          setChatHistory={setVoiceChatHistory}*/}
-          {/*          setMessageClass={setMessageClass}*/}
-          {/*          streamDone={streamDone}*/}
-          {/*          recording={recording}*/}
-          {/*          setRecording={setRecording}*/}
-          {/*        />*/}
-          {/*      </div>*/}
-          {/*      <div className={styles.chatContainer}>*/}
-          {/*        <div className={styles.gradientOverlay} />*/}
-
-          {/*        <div className={styles.chatContent} ref={chatContentRef}>*/}
-          {/*          {chatMessages.map((chat, index) => {*/}
-          {/*            const isLastMessage = index === chatMessages.length - 1;*/}
-
-          {/*            return (*/}
-          {/*              <div*/}
-          {/*                key={index}*/}
-          {/*                className={*/}
-          {/*                  chat.type === "user"*/}
-          {/*                    ? styles.messageUser*/}
-          {/*                    : messageClass*/}
-          {/*                }*/}
-          {/*              >*/}
-          {/*                <div*/}
-          {/*                  className={*/}
-          {/*                    chat.type === "user"*/}
-          {/*                      ? styles.userMessage*/}
-          {/*                      : styles.messageSystemContent*/}
-          {/*                  }*/}
-          {/*                >*/}
-          {/*                  {chat.type !== "user" &&*/}
-          {/*                    isLastMessage &&*/}
-          {/*                    isLoading &&*/}
-          {/*                    !chat.message && <ChatSpinner />}*/}
-          {/*                  {chat.message}*/}
-          {/*                  /!*{chat.type === "user" && (*!/*/}
-          {/*                  /!*  <div className={styles.messageSystemBottom}>*!/*/}
-          {/*                  /!*    <span className={styles.messageTime}>*!/*/}
-          {/*                  /!*      {messageTime}*!/*/}
-          {/*                  /!*    </span>*!/*/}
-          {/*                  /!*  </div>*!/*/}
-          {/*                  /!*)}*!/*/}
-          {/*                </div>*/}
-          {/*              </div>*/}
-          {/*            );*/}
-          {/*          })}*/}
-          {/*        </div>*/}
-
-          {/*        {metaData && metaData.length > 0 && !isLoading && !isSending && (*/}
-          {/*          <div*/}
-          {/*            className={styles.collapseButton}*/}
-          {/*            onClick={() => {*/}
-          {/*              setIsMetaModalOpen(true);*/}
-          {/*            }}*/}
-          {/*          >*/}
-          {/*            <span style={{ paddingRight: 10 }}>*/}
-          {/*              {isCollapseVisible*/}
-          {/*                ? "Hide used resources"*/}
-          {/*                : "Show used resources"}*/}
-          {/*            </span>*/}
-          {/*            <img*/}
-          {/*              style={{*/}
-          {/*                transform: `rotate(${isCollapseVisible ? 180 : 0}deg)`,*/}
-          {/*              }}*/}
-          {/*              src={isCollapseVisible ? ArrowDown : CollapseIcon}*/}
-          {/*              alt="icon"*/}
-          {/*            />*/}
-          {/*          </div>*/}
-          {/*        )}*/}
-
-          {/*        <div className={styles.collapseContent}>*/}
-          {/*          {isCollapseVisible && <Collapse>{renderMetaData()}</Collapse>}*/}
-          {/*        </div>*/}
-
-          {/*        <div className={styles.chatWrap}>*/}
-          {/*          <div className={styles.chatInputSection}>*/}
-          {/*            <input*/}
-          {/*              {...register("question", { required: true })}*/}
-          {/*              type="text"*/}
-          {/*              className={styles.chatInput}*/}
-          {/*              placeholder={t("questionPlaceholder")}*/}
-          {/*              autoComplete="off"*/}
-          {/*              onKeyDown={handleKeyDown}*/}
-          {/*              onInput={(e) => setIsEmpty(e.currentTarget.value === "")}*/}
-          {/*              disabled={!isFirst}*/}
-          {/*            />*/}
-
-          {/*            {!isEmpty && (*/}
-          {/*              <button*/}
-          {/*                type="button"*/}
-          {/*                className={styles.clearButton}*/}
-          {/*                onClick={() => {*/}
-          {/*                  setValue("question", "");*/}
-          {/*                  setIsEmpty(true);*/}
-          {/*                }}*/}
-          {/*              >*/}
-          {/*                <img src={ClearIcon} alt="clear" />*/}
-          {/*              </button>*/}
-          {/*            )}*/}
-
-          {/*            {!streamDone ? (*/}
-          {/*              <button*/}
-          {/*                type="button"*/}
-          {/*                className={styles.submitButton}*/}
-          {/*                disabled={isSending}*/}
-          {/*                onClick={() => {*/}
-          {/*                  handleSubmit((data) => {*/}
-          {/*                    onSubmit(data);*/}
-          {/*                    setIsStreamConnect(true);*/}
-          {/*                    dispatch(setIsStreamShow(true));*/}
-          {/*                    setIsEmpty(true);*/}
-          {/*                    dispatch(setIsStopQuestion(false));*/}
-          {/*                    dispatch(setStreamDone(true));*/}
-          {/*                  })();*/}
-          {/*                }}*/}
-          {/*              >*/}
-          {/*                <img src={Send} alt="btn" />*/}
-          {/*              </button>*/}
-          {/*            ) : (*/}
-          {/*              <button*/}
-          {/*                type="button"*/}
-          {/*                className={styles.stopButton}*/}
-          {/*                disabled={isSending}*/}
-          {/*                onClick={() => {*/}
-          {/*                  stopAvatarGeneration({ client_id: String(value.id) });*/}
-          {/*                  dispatch(setIsStopQuestion(true));*/}
-          {/*                  dispatch(setStreamDone(false));*/}
-          {/*                }}*/}
-          {/*              >*/}
-          {/*                <div className={styles.beforeIcon} />*/}
-          {/*              </button>*/}
-          {/*            )}*/}
-          {/*          </div>*/}
-          {/*        </div>*/}
-          {/*      </div>*/}
-          {/*    </div>*/}
-          {/*    <LanguageModal*/}
-          {/*      isModalOpen={isModalOpen}*/}
-          {/*      setIsModalOpen={setIsModalOpen}*/}
-          {/*      languages={languages || []}*/}
-          {/*      defaultLanguage={defaultLanguage}*/}
-          {/*      onLanguageSelect={onLanguageSelect}*/}
-          {/*    />*/}
-          {/*    <MetaModal*/}
-          {/*      isModalOpen={isMetaModalOpen}*/}
-          {/*      setIsModalOpen={setIsMetaModalOpen}*/}
-          {/*      metaData={renderMetaData()}*/}
-          {/*    />*/}
-          {/*  </div>*/}
           <LanguageModal
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
