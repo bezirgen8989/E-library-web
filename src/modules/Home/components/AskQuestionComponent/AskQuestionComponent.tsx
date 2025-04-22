@@ -123,9 +123,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [isCollapseVisible] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const videoRef = useRef<HTMLVideoElement | any>(null);
-  // const [currentStep, setCurrentStep] = useState(1);
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
-  // const [, setIsRecordingInProcess] = useState(false);
   const [, setFormData] = useState<FormData | undefined>();
   const quillRef = useRef<ReactQuill>(null);
   const cursorPositionRef = useRef<null | number>(null);
@@ -134,7 +132,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const chatContentRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMetaModalOpen, setIsMetaModalOpen] = useState(false);
-  // const [, setIsShowSilent] = useState();
   const [isFirst, setIsFirst] = useState(true);
   const [isEmpty, setIsEmpty] = useState(true);
   const [voiceChatHistory, setVoiceChatHistory] = useState<any>([]);
@@ -540,9 +537,16 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                     }}
                     className={styles.shadowBG}
                   >
-                    <video width={430} loop autoPlay style={{ width: "100%" }}>
-                      <source src={silentAvatar} type="video/mp4" />
-                    </video>
+                    <video
+                      playsInline
+                      muted
+                      preload="auto"
+                      src={silentAvatar}
+                      width={430}
+                      loop={true}
+                      autoPlay={true}
+                      style={{ width: "100%" }}
+                    />
                   </div>
                 </div>
                 <div className={styles.askQuestionBookTitle}>
@@ -739,6 +743,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                           streamDone={streamDone}
                           recording={recording}
                           setRecording={setRecording}
+                          stopAvatarGeneration={stopAvatarGeneration}
                         />
                       )}
 

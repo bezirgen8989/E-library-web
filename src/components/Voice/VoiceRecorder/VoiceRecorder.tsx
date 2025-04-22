@@ -23,6 +23,7 @@ import CustomIcon, { ICON_TYPES } from "../CustomIcon";
 // import Button from "../../common/Buttons/Button";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
+import { useAuthState } from "../../../modules/Auth/slices/auth";
 // import {setIsStopQuestion} from "../../../modules/Home/slices/home";
 // import {useDispatch} from "react-redux";
 
@@ -44,6 +45,7 @@ interface IVoiceRecorder {
   streamDone: any;
   recording: any;
   setRecording: any;
+  stopAvatarGeneration: (params: any) => void;
 }
 
 const VoiceRecorder: React.FC<IVoiceRecorder> = ({
@@ -64,6 +66,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   streamDone,
   recording,
   setRecording,
+  stopAvatarGeneration,
 }) => {
   // const { open } = useNotification();
 
@@ -75,8 +78,8 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   // });
 
   const { t } = useTranslation();
+  const { userData } = useAuthState();
   // const [recording, setRecording] = useState(false);
-  const [paused, setPaused] = useState(false);
   const [recordingUrl] = useState<string | null>(null);
   const wavesurferRef = useRef<WaveSurfer | null>(null);
   const recordRef = useRef<any>(null);
@@ -97,7 +100,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   ] = useVoice({
     language,
     setTextAreaValue: addTextWithDelay,
-    paused,
     // setQuestion,
     userId,
     indexName,
@@ -112,8 +114,14 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     return () => {
       deleteStreaming();
       stopStreaming();
+      setIsConnecting(true);
+      if (userData?.result?.id) {
+        stopAvatarGeneration({
+          client_id: String(userData?.result?.id),
+        });
+      }
     };
-  }, []);
+  }, [userData?.result?.id]);
 
   console.log(deleteStreaming, pauseStreaming);
 
@@ -262,11 +270,10 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   // }, [avatarLanguage]);
 
   useEffect(() => {
-    if (recording || paused) {
+    if (recording) {
       recordRef.current?.stopRecording();
       setDisconnected(true);
       setRecording(false);
-      setPaused(false);
       stopStreaming();
       setIsFirst(true);
       return;
@@ -279,11 +286,10 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
       return;
     }
 
-    if (recording || paused) {
+    if (recording) {
       recordRef.current?.stopRecording();
       setDisconnected(true);
       setRecording(false);
-      setPaused(false);
       stopStreaming();
       setIsFirst(true);
       // dispatch(setIsStopQuestion(true));
@@ -303,11 +309,15 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
 
     connectToWhisper();
 
-    setTimeout(async () => {
+    const start = setTimeout(async () => {
       setIsFirst(false);
       startStreaming();
       setIsConnecting(false);
     }, 3000);
+
+    return () => {
+      clearTimeout(start);
+    };
   }, [isConnecting]);
 
   useEffect(() => {
@@ -326,6 +336,45 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     );
   }
 
+  // const startRecording = async () => {
+  //   if (!isConnecting) {
+  //     return;
+  //   }
+  //
+  //   connectToWhisper();
+  //
+  //   const start = setTimeout(async () => {
+  //     setIsFirst(false);
+  //     startStreaming();
+  //     setIsConnecting(false);
+  //   }, 3000);
+  //
+  //   return () => {
+  //     clearTimeout(start);
+  //   };
+  // }
+
+  // const stopRecording = async () => {
+  //   if (!hasMicrophoneAccess) {
+  //     return;
+  //   }
+  //
+  //   if (recording) {
+  //     recordRef.current?.stopRecording();
+  //     setDisconnected(true);
+  //     setRecording(false);
+  //     stopStreaming();
+  //     setIsFirst(true);
+  //     // dispatch(setIsStopQuestion(true));
+  //     // setIsStreamConnect && setIsStreamConnect(false); // Stop stream connection when recording stops
+  //     return;
+  //   }
+  //   setDisconnected(false);
+  //   setRecording(true);
+  //   setIsStreamConnect && setIsStreamConnect(true); // Start stream connection
+  //   await recordRef.current?.startRecording();
+  // }
+
   return (
     <div
       className={cn(
@@ -338,7 +387,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
           onClick={() => {
             setIsReadyPaused(!isReadyPaused);
           }}
-          className={!"" ? styles.hiddenPlayBtn : styles.playBtn}
+          className={!link ? styles.hiddenPlayBtn : styles.playBtn}
           title=""
           id={"#playBtn"}
           icon={
@@ -351,14 +400,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
         />
       </div>
 
-      {link ? (
-        <div className={styles.blockForReadyAudio}>
-          <div className={styles.voiceBlock}>
-            <p className={styles.name}>Your Recording </p>
-            <div className={styles.recordingForReadyAudio} id="recordings" />
-          </div>
-        </div>
-      ) : isFirst ? (
+      {isFirst ? (
         <div className={styles.initialBlock}>
           <div className={styles.btnMic}>
             <Button
@@ -373,6 +415,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
                 borderRadius: "50%",
                 display: "flex",
               }}
+              // onClick={startRecording}
               onClick={() => {
                 setIsConnecting(true);
               }}
@@ -383,41 +426,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
                 <img style={{ margin: 0 }} src={MicIcon} alt="" />
               )}
             </Button>
-            {/*<button*/}
-            {/*  disabled={streamDone}*/}
-            {/*  style={{*/}
-            {/*    // marginBottom: 0,*/}
-            {/*    // minHeight: 88,*/}
-            {/*    // marginTop: 0,*/}
-            {/*    width: "100%",*/}
-            {/*    justifyContent: "space-between",*/}
-            {/*    background: "transparent",*/}
-            {/*    // background:*/}
-            {/*    //   "linear-gradient(to bottom, #d3a171, #c18a5b, #a66744)",*/}
-            {/*    // borderRadius: "16px",*/}
-            {/*  }}*/}
-            {/*  onClick={() => {*/}
-            {/*    setIsConnecting(true);*/}
-            {/*  }}*/}
-            {/*>*/}
-            {/*  {*/}
-            {/*    isConnecting*/}
-            {/*      ? <SpinMic />*/}
-            {/*      : <img style={{ margin: 0 }} src={MicIcon} alt="" />*/}
-            {/*  }*/}
-            {/*  /!*<span>{t("talkToAvatar")}</span>*!/*/}
-
-            {/*  /!*<div className={styles.startRecording}>*!/*/}
-            {/*  /!*  <div*!/*/}
-            {/*  /!*    className={classNames(*!/*/}
-            {/*  /!*      styles.stopBtnIconWrapper,*!/*/}
-            {/*  /!*      !paused && styles.stopBtnIconWrapperPaused*!/*/}
-            {/*  /!*    )}*!/*/}
-            {/*  /!*  >*!/*/}
-            {/*  /!*    *!/*/}
-            {/*  /!*  </div>*!/*/}
-            {/*  /!*</div>*!/*/}
-            {/*</button>*/}
           </div>
         </div>
       ) : (
@@ -447,25 +455,16 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
                   ""
                 )}
               </div>
-              <>
-                <Tooltip title={t("stop")} placement="top">
-                  <div>
-                    <div
-                      className={styles.stopRecording}
-                      onClick={handleRecordClick}
-                    >
-                      <div
-                        className={classNames(
-                          styles.stopBtnIconWrapper,
-                          !paused && styles.stopBtnIconWrapperPaused
-                        )}
-                      >
-                        <div className={styles.StopIcon} />
-                      </div>
-                    </div>
+              <Tooltip title={t("stop")} placement="top">
+                <div
+                  className={styles.stopRecording}
+                  onClick={handleRecordClick}
+                >
+                  <div className={classNames(styles.stopBtnIconWrapper)}>
+                    <div className={styles.StopIcon} />
                   </div>
-                </Tooltip>
-              </>
+                </div>
+              </Tooltip>
             </>
           )}
         </div>
