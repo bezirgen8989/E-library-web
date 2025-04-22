@@ -106,7 +106,13 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const { push } = useHistory();
   const dispatch = useDispatch();
   const value = useContext(UserContext);
-  const { register, handleSubmit, reset, setValue } = useForm<FormValues>();
+  const { register, handleSubmit, reset, setValue, watch } =
+    useForm<FormValues>();
+
+  const isTextInInput = !!watch()?.question?.length;
+
+  console.log(isTextInInput);
+
   const [messageClass, setMessageClass] = useState(styles.messageSystemChange);
   const [messageTime, setMessageTime] = useState<string>("");
   console.log(messageTime);
@@ -666,18 +672,20 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
                   <div className={styles.chatWrap}>
                     <div className={styles.chatInputSection}>
-                      <input
-                        {...register("question", { required: true })}
-                        type="text"
-                        className={styles.chatInput}
-                        placeholder={t("questionPlaceholder")}
-                        autoComplete="off"
-                        onKeyDown={handleKeyDown}
-                        onInput={(e) =>
-                          setIsEmpty(e.currentTarget.value === "")
-                        }
-                        disabled={!isFirst}
-                      />
+                      {!recording && (
+                        <input
+                          {...register("question", { required: true })}
+                          type="text"
+                          className={styles.chatInput}
+                          placeholder={t("questionPlaceholder")}
+                          autoComplete="off"
+                          onKeyDown={handleKeyDown}
+                          onInput={(e) =>
+                            setIsEmpty(e.currentTarget.value === "")
+                          }
+                          disabled={!isFirst}
+                        />
+                      )}
 
                       {!isEmpty && (
                         <button
@@ -691,8 +699,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                           <img src={ClearIcon} alt="clear" />
                         </button>
                       )}
-
-                      {!streamDone ? (
+                      {isTextInInput ? (
                         <button
                           type="button"
                           className={styles.submitButton}
@@ -711,40 +718,62 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                           <img src={Send} alt="btn" />
                         </button>
                       ) : (
-                        <button
-                          type="button"
-                          className={styles.stopButton}
-                          disabled={isSending}
-                          onClick={() => {
-                            stopAvatarGeneration({
-                              client_id: String(value.id),
-                            });
-                            dispatch(setIsStopQuestion(true));
-                            dispatch(setStreamDone(false));
-                          }}
-                        >
-                          <div className={styles.beforeIcon} />
-                        </button>
+                        <VoiceRecorder
+                          link=""
+                          addTextWithDelay={addTextWithDelay}
+                          clickCursor={clickCursor}
+                          isLoadingData={false}
+                          setQuestion={setQuestion}
+                          setIsStreamConnect={setIsStreamConnect}
+                          userId={value?.id?.toString()}
+                          selectedLanguageCode={selectedLanguage.isoCode2char}
+                          indexName={indexName}
+                          isFirst={isFirst}
+                          setIsFirst={setIsFirst}
+                          setChatHistory={setVoiceChatHistory}
+                          setMessageClass={setMessageClass}
+                          streamDone={streamDone}
+                          recording={recording}
+                          setRecording={setRecording}
+                        />
                       )}
+
+                      {/*{!streamDone ? (*/}
+                      {/*  <button*/}
+                      {/*    type="button"*/}
+                      {/*    className={styles.submitButton}*/}
+                      {/*    disabled={isSending}*/}
+                      {/*    onClick={() => {*/}
+                      {/*      handleSubmit((data) => {*/}
+                      {/*        onSubmit(data);*/}
+                      {/*        setIsStreamConnect(true);*/}
+                      {/*        dispatch(setIsStreamShow(true));*/}
+                      {/*        setIsEmpty(true);*/}
+                      {/*        dispatch(setIsStopQuestion(false));*/}
+                      {/*        dispatch(setStreamDone(true));*/}
+                      {/*      })();*/}
+                      {/*    }}*/}
+                      {/*  >*/}
+                      {/*    <img src={Send} alt="btn" />*/}
+                      {/*  </button>*/}
+                      {/*) : (*/}
+                      {/*  <button*/}
+                      {/*    type="button"*/}
+                      {/*    className={styles.stopButton}*/}
+                      {/*    disabled={isSending}*/}
+                      {/*    onClick={() => {*/}
+                      {/*      stopAvatarGeneration({*/}
+                      {/*        client_id: String(value.id),*/}
+                      {/*      });*/}
+                      {/*      dispatch(setIsStopQuestion(true));*/}
+                      {/*      dispatch(setStreamDone(false));*/}
+                      {/*    }}*/}
+                      {/*  >*/}
+                      {/*    <div className={styles.beforeIcon} />*/}
+                      {/*  </button>*/}
+                      {/*)}*/}
                     </div>
                   </div>
-                  <VoiceRecorder
-                    addTextWithDelay={addTextWithDelay}
-                    clickCursor={clickCursor}
-                    isLoadingData={false}
-                    setQuestion={setQuestion}
-                    setIsStreamConnect={setIsStreamConnect}
-                    userId={value?.id?.toString()}
-                    selectedLanguageCode={selectedLanguage.isoCode2char}
-                    indexName={indexName}
-                    isFirst={isFirst}
-                    setIsFirst={setIsFirst}
-                    setChatHistory={setVoiceChatHistory}
-                    setMessageClass={setMessageClass}
-                    streamDone={streamDone}
-                    recording={recording}
-                    setRecording={setRecording}
-                  />
                 </div>
               </div>
             </div>
