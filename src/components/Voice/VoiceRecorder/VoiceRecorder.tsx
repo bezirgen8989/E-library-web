@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import WaveSurfer from "wavesurfer.js";
 // import { Mic } from "lucide-react";
 import RecordPlugin from "wavesurfer.js/dist/plugins/record";
-import MicIcon from "../../../assets/images/icons/Microphone.svg";
+import MicIcon from "../../../assets/images/icons/MicIconBrown.svg";
+import MuteMicIcon from "../../../assets/images/icons/MuteMicIconBrown.svg";
 
 // import { useNotification } from '@refinedev/core';
 import { Button, Spin, Tooltip } from "antd";
@@ -97,6 +98,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     deleteStreaming,
     connectToWhisper,
     pauseStreaming,
+    toggleMicMute,
   ] = useVoice({
     language,
     setTextAreaValue: addTextWithDelay,
@@ -129,6 +131,13 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   >(null);
 
   // const dispatch = useDispatch();
+
+  const [isMuted, setIsMuted] = useState(false);
+
+  const handleMicToggle = () => {
+    setIsMuted((prevState) => !prevState); // Toggle mute state
+    toggleMicMute(); // Call your existing mute function
+  };
 
   // Function to check microphone access
   const checkMicrophoneAccess = async () => {
@@ -305,7 +314,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     if (!isConnecting) {
       return;
     }
-
+    setIsMuted(false);
     connectToWhisper();
 
     setTimeout(async () => {
@@ -330,45 +339,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
       </div>
     );
   }
-
-  // const startRecording = async () => {
-  //   if (!isConnecting) {
-  //     return;
-  //   }
-  //
-  //   connectToWhisper();
-  //
-  //   const start = setTimeout(async () => {
-  //     setIsFirst(false);
-  //     startStreaming();
-  //     setIsConnecting(false);
-  //   }, 3000);
-  //
-  //   return () => {
-  //     clearTimeout(start);
-  //   };
-  // }
-
-  // const stopRecording = async () => {
-  //   if (!hasMicrophoneAccess) {
-  //     return;
-  //   }
-  //
-  //   if (recording) {
-  //     recordRef.current?.stopRecording();
-  //     setDisconnected(true);
-  //     setRecording(false);
-  //     stopStreaming();
-  //     setIsFirst(true);
-  //     // dispatch(setIsStopQuestion(true));
-  //     // setIsStreamConnect && setIsStreamConnect(false); // Stop stream connection when recording stops
-  //     return;
-  //   }
-  //   setDisconnected(false);
-  //   setRecording(true);
-  //   setIsStreamConnect && setIsStreamConnect(true); // Start stream connection
-  //   await recordRef.current?.startRecording();
-  // }
 
   return (
     <div
@@ -415,11 +385,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
                 setIsConnecting(true);
               }}
             >
-              {isConnecting ? (
-                <SpinMic />
-              ) : (
-                <img style={{ margin: 0 }} src={MicIcon} alt="" />
-              )}
+              {isConnecting ? <SpinMic /> : <div className={styles.PlayIcon} />}
             </Button>
           </div>
         </div>
@@ -450,6 +416,17 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
                   ""
                 )}
               </div>
+              <Tooltip title={t("mute")} placement="top">
+                <div className={styles.stopRecording} onClick={handleMicToggle}>
+                  <div className={classNames(styles.muteBtnIconWrapper)}>
+                    <img
+                      style={{ margin: 0 }}
+                      src={isMuted ? MuteMicIcon : MicIcon}
+                      alt=""
+                    />
+                  </div>
+                </div>
+              </Tooltip>
               <Tooltip title={t("stop")} placement="top">
                 <div
                   className={styles.stopRecording}
