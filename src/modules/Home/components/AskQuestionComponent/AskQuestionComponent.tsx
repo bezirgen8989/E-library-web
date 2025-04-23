@@ -162,14 +162,11 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [currentImage, setCurrentImage] = useState<AvatarData | null>(null);
   const [recording, setRecording] = useState(false);
 
-  // useEffect(() => {
-  //   if (value?.language?.isoCode2char) {
-  //     dispatch(getLocalization(value?.language?.isoCode2char));
-  //   }
-  // }, [dispatch, value?.language?.isoCode2char]);
-
   useEffect(() => {
     if (avatars?.result?.data?.length && value) {
+      const selectedBookQuery = selectedBookId
+        ? `&currentStep=${currentStep}`
+        : "";
       const initialAvatarIndex = avatars?.result?.data.findIndex(
         (avatar: AvatarData) => avatar.id === value?.avatarSettings?.id
       );
@@ -183,17 +180,15 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       if (isChooseAvatarPage) {
         push(`${pathname}?currentStep=${1}`);
       } else {
-        const selectedBookQuery = selectedBookId
-          ? `&currentStep=${currentStep}`
-          : "";
+        const nowStep = currentStep ? currentStep : 4;
         push(
           `${pathname}?currentStep=${
-            foundIndex === 0 ? 1 : 4
+            foundIndex === 0 ? 1 : nowStep
           }${selectedBookQuery}`
         );
       }
     }
-  }, [defaultAvatarId, isChooseAvatarPage]);
+  }, [isChooseAvatarPage]);
 
   const defaultLanguage = (languages || []).find(
     (lang) => lang.name === "English"
