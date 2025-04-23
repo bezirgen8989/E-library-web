@@ -122,8 +122,8 @@ const HomeRouting = () => (
       <Route exact path={routes.newBooks} component={NewBooks} />
       <Route exact path={`${routes.reading}/:id`} component={Reading} />
       <Route exact path={`${routes.book}/:id`} component={Book} />
-      {/* Ты блять ебаный долбан у тебя тут нету параметра и что бы обойти это ты решил насрать на принципы DRY */}
       <Route path={routes.askQuestion} component={AskQuestion} />
+      {/* it is not necessary use two routes need to use one*/}
       {/*<Route path={routes.askQuestionAll} component={AskQuestion} />*/}
       <Route exact path={routes.chooseAvatar} component={ChooseAvatar} />
       <Route exact path={`${routes.audioBook}/:id`} component={AudioBook} />
