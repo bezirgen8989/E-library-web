@@ -215,6 +215,7 @@ const AskQuestionContainer: React.FC = () => {
       chatHistory={chatHistory}
       languages={languages?.result?.data}
       indexName={currentBook?.result?.vectorEntity?.indexName}
+      setChatHistory={setChatHistory}
       isChooseAvatarPage
     />
   );

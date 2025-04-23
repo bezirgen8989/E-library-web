@@ -20,7 +20,7 @@ import { useSocket } from "../../../hooks/useSocket";
 import TokenManager from "../../../utils/TokenManager";
 import { useQuery } from "../../../hooks/useQuery";
 
-type Chat = {
+export type Chat = {
   type: "user" | "response";
   message: string;
 };
@@ -290,6 +290,7 @@ const AskQuestionContainer: React.FC = () => {
       avatars={avatars}
       setUserAvatar={setUserAvatar}
       chatHistory={chatHistory}
+      setChatHistory={setChatHistory}
       languages={languages?.result?.data}
       indexName={currentBook?.result?.vectorEntity?.indexName}
     />

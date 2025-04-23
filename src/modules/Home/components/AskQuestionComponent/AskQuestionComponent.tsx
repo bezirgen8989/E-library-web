@@ -39,15 +39,11 @@ import { useTranslation } from "react-i18next";
 import { TokenManager } from "../../../../utils";
 import { useHistory, useLocation } from "react-router-dom";
 import { useQuery } from "hooks/useQuery";
+import { Chat } from "../../containers/AskQuestionContainer";
 // import {getLocalization} from "../../../Auth/slices/auth";
 // import { useQuery } from "../../../../hooks/useQuery";
 // import { useAuthState } from "../../../Auth/slices/auth";
 // import {useSocket} from "../../../../hooks/useSocket";
-
-type Chat = {
-  type: "user" | "system";
-  message: string;
-};
 
 type LanguageType = {
   id: number;
@@ -82,10 +78,11 @@ type AskQuestionComponentProps = {
   metaData: any;
   avatars: any;
   setUserAvatar: (id: number) => void;
-  chatHistory: any;
+  chatHistory: Chat[];
   languages: LanguageType[];
   indexName: string;
   isChooseAvatarPage?: boolean;
+  setChatHistory?: (chatHistory: any) => void;
 };
 
 const { Panel } = Collapse;
@@ -104,6 +101,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   languages,
   indexName,
   isChooseAvatarPage,
+  setChatHistory,
 }) => {
   const { t } = useTranslation();
   const { pathname } = useLocation();
@@ -114,8 +112,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     useForm<FormValues>();
 
   const isTextInInput = !!watch()?.question?.length;
-
-  console.log(isTextInInput);
 
   const [messageClass, setMessageClass] = useState(styles.messageSystemChange);
   const [messageTime, setMessageTime] = useState<string>("");
@@ -134,7 +130,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [isMetaModalOpen, setIsMetaModalOpen] = useState(false);
   const [isFirst, setIsFirst] = useState(true);
   const [isEmpty, setIsEmpty] = useState(true);
-  const [voiceChatHistory, setVoiceChatHistory] = useState<any>([]);
   const [isMuted, setIsMuted] = useState(false);
 
   const currentStep = useQuery("currentStep");
@@ -142,7 +137,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   console.log("selectedBookId", selectedBookId);
   console.log("chatHistory", chatHistory);
-  console.log("voiceChatHistory", voiceChatHistory);
   useEffect(() => {
     if (!currentStep) {
       push(`${pathname}?currentStep=${4}`);
@@ -214,7 +208,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     if (chatContentRef.current) {
       chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
     }
-  }, [chatHistory, isSending, voiceChatHistory]);
+  }, [chatHistory, isSending]);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -401,18 +395,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       }
     };
   }, [location.pathname]);
-
-  const [chatMessages, setChatMessages] = useState<Chat[]>([]);
-
-  useEffect(() => {
-    setChatMessages(
-      [...voiceChatHistory, ...chatHistory].sort((a, b) => {
-        const timeA = dayjs(a.timestamp, "h:mm:ss A", true).unix();
-        const timeB = dayjs(b.timestamp, "h:mm:ss A", true).unix();
-        return timeA - timeB;
-      })
-    );
-  }, [chatHistory, voiceChatHistory]);
 
   const token = TokenManager.getAccessToken();
 
@@ -606,8 +588,8 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                   <div className={styles.gradientOverlay} />
 
                   <div className={styles.chatContent} ref={chatContentRef}>
-                    {chatMessages.map((chat, index) => {
-                      const isLastMessage = index === chatMessages.length - 1;
+                    {chatHistory.map((chat, index) => {
+                      const isLastMessage = index === chatHistory.length - 1;
 
                       return (
                         <div
@@ -733,7 +715,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                           indexName={indexName}
                           isFirst={isFirst}
                           setIsFirst={setIsFirst}
-                          setChatHistory={setVoiceChatHistory}
+                          setChatHistory={setChatHistory}
                           setMessageClass={setMessageClass}
                           streamDone={streamDone}
                           recording={recording}
