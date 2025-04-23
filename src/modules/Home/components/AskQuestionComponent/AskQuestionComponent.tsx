@@ -219,6 +219,12 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     }
   }, [languages]);
 
+  useEffect(() => {
+    if (chatContentRef.current) {
+      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
+    }
+  }, [chatHistory.length]);
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -247,7 +253,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   useEffect(() => {
     const fetchStreamUrl = async () => {
-      const token = TokenManager.getAccessToken();
       try {
         const response = await fetch(
           "https://elib.plavno.io:8080/api/v1/srs/url",
@@ -583,7 +588,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                             videoRef.current.muted = !isMuted;
                           }
                         }}
-                        disabled={!avatarStreamShow}
                       >
                         <img
                           src={isMuted ? SoundOffIcon : SoundOnIcon}
