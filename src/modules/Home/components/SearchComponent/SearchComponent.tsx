@@ -1,9 +1,11 @@
 import styles from "./SearchComponent.module.scss";
-import React, { FC, useState } from "react";
+import React, { FC, useState, useCallback } from "react";
 import NoImg from "../../../../assets/images/NoImagePlaceholder.jpg";
 import Search from "../../../../assets/images/icons/SearchIcon.svg";
 import { Input, Skeleton } from "antd";
 import { useTranslation } from "react-i18next";
+import debounce from "lodash/debounce";
+import { LoadingOutlined } from "@ant-design/icons";
 
 type CategoryData = {
   id: number;
@@ -36,6 +38,7 @@ interface SearchBooksComponentProps {
   booksByQueryName: any;
   getBook: (id: any) => void;
   isLoading: boolean;
+  isLoadingSearch?: boolean;
 }
 
 const SearchComponent: FC<SearchBooksComponentProps> = ({
@@ -47,11 +50,19 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
   booksByQueryName,
   getBook,
   isLoading,
+  isLoadingSearch,
 }) => {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [hasSearched, setHasSearched] = useState<boolean>(false);
   const [isDropdownVisible, setDropdownVisible] = useState<boolean>(false);
+
+  const debouncedSearch = useCallback(
+    debounce((value: string) => {
+      getSearchBooks(value);
+    }, 300),
+    [getSearchBooks]
+  );
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -62,7 +73,7 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
       setHasSearched(false);
       getBooksByName({});
     } else {
-      getSearchBooks(value);
+      debouncedSearch(value);
       setDropdownVisible(true);
     }
   };
@@ -108,7 +119,10 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
             </div>
           )}
           {searchTerm && searchBooks.length === 0 && (
-            <div className={styles.noResults}>No Results</div>
+            <div className={styles.noResults}>
+              {" "}
+              {isLoadingSearch ? <LoadingOutlined /> : "No Results"}
+            </div>
           )}
         </div>
 
