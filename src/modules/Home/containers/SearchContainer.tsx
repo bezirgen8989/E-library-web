@@ -68,13 +68,15 @@ const SearchContainer: React.FC = () => {
     ? `[isAgeRestricted][eq]=false`
     : "";
 
-  const getBooksByName = (name: string) => {
+  const getBooksByName = (name: string, isSingle?: boolean) => {
     dispatch(
       getBooksByQueryName({
-        limit: "12",
+        limit: isSingle ? "12" : "1",
         page: "1",
         order: "",
-        filter: `${isAgeRestricted}&filter[title|description|author.localizedNames][contains]=${name}`,
+        filter: `${isAgeRestricted}&filter[${
+          isSingle ? "title|description" : "title"
+        }][contains]=${name}`,
       })
     );
   };

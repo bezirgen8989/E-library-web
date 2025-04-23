@@ -41,8 +41,9 @@ const ChooseAvatarStep4: FC<ChooseAvatarStep2Props> = ({
     }
   );
 
-  console.log("isLoading", isLoading);
-  console.log("booksByQueryName", booksByQueryName);
+  const authState = useLazySelector(({ auth }) => {
+    return auth;
+  });
 
   useEffect(() => {
     dispatch(getCategories());
@@ -52,13 +53,19 @@ const ChooseAvatarStep4: FC<ChooseAvatarStep2Props> = ({
     dispatch(findBooks(text));
   }, []);
 
-  const getBooksByName = (name: string) => {
+  const isAgeRestricted = authState.userData.result?.kidsMode
+    ? `[isAgeRestricted][eq]=false`
+    : "";
+
+  const getBooksByName = (name: string, isSingle?: boolean) => {
     dispatch(
       getBooksByQueryName({
-        limit: "12",
+        limit: isSingle ? "12" : "1",
         page: "1",
         order: "",
-        filter: `[title|description|author.localizedNames][contains]=${name}`,
+        filter: `${isAgeRestricted}&filter[${
+          isSingle ? "title|description" : "title"
+        }][contains]=${name}`,
       })
     );
   };
