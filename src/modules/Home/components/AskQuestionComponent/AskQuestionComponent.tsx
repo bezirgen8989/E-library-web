@@ -415,8 +415,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                 >
                   <div
                     style={{
-                      // opacity: avatarStreamShow ? 1 : 0,
-                      opacity: 1,
+                      opacity: avatarStreamShow ? 1 : 0,
                       pointerEvents: avatarStreamShow ? "auto" : "none",
                     }}
                     className={styles.shadowBG}
