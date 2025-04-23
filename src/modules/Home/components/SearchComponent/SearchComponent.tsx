@@ -69,20 +69,16 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchTerm.trim() !== "") {
-      handleBookSelect(searchTerm);
+      handleBookSelect(searchTerm, true);
     }
   };
 
-  const handleBookSelect = (title: string) => {
+  const handleBookSelect = (title: string, isSingle: boolean = false) => {
     setSearchTerm(title);
     setHasSearched(true);
     setDropdownVisible(false);
-    getBooksByName(title);
+    getBooksByName(title, isSingle);
   };
-
-  const filteredBooks = searchBooks.filter((book) =>
-    book.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   return (
     <div className={styles.home_page}>
@@ -98,9 +94,9 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
             className={styles.searchBookInput}
             autoComplete="off"
           />
-          {searchTerm && isDropdownVisible && filteredBooks.length > 0 && (
+          {searchTerm && isDropdownVisible && searchBooks.length > 0 && (
             <div className={styles.dropdown}>
-              {filteredBooks.map((book, index) => (
+              {searchBooks.map((book, index) => (
                 <div
                   key={index}
                   className={styles.dropdownItem}
@@ -111,7 +107,7 @@ const SearchComponent: FC<SearchBooksComponentProps> = ({
               ))}
             </div>
           )}
-          {searchTerm && filteredBooks.length === 0 && (
+          {searchTerm && searchBooks.length === 0 && (
             <div className={styles.noResults}>No Results</div>
           )}
         </div>
