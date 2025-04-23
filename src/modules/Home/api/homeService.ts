@@ -7,6 +7,11 @@ import {
   ReviewParams,
   SetReadingBookPayload,
 } from "../slices/home/types";
+import { FetchEventSourceInit } from "@microsoft/fetch-event-source";
+import { fetchEventSource } from "@microsoft/fetch-event-source";
+import TokenManager from "../../../utils/TokenManager";
+
+const token = TokenManager.getAccessToken();
 
 export const getBooks = (params: BooksParams) =>
   usingGet(
@@ -89,3 +94,23 @@ export const getAllBookVersions = (params: any) =>
   usingGet(
     `/api/v1/bookVersions?page=${params.page}&limit=${params.limit}&filter${params.filterId}`
   );
+
+export const vectorsAsk = async ({
+  body,
+  signal,
+  onopen,
+  onmessage,
+  onerror,
+}: FetchEventSourceInit) =>
+  await fetchEventSource("https://elib.plavno.io:8080/api/v1/vectors/ask", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+    signal,
+    onopen,
+    onmessage,
+    onerror,
+  });

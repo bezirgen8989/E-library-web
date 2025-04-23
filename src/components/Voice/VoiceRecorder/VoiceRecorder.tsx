@@ -34,7 +34,6 @@ interface IVoiceRecorder {
   clickCursor: () => void;
   isLoadingData?: boolean;
   link: string;
-  setQuestion: (text: string) => void;
   setIsStreamConnect?: (value: boolean) => void;
   userId: any;
   selectedLanguageCode: string;
@@ -46,7 +45,7 @@ interface IVoiceRecorder {
   streamDone: any;
   recording: any;
   setRecording: any;
-  stopAvatarGeneration: (params: any) => void;
+  stopAvatarGeneration: (params: any, token: string) => Promise<void>;
 }
 
 const VoiceRecorder: React.FC<IVoiceRecorder> = ({
@@ -54,7 +53,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   clickCursor,
   addTextWithDelay,
   isNonHealth,
-  setQuestion,
   link,
   setIsStreamConnect,
   userId,
@@ -69,15 +67,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   setRecording,
   stopAvatarGeneration,
 }) => {
-  // const { open } = useNotification();
-
-  // const { avatarLanguage } = useLazySelector(({ home }) => {
-  //   const { avatarLanguage } = home;
-  //   return {
-  //     avatarLanguage,
-  //   };
-  // });
-
   const { t } = useTranslation();
   const { userData } = useAuthState();
   // const [recording, setRecording] = useState(false);
@@ -87,7 +76,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   const progressRef = useRef<HTMLParagraphElement>(null);
   const [disconnected, setDisconnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
-
   const [isReadyPaused, setIsReadyPaused] = useState(false);
 
   const language = renderLangCodes(selectedLanguageCode);
@@ -97,7 +85,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     startStreaming,
     deleteStreaming,
     connectToWhisper,
-    pauseStreaming,
+    // pauseStreaming,
     toggleMicMute,
   ] = useVoice({
     language,
@@ -116,15 +104,8 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     return () => {
       deleteStreaming();
       stopStreaming();
-      if (userData?.result?.id) {
-        stopAvatarGeneration({
-          client_id: String(userData?.result?.id),
-        });
-      }
     };
   }, [userData?.result?.id]);
-
-  console.log(deleteStreaming, pauseStreaming);
 
   const [hasMicrophoneAccess, setHasMicrophoneAccess] = useState<
     boolean | null
@@ -188,7 +169,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
       waveColor: "white",
       progressColor: "white",
       height: 24,
-      width: isNonHealth ? "850px" : "270px",
+      width: isNonHealth ? "850px" : "210px",
       barGap: 1,
       barWidth: 1.5,
       barHeight: 15,
@@ -223,7 +204,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
       waveColor: "rgba(199, 204, 205, 0.6)",
       progressColor: "rgba(199, 204, 205, 0.6)",
       height: 24,
-      width: isNonHealth ? "860px" : "220px",
+      width: isNonHealth ? "860px" : "210px",
       barGap: 1,
       barWidth: 1.5,
       barHeight: 15,
@@ -397,7 +378,9 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "minmax(100px, 276px) 40px",
+                  gridTemplateColumns: "minmax(100px, 210px) 40px",
+                  gap: "12px",
+                  marginRight: 20,
                 }}
               >
                 <div className={styles.readyRecordingWrapper}>
