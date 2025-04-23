@@ -58,11 +58,11 @@ const ChooseAvatarStep4: FC<ChooseAvatarStep2Props> = ({
         limit: "12",
         page: "1",
         order: "",
-        filter: `[title|description][contains]=${name}`,
+        filter: `[title|description|author.localizedNames][contains]=${name}`,
       })
     );
   };
-
+  // filter[title|description|author.localizedNames][contains]
   const onSelectBookHandler = (bookId?: string | number) => {
     setIsModalOpen(false);
     // setCurrentStep(5);
