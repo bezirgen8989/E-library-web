@@ -114,7 +114,7 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
         <div
           className={styles.sliderBackground}
           style={{ backgroundImage: `url(${currentImage.avatarPicture.link})` }}
-        ></div>
+        />
         <Slider {...settings} className="avatarCarousel">
           {avatars.data.map((avatar) => (
             <div className="slideItem" key={avatar.id}>
@@ -130,13 +130,15 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
           <br /> {t("helloAvatar2")}
         </div>
         <div className={styles.subTitle}>{t("avatarLook")}</div>
-        <Button
-          onClick={handleNextStep}
-          style={{ width: "341px", margin: "20px auto 20px" }}
-          variant="Brown"
-        >
-          {t("chooseBtn")} {currentImage.name}
-        </Button>
+        <div>
+          <Button
+            onClick={handleNextStep}
+            style={{ width: "341px", margin: "20px auto 20px" }}
+            variant="Brown"
+          >
+            {t("chooseBtn")} {currentImage.name}
+          </Button>
+        </div>
       </div>
     </div>
   );

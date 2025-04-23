@@ -55,6 +55,7 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
+      margin-top: 0;
     }
   }
   video {
@@ -203,7 +204,7 @@
   .messageUser {
     display: flex;
     justify-content: flex-end;
-    //margin-bottom: 16px;
+    margin-bottom: 16px;
     .userMessage {
       background-color: #996C42;
       color: #fff;

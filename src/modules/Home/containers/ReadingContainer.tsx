@@ -60,10 +60,6 @@ const ReadingContainer: React.FC = () => {
       currentBook: home.currentBook,
       currentBookshelfBook: home.currentBookshelfBook,
     }));
-  console.log("currentBook", currentBook);
-  // useEffect(() => {
-  //   dispatch(getBookById(id.toString()));
-  // }, [dispatch]);
 
   useEffect(() => {
     setMaxLoadPage(featurePageFromServer);
@@ -212,7 +208,12 @@ const ReadingContainer: React.FC = () => {
   }, [currentReadBook, page, featurePageFromServer]);
 
   const handleNext = () => {
-    setPage((prevPage) => (prevPage !== null ? prevPage + 1 : 1));
+    setPage((prevPage) => {
+      if (prevPage !== null && prevPage < totalPages) {
+        return prevPage + 1;
+      }
+      return prevPage;
+    });
   };
 
   const handlePrev = () => {

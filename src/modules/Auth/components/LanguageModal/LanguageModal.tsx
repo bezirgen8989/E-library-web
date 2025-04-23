@@ -104,7 +104,7 @@ const LanguageModal: FC<LanguageModalProps> = ({
       closable={false}
     >
       <Input
-        placeholder="Search"
+        placeholder={t("menuItemSearch")}
         prefix={<img src={Search} alt="search" />}
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}

@@ -89,3 +89,44 @@ export type ReviewParams = {
   limit: string;
   page: string;
 };
+
+export type TypeOnMetaEvents = {
+  meta: {
+    pdf: {
+      version: string;
+      info: {
+        PDFFormatVersion: string;
+        IsAcroFormPresent: boolean;
+        IsXFAPresent: boolean;
+        Title: string;
+        Author: string;
+        Subject: string;
+        Creator: string;
+        Producer: string;
+        CreationDate: string;
+      };
+      metadata: {
+        _metadata: {
+          "dc:format": string;
+          "dc:language": string;
+          "dc:date": string;
+          "pdf:producer": string;
+          "pdf:pdfversion": string;
+          "xmp:creatortool": string;
+          "xmp:metadatadate": string;
+          "xmp:createdate": string;
+        };
+      };
+      totalPages: number;
+    };
+    loc: {
+      pageNumber: number;
+      lines: {
+        from: number;
+        to: number;
+      };
+    };
+    source: string;
+  };
+  content: string;
+};
