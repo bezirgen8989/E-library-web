@@ -483,7 +483,7 @@ const Book: React.FC<BookProps> = ({
               <div className={styles.divider} />
               <Button
                 className={styles.questionBtn}
-                to={`${routes.askQuestion}/${id}`}
+                to={`${routes.askQuestion}?currentStep=5&selectedBook=${id}`}
                 style={{
                   color: "#996C42",
                   border: "2px solid rgba(153, 108, 66, 0.2)",
