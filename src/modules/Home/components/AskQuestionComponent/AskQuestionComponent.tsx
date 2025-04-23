@@ -570,7 +570,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                             videoRef.current.muted = !isMuted;
                           }
                         }}
-                        disabled={!avatarStreamShow}
                       >
                         <img
                           src={isMuted ? SoundOffIcon : SoundOnIcon}
