@@ -221,7 +221,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   useEffect(() => {
     if (chatContentRef.current) {
-      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
+      chatContentRef.current.scrollTo(0, chatContentRef.current.scrollHeight);
     }
   }, [chatHistory.length]);
 
@@ -289,45 +289,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     }
   };
 
-  // const getCurrentTime = (): string => {
-  //   const now = new Date();
-  //   const hours = now.getHours().toString().padStart(2, "0");
-  //   const minutes = now.getMinutes().toString().padStart(2, "0");
-  //   return `${hours}:${minutes}`;
-  // };
-
-  // const onSubmit: SubmitHandler<FormValues> = (data) => {
-  //   const currentTime = getCurrentTime();
-  //   console.log("DATA", data);
-  //   setQuestion(data.question);
-  //   clearMessages();
-  //   setMessageClass(styles.messageSystem);
-  //   setMessageTime(currentTime);
-  //   setIsSending(true);
-  //   setIsStreamConnect(true);
-  //   setValue("question", "");
-  //   reset();
-  //   setFormData(undefined);
-  //
-  //   setTimeout(() => {
-  //     setIsSending(false);
-  //   }, 2000);
-  // };
-
-  // const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-  //   if (e.key === "Enter" && !isSending) {
-  //     e.preventDefault();
-  //     handleSubmit((data) => {
-  //       onSubmit(data);
-  //       setIsStreamConnect(true);
-  //       dispatch(setIsStreamShow(true));
-  //       setIsEmpty(true);
-  //       dispatch(setIsStopQuestion(false));
-  //       dispatch(setStreamDone(true));
-  //     })();
-  //   }
-  // };
-
   const renderMetaData = () => {
     if (metaData && metaData.length > 0) {
       return metaData.map((item: any, index: number) => {
@@ -372,24 +333,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     return null;
   };
 
-  // useEffect(() => {
-  //   let prevPath = location.pathname;
-  //
-  //   return () => {
-  //     if (
-  //       prevPath.includes("ask_question") &&
-  //       !location.pathname.includes("ask_question")
-  //     ) {
-  //       // if (value?.id) {
-  //       //   stopAvatarGeneration({ client_id: String(value.id) }, token);
-  //       // }
-  //       // setAvatarStreamShow(false);
-  //       dispatch(setIsStopQuestion(true));
-  //       dispatch(setStreamDone(false));
-  //     }
-  //   };
-  // }, [location.pathname]);
-
   useEffect(() => {
     // const handleRouteChange = () => {
     //   if (!location.pathname.includes("ask_question") && videoRef.current) {
@@ -413,31 +356,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     };
   }, []);
 
-  // const stopAvatarGeneration = async (params: any) => {
-  //   try {
-  //     const response = await fetch(
-  //       "https://avatar19413587.plavno.app:24828/stop",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Access-Control-Allow-Origin": "*",
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //         body: JSON.stringify(params),
-  //       }
-  //     );
-  //
-  //     if (!response.ok) {
-  //       throw new Error(`Error: ${response.status} ${response.statusText}`);
-  //     }
-  //
-  //     const data = await response.json();
-  //     console.log("Success:", data);
-  //   } catch (error) {
-  //     console.error("Error stopping avatar generation:", error);
-  //   }
-  // };
   console.log("selectedAvatar", selectedAvatar);
 
   const chooseAvatarSteps = {
@@ -497,8 +415,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                 >
                   <div
                     style={{
-                      // opacity: avatarStreamShow ? 1 : 0,
-                      opacity: 1,
+                      opacity: avatarStreamShow ? 1 : 0,
                       pointerEvents: avatarStreamShow ? "auto" : "none",
                     }}
                     className={styles.shadowBG}

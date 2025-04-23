@@ -440,7 +440,7 @@ const AskQuestionContainer: React.FC = () => {
 
   const selectedBookId = useQuery("selectedBook");
   useEffect(() => {
-    if (selectedBookId) {
+    if (selectedBookId && selectedBookId !== "global") {
       dispatch(getBookById(selectedBookId));
     }
   }, [selectedBookId]);
