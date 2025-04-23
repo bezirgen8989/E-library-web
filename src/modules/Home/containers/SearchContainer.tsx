@@ -74,7 +74,7 @@ const SearchContainer: React.FC = () => {
         limit: "12",
         page: "1",
         order: "",
-        filter: `${isAgeRestricted}&filter[title|description][contains]=${name}`,
+        filter: `${isAgeRestricted}&filter[title|description|author.localizedNames][contains]=${name}`,
       })
     );
   };
