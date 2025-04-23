@@ -281,6 +281,13 @@ export const useVoice = ({
     }
   };
 
+  const toggleMicMute = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks()[0].enabled =
+        !streamRef.current.getTracks()[0].enabled;
+    }
+  };
+
   const stopStreaming = () => {
     if (streamRef.current) {
       streamRef.current
@@ -317,5 +324,6 @@ export const useVoice = ({
     deleteStreaming,
     connectToWhisper,
     pauseStreaming,
+    toggleMicMute,
   ];
 };
