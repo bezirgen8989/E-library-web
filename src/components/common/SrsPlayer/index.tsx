@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { defaultVideoOptions, getIdFromUrl } from "./helpers";
 import { SrsRtcWhipWhepAsync } from "./srs/srs.sdk";
 import { useLazySelector } from "../../../hooks";
@@ -6,6 +6,9 @@ import { useDispatch } from "react-redux";
 // @ts-ignore
 import silentAvatar from "../../../assets/videos/silent.mp4";
 import { setIsStreamShow } from "../../../modules/Home/slices/home";
+import { stopAvatarGeneration } from "../../../helpers/stopAvatarGeneration";
+import { useAuthState } from "../../../modules/Auth/slices/auth";
+import { TokenManager } from "../../../utils";
 
 export enum PlayerStatus {
   Loading = "loading",
@@ -19,7 +22,9 @@ export interface SrsWhepPlayerProps {
   rtcOpts?: any;
   width: number | string;
   height: number | string;
-  videoRef: React.MutableRefObject<any>;
+  videoRef: React.MutableRefObject<HTMLVideoElement | null>;
+  srsSdkRef: typeof SrsRtcWhipWhepAsync | any;
+  unsubscribeFromEvent?: any;
 }
 
 export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
@@ -29,10 +34,14 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
   width,
   height,
   videoRef,
+  srsSdkRef,
+  unsubscribeFromEvent,
 }) => {
   const dispatch = useDispatch();
+  const { userData } = useAuthState();
+  const token = TokenManager.getAccessToken();
 
-  const { avatarStreamShow, isStreamShow } = useLazySelector(({ home }) => {
+  const { avatarStreamShow } = useLazySelector(({ home }) => {
     const { avatarStreamShow, isStreamShow } = home;
     return {
       avatarStreamShow,
@@ -40,11 +49,6 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
     };
   });
   console.log("avatarStreamShow123", avatarStreamShow);
-
-  // const { isStreamShow } = useLazySelector(({ home }) => {
-  //   const { isStreamShow } = home;
-  //   return { isStreamShow };
-  // });
 
   const checkTracksState = () => {
     if (srsSdkRef.current && srsSdkRef.current.stream) {
@@ -66,7 +70,6 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
     ...options,
     controls: false,
   };
-  const srsSdkRef = useRef<typeof SrsRtcWhipWhepAsync | any>(null);
 
   const id = getIdFromUrl(url);
   const [status, setStatus] = useState(PlayerStatus.Loading);
@@ -97,6 +100,7 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
   const cleanup = () => {
     if (srsSdkRef.current) {
       srsSdkRef.current.close();
+      srsSdkRef.current.srcObject = null;
     }
 
     if (videoRef.current) {
@@ -107,12 +111,23 @@ export const SrsPlayer: React.FC<SrsWhepPlayerProps> = ({
   };
 
   useEffect(() => {
-    startPlay();
+    if (avatarStreamShow) {
+      startPlay();
+    }
 
     return () => {
       cleanup();
     };
-  }, [url, status, isStreamShow]);
+  }, [url, status, avatarStreamShow]);
+
+  useEffect(() => {
+    return () => {
+      stopAvatarGeneration({ client_id: userData.result.id.toString() }, token);
+      unsubscribeFromEvent("publish-stream");
+      unsubscribeFromEvent("unpublish-stream");
+      cleanup();
+    };
+  }, []);
 
   const displayedWidth = width;
   const displayedHeight = height;

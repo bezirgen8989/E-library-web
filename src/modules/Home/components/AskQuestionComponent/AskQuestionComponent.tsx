@@ -1,6 +1,14 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { Collapse } from "antd";
+import React, {
+  Dispatch,
+  MutableRefObject,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+// import { useForm, SubmitHandler } from "react-hook-form";
+import { Collapse, Form } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import styles from "./AskQuestionComponent.module.scss";
@@ -26,9 +34,9 @@ import { useDispatch } from "react-redux";
 import {
   selectAvatarLanguage,
   // setAvatarStreamShow,
-  setIsStopQuestion,
-  setIsStreamShow,
-  setStreamDone,
+  // setIsStopQuestion,
+  // setIsStreamShow,
+  // setStreamDone,
 } from "../../slices/home";
 import MetaModal from "../common/MetaModal/MetaModal";
 import { UserContext } from "../../../../core/contexts";
@@ -39,15 +47,14 @@ import { useTranslation } from "react-i18next";
 import { TokenManager } from "../../../../utils";
 import { useHistory, useLocation } from "react-router-dom";
 import { useQuery } from "hooks/useQuery";
+import { Chat } from "../../containers/AskQuestionContainer";
+import { stopAvatarGeneration } from "../../../../helpers/stopAvatarGeneration";
+import { SrsRtcWhipWhepAsync } from "../../../../components/common/SrsPlayer/srs/srs.sdk";
+import { useAuthState } from "../../../Auth/slices/auth";
 // import {getLocalization} from "../../../Auth/slices/auth";
 // import { useQuery } from "../../../../hooks/useQuery";
 // import { useAuthState } from "../../../Auth/slices/auth";
 // import {useSocket} from "../../../../hooks/useSocket";
-
-type Chat = {
-  type: "user" | "system";
-  message: string;
-};
 
 type LanguageType = {
   id: number;
@@ -56,10 +63,6 @@ type LanguageType = {
   flag: {
     link: string;
   };
-};
-
-type FormValues = {
-  question: string;
 };
 
 interface AvatarData {
@@ -74,7 +77,6 @@ interface AvatarData {
 }
 
 type AskQuestionComponentProps = {
-  setQuestion: (text: string) => void;
   clearMessages: () => void;
   messages: any;
   isLoading: boolean;
@@ -82,10 +84,16 @@ type AskQuestionComponentProps = {
   metaData: any;
   avatars: any;
   setUserAvatar: (id: number) => void;
-  chatHistory: any;
+  chatHistory: Chat[];
   languages: LanguageType[];
   indexName: string;
   isChooseAvatarPage?: boolean;
+  form?: any;
+  submitMessage?: (params: any) => void;
+  videoRef: MutableRefObject<HTMLVideoElement | null>;
+  srsSdkRef: typeof SrsRtcWhipWhepAsync | any;
+  setChatHistory: Dispatch<SetStateAction<Chat[]>>;
+  unsubscribeFromEvent?: any;
 };
 
 const { Panel } = Collapse;
@@ -93,7 +101,6 @@ const { Panel } = Collapse;
 dayjs.extend(customParseFormat);
 
 const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
-  setQuestion,
   clearMessages,
   title,
   isLoading,
@@ -104,27 +111,39 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   languages,
   indexName,
   isChooseAvatarPage,
+  form,
+  submitMessage,
+  videoRef,
+  srsSdkRef,
+  setChatHistory,
+  unsubscribeFromEvent,
 }) => {
   const { t } = useTranslation();
+  const chatFields: any = Form.useWatch([], form);
   const { pathname } = useLocation();
   const { push } = useHistory();
   const dispatch = useDispatch();
   const value = useContext(UserContext);
-  const { register, handleSubmit, reset, setValue, watch } =
-    useForm<FormValues>();
+  // const { register, handleSubmit, reset, setValue, watch } =
+  //   useForm<FormValues>();
 
-  const isTextInInput = !!watch()?.question?.length;
+  // const isTextInInput = !!watch()?.question?.length;
 
-  console.log(isTextInInput);
+  // console.log(isTextInInput);
+
+  const defaultLanguage = (languages || []).find(
+    (lang) => lang.name === "English"
+  ) || {
+    id: 0,
+    name: "Select Language",
+    flag: { link: NoAvatar },
+    isoCode2char: "code",
+  };
 
   const [messageClass, setMessageClass] = useState(styles.messageSystemChange);
-  const [messageTime, setMessageTime] = useState<string>("");
-  console.log(messageTime);
   const [isCollapseVisible] = useState(false);
-  const [isSending, setIsSending] = useState(false);
-  const videoRef = useRef<HTMLVideoElement | any>(null);
+  // const videoRef = useRef<HTMLVideoElement | any>(null);
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
-  const [, setFormData] = useState<FormData | undefined>();
   const quillRef = useRef<ReactQuill>(null);
   const cursorPositionRef = useRef<null | number>(null);
   const [url, setUrl] = useState<any>();
@@ -133,16 +152,17 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMetaModalOpen, setIsMetaModalOpen] = useState(false);
   const [isFirst, setIsFirst] = useState(true);
-  const [isEmpty, setIsEmpty] = useState(true);
-  const [voiceChatHistory, setVoiceChatHistory] = useState<any>([]);
   const [isMuted, setIsMuted] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
+  const { userData } = useAuthState();
 
+  const token = TokenManager.getAccessToken();
   const currentStep = useQuery("currentStep");
   const selectedBookId = useQuery("selectedBook");
 
   console.log("selectedBookId", selectedBookId);
   console.log("chatHistory", chatHistory);
-  console.log("voiceChatHistory", voiceChatHistory);
+
   useEffect(() => {
     if (!currentStep) {
       push(`${pathname}?currentStep=${4}`);
@@ -164,9 +184,9 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   useEffect(() => {
     if (avatars?.result?.data?.length && value) {
-      const selectedBookQuery = selectedBookId
-        ? `&currentStep=${currentStep}`
-        : "";
+      // const selectedBookQuery = selectedBookId
+      //   ? `&currentStep=${currentStep}`
+      //   : "";
       const initialAvatarIndex = avatars?.result?.data.findIndex(
         (avatar: AvatarData) => avatar.id === value?.avatarSettings?.id
       );
@@ -177,27 +197,18 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       setCurrentImage(initialAvatar);
       setSelectedAvatar(initialAvatar.avatarPicture.link);
 
-      if (isChooseAvatarPage) {
-        push(`${pathname}?currentStep=${1}`);
-      } else {
-        const nowStep = currentStep ? currentStep : 4;
-        push(
-          `${pathname}?currentStep=${
-            foundIndex === 0 ? 1 : nowStep
-          }${selectedBookQuery}`
-        );
-      }
+      // if (userData?.result?.avatarSettings?.id) {
+      //   push(`${pathname}?currentStep=${1}`);
+      // } else {
+      //   const nowStep = currentStep ? currentStep : 4;
+      //   push(
+      //     `${pathname}?currentStep=${
+      //       foundIndex === 0 ? 1 : nowStep
+      //     }${selectedBookQuery}`
+      //   );
+      // }
     }
-  }, [isChooseAvatarPage]);
-
-  const defaultLanguage = (languages || []).find(
-    (lang) => lang.name === "English"
-  ) || {
-    id: 0,
-    name: "Select Language",
-    flag: { link: NoAvatar },
-    isoCode2char: "code",
-  };
+  }, [userData?.result?.avatarSettings?.id, value]);
 
   useEffect(() => {
     if (languages && languages.length > 0) {
@@ -207,14 +218,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       }
     }
   }, [languages]);
-
-  const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
-
-  useEffect(() => {
-    if (chatContentRef.current) {
-      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
-    }
-  }, [chatHistory, isSending, voiceChatHistory]);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -281,44 +284,44 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     }
   };
 
-  const getCurrentTime = (): string => {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, "0");
-    const minutes = now.getMinutes().toString().padStart(2, "0");
-    return `${hours}:${minutes}`;
-  };
+  // const getCurrentTime = (): string => {
+  //   const now = new Date();
+  //   const hours = now.getHours().toString().padStart(2, "0");
+  //   const minutes = now.getMinutes().toString().padStart(2, "0");
+  //   return `${hours}:${minutes}`;
+  // };
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    const currentTime = getCurrentTime();
-    console.log("DATA", data);
-    setQuestion(data.question);
-    clearMessages();
-    setMessageClass(styles.messageSystem);
-    setMessageTime(currentTime);
-    setIsSending(true);
-    setIsStreamConnect(true);
-    setValue("question", "");
-    reset();
-    setFormData(undefined);
+  // const onSubmit: SubmitHandler<FormValues> = (data) => {
+  //   const currentTime = getCurrentTime();
+  //   console.log("DATA", data);
+  //   setQuestion(data.question);
+  //   clearMessages();
+  //   setMessageClass(styles.messageSystem);
+  //   setMessageTime(currentTime);
+  //   setIsSending(true);
+  //   setIsStreamConnect(true);
+  //   setValue("question", "");
+  //   reset();
+  //   setFormData(undefined);
+  //
+  //   setTimeout(() => {
+  //     setIsSending(false);
+  //   }, 2000);
+  // };
 
-    setTimeout(() => {
-      setIsSending(false);
-    }, 2000);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && !isSending) {
-      e.preventDefault();
-      handleSubmit((data) => {
-        onSubmit(data);
-        setIsStreamConnect(true);
-        dispatch(setIsStreamShow(true));
-        setIsEmpty(true);
-        dispatch(setIsStopQuestion(false));
-        dispatch(setStreamDone(true));
-      })();
-    }
-  };
+  // const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (e.key === "Enter" && !isSending) {
+  //     e.preventDefault();
+  //     handleSubmit((data) => {
+  //       onSubmit(data);
+  //       setIsStreamConnect(true);
+  //       dispatch(setIsStreamShow(true));
+  //       setIsEmpty(true);
+  //       dispatch(setIsStopQuestion(false));
+  //       dispatch(setStreamDone(true));
+  //     })();
+  //   }
+  // };
 
   const renderMetaData = () => {
     if (metaData && metaData.length > 0) {
@@ -364,83 +367,72 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     return null;
   };
 
+  // useEffect(() => {
+  //   let prevPath = location.pathname;
+  //
+  //   return () => {
+  //     if (
+  //       prevPath.includes("ask_question") &&
+  //       !location.pathname.includes("ask_question")
+  //     ) {
+  //       // if (value?.id) {
+  //       //   stopAvatarGeneration({ client_id: String(value.id) }, token);
+  //       // }
+  //       // setAvatarStreamShow(false);
+  //       dispatch(setIsStopQuestion(true));
+  //       dispatch(setStreamDone(false));
+  //     }
+  //   };
+  // }, [location.pathname]);
+
   useEffect(() => {
-    let prevPath = location.pathname;
+    // const handleRouteChange = () => {
+    //   if (!location.pathname.includes("ask_question") && videoRef.current) {
+    //     if (value?.id) {
+    //       stopAvatarGeneration({ client_id: String(value.id) }, token);
+    //     }
+    //     videoRef.current.srcObject = null;
+    //     setIsStreamConnect(false);
+    //   }
+    // };
+    //
+    // handleRouteChange();
 
     return () => {
-      if (
-        prevPath.includes("ask_question") &&
-        !location.pathname.includes("ask_question")
-      ) {
-        if (value?.id) {
-          stopAvatarGeneration({ client_id: String(value.id) });
-        }
-        // setAvatarStreamShow(false);
-        dispatch(setIsStopQuestion(true));
-        dispatch(setStreamDone(false));
+      if (value?.id) {
+        stopAvatarGeneration({ client_id: String(value.id) }, token);
       }
-    };
-  }, [location.pathname]);
-
-  useEffect(() => {
-    const handleRouteChange = () => {
-      if (!location.pathname.includes("ask_question") && videoRef.current) {
-        if (value?.id) {
-          stopAvatarGeneration({ client_id: String(value.id) });
-        }
-        videoRef.current.srcObject = null;
-        setIsStreamConnect(false);
-      }
-    };
-
-    handleRouteChange();
-
-    return () => {
       if (videoRef.current) {
         videoRef.current.srcObject = null;
       }
     };
-  }, [location.pathname]);
+  }, []);
 
-  const [chatMessages, setChatMessages] = useState<Chat[]>([]);
-
-  useEffect(() => {
-    setChatMessages(
-      [...voiceChatHistory, ...chatHistory].sort((a, b) => {
-        const timeA = dayjs(a.timestamp, "h:mm:ss A", true).unix();
-        const timeB = dayjs(b.timestamp, "h:mm:ss A", true).unix();
-        return timeA - timeB;
-      })
-    );
-  }, [chatHistory, voiceChatHistory]);
-
-  const token = TokenManager.getAccessToken();
-
-  const stopAvatarGeneration = async (params: any) => {
-    try {
-      const response = await fetch(
-        "https://avatar19413587.plavno.app:24828/stop",
-        {
-          method: "POST",
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(params),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status} ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      console.log("Success:", data);
-    } catch (error) {
-      console.error("Error stopping avatar generation:", error);
-    }
-  };
+  // const stopAvatarGeneration = async (params: any) => {
+  //   try {
+  //     const response = await fetch(
+  //       "https://avatar19413587.plavno.app:24828/stop",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Access-Control-Allow-Origin": "*",
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //         body: JSON.stringify(params),
+  //       }
+  //     );
+  //
+  //     if (!response.ok) {
+  //       throw new Error(`Error: ${response.status} ${response.statusText}`);
+  //     }
+  //
+  //     const data = await response.json();
+  //     console.log("Success:", data);
+  //   } catch (error) {
+  //     console.error("Error stopping avatar generation:", error);
+  //   }
+  // };
   console.log("selectedAvatar", selectedAvatar);
 
   const chooseAvatarSteps = {
@@ -478,7 +470,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       <ChooseAvatarStep4
         // setCurrentStep={setCurrentStep}
         // selectedAvatar={selectedAvatar}
-        selectedAvatar="https://elore.sfo3.cdn.digitaloceanspaces.com/avatarsImages/avatars/male2.jpg"
+        selectedAvatar={userData?.result?.avatarSettings?.avatarPicture?.link}
       />
     ),
   };
@@ -500,7 +492,8 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                 >
                   <div
                     style={{
-                      opacity: avatarStreamShow ? 1 : 0,
+                      // opacity: avatarStreamShow ? 1 : 0,
+                      opacity: 1,
                       pointerEvents: avatarStreamShow ? "auto" : "none",
                     }}
                     className={styles.shadowBG}
@@ -511,6 +504,8 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                         width={"100%"}
                         height={"100%"}
                         videoRef={videoRef}
+                        srsSdkRef={srsSdkRef}
+                        unsubscribeFromEvent={unsubscribeFromEvent}
                         options={{
                           autoPlay: true,
                           playsInline: true,
@@ -606,8 +601,9 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                   <div className={styles.gradientOverlay} />
 
                   <div className={styles.chatContent} ref={chatContentRef}>
-                    {chatMessages.map((chat, index) => {
-                      const isLastMessage = index === chatMessages.length - 1;
+                    {chatHistory.map((chat, index) => {
+                      const isLastMessage = index === chatHistory.length - 1;
+                      if (!chat.message.trim()?.length) return;
 
                       return (
                         <div
@@ -643,7 +639,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                     })}
                   </div>
 
-                  {metaData && metaData.length > 0 && !isLoading && !isSending && (
+                  {metaData && metaData.length > 0 && !isLoading && (
                     <div
                       className={styles.collapseButton}
                       onClick={() => {
@@ -674,109 +670,116 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                   </div>
 
                   <div className={styles.chatWrap}>
-                    <div className={styles.chatInputSection}>
-                      {!recording && (
-                        <input
-                          {...register("question", { required: true })}
-                          type="text"
-                          className={styles.chatInput}
-                          placeholder={t("questionPlaceholder")}
-                          autoComplete="off"
-                          onKeyDown={handleKeyDown}
-                          onInput={(e) =>
-                            setIsEmpty(e.currentTarget.value === "")
-                          }
-                          disabled={!isFirst}
-                        />
-                      )}
+                    <Form
+                      layout={"vertical"}
+                      form={form}
+                      style={{ width: "100%" }}
+                      onFinish={submitMessage}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && e.keyCode === 13) {
+                          e.preventDefault();
+                        }
+                      }}
+                      onKeyUp={async (e: any) => {
+                        if (
+                          !isLoading &&
+                          e.key === "Enter" &&
+                          e.keyCode === 13 &&
+                          chatFields.query
+                        ) {
+                          submitMessage && (await submitMessage(chatFields));
+                        }
+                      }}
+                    >
+                      <div className={styles.chatInputSection}>
+                        {!recording && (
+                          <Form.Item name={"query"} noStyle>
+                            <input
+                              type="text"
+                              className={styles.chatInput}
+                              placeholder={t("questionPlaceholder")}
+                              autoComplete="off"
+                              disabled={!isFirst}
+                            />
+                          </Form.Item>
+                        )}
 
-                      {!isEmpty && (
-                        <button
-                          type="button"
-                          className={styles.clearButton}
-                          onClick={() => {
-                            setValue("question", "");
-                            setIsEmpty(true);
-                          }}
-                        >
-                          <img src={ClearIcon} alt="clear" />
-                        </button>
-                      )}
-                      {isTextInInput ? (
-                        <button
-                          type="button"
-                          className={styles.submitButton}
-                          disabled={isSending}
-                          onClick={() => {
-                            handleSubmit((data) => {
-                              onSubmit(data);
-                              setIsStreamConnect(true);
-                              dispatch(setIsStreamShow(true));
-                              setIsEmpty(true);
-                              dispatch(setIsStopQuestion(false));
-                              dispatch(setStreamDone(true));
-                            })();
-                          }}
-                        >
-                          <img src={Send} alt="btn" />
-                        </button>
-                      ) : (
-                        <VoiceRecorder
-                          link=""
-                          addTextWithDelay={addTextWithDelay}
-                          clickCursor={clickCursor}
-                          isLoadingData={false}
-                          setQuestion={setQuestion}
-                          setIsStreamConnect={setIsStreamConnect}
-                          userId={value?.id?.toString()}
-                          selectedLanguageCode={selectedLanguage.isoCode2char}
-                          indexName={indexName}
-                          isFirst={isFirst}
-                          setIsFirst={setIsFirst}
-                          setChatHistory={setVoiceChatHistory}
-                          setMessageClass={setMessageClass}
-                          streamDone={streamDone}
-                          recording={recording}
-                          setRecording={setRecording}
-                          stopAvatarGeneration={stopAvatarGeneration}
-                        />
-                      )}
+                        {chatFields?.query?.length && (
+                          <button
+                            type="button"
+                            className={styles.clearButton}
+                            onClick={() => {
+                              form.setFieldValue("query", "");
+                            }}
+                          >
+                            <img src={ClearIcon} alt="clear" />
+                          </button>
+                        )}
+                        {chatFields?.query?.length ? (
+                          <button
+                            type="submit"
+                            className={styles.submitButton}
+                            disabled={isLoading}
+                          >
+                            <img src={Send} alt="btn" />
+                          </button>
+                        ) : (
+                          <VoiceRecorder
+                            link=""
+                            addTextWithDelay={addTextWithDelay}
+                            clickCursor={clickCursor}
+                            isLoadingData={false}
+                            setIsStreamConnect={setIsStreamConnect}
+                            userId={value?.id?.toString()}
+                            selectedLanguageCode={selectedLanguage.isoCode2char}
+                            indexName={indexName}
+                            isFirst={isFirst}
+                            setIsFirst={setIsFirst}
+                            setChatHistory={setChatHistory}
+                            setMessageClass={setMessageClass}
+                            streamDone={streamDone}
+                            recording={recording}
+                            setRecording={setRecording}
+                            stopAvatarGeneration={stopAvatarGeneration}
+                          />
+                        )}
 
-                      {/*{!streamDone ? (*/}
-                      {/*  <button*/}
-                      {/*    type="button"*/}
-                      {/*    className={styles.submitButton}*/}
-                      {/*    disabled={isSending}*/}
-                      {/*    onClick={() => {*/}
-                      {/*      handleSubmit((data) => {*/}
-                      {/*        onSubmit(data);*/}
-                      {/*        setIsStreamConnect(true);*/}
-                      {/*        dispatch(setIsStreamShow(true));*/}
-                      {/*        setIsEmpty(true);*/}
-                      {/*        dispatch(setIsStopQuestion(false));*/}
-                      {/*        dispatch(setStreamDone(true));*/}
-                      {/*      })();*/}
-                      {/*    }}*/}
-                      {/*  >*/}
-                      {/*    <img src={Send} alt="btn" />*/}
-                      {/*  </button>*/}
-                      {/*) : (*/}
-                      {/*  <button*/}
-                      {/*    type="button"*/}
-                      {/*    className={styles.stopButton}*/}
-                      {/*    disabled={isSending}*/}
-                      {/*    onClick={() => {*/}
-                      {/*      stopAvatarGeneration({*/}
-                      {/*        client_id: String(value.id),*/}
-                      {/*      });*/}
-                      {/*      dispatch(setIsStopQuestion(true));*/}
-                      {/*      dispatch(setStreamDone(false));*/}
-                      {/*    }}*/}
-                      {/*  >*/}
-                      {/*    <div className={styles.beforeIcon} />*/}
-                      {/*  </button>*/}
-                      {/*)}*/}
-                    </div>
+                        {/*{!streamDone ? (*/}
+                        {/*  <button*/}
+                        {/*    type="button"*/}
+                        {/*    className={styles.submitButton}*/}
+                        {/*    disabled={isSending}*/}
+                        {/*    onClick={() => {*/}
+                        {/*      handleSubmit((data) => {*/}
+                        {/*        onSubmit(data);*/}
+                        {/*        setIsStreamConnect(true);*/}
+                        {/*        dispatch(setIsStreamShow(true));*/}
+                        {/*        setIsEmpty(true);*/}
+                        {/*        dispatch(setIsStopQuestion(false));*/}
+                        {/*        dispatch(setStreamDone(true));*/}
+                        {/*      })();*/}
+                        {/*    }}*/}
+                        {/*  >*/}
+                        {/*    <img src={Send} alt="btn" />*/}
+                        {/*  </button>*/}
+                        {/*) : (*/}
+                        {/*  <button*/}
+                        {/*    type="button"*/}
+                        {/*    className={styles.stopButton}*/}
+                        {/*    disabled={isSending}*/}
+                        {/*    onClick={() => {*/}
+                        {/*      stopAvatarGeneration({*/}
+                        {/*        client_id: String(value.id),*/}
+                        {/*      });*/}
+                        {/*      dispatch(setIsStopQuestion(true));*/}
+                        {/*      dispatch(setStreamDone(false));*/}
+                        {/*    }}*/}
+                        {/*  >*/}
+                        {/*    <div className={styles.beforeIcon} />*/}
+                        {/*  </button>*/}
+                        {/*)}*/}
+                      </div>
+                    </Form>
                   </div>
                 </div>
               </div>

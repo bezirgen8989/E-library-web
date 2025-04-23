@@ -1,65 +1,30 @@
-import { AskQuestionComponent } from "../components";
-import { useEffect, useState } from "react";
-import {
-  EventSourceMessage,
-  fetchEventSource,
-} from "@microsoft/fetch-event-source";
-import { useParams, useHistory } from "react-router-dom";
-import {
-  clearBooks,
-  getAvatars,
-  getBookById,
-  setIsStreamShow,
-} from "../slices/home";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
 import { useLazySelector } from "../../../hooks";
-import { getLanguages, getMe, setAvatar } from "../../Auth/slices/auth";
-import { TokenManager } from "../../../utils";
 
-type Chat = {
-  type: "user" | "response";
-  message: string;
-};
+import { getAvatars } from "../slices/home";
+import Slider, { Settings } from "react-slick";
+import styles from "./ChooseAvatarContainer.module.scss";
+import { Image } from "antd";
+import cn from "classnames";
+import { setAvatar, useAuthState } from "../../Auth/slices/auth";
+import Button from "../../../components/common/Buttons/Button";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
-const AskQuestionContainer: React.FC = () => {
-  const [question, setQuestion] = useState("");
-  const [messages, setMessages] = useState<string[]>([]);
-  const [meta, setMeta] = useState<any>(null); // New state for metadata
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { id } = useParams<{ id: string }>();
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const [chatHistory, setChatHistory] = useState<Chat[]>([]);
-
-  useEffect(() => {
-    dispatch(getBookById(id));
-  }, [dispatch, id]);
-
-  useEffect(() => {
-    dispatch(getMe());
-  }, [dispatch]);
+const ChooseAvatarContainer: React.FC = () => {
+  const { t } = useTranslation();
+  const { avatars } = useLazySelector(({ home }) => ({
+    avatars: home.avatars,
+  }));
+  const { userData } = useAuthState();
+  const [currentAvatarInSlider, setCurrentAvatarInSlider] = useState<number>(0);
+  const dispatch = useDispatch<any>();
+  const { push } = useHistory();
 
   useEffect(() => {
-    dispatch(getLanguages());
-  }, [dispatch]);
-
-  const { currentBook, avatars, avatarLanguage } = useLazySelector(
-    ({ home }) => {
-      const { currentBook, avatars, avatarLanguage } = home;
-      return { currentBook, avatars, avatarLanguage };
-    }
-  );
-  // console.log("avatarLanguage", avatarLanguage.id);
-
-  const { languages } = useLazySelector(({ auth }) => {
-    const { languages } = auth;
-    return { languages };
-  });
-  // console.log("languages", languages);
-
-  useEffect(() => {
-    dispatch(clearBooks());
-  }, [dispatch]);
+    setCurrentAvatarInSlider(userData?.result?.avatarSettings?.id - 1);
+  }, [userData?.result?.avatarSettings?.id]);
 
   useEffect(() => {
     dispatch(
@@ -68,156 +33,125 @@ const AskQuestionContainer: React.FC = () => {
         page: "1",
       })
     );
-  }, [dispatch]);
+  }, []);
 
-  const setUserAvatar = (avatarId: number) => {
-    dispatch(
-      setAvatar({
-        avatarSettings: {
-          // id: avatarId,
-          id: 3,
-        },
-      })
-    );
-  };
+  const handleSaveSelectedAvatar = async () => {
+    if (userData?.result?.avatarSettings?.id !== currentAvatarInSlider + 1) {
+      try {
+        const result = await dispatch(
+          setAvatar({
+            avatarSettings: {
+              id: currentAvatarInSlider + 1,
+            },
+          })
+        ).unwrap();
 
-  const extractMeta = (data: any[]): { meta: any; content: string }[] => {
-    return data
-      .map((item) => {
-        if (item.docs && Array.isArray(item.docs)) {
-          return item.docs.map((doc: any) => ({
-            meta: doc.meta,
-            content: doc.content,
-          }));
+        if (result.success) {
+          push("/user/profile");
         }
-        return {
-          meta: item.meta,
-          content: item.content,
-        };
-      })
-      .flat();
-  };
-
-  useEffect(() => {
-    if (question) {
-      const token = TokenManager.getAccessToken();
-
-      const fetchData = async () => {
-        setIsLoading(true);
-        setMessages([]);
-
-        try {
-          const indexName = location.pathname.includes("ask_global_question")
-            ? "GlobalLibraryCollection"
-            : currentBook?.result?.vectorEntity?.indexName;
-
-          setChatHistory((prev) => [
-            ...prev,
-            { type: "user", message: question },
-            { type: "response", message: "" },
-          ]);
-
-          await fetchEventSource(
-            "https://elib.plavno.io:8080/api/v1/vectors/ask",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify({
-                query: question,
-                indexName,
-                language: { id: avatarLanguage?.id || 7 },
-              }),
-
-              onmessage(event: EventSourceMessage) {
-                try {
-                  const data = JSON.parse(event.data);
-
-                  if (event.event === "MESSAGE" && data.chunk) {
-                    setMessages((prev) => [...prev, data.chunk]);
-
-                    setChatHistory((prev) => {
-                      const updatedHistory = [...prev];
-                      const lastIndex = updatedHistory.length - 1;
-
-                      if (updatedHistory[lastIndex].type === "response") {
-                        updatedHistory[lastIndex].message += data.chunk;
-                      }
-
-                      return updatedHistory;
-                    });
-                  }
-
-                  if (event.event === "META") {
-                    const extractedMeta = extractMeta(data);
-                    setMeta(extractedMeta);
-                  }
-                } catch (error) {
-                  console.error(
-                    "Error processing MESSAGE or META event:",
-                    error
-                  );
-                }
-              },
-
-              onopen() {
-                console.log("SSE open channel");
-                return Promise.resolve();
-              },
-
-              onerror(error: Event) {
-                console.error("SSE error:", error);
-              },
-            }
-          );
-        } catch (error) {
-          console.error("Error sending POST request:", error);
-        } finally {
-          setIsLoading(false);
-        }
-      };
-
-      fetchData();
-    }
-  }, [question, currentBook]);
-
-  // Dispatch getMe() when leaving the "ask_question" route
-  useEffect(() => {
-    const unlisten = history.listen((location) => {
-      if (!location.pathname.includes("ask_question")) {
-        dispatch(getMe());
+      } catch (err) {
+        console.error("Ошибка при сохранении аватара:", err);
       }
-    });
+    }
+  };
 
-    return () => {
-      unlisten();
-      // Cleanup dispatch when component is unmounted
-      dispatch(setIsStreamShow(false));
-    };
-  }, [dispatch, history]);
-
-  const clearMessages = () => {
-    setMessages([]);
+  const settings: Settings = {
+    infinite: true,
+    speed: 250,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    centerMode: true,
+    focusOnSelect: true,
+    centerPadding: "0",
+    lazyLoad: "ondemand",
+    initialSlide: currentAvatarInSlider,
+    afterChange: (current: number) => {
+      setCurrentAvatarInSlider(current);
+    },
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 5,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 5,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+    ],
   };
 
   return (
-    <AskQuestionComponent
-      clearMessages={clearMessages}
-      setQuestion={setQuestion}
-      messages={messages}
-      isLoading={isLoading}
-      title={currentBook?.result?.title}
-      metaData={meta}
-      avatars={avatars}
-      setUserAvatar={setUserAvatar}
-      chatHistory={chatHistory}
-      languages={languages?.result?.data}
-      indexName={currentBook?.result?.vectorEntity?.indexName}
-      isChooseAvatarPage
-    />
+    <div className={styles.wrapperBlock}>
+      <div className={styles.avatarBg} />
+      <div className={styles.avatarSliderWrap}>
+        {!avatars.isLoading && (
+          <>
+            <Slider {...settings} className="avatarCarousel">
+              {avatars?.result?.data?.map((avatar: any, index: number) => (
+                <div
+                  key={index}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <div
+                    className={cn(styles.askQuestionAvatar, {
+                      [styles.hideAnimationBlock]:
+                        currentAvatarInSlider !== index,
+                    })}
+                    style={{
+                      visibility:
+                        currentAvatarInSlider !== index ? "hidden" : "visible",
+                    }}
+                  >
+                    <Image
+                      className={styles.sliderBackground}
+                      preview={false}
+                      src={avatar.avatarPicture.link}
+                      alt={avatar.name}
+                    />
+                  </div>
+                  <div className="slideItem" key={avatar.id}>
+                    <div>
+                      <img
+                        src={avatar.avatarMiniature.link}
+                        alt={avatar.name}
+                      />
+                      <div className="avatarName">{avatar.name}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </Slider>
+            <div className={styles.gratisBlock}>
+              {t("helloAvatar1")}
+              <br /> {t("helloAvatar2")}
+            </div>
+          </>
+        )}
+        <Button
+          style={{ width: "341px", margin: "20px auto 20px" }}
+          variant="Brown"
+          onClick={handleSaveSelectedAvatar}
+        >
+          {t("chooseBtn")} {avatars?.result?.data[currentAvatarInSlider].name}
+        </Button>
+      </div>
+    </div>
   );
 };
 
-export default AskQuestionContainer;
+export default ChooseAvatarContainer;

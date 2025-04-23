@@ -1,13 +1,16 @@
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+const webpack = require("webpack");
 
 module.exports = {
   webpack: {
     configure: (webpackConfig) => {
       if (webpackConfig.resolve.fallback) {
-        webpackConfig.resolve.fallback.timers =
-          require.resolve("timers-browserify");
-        webpackConfig.resolve.fallback.stream =
-          require.resolve("stream-browserify");
+        webpackConfig.resolve.fallback = {
+          ...webpackConfig.resolve.fallback,
+          timers: require.resolve("timers-browserify"),
+          stream: require.resolve("stream-browserify"),
+          process: require.resolve("process/browser"),
+        };
       }
 
       webpackConfig.ignoreWarnings = [/Failed to parse source map/];
@@ -17,7 +20,12 @@ module.exports = {
       }
       webpackConfig.resolve.plugins.push(new TsconfigPathsPlugin({}));
 
-      // Удаляем ВСЕ правила с source-map-loader
+      webpackConfig.plugins.push(
+        new webpack.ProvidePlugin({
+          process: "process/browser",
+        })
+      );
+
       webpackConfig.module.rules = webpackConfig.module.rules.filter(
         (rule) => !rule.loader?.includes("source-map-loader")
       );

@@ -34,7 +34,6 @@ interface IVoiceRecorder {
   clickCursor: () => void;
   isLoadingData?: boolean;
   link: string;
-  setQuestion: (text: string) => void;
   setIsStreamConnect?: (value: boolean) => void;
   userId: any;
   selectedLanguageCode: string;
@@ -46,7 +45,7 @@ interface IVoiceRecorder {
   streamDone: any;
   recording: any;
   setRecording: any;
-  stopAvatarGeneration: (params: any) => void;
+  stopAvatarGeneration: (params: any, token: string) => Promise<void>;
 }
 
 const VoiceRecorder: React.FC<IVoiceRecorder> = ({
@@ -54,7 +53,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   clickCursor,
   addTextWithDelay,
   isNonHealth,
-  setQuestion,
   link,
   setIsStreamConnect,
   userId,
@@ -69,15 +67,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   setRecording,
   stopAvatarGeneration,
 }) => {
-  // const { open } = useNotification();
-
-  // const { avatarLanguage } = useLazySelector(({ home }) => {
-  //   const { avatarLanguage } = home;
-  //   return {
-  //     avatarLanguage,
-  //   };
-  // });
-
   const { t } = useTranslation();
   const { userData } = useAuthState();
   // const [recording, setRecording] = useState(false);
@@ -87,7 +76,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   const progressRef = useRef<HTMLParagraphElement>(null);
   const [disconnected, setDisconnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
-
   const [isReadyPaused, setIsReadyPaused] = useState(false);
 
   const language = renderLangCodes(selectedLanguageCode);
@@ -97,7 +85,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     startStreaming,
     deleteStreaming,
     connectToWhisper,
-    pauseStreaming,
+    // pauseStreaming,
     toggleMicMute,
   ] = useVoice({
     language,
@@ -116,15 +104,8 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     return () => {
       deleteStreaming();
       stopStreaming();
-      if (userData?.result?.id) {
-        stopAvatarGeneration({
-          client_id: String(userData?.result?.id),
-        });
-      }
     };
   }, [userData?.result?.id]);
-
-  console.log(deleteStreaming, pauseStreaming);
 
   const [hasMicrophoneAccess, setHasMicrophoneAccess] = useState<
     boolean | null
