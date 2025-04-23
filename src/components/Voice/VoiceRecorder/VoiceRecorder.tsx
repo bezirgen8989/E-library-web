@@ -116,8 +116,19 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   const [isMuted, setIsMuted] = useState(false);
 
   const handleMicToggle = () => {
-    setIsMuted((prevState) => !prevState); // Toggle mute state
-    toggleMicMute(); // Call your existing mute function
+    setIsMuted((prevState) => {
+      const newMutedState = !prevState;
+
+      const micElement = document.querySelector("#mic") as HTMLElement;
+      if (micElement) {
+        micElement.style.opacity = newMutedState ? "0" : "1";
+        micElement.style.pointerEvents = newMutedState ? "none" : "auto";
+      }
+
+      return newMutedState;
+    });
+
+    toggleMicMute();
   };
 
   // Function to check microphone access
@@ -125,7 +136,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       setHasMicrophoneAccess(true);
-      // You may want to stop the stream immediately if you're only checking for permissions
       stream.getTracks().forEach((track) => track.stop());
     } catch (error) {
       setHasMicrophoneAccess(false);
