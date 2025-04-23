@@ -35,6 +35,7 @@ const AskQuestionContainer: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [chatHistory, setChatHistory] = useState<Chat[]>([]);
+  const selectedBookIdQuery = useQuery("selectedBook");
 
   useEffect(() => {
     if (!id) return; // Если id нет — выходим
@@ -131,9 +132,10 @@ const AskQuestionContainer: React.FC = () => {
       setMessages([]);
 
       try {
-        const indexName = location.pathname.includes("ask_global_question")
-          ? "GlobalLibraryCollection"
-          : currentBook?.result?.vectorEntity?.indexName;
+        const indexName =
+          selectedBookIdQuery === "global"
+            ? "GlobalLibraryCollection"
+            : currentBook?.result?.vectorEntity?.indexName;
 
         setChatHistory((prev) => [
           ...prev,
