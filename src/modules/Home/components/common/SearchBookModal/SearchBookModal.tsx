@@ -81,21 +81,17 @@ const SearchBookModal: FC<NotificationsModalProps> = ({
       if (searchTerm.trim() !== "") {
         setHasSearched(true);
         setDropdownVisible(false);
-        getBooksByName(searchTerm);
+        getBooksByName(searchTerm, true);
       }
     }
   };
 
-  const handleBookSelect = (title: string) => {
+  const handleBookSelect = (title: string, isSingle: boolean = false) => {
     setSearchTerm(title);
     setHasSearched(true); // Устанавливаем флаг для выполнения поиска
     setDropdownVisible(false); // Скрыть dropdown после выбора
-    getBooksByName(title);
+    getBooksByName(title, isSingle);
   };
-
-  const filteredBooks = searchBooks.filter((book) =>
-    book.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const hideModal = () => {
     setIsModalOpen(false);
@@ -134,9 +130,9 @@ const SearchBookModal: FC<NotificationsModalProps> = ({
     >
       <div className={styles.modalContent}>
         <div className={styles.searchWrapper}>
-          {searchTerm && isDropdownVisible && filteredBooks.length > 0 && (
+          {searchTerm && isDropdownVisible && searchBooks.length > 0 && (
             <div className={styles.dropdown}>
-              {filteredBooks.map((book, index) => (
+              {searchBooks.map((book, index) => (
                 <div
                   key={index}
                   className={styles.dropdownItem}
@@ -147,7 +143,7 @@ const SearchBookModal: FC<NotificationsModalProps> = ({
               ))}
             </div>
           )}
-          {searchTerm && filteredBooks.length === 0 && (
+          {searchTerm && searchBooks.length === 0 && (
             <div className={styles.noResults}>No Results</div>
           )}
         </div>

@@ -555,9 +555,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                         alt="Sound Off Icon"
                         className={styles.bookIcon}
                       />
-                      {pathname.includes("ask_global_question")
-                        ? t("askGlobalTitle")
-                        : title}
+                      {!title ? t("askGlobalTitle") : title}
                     </div>
                     <div className={styles.bookTitle__speachBlock}>
                       <div
