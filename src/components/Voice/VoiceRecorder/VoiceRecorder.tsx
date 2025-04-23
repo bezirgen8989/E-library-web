@@ -188,7 +188,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
       waveColor: "white",
       progressColor: "white",
       height: 24,
-      width: isNonHealth ? "850px" : "270px",
+      width: isNonHealth ? "850px" : "210px",
       barGap: 1,
       barWidth: 1.5,
       barHeight: 15,
@@ -223,7 +223,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
       waveColor: "rgba(199, 204, 205, 0.6)",
       progressColor: "rgba(199, 204, 205, 0.6)",
       height: 24,
-      width: isNonHealth ? "860px" : "220px",
+      width: isNonHealth ? "860px" : "210px",
       barGap: 1,
       barWidth: 1.5,
       barHeight: 15,
@@ -397,7 +397,9 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "minmax(100px, 276px) 40px",
+                  gridTemplateColumns: "minmax(100px, 210px) 40px",
+                  gap: "12px",
+                  marginRight: 20,
                 }}
               >
                 <div className={styles.readyRecordingWrapper}>
