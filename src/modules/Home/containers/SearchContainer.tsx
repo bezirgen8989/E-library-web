@@ -102,6 +102,7 @@ const SearchContainer: React.FC = () => {
       getBooksByCategory={getBooksByCategory}
       getSearchBooks={getSearchBooks}
       searchBooks={searchBooks?.result}
+      isLoadingSearch={searchBooks?.isLoading}
       getBooksByName={getBooksByName}
       booksByQueryName={booksByQueryName?.result?.data}
       getBook={getBook}

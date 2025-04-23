@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from "react";
+import React, { FC, useCallback, useContext, useEffect, useState } from "react";
 import { Input, Modal, Skeleton } from "antd";
 import commonStyles from "../../../../../assets/css/commonStyles/CommonStyles.module.scss";
 import Close from "../../../../../assets/images/icons/Close.svg";
@@ -9,6 +9,8 @@ import { UserContext } from "../../../../../core/contexts";
 import { getLocalization } from "../../../../Auth/slices/auth";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+import debounce from "lodash/debounce";
+import { LoadingOutlined } from "@ant-design/icons";
 // import {useQuery} from "../../../../../hooks/useQuery";
 
 // import {useHomeState} from "../../../slices/home";
@@ -34,6 +36,7 @@ interface NotificationsModalProps {
   getBooksByName: any;
   booksByQueryName: any;
   isLoading: boolean;
+  isLoadingSearch?: boolean;
   onSelectBook?: (selectedBookId?: string | number) => void;
 }
 
@@ -45,6 +48,7 @@ const SearchBookModal: FC<NotificationsModalProps> = ({
   getBooksByName,
   booksByQueryName,
   isLoading,
+  isLoadingSearch,
   onSelectBook,
 }) => {
   const { t } = useTranslation();
@@ -55,6 +59,13 @@ const SearchBookModal: FC<NotificationsModalProps> = ({
   const value = useContext(UserContext);
   const dispatch = useDispatch();
   // const currentStep = useQuery('currentStep');
+
+  const debouncedSearch = useCallback(
+    debounce((value: string) => {
+      getSearchBooks(value);
+    }, 300),
+    [getSearchBooks]
+  );
 
   useEffect(() => {
     if (value?.language?.isoCode2char) {
@@ -71,7 +82,7 @@ const SearchBookModal: FC<NotificationsModalProps> = ({
       setHasSearched(false);
       getBooksByName({});
     } else {
-      getSearchBooks(value);
+      debouncedSearch(value);
       setDropdownVisible(true);
     }
   };
@@ -144,7 +155,10 @@ const SearchBookModal: FC<NotificationsModalProps> = ({
             </div>
           )}
           {searchTerm && searchBooks.length === 0 && (
-            <div className={styles.noResults}>No Results</div>
+            <div className={styles.noResults}>
+              {" "}
+              {isLoadingSearch ? <LoadingOutlined /> : "No Results"}
+            </div>
           )}
         </div>
 

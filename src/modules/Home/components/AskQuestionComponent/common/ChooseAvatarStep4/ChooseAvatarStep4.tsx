@@ -159,6 +159,7 @@ const ChooseAvatarStep4: FC<ChooseAvatarStep2Props> = ({
         booksByQueryName={booksByQueryName?.result?.data}
         isLoading={isLoading}
         onSelectBook={onSelectBookHandler}
+        isLoadingSearch={searchBooks?.isLoading}
       />
     </div>
   );
