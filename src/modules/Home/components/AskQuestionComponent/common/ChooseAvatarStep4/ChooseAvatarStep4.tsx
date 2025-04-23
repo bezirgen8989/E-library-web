@@ -101,7 +101,7 @@ const ChooseAvatarStep4: FC<ChooseAvatarStep2Props> = ({
           </Button>
           <Button
             onClick={() => {
-              push(`${pathname}?currentStep=${5}`);
+              push(`${pathname}?currentStep=${5}&selectedBook=global`);
             }}
             style={{ width: "341px", margin: "30px auto 20px" }}
             variant="White"
