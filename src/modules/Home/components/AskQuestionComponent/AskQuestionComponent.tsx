@@ -426,8 +426,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                         width={"100%"}
                         height={"100%"}
                         videoRef={videoRef}
-                        srsSdkRef={srsSdkRef}
-                        unsubscribeFromEvent={unsubscribeFromEvent}
                         options={{
                           autoPlay: true,
                           playsInline: true,
