@@ -591,8 +591,8 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                         disabled={!avatarStreamShow}
                       >
                         <img
-                          src={isMuted ? SoundOnIcon : SoundOffIcon}
-                          alt={isMuted ? "Sound On Icon" : "Sound Off Icon"}
+                          src={isMuted ? SoundOffIcon : SoundOnIcon}
+                          alt={isMuted ? "Sound Off Icon" : "Sound On Icon"}
                           className={styles.soundOffIcon}
                         />
                       </button>
