@@ -5,6 +5,7 @@ import TopLogo from "../../../../assets/images/icons/logo.svg";
 import Button from "../../../../components/common/Buttons/Button";
 import React from "react";
 import { t } from "i18next";
+import { routes } from "../../routing";
 
 const Error404Component: React.FC = () => {
   return (
@@ -31,7 +32,10 @@ const Error404Component: React.FC = () => {
           <div className={styles.logo_name}> {t("error404")}</div>
           <div className={styles.error_subtitle}>{t("thisPageNotfound")}</div>
 
-          <Button variant="White" to="/auth/">
+          <Button
+            variant="White"
+            onClick={() => (window.location.href = routes.root)}
+          >
             {t("backToHomePage")}
           </Button>
         </div>
