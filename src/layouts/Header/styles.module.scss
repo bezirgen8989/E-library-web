@@ -98,6 +98,12 @@
     & > span svg path {
       stroke: #996C42;
     }
+    &_Name {
+      max-width: 150px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
   background-color: #EFE1D6 !important;
 }
@@ -110,6 +116,12 @@
     justify-content: space-between;
     & > span svg path {
       stroke: #FFFFFF;
+    }
+    &_Name {
+      max-width: 150px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
   &:hover {
