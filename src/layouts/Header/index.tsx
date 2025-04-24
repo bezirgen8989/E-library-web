@@ -21,7 +21,7 @@ import routes from "../../modules/UserManagement/routing/routes";
 
 type Props = {};
 
-const otherStyle = ["/ask_question", "/user/profile"];
+const otherStyle = ["/ask_question", "/user/profile", "/choose_avatar"];
 
 export const Header = ({ children }: PropsWithChildren<Props>) => {
   const { t } = useTranslation();
