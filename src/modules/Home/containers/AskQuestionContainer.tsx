@@ -443,6 +443,13 @@ const AskQuestionContainer: React.FC = () => {
     if (selectedBookId && selectedBookId !== "global") {
       dispatch(getBookById(selectedBookId));
     }
+    return () => {
+      setChatHistory([]);
+      stopAvatarGeneration(
+        { client_id: userData?.result?.id?.toString() },
+        token
+      );
+    };
   }, [selectedBookId]);
 
   return (
