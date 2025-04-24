@@ -1,5 +1,5 @@
 import { PropsWithChildren, useEffect, useState } from "react";
-import { Link, useLocation, NavLink } from "react-router-dom";
+import { Link, useLocation, NavLink, useHistory } from "react-router-dom";
 import userRoutes from "../../modules/UserManagement/routing/routes";
 import {
   checkNewNotifications,
@@ -17,6 +17,7 @@ import cn from "classnames";
 import { useAuthState } from "../../modules/Auth/slices/auth";
 import { Button } from "antd";
 import { icons } from "@layouts/Header/menuItems/icons";
+import routes from "../../modules/UserManagement/routing/routes";
 
 type Props = {};
 
@@ -24,6 +25,7 @@ const otherStyle = ["/ask_question", "/user/profile"];
 
 export const Header = ({ children }: PropsWithChildren<Props>) => {
   const { t } = useTranslation();
+  const { push } = useHistory();
   const [hasNotifications] = useState(true);
   const { pathname } = useLocation(); // Получаем текущий путь
   const dispatch = useDispatch();
@@ -46,6 +48,10 @@ export const Header = ({ children }: PropsWithChildren<Props>) => {
   //   location.pathname === userRoutes.profile ||
   //   /^\/search_genre_books\/\d+$/.test(location.pathname) ||
   //   /^\/audio_book\/\d+$/.test(location.pathname);
+
+  const toProfilePage = () => {
+    push(routes.profile);
+  };
 
   return (
     <>
@@ -100,11 +106,11 @@ export const Header = ({ children }: PropsWithChildren<Props>) => {
 
           <Button
             style={{ padding: 0 }}
-            href={userRoutes.profile}
             className={cn(styles.dropdown, {
               [styles.dropdownLight]: !darkPage,
               [styles.dropdownDark]: darkPage,
             })}
+            onClick={toProfilePage}
             icon={
               <div className={styles.headerAvatar}>
                 <img

@@ -147,7 +147,8 @@ const ChooseAvatarContainer: React.FC = () => {
           variant="Brown"
           onClick={handleSaveSelectedAvatar}
         >
-          {t("chooseBtn")} {avatars?.result?.data[currentAvatarInSlider].name}
+          {t("chooseBtn")}{" "}
+          {avatars?.result?.data?.[currentAvatarInSlider]?.name}
         </Button>
       </div>
     </div>
