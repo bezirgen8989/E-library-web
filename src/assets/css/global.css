@@ -290,15 +290,13 @@ p {
 .ant-drawer-header {
   border-bottom: none !important;
 }
-
+@media (max-width: 480px) {
 .ant-drawer-right.ant-drawer-open .ant-drawer-content-wrapper {
-  @media (max-width: 480px) {
     max-width: 370px;
   }
 }
 
 .avatarCarousel {
-  margin-top: -120px;
   perspective: 800px;
 }
 
