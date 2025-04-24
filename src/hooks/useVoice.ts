@@ -150,18 +150,23 @@ export const useVoice = ({
 
         setMessages((prev) => [...prev, chunkText]);
 
-        setChatHistory((prev: any) => {
-          const updatedHistory = [...prev];
-          const lastIndex = updatedHistory.length - 1;
+        setChatHistory((prev: any) => [
+          ...prev,
+          { type: "response", message: chunkText },
+        ]);
 
-          if (updatedHistory[lastIndex]?.type === "response") {
-            updatedHistory[lastIndex].message += chunkText;
-          } else {
-            updatedHistory.push({ type: "response", message: chunkText });
-          }
-
-          return updatedHistory;
-        });
+        // setChatHistory((prev: any) => {
+        //   const updatedHistory = [...prev];
+        //   const lastIndex = updatedHistory.length - 1;
+        //
+        //   if (updatedHistory[lastIndex]?.type === "response") {
+        //     updatedHistory[lastIndex].message += chunkText;
+        //   } else {
+        //     updatedHistory.push({ type: "response", message: chunkText });
+        //   }
+        //
+        //   return updatedHistory;
+        // });
 
         dispatch(setIsStreamShow(true));
       }
