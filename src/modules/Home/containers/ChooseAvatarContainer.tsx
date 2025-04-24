@@ -23,7 +23,11 @@ const ChooseAvatarContainer: React.FC = () => {
   const { push } = useHistory();
 
   useEffect(() => {
-    setCurrentAvatarInSlider(userData?.result?.avatarSettings?.id - 1);
+    if (userData?.result?.avatarSettings?.id) {
+      setCurrentAvatarInSlider(userData?.result?.avatarSettings?.id - 1);
+    } else {
+      setCurrentAvatarInSlider(0);
+    }
   }, [userData?.result?.avatarSettings?.id]);
 
   useEffect(() => {
@@ -99,7 +103,7 @@ const ChooseAvatarContainer: React.FC = () => {
             <Slider {...settings} className="avatarCarousel">
               {avatars?.result?.data?.map((avatar: any, index: number) => (
                 <div
-                  key={index}
+                  key={avatar?.id}
                   style={{
                     display: "flex",
                     flexDirection: "column",
