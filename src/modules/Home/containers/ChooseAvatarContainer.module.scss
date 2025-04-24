@@ -75,7 +75,8 @@
 }
 
 .wrapperBlock{
-  height: 90vh;
+  min-height: 90vh;
+  padding-top: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
