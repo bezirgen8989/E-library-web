@@ -1,5 +1,5 @@
 import styles from "./ProfileUserForm.module.scss";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import { useForm, Controller } from "react-hook-form";
 import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
 import tempAi from "../../../../assets/images/testAiImg.png";
@@ -8,6 +8,7 @@ import { Switch } from "antd";
 import NotificationsModal from "../common/NotificationModal/NotificationsModal";
 import { UserContext } from "../../../../core/contexts";
 import { useTranslation } from "react-i18next";
+import { useAuthState } from "../../../Auth/slices/auth";
 
 export type LanguageType = {
   id: number;
@@ -52,6 +53,17 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
   handleBookLanguage,
   isChangeKidsMode,
 }) => {
+  const { userData, avatarSettings } = useAuthState();
+
+  const currentUserAvatar = useMemo(() => {
+    return avatarSettings?.result?.avatarSettings?.avatarMiniature?.link
+      ? avatarSettings?.result?.avatarSettings?.avatarMiniature?.link
+      : userData?.result?.avatarSettings?.avatarMiniature?.link;
+  }, [
+    avatarSettings?.result?.avatarSettings?.avatarMiniature?.link,
+    userData?.result?.avatarSettings?.avatarMiniature?.link,
+  ]);
+
   const { t } = useTranslation();
   const defaultLanguage = languages.find((lang) => lang.name === "English") || {
     id: 0,
@@ -238,14 +250,7 @@ const ProfileUserForm: React.FC<RecoverProps> = ({
           }}
         >
           <div className={styles.aiAvatar}>
-            <img
-              src={
-                value?.avatarSettings?.avatarMiniature?.link
-                  ? value?.avatarSettings?.avatarMiniature?.link
-                  : tempAi
-              }
-              alt="avatar"
-            />
+            <img src={currentUserAvatar || tempAi} alt="avatar" />
           </div>
           <span>{t("aILibrarian")}</span>
         </div>
