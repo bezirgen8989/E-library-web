@@ -36,7 +36,7 @@ import homeRoutes from "modules/Home/routing/routes";
 import { notification } from "antd";
 import routes from "../../routing/routes";
 import Alert from "../../../../assets/images/icons/notificationIcon.svg";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import { useSelector } from "react-redux";
 
 const initialState: AuthState = {
@@ -49,12 +49,11 @@ const initialState: AuthState = {
   recoverData: {},
   changePasswordData: {},
   verifyToken: {},
-  languages: {},
+  languages: [],
   profileInfo: {},
   photoId: {},
   currentEmail: null,
   googleTokenId: {},
-  kidsMode: {},
   avatarSettings: {},
   aboutOptions: {},
   appLocalization: {},
@@ -106,12 +105,8 @@ const authSlice = createSlice({
         const { content, error } = action.payload;
         state.profileInfo = { isLoading: false, result: content, error };
       })
-      .addCase(setKidsMode.pending, (state) => {
-        state.kidsMode = { isLoading: true };
-      })
       .addCase(setKidsMode.fulfilled, (state, action) => {
-        const { content, error } = action.payload;
-        state.kidsMode = { isLoading: false, result: content, error };
+        state.userData.result.kidsMode = action.payload;
       })
 
       .addCase(emailConfirm.pending, (state) => {
@@ -124,6 +119,14 @@ const authSlice = createSlice({
           result: content,
           error,
         };
+      })
+      .addCase(setAppLanguage.fulfilled, (state, action) => {
+        const { content } = action.payload;
+        state.userData.result.language = content.language;
+      })
+      .addCase(setBookLanguage.fulfilled, (state, action) => {
+        const { content } = action.payload;
+        state.userData.result.bookLanguage = content.bookLanguage;
       })
       .addCase(getMe.pending, (state) => {
         state.userData = { isLoading: true };
@@ -180,7 +183,14 @@ const authSlice = createSlice({
       })
       .addCase(setAvatar.fulfilled, (state, action) => {
         const { content, error } = action.payload;
-        state.avatarSettings = { isLoading: false, result: content, error };
+        state.userData = {
+          isLoading: false,
+          result: {
+            ...state.userData.result,
+            avatarSettings: content.avatarSettings,
+          },
+          error,
+        };
       })
 
       .addCase(getOptionsAbout.pending, (state) => {
@@ -193,7 +203,7 @@ const authSlice = createSlice({
       .addCase(getLocalization.pending, (state) => {
         state.appLocalization = { isLoading: true };
       })
-      .addCase(getLocalization.fulfilled, (state, action) => {
+      .addCase(getLocalization.fulfilled, () => {
         // const { content, error } = action.payload;
         // state.appLocalization = { isLoading: false, result: content, error };
       })
@@ -375,7 +385,7 @@ export const getLocalization = createAsyncThunk(
 
 export const setProfile = createAsyncThunk(
   "profile/api/v1/auth/me",
-  async (userParams: any, { dispatch }) => {
+  async (userParams: any) => {
     const response = await setUserProfile(userParams);
     const { success, error } = response;
 
@@ -441,8 +451,10 @@ export const setOptionsAbout = createAsyncThunk(
 export const setKidsMode = createAsyncThunk(
   "kidsMode/api/v1/auth/me",
   async (userParams: any, { dispatch }) => {
-    const response = await setUserProfile(userParams);
-    return response;
+    const { success, content } = await setUserProfile(userParams);
+    if (success) {
+      return content?.kidsMode;
+    }
   }
 );
 
@@ -452,7 +464,7 @@ export const setAppLanguage = createAsyncThunk(
     const response = await setUserProfile(userParams);
     const { success } = response;
     if (success) {
-      // dispatch(getMe());
+      await i18next.changeLanguage(userParams.language.isoCode2char);
     }
     return response;
   }

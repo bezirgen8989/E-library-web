@@ -1,7 +1,7 @@
 import { AskQuestionComponent } from "../components";
 import { useEffect, useRef, useState } from "react";
 import { EventSourceMessage } from "@microsoft/fetch-event-source";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   clearBooks,
   getAvatars,
@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { useLazySelector } from "../../../hooks";
 import {
   getLanguages,
-  getMe,
+  // getMe,
   setAvatar,
   useAuthState,
 } from "../../Auth/slices/auth";
@@ -57,7 +57,7 @@ const AskQuestionContainer: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch();
-  const history = useHistory();
+  // const history = useHistory();
   const [chatHistory, setChatHistory] = useState<Chat[]>([]);
   const selectedBookIdQuery = useQuery("selectedBook");
 
@@ -68,52 +68,37 @@ const AskQuestionContainer: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const srsSdkRef = useRef<typeof SrsRtcWhipWhepAsync | any>(null);
 
-  console.log(
-    "srsSdkRef.current.stream.getTracks()",
-    srsSdkRef?.current?.stream?.getTracks()
-  );
-
   useEffect(() => {
     if (!id) return; // Если id нет — выходим
     dispatch(getBookById(id));
   }, [dispatch, id]);
 
-  // useEffect(() => {
-  //   dispatch(getMe());
-  // }, [dispatch]);
-
   useEffect(() => {
     dispatch(getLanguages());
   }, [dispatch]);
 
-  const {
-    currentBook,
-    avatars,
-    avatarLanguage,
-    avatarStreamShow,
-    // isStopQuestion,
-  } = useLazySelector(({ home }) => {
-    const {
-      currentBook,
-      avatars,
-      avatarLanguage,
-      avatarStreamShow,
-      isStopQuestion,
-    } = home;
-    return {
-      currentBook,
-      avatars,
-      avatarLanguage,
-      avatarStreamShow,
-      isStopQuestion,
-    };
-  });
+  const { currentBook, avatars, avatarLanguage, avatarStreamShow } =
+    useLazySelector(({ home }) => {
+      const {
+        currentBook,
+        avatars,
+        avatarLanguage,
+        avatarStreamShow,
+        isStopQuestion,
+      } = home;
+      return {
+        currentBook,
+        avatars,
+        avatarLanguage,
+        avatarStreamShow,
+        isStopQuestion,
+      };
+    });
 
   const { languages } = useLazySelector(({ auth }) => {
     const { languages } = auth;
     return { languages };
   });
-  // console.log("languages", languages);
 
   useEffect(() => {
     setAvatarStreamShow(false);
@@ -129,7 +114,7 @@ const AskQuestionContainer: React.FC = () => {
     );
   }, [dispatch]);
 
-  const setUserAvatar = (avatarId: number) => {
+  const setUserAvatar = () => {
     dispatch(
       setAvatar({
         avatarSettings: {
@@ -140,24 +125,6 @@ const AskQuestionContainer: React.FC = () => {
     );
   };
 
-  // const extractMeta = (data: any[]): { meta: any; content: string }[] => {
-  //   return data
-  //     .map((item) => {
-  //       if (item.docs && Array.isArray(item.docs)) {
-  //         return item.docs.map((doc: any) => ({
-  //           meta: doc.meta,
-  //           content: doc.content,
-  //         }));
-  //       }
-  //       return {
-  //         meta: item.meta,
-  //         content: item.content,
-  //       };
-  //     })
-  //     .flat();
-  // };
-
-  // ---------------------------------------------------------------------
   const onOpenEvent = async () => {
     setChatHistory((prev) => [
       ...prev,
@@ -285,122 +252,19 @@ const AskQuestionContainer: React.FC = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (!question || isStopQuestion) return;
-  //
-  //   const token = TokenManager.getAccessToken();
-  //   const controller = new AbortController();
-  //
-  //   const fetchData = async () => {
-  //     setIsLoading(true);
-  //     setMessages([]);
-  //
-  //     try {
-  //       const indexName =
-  //         selectedBookIdQuery === "global"
-  //           ? "GlobalLibraryCollection"
-  //           : currentBook?.result?.vectorEntity?.indexName;
-  //
-  //       setChatHistory((prev) => [
-  //         ...prev,
-  //         {
-  //           type: "user",
-  //           message: question,
-  //           timestamp: new Date().toLocaleTimeString(),
-  //         },
-  //         {
-  //           type: "response",
-  //           message: "",
-  //           timestamp: new Date().toLocaleTimeString(),
-  //         },
-  //       ]);
-  //
-  //       await fetchEventSource(
-  //         "https://elib.plavno.io:8080/api/v1/vectors/ask",
-  //         {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //           body: JSON.stringify({
-  //             query: question,
-  //             indexName,
-  //             language: { id: avatarLanguage?.id || 7 },
-  //           }),
-  //           signal: controller.signal,
-  //
-  //           onmessage(event: EventSourceMessage) {
-  //             if (isStopQuestion) {
-  //               controller.abort();
-  //               return;
-  //             }
-  //
-  //             try {
-  //               const data = JSON.parse(event.data);
-  //
-  //               if (event.event === "MESSAGE" && data.chunk) {
-  //                 console.log("data.chunk", data.chunk);
-  //                 setMessages((prev) => [...prev, data.chunk]);
-  //
-  //                 setChatHistory((prev) => {
-  //                   const updatedHistory = [...prev];
-  //                   const lastIndex = updatedHistory.length - 1;
-  //
-  //                   if (updatedHistory[lastIndex].type === "response") {
-  //                     updatedHistory[lastIndex].message += data.chunk;
-  //                   }
-  //
-  //                   return updatedHistory;
-  //                 });
-  //               }
-  //
-  //               if (event.event === "META") {
-  //                 const extractedMeta = extractMeta(data);
-  //                 setMeta(extractedMeta);
-  //               }
-  //             } catch (error) {
-  //               console.error("Error processing MESSAGE or META event:", error);
-  //             }
-  //           },
-  //
-  //           onopen() {
-  //             console.log("SSE open channel");
-  //             return Promise.resolve();
-  //           },
-  //
-  //           onerror(error: Event) {
-  //             console.error("SSE error:", error);
-  //           },
-  //         }
-  //       );
-  //     } catch (error) {
-  //       console.error("Error sending POST request:", error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //
-  //   fetchData();
-  //
-  //   return () => {
-  //     controller.abort();
-  //   };
-  // }, [question, currentBook, isStopQuestion]);
-
   useEffect(() => {
-    const unlisten = history.listen((location) => {
-      if (!location.pathname.includes("ask_question")) {
-        dispatch(getMe());
-      }
-    });
+    // const unlisten = history.listen((location) => {
+    //   if (!location.pathname.includes("ask_question")) {
+    //     dispatch(getMe());
+    //   }
+    // });
 
     return () => {
-      unlisten();
+      // unlisten();
       // Cleanup dispatch when component is unmounted
       dispatch(setIsStreamShow(false));
     };
-  }, [dispatch, history]);
+  }, [dispatch]);
 
   const clearMessages = () => {
     setMessages([]);

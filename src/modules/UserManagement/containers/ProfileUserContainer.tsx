@@ -1,22 +1,18 @@
 import ProfileUserComponent from "../components/ProfileUserComponent";
 import { useLazySelector } from "../../../hooks";
-import { useCallback, useContext, useEffect, useRef } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import {
   deleteUserAccount,
-  getLanguages,
+  // getLanguages,
   getLocalization,
-  getMe,
   setAppLanguage,
   setBookLanguage,
-  // getMe,
-  // setAvatar,
   setKidsMode,
   setProfileApp,
   uploadUserPhotoId,
 } from "../../Auth/slices/auth";
 import { useDispatch } from "react-redux";
 import { routes } from "../../Home/routing";
-import { routes as userManagementRoutes } from "../../UserManagement/routing";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../../core/contexts";
 
@@ -24,24 +20,6 @@ const ProfileUserContainer: React.FC = () => {
   const dispatch = useDispatch();
   const value = useContext(UserContext);
   const history = useHistory();
-  const prevPath = useRef(history.location.pathname);
-
-  useEffect(() => {
-    const unlisten = history.listen((location) => {
-      if (
-        prevPath.current === userManagementRoutes.profile &&
-        location.pathname !== userManagementRoutes.profile
-      ) {
-        console.log("User left profile, fetching new data...");
-        dispatch(getMe());
-      }
-      prevPath.current = location.pathname;
-    });
-
-    return () => {
-      unlisten();
-    };
-  }, [history, dispatch]);
 
   const { languages, photoId } = useLazySelector(({ auth }) => {
     const { languages, photoId } = auth;
@@ -57,26 +35,13 @@ const ProfileUserContainer: React.FC = () => {
     }
   }, [dispatch, value?.language?.isoCode2char]);
 
-  const setUserAvatar = async (avatarId: number) => {
+  const setUserAvatar = async () => {
     try {
-      // Ensure dispatch is completed before proceeding
-      // await dispatch(
-      //   setAvatar({
-      //     avatarSettings: null,
-      //   })
-      // );
-      // dispatch(getMe());
-      // Navigate after the delay
-      await history.push(routes.chooseAvatar);
+      history.push(routes.chooseAvatar);
     } catch (error) {
       console.error("Error setting user avatar:", error);
     }
   };
-
-  useEffect(() => {
-    dispatch(getLanguages());
-    // dispatch(getMe());
-  }, [dispatch]);
 
   const handleSubmit = useCallback(
     (values) => {

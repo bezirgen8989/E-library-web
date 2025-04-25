@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { TokenManager } from "utils";
 import { clearSessionInfo } from "core/session/slices/session";
-import { getMe } from "../../modules/Auth/slices/auth";
+// import { getMe } from "../../modules/Auth/slices/auth";
 import { useLazySelector } from "../../hooks";
 import { UserContext } from "core/contexts";
 
@@ -18,9 +18,9 @@ const InternalLayer: React.FC = ({ children }) => {
   });
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getMe());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getMe());
+  // }, []);
 
   // Check session on page refresh
   useEffect(() => {

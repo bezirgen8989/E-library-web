@@ -1,14 +1,15 @@
-.layoutWrapper {
-  overflow: hidden;
-}
-
-.contentWrapper {
-  overflow: auto;
-  height: calc(100vh - 74px);
-}
-
-.askQuestionPageHeader {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+.layoutHeaderWrapper{
+  .profile{
+    background: #996C42;
+  }
+  .choose_avatar, .ask_question  {
+    background: rgb(0, 25, 30) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .contentWrapper {
+    overflow: auto;
+    height: calc(100vh - 74px);
+  }
 }
 
 .headerDesktop {

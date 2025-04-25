@@ -1,5 +1,7 @@
 // import { ThreadType } from '@types';
 
+import { Language } from "../modules/Auth/slices/auth/types";
+
 export const eventColors = [
   "#F5222D",
   "#FA8C16",
@@ -64,6 +66,25 @@ export const recharsSampleData = [
     c: 2100,
   },
 ];
+
+export const defaultEnglishLanguage: Language = {
+  id: 7,
+  name: "English",
+  englishName: "English",
+  isoCode: "eng",
+  isoCode2char: "en",
+  flag: {
+    id: "3d91e520-23bb-425b-96a7-37d137c29e5b",
+    prefix: "languageicons",
+    postfix: "flags",
+    name: "united-kingdom@2x.png",
+    type: "FILE",
+    fileType: "image/png",
+    fileSize: 2636007,
+    tag: "",
+    link: "https://elore.sfo3.cdn.digitaloceanspaces.com/languageicons/flags/united-kingdom@2x.png",
+  },
+};
 
 export const defaultDataFormat = dateFormats.DMY;
 export const tablePageSize = 10;

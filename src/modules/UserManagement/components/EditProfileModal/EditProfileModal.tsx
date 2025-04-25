@@ -1,14 +1,16 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { Modal, Popconfirm } from "antd";
 import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+
 import Button from "../../../../components/common/Buttons/Button";
-import styles from "./EditProfile.module.scss";
 import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
 import Close from "../../../../assets/images/icons/Close.svg";
 import Delete from "../../../../assets/images/icons/delete_icon.svg";
 import EditUpload from "../../../../assets/images/icons/editUploadIcon.svg";
+
+import styles from "./EditProfile.module.scss";
 import commonStyles from "../../../../assets/css/commonStyles/CommonStyles.module.scss";
-import { useTranslation } from "react-i18next";
 
 interface EditProfileModalProps {
   isModalOpen: boolean;
@@ -42,7 +44,6 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
   handleUpload,
   photoId,
   deleteAccount,
-  bookLanguage,
 }) => {
   const { t } = useTranslation();
   const {
@@ -124,7 +125,7 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
   return (
     <Modal
       title={<div className="custom-modal-title">{t("editProfile")}</div>}
-      visible={isModalOpen}
+      open={isModalOpen}
       onCancel={hideModal}
       className="custom-modal"
       footer={null}
@@ -132,7 +133,10 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
         <img className={styles.modalCloseIcon} src={Close} alt="close-icon" />
       }
     >
-      <form onSubmit={handleSubmit(onSubmitForm)}>
+      <form
+        className={styles.editProfileFormWrapper}
+        onSubmit={handleSubmit(onSubmitForm)}
+      >
         <div className={styles.uploadWrap}>
           <div className={styles.uploadIcon} onClick={handleUploadIconClick}>
             <img src={EditUpload} alt="" />
@@ -140,7 +144,7 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
           <Controller
             name="photo"
             control={control}
-            render={({ field }) => (
+            render={() => (
               <>
                 <input
                   type="file"
@@ -303,7 +307,15 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
           onMouseLeave: () => setCancelButtonOpacity(1),
         }}
       >
-        <div style={{ marginTop: 40 }}>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            paddingBottom: "70px",
+            paddingTop: "57px",
+          }}
+        >
           <Button
             style={{ width: 249, margin: "30px auto 0 auto" }}
             variant="Error"

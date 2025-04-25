@@ -2,23 +2,18 @@ import { ProfileForm } from "modules/Auth/components";
 import { useDispatch } from "react-redux";
 import { useCallback, useEffect } from "react";
 import {
-  getLanguages,
+  // getLanguages,
   getLocalization,
   setProfile,
   uploadUserPhotoId,
+  useAuthState,
 } from "../slices/auth";
-import { useLazySelector } from "../../../hooks";
 
 const ProfileContainer: React.FC = () => {
   const dispatch = useDispatch();
 
-  const { languages, photoId } = useLazySelector(({ auth }) => {
-    const { languages, photoId } = auth;
-    return {
-      languages,
-      photoId,
-    };
-  });
+  const { languages, photoId } = useAuthState();
+
   const appLanguage = sessionStorage.getItem("appLanguage");
   const parsedAppLanguage = appLanguage ? JSON.parse(appLanguage) : "en";
 
@@ -37,9 +32,11 @@ const ProfileContainer: React.FC = () => {
     dispatch(uploadUserPhotoId(values));
   };
 
-  useEffect(() => {
-    dispatch(getLanguages());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   if(!languages.result?.data?.length){
+  //     dispatch(getLanguages());
+  //   }
+  // }, [dispatch, languages.result?.data?.length]);
 
   return (
     <ProfileForm
