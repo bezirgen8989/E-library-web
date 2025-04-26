@@ -1,27 +1,21 @@
-import commonStyles from "../../../../assets/css/commonStyles/CommonStyles.module.scss";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Upload, DatePicker } from "antd";
 import moment from "moment";
+
+import commonStyles from "../../../../assets/css/commonStyles/CommonStyles.module.scss";
 import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
 import Button from "../../../../components/common/Buttons/Button";
 import BackIcon from "../../../../assets/images/icons/goBackIcon.svg";
 import { useHistory } from "react-router-dom";
 import LanguageModal from "../LanguageModal";
 import { useTranslation } from "react-i18next";
-
-type LanguageType = {
-  id: number;
-  name: string;
-  isoCode2char: string;
-  flag: {
-    link: string;
-  };
-};
+import { Language } from "../../slices/auth/types";
+import { defaultEnglishLanguage } from "../../../../constants";
 
 type RecoverProps = {
   onSubmit: (values: any) => void;
-  languages: LanguageType[];
+  languages: Language[];
   handleUpload: (params: any) => void;
   photoId: string | null;
 };
@@ -46,11 +40,9 @@ const ProfileForm: React.FC<RecoverProps> = ({
   photoId,
 }) => {
   const { t } = useTranslation();
-  const defaultLanguage = languages.find((lang) => lang.name === "English") || {
-    id: 0,
-    name: "Select Language",
-    flag: { link: NoAvatar },
-  };
+  const defaultLanguage =
+    languages.find((lang) => lang.isoCode2char === "en") ||
+    defaultEnglishLanguage;
 
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -84,7 +76,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
     }
   }, [languages, setValue]);
 
-  const onLanguageSelect = (language: LanguageType) => {
+  const onLanguageSelect = (language: Language) => {
     setSelectedLanguage(language);
     sessionStorage.setItem("appLanguage", JSON.stringify(language));
     setValue("language", language.name);
@@ -150,7 +142,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
                 <Controller
                   name="photo"
                   control={control}
-                  render={({ field }) => (
+                  render={() => (
                     <Upload
                       beforeUpload={(file) => {
                         setValue("photo", file);
@@ -282,7 +274,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
                   <Controller
                     name="language"
                     control={control}
-                    render={({ field }) => (
+                    render={() => (
                       <div
                         onMouseDown={(e) => {
                           e.preventDefault();
@@ -316,8 +308,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
           modalType="language"
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
-          languages={languages}
-          defaultLanguage={defaultLanguage}
+          currentSelectedLanguage={defaultLanguage}
           onLanguageSelect={onLanguageSelect}
         />
       </div>

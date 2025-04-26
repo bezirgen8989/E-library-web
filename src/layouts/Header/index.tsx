@@ -1,4 +1,10 @@
-import { PropsWithChildren, useEffect, useState } from "react";
+import {
+  PropsWithChildren,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
 import { Link, useLocation, NavLink, useHistory } from "react-router-dom";
 import userRoutes from "../../modules/UserManagement/routing/routes";
 import {
@@ -14,7 +20,7 @@ import noAvatar from "../../assets/images/icons/noUserAvatar.png";
 import styles from "./styles.module.scss";
 import { MenuItems } from "@layouts/Header/menuItems";
 import cn from "classnames";
-import { useAuthState } from "../../modules/Auth/slices/auth";
+import { getMe, useAuthState } from "../../modules/Auth/slices/auth";
 import { Button } from "antd";
 import { icons } from "@layouts/Header/menuItems/icons";
 import routes from "../../modules/UserManagement/routing/routes";
@@ -29,9 +35,18 @@ export const Header = ({ children }: PropsWithChildren<Props>) => {
   const [hasNotifications] = useState(true);
   const { pathname } = useLocation(); // Получаем текущий путь
   const dispatch = useDispatch();
+  const splitRoute = pathname.split("/");
+
   const {
     userData: { result },
   } = useAuthState();
+
+  const user = useMemo(() => {
+    if (result?.id) {
+      return result;
+    }
+    return null;
+  }, [result?.id]);
 
   useEffect(() => {
     dispatch(checkNewNotifications());
@@ -43,23 +58,29 @@ export const Header = ({ children }: PropsWithChildren<Props>) => {
 
   const darkPage = otherStyle.includes(pathname);
 
-  // Анахуя? если оно не работает?
-  // const difStyles =
-  //   location.pathname === userRoutes.profile ||
-  //   /^\/search_genre_books\/\d+$/.test(location.pathname) ||
-  //   /^\/audio_book\/\d+$/.test(location.pathname);
+  useLayoutEffect(() => {
+    if (!user?.id) {
+      dispatch(getMe());
+    }
+  }, [user?.id]);
 
   const toProfilePage = () => {
     push(routes.profile);
   };
 
   return (
-    <>
+    <div
+      className={cn(
+        styles.layoutHeaderWrapper,
+        styles[splitRoute[splitRoute.length - 1]]
+      )}
+    >
       <div
         style={{ overflow: "hidden" }}
-        className={cn(styles.headerDesktop, {
-          [styles.askQuestionPageHeader]: darkPage,
-        })}
+        className={cn(
+          styles.headerDesktop,
+          styles[splitRoute[splitRoute.length - 1]]
+        )}
       >
         <div className={styles.headerLogo}>
           <Link to="/">
@@ -144,6 +165,6 @@ export const Header = ({ children }: PropsWithChildren<Props>) => {
       <div className={styles.contentWrapper} style={{ overflow: "auto" }}>
         {children}
       </div>
-    </>
+    </div>
   );
 };

@@ -5,16 +5,16 @@ import {
   addHabits,
   getCategories,
   getLocalization,
-  getMe,
+  // getMe,
 } from "../slices/auth";
 import { useLazySelector } from "../../../hooks";
 
 const ProfileHabitsContainer: React.FC = () => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getMe());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getMe());
+  // }, []);
 
   const appLanguage = sessionStorage.getItem("appLanguage");
   const parsedAppLanguage = appLanguage ? JSON.parse(appLanguage) : "en";

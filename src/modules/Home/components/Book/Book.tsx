@@ -14,7 +14,6 @@ import { useHistory, useParams } from "react-router-dom";
 import Rating from "react-rating-stars-component";
 import NoImg from "../../../../assets/images/NoImagePlaceholder.jpg";
 import LanguageModal from "../../../Auth/components/LanguageModal";
-import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
 import ReviewModal from "../common/ReviewModal";
 import { routes } from "../../routing";
 import PageBooksList from "../common/PageBooksList/PageBooksList";
@@ -25,14 +24,8 @@ import { useDispatch } from "react-redux";
 import { getBookVersion } from "../../slices/home";
 import { getLocalization } from "../../../Auth/slices/auth";
 import { useTranslation } from "react-i18next";
-
-type LanguageType = {
-  id: number;
-  name: string;
-  flag: {
-    link: string;
-  };
-};
+import { defaultEnglishLanguage } from "../../../../constants";
+import { Language } from "../../../Auth/slices/auth/types";
 
 type UserType = {
   userName: string;
@@ -69,7 +62,7 @@ export type BookType = {
 };
 
 type BookProps = {
-  languages: LanguageType[];
+  languages: Language[];
   reviews?: ReviewType[]; // Mark reviews as optional
   currentBook: { result: BookType | null };
   getBook: (id: number) => void;
@@ -107,14 +100,9 @@ const Book: React.FC<BookProps> = ({
   const value = useContext(UserContext);
   const history = useHistory();
 
-  const defaultLanguage = (languages || []).find(
-    (lang) => lang.name === "English"
-  ) || {
-    id: 7,
-    name: "Select Language",
-    flag: { link: NoAvatar },
-    translationType: "official",
-  };
+  const defaultLanguage =
+    (languages || []).find((lang) => lang.name === "English") ||
+    defaultEnglishLanguage;
 
   const [selectedLanguage, setSelectedLanguage] = useState(
     value?.bookLanguage || defaultLanguage
@@ -201,7 +189,7 @@ const Book: React.FC<BookProps> = ({
     }
   };
 
-  const onLanguageSelect = (language: LanguageType) => {
+  const onLanguageSelect = (language: Language) => {
     setSelectedLanguage(language);
     sessionStorage.setItem("currentBookLanguage", JSON.stringify(language));
   };
@@ -659,8 +647,6 @@ const Book: React.FC<BookProps> = ({
         <LanguageModal
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
-          languages={languages}
-          defaultLanguage={defaultLanguage}
           onLanguageSelect={onLanguageSelect}
           currentSelectedLanguage={selectedLanguage}
         />

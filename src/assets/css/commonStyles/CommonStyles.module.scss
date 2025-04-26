@@ -9,6 +9,7 @@
     max-width: 100%;
   }
 }
+
 .centeredWrapper {
   display: flex;
   flex-grow: 1;
@@ -18,6 +19,7 @@
   align-items: center;
   min-height: calc(100vh - 58px);
 }
+
 .footerCentered {
   display: flex;
   justify-content: space-between;
@@ -27,12 +29,13 @@
   @media (max-width: 450px) {
     min-width: 100%;
     display: block;
-    .login_subtitle{
+    .login_subtitle {
       text-align: center;
       padding-bottom: 10px;
     }
   }
 }
+
 .logo_name {
   font-size: 39px;
   line-height: 47px;
@@ -40,6 +43,7 @@
   font-weight: 700;
   padding-bottom: 10px;
 }
+
 .login_subtitle {
   font-size: 18px;
   line-height: 27px;
@@ -48,6 +52,7 @@
   white-space: nowrap;
   padding: 0 9px;
 }
+
 .sideOnboardingImg {
   width: 50%;
   display: flex;
@@ -63,6 +68,7 @@
     object-fit: cover;
   }
 }
+
 .inputField {
   width: 100%;
   height: 68px;
@@ -92,6 +98,7 @@
     color: #FFEA84;
   }
 }
+
 .errorInput {
   background-color: #7c4540;
   border: 1px solid #FF9084;
@@ -147,6 +154,7 @@
   margin-top: -30px;
   text-align: start;
 }
+
 .errorController {
   color: #FFD8D4;
   background: #94524C;
@@ -177,6 +185,7 @@
   align-items: center;
   cursor: pointer;
 }
+
 .backBtnRelative {
   color: #fff;
   font-size: 18px;
@@ -185,6 +194,7 @@
   align-items: center;
   cursor: pointer;
 }
+
 .backBtnRelativePage {
   color: #996C42;
   font-size: 18px;
@@ -193,11 +203,13 @@
   align-items: center;
   cursor: pointer;
 }
+
 .login_logo {
   width: 220px;
   margin: 0 auto;
   padding-bottom: 27px;
-  img{
+
+  img {
     width: 100%;
   }
 }
@@ -222,12 +234,16 @@
   cursor: pointer;
   transition: background-color 0.2s ease;
   font-size: 21px !important;
-  color: #000 !important;
+  color: #000;
+
   &:hover {
     background-color: #f0f0f0;
   }
+
   &.active {
     background-color: #F3EDE8;
+    color: #996C42;
+
     &:before {
       content: ' ';
       width: 21px;
@@ -241,20 +257,30 @@
     }
   }
 }
+
 .searchInput {
-  border-radius: 12px;
-  background: #EEF0F0;
+  border-radius: 12px !important;
+  background: #EEF0F0 !important;
   border: transparent;
   height: 48px;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  & > input::placeholder {
+    color: #303630 !important;
+  }
 }
+
 .languageList {
-  max-height: 400px;
+  max-height: 510px;
   overflow-y: auto;
-  padding-top: 16px;
-  padding-bottom: 10px;
-  padding-right: 20px;
+  padding: 16px 20px 10px 20px;
   scrollbar-width: thin;
   scrollbar-color: lightgrey transparent;
+  height: 70vh;
+  & > div {
+    padding-bottom: 74px;
+  }
 }
 
 /* WebKit Browsers (Chrome, Safari) */
@@ -287,6 +313,7 @@
   outline: none;
   background: rgba(255, 255, 255, 0.14);
   font-weight: 700;
+
   img {
     width: 18px;
     height: 18px;
@@ -294,6 +321,7 @@
     margin-top: -3px;
   }
 }
+
 .languageSelect {
   width: 18px;
   height: 18px;
@@ -303,6 +331,7 @@
   background-size: 140%;
   margin-right: 7px;
 }
+
 .inputWrapperLang {
   position: relative;
   margin-bottom: 16px;
@@ -310,15 +339,21 @@
   background-repeat: no-repeat;
   background-position: top 50% right 31px;
 }
+
 .flagIcon {
   width: 32px;
   height: 32px;
   border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 140%;
 }
+
 .modalCloseIcon {
   margin-top: 40px;
   margin-right: 15px;
 }
+
 .recover_name {
   font-size: 40px;
   line-height: 40px;
@@ -327,16 +362,19 @@
   padding-bottom: 10px;
 
 }
+
 .recover_subtitle {
   font-size: 18px;
   color: white;
   padding-bottom: 40px;
 }
+
 .success_subtitle {
   font-size: 18px;
   color: white;
   padding-bottom: 25px;
 }
+
 .dropdown {
   position: relative !important;
 
@@ -350,11 +388,13 @@
     content: '' !important;
     display: none !important;
   }
+
   &::before {
     content: '' !important;
     display: none !important;
   }
 }
+
 .inputFieldSelect {
   background-image: url('../../images/icons/arrowDown.svg') !important;
   background-repeat: no-repeat !important;
@@ -372,8 +412,40 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
   & > img {
     cursor: pointer;
   }
 
+}
+
+.primaryModalBtn {
+  button {
+    text-align: right;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    width: calc(100% - 40px);
+    transform: translateX(-50%);
+    z-index: 1;
+    background-color: rgb(153, 108, 66);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 54px;
+    padding: 0 20px;
+    font-size: 16px;
+    border-radius: 12px;
+    transition: all 0.2s;
+    font-weight: 700;
+    white-space: nowrap;
+    color: white;
+
+    &:global(.ant-btn):hover {
+      background: #ad8968;
+      border-color: rgb(153, 108, 66);
+      color: white;
+      border: none;
+    }
+  }
 }

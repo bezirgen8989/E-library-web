@@ -7,10 +7,12 @@ import React, {
   useRef,
   useState,
 } from "react";
-// import { useForm, SubmitHandler } from "react-hook-form";
 import { Collapse, Form } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import { useHistory, useLocation } from "react-router-dom";
+import { useQuery } from "hooks/useQuery";
+
 import styles from "./AskQuestionComponent.module.scss";
 import Send from "../../../../assets/images/icons/sendIcon.svg";
 import CollapseIcon from "../../../../assets/images/icons/CollapseIcon.svg";
@@ -29,15 +31,8 @@ import ChooseAvatarStep3 from "./common/ChooseAvatarStep3/ChooseAvatarStep3";
 import ChooseAvatarStep4 from "./common/ChooseAvatarStep4/ChooseAvatarStep4";
 import VoiceRecorder from "../../../../components/Voice/VoiceRecorder/VoiceRecorder";
 import LanguageModal from "../../../Auth/components/LanguageModal";
-import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
 import { useDispatch } from "react-redux";
-import {
-  selectAvatarLanguage,
-  // setAvatarStreamShow,
-  // setIsStopQuestion,
-  // setIsStreamShow,
-  // setStreamDone,
-} from "../../slices/home";
+import { selectAvatarLanguage } from "../../slices/home";
 import MetaModal from "../common/MetaModal/MetaModal";
 import { UserContext } from "../../../../core/contexts";
 // @ts-ignore
@@ -45,25 +40,12 @@ import silentAvatar from "../../../../assets/videos/silent.mp4";
 import { useLazySelector } from "../../../../hooks";
 import { useTranslation } from "react-i18next";
 import { TokenManager } from "../../../../utils";
-import { useHistory, useLocation } from "react-router-dom";
-import { useQuery } from "hooks/useQuery";
 import { Chat } from "../../containers/AskQuestionContainer";
 import { stopAvatarGeneration } from "../../../../helpers/stopAvatarGeneration";
 import { SrsRtcWhipWhepAsync } from "../../../../components/common/SrsPlayer/srs/srs.sdk";
 import { useAuthState } from "../../../Auth/slices/auth";
-// import {getLocalization} from "../../../Auth/slices/auth";
-// import { useQuery } from "../../../../hooks/useQuery";
-// import { useAuthState } from "../../../Auth/slices/auth";
-// import {useSocket} from "../../../../hooks/useSocket";
-
-type LanguageType = {
-  id: number;
-  name: string;
-  isoCode2char: string;
-  flag: {
-    link: string;
-  };
-};
+import { defaultEnglishLanguage } from "../../../../constants";
+import { Language } from "../../../Auth/slices/auth/types";
 
 interface AvatarData {
   id: number;
@@ -85,7 +67,7 @@ type AskQuestionComponentProps = {
   avatars: any;
   setUserAvatar: (id: number) => void;
   chatHistory: Chat[];
-  languages: LanguageType[];
+  languages: Language[];
   indexName: string;
   isChooseAvatarPage?: boolean;
   form?: any;
@@ -101,7 +83,6 @@ const { Panel } = Collapse;
 dayjs.extend(customParseFormat);
 
 const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
-  clearMessages,
   title,
   isLoading,
   metaData,
@@ -110,13 +91,10 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   chatHistory,
   languages,
   indexName,
-  isChooseAvatarPage,
   form,
   submitMessage,
   videoRef,
-  srsSdkRef,
   setChatHistory,
-  unsubscribeFromEvent,
 }) => {
   const { t } = useTranslation();
   const chatFields: any = Form.useWatch([], form);
@@ -124,21 +102,10 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const { push } = useHistory();
   const dispatch = useDispatch();
   const value = useContext(UserContext);
-  // const { register, handleSubmit, reset, setValue, watch } =
-  //   useForm<FormValues>();
 
-  // const isTextInInput = !!watch()?.question?.length;
-
-  // console.log(isTextInInput);
-
-  const defaultLanguage = (languages || []).find(
-    (lang) => lang.name === "English"
-  ) || {
-    id: 0,
-    name: "Select Language",
-    flag: { link: NoAvatar },
-    isoCode2char: "code",
-  };
+  const defaultLanguage =
+    (languages || []).find((lang) => lang.name === "English") ||
+    defaultEnglishLanguage;
 
   const [messageClass, setMessageClass] = useState(styles.messageSystemChange);
   const [isCollapseVisible] = useState(false);
@@ -229,7 +196,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     setIsModalOpen(true);
   };
 
-  const onLanguageSelect = (language: LanguageType) => {
+  const onLanguageSelect = (language: Language) => {
     setSelectedLanguage(language);
     dispatch(selectAvatarLanguage(language));
     // sessionStorage.setItem("selectedLanguage", JSON.stringify(language.id));
@@ -604,7 +571,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                           e.keyCode === 13 &&
                           chatFields.query
                         ) {
-                          submitMessage && (await submitMessage(chatFields));
+                          submitMessage && submitMessage(chatFields);
                         }
                       }}
                     >
@@ -705,8 +672,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
           <LanguageModal
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
-            languages={languages || []}
-            defaultLanguage={defaultLanguage}
+            currentSelectedLanguage={defaultLanguage}
             onLanguageSelect={onLanguageSelect}
           />
           <MetaModal

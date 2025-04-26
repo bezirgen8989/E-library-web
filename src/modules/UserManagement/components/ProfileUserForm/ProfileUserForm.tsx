@@ -1,279 +1,156 @@
-import styles from "./ProfileUserForm.module.scss";
-import React, { useState, useEffect, useContext, useMemo } from "react";
-import { useForm, Controller } from "react-hook-form";
-import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
-import tempAi from "../../../../assets/images/testAiImg.png";
-import LanguageModal from "../../../Auth/components/LanguageModal";
-import { Switch } from "antd";
-import NotificationsModal from "../common/NotificationModal/NotificationsModal";
-import { UserContext } from "../../../../core/contexts";
+import { useState, useMemo } from "react";
+import { Form, Switch } from "antd";
 import { useTranslation } from "react-i18next";
-import { useAuthState } from "../../../Auth/slices/auth";
+import { useDispatch } from "react-redux";
 
-export type LanguageType = {
-  id: number;
-  name: string;
-  flag: {
-    link: string;
-  };
-  isoCode2char: string;
+import NotificationsModal from "../common/NotificationModal/NotificationsModal";
+import LanguageModal from "../../../Auth/components/LanguageModal";
+import {
+  setAppLanguage,
+  setBookLanguage,
+  setKidsMode,
+  useAuthState,
+} from "../../../Auth/slices/auth";
+import { AvatarSettings, Language } from "modules/Auth/slices/auth/types";
+import SelectLang from "../../../Auth/components/SelectLang/SelectLang";
+import tempAi from "../../../../assets/images/testAiImg.png";
+
+import styles from "./ProfileUserForm.module.scss";
+import { useHistory } from "react-router-dom";
+
+type LanguageInputs = {
+  appLanguage: Language;
+  bookLanguage: Language;
+  kidsMode: boolean;
+  currentUserAvatar: AvatarSettings;
 };
 
-type RecoverProps = {
-  onSubmit: (values: any) => void;
-  languages: LanguageType[];
-  handleKidsMode: (value: boolean) => void;
-  kidsMode: boolean | undefined;
-  bookLanguage?: LanguageType;
-  setUserAvatar: any;
-  language?: LanguageType;
-  handleAppLanguage: any;
-  handleBookLanguage: any;
-  isChangeKidsMode?: boolean;
-};
+type LanguageModalTypes = "language" | "bookLanguage";
 
-type FormValues = {
-  userName: string;
-  dateBirth: string;
-  language: string;
-  bookLanguage: string;
-  gender: string;
-  photo: any;
-};
-
-const ProfileUserForm: React.FC<RecoverProps> = ({
-  onSubmit,
-  languages = [],
-  handleKidsMode,
-  kidsMode = true,
-  bookLanguage,
-  setUserAvatar,
-  language,
-  handleAppLanguage,
-  handleBookLanguage,
-  isChangeKidsMode,
-}) => {
-  const { userData, avatarSettings } = useAuthState();
-
-  const currentUserAvatar = useMemo(() => {
-    return avatarSettings?.result?.avatarSettings?.avatarMiniature?.link
-      ? avatarSettings?.result?.avatarSettings?.avatarMiniature?.link
-      : userData?.result?.avatarSettings?.avatarMiniature?.link;
-  }, [
-    avatarSettings?.result?.avatarSettings?.avatarMiniature?.link,
-    userData?.result?.avatarSettings?.avatarMiniature?.link,
-  ]);
-
+const ProfileUserForm = () => {
   const { t } = useTranslation();
-  const defaultLanguage = languages.find((lang) => lang.name === "English") || {
-    id: 0,
-    name: "English",
-    flag: { link: NoAvatar },
-    isoCode2char: "en",
-  };
-
-  const value = useContext(UserContext);
-  const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
-  const [selectedBookLanguage, setSelectedBookLanguage] = useState(
-    bookLanguage || defaultLanguage
-  );
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { push } = useHistory();
   const [isNotificationsModalOpen, setIsNotificationsModalOpen] =
     useState(false);
-  const [modalType, setModalType] = useState<"language" | "bookLanguage">(
-    "language"
-  );
-  const [userKidsMode, setUserKidsMode] = useState(kidsMode);
 
-  const { control, handleSubmit, setValue } = useForm<FormValues>({
-    defaultValues: {
-      language: language?.name || defaultLanguage.name,
-      bookLanguage: bookLanguage?.name || defaultLanguage.name,
-    },
-  });
+  const dispatch = useDispatch();
+  const [form] = Form.useForm();
 
-  useEffect(() => {
-    if (value && value.language) {
-      setSelectedLanguage(value.language);
-      setValue("language", value.language.name);
-    }
-  }, [value, setValue]);
+  const { userData } = useAuthState();
+  const [modalType, setModalType] = useState<LanguageModalTypes | null>(null);
 
-  useEffect(() => {
-    if (value && value.bookLanguage) {
-      setSelectedBookLanguage(value.bookLanguage);
-      setValue("bookLanguage", value.bookLanguage.name);
-    }
-  }, [value, setValue]);
-
-  useEffect(() => {
-    setUserKidsMode(kidsMode);
-  }, [kidsMode]);
-
-  useEffect(() => {
-    if (value && value.bookLanguage) {
-      setSelectedBookLanguage(value.bookLanguage); // Use context value for bookLanguage
-      setValue("bookLanguage", value.bookLanguage.name);
-    } else if (value && value.language) {
-      // If bookLanguage is not available in context, use app language
-      setSelectedBookLanguage(value.language);
-      setValue("bookLanguage", value.language.name);
-    }
-  }, [value, setValue]);
-
-  const handleLanguageChange = (language: LanguageType) => {
-    if (modalType === "language") {
-      setSelectedLanguage(language);
-      handleAppLanguage(language); // Dispatch the action
-      setValue("language", language.name); // Update the form value
-    } else if (modalType === "bookLanguage") {
-      setSelectedBookLanguage(language);
-      handleBookLanguage(language); // Dispatch the action
-      setValue("bookLanguage", language.name); // Update the form value
-    }
-  };
+  const { appLanguage, bookLanguage, kidsMode, currentUserAvatar } =
+    useMemo<LanguageInputs>(() => {
+      return {
+        appLanguage: userData?.result?.language,
+        bookLanguage: userData?.result?.bookLanguage,
+        kidsMode: userData?.result?.kidsMode,
+        currentUserAvatar: userData?.result?.avatarSettings,
+      };
+    }, [userData]);
 
   const showModal = (type: "language" | "bookLanguage") => {
     setModalType(type);
-    setIsModalOpen(true);
   };
 
-  const onSubmitForm = (data: FormValues) => {
-    const formattedData = {
-      userName: data.userName,
-      dateBirth: data.dateBirth,
-      language: {
-        id: selectedLanguage.id,
-      },
-      bookLanguage: {
-        id: selectedBookLanguage.id,
-      },
-      gender: data.gender,
-    };
-    onSubmit(formattedData);
+  const onHandleSave = async (value: any) => {
+    const changedInputKey = Object.keys(value)[0];
+    if (changedInputKey === "kidsMode") {
+      dispatch(setKidsMode({ kidsMode: value.kidsMode }));
+    }
   };
 
-  const kidsModeChange = (checked: boolean) => {
-    setUserKidsMode(checked);
-    handleKidsMode(checked);
+  const closeLangModalHandler = () => {
+    setModalType(null);
+  };
+
+  const onSelectLanguage = (language: Language) => {
+    if (modalType === "language") {
+      dispatch(setAppLanguage({ language }));
+    }
+    if (modalType === "bookLanguage") {
+      dispatch(setBookLanguage({ bookLanguage: language }));
+    }
+  };
+  const goToSelectAvatarPage = () => {
+    push("/choose_avatar");
   };
 
   return (
-    <div>
-      <form style={{ marginBottom: 40 }} onSubmit={handleSubmit(onSubmitForm)}>
-        {/* App Language */}
-        <div style={{ marginTop: 15 }}>
-          {languages.length > 0 && (
-            <div className={styles.inputWrapperLang}>
-              <Controller
-                name="language"
-                control={control}
-                render={({ field }) => (
-                  <div
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      showModal("language");
-                    }}
-                    className={styles.languageSelectWrapper}
-                  >
-                    <div
-                      className={styles.languageSelect}
-                      style={{
-                        backgroundImage: `url(${selectedLanguage.flag.link})`,
-                      }}
-                    ></div>
-                    <span>{selectedLanguage.name}</span>
-                  </div>
-                )}
-              />
-              <label className={styles.inputLabel}>{t("appLanguage")}</label>
-            </div>
-          )}
-        </div>
-
-        {/* Book Language */}
-        <div style={{ marginTop: 15 }}>
-          {languages.length > 0 && (
-            <div className={styles.inputWrapperLang}>
-              <Controller
-                name="bookLanguage"
-                control={control}
-                render={({ field }) => (
-                  <div
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      showModal("bookLanguage");
-                    }}
-                    className={styles.languageSelectWrapper}
-                  >
-                    <div
-                      className={styles.languageSelect}
-                      style={{
-                        backgroundImage: `url(${selectedBookLanguage.flag.link})`,
-                      }}
-                    ></div>
-                    <span>{selectedBookLanguage.name}</span>
-                  </div>
-                )}
-              />
-              <label className={styles.inputLabel}>{t("bookLanguage")}</label>
-            </div>
-          )}
-        </div>
-
-        {/* Kids Mode */}
-        <div className={styles.kidsSelectWrapper}>
-          <span>{t("kidsMode")}</span>
-          <Switch
-            checked={userKidsMode}
-            disabled={isChangeKidsMode}
-            onChange={kidsModeChange}
-          />
-        </div>
-
-        {/* Notification Settings */}
-        <div
-          style={{ marginBottom: "16px" }}
-          className={styles.aiWrapper}
-          onClick={() => {
-            setIsNotificationsModalOpen(true);
-          }}
-        >
-          <span>{t("notificationSettings")}</span>
-        </div>
-
-        {/* AI Librarian */}
-        <div
-          className={styles.aiWrapper}
-          onClick={() => {
-            setUserAvatar(0);
-          }}
-        >
-          <div className={styles.aiAvatar}>
-            <img src={currentUserAvatar || tempAi} alt="avatar" />
-          </div>
-          <span>{t("aILibrarian")}</span>
-        </div>
-      </form>
-
-      <LanguageModal
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-        languages={languages}
-        modalType={modalType}
-        defaultLanguage={
-          modalType === "language" ? selectedLanguage : selectedBookLanguage
-        }
-        onLanguageSelect={(language: LanguageType) =>
-          handleLanguageChange(language)
-        }
-      />
-
+    <>
       <NotificationsModal
         isModalOpen={isNotificationsModalOpen}
         setIsModalOpen={setIsNotificationsModalOpen}
       />
-    </div>
+      <LanguageModal
+        isModalOpen={!!modalType?.length}
+        closeModal={closeLangModalHandler}
+        currentSelectedLanguage={
+          modalType === "language" ? appLanguage : bookLanguage
+        }
+        onLanguageSelect={onSelectLanguage}
+      />
+      <Form
+        name={"User profile form"}
+        form={form}
+        className={styles.profileForm}
+        onValuesChange={onHandleSave}
+        initialValues={{
+          appLanguage: appLanguage?.name,
+          bookLanguage: bookLanguage?.name,
+          kidsMode,
+          notifications: "",
+          avatarSettings: {},
+        }}
+      >
+        <SelectLang
+          label={t("appLanguage")}
+          fieldName={"appLang"}
+          language={appLanguage}
+          onClick={() => showModal("language")}
+        />
+        <SelectLang
+          label={t("bookLanguage")}
+          fieldName={"bookLang"}
+          language={bookLanguage}
+          onClick={() => showModal("bookLanguage")}
+        />
+
+        <div className={styles.kidsSelectWrapper}>
+          <label>{t("kidsMode")}</label>
+          <Form.Item name={"kidsMode"} valuePropName={"checked"} noStyle>
+            <Switch />
+          </Form.Item>
+        </div>
+
+        <Form.Item name={"notifications"} noStyle>
+          <div
+            className={styles.aiWrapper}
+            onClick={() => {
+              setIsNotificationsModalOpen(true);
+            }}
+          >
+            <span>{t("notificationSettings")}</span>
+          </div>
+        </Form.Item>
+
+        <Form.Item name={"avatarSettings"} noStyle>
+          <button
+            type={"button"}
+            className={styles.aiWrapper}
+            onClick={goToSelectAvatarPage}
+          >
+            <div className={styles.aiAvatar}>
+              <img
+                src={currentUserAvatar?.avatarMiniature?.link || tempAi}
+                alt={`Selected Avatar ${currentUserAvatar?.avatarMiniature?.name}`}
+              />
+            </div>
+            <span>{currentUserAvatar?.name || t("aILibrarian")}</span>
+          </button>
+        </Form.Item>
+      </Form>
+    </>
   );
 };
 

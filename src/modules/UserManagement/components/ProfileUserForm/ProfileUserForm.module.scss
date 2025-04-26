@@ -1,14 +1,3 @@
-.inputLabel {
-  position: absolute;
-  top: 20px;
-  left: 16px;
-  font-weight: 700;
-  transform: translateY(-50%);
-  font-size: 16px;
-  color: #595959;
-  pointer-events: none;
-  transition: all 0.3s ease;
-}
 
 .inputWrapper {
   position: relative;
@@ -25,38 +14,6 @@
   text-align: start;
 }
 
-.languageSelectWrapper {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  text-align: start;
-  height: 68px;
-  border-radius: 14px;
-  padding: 25px 16px 0;
-  color: #121212 !important;
-  font-size: 21px;
-  border: 1px solid rgba(153, 108, 66, 0.12);
-  box-sizing: border-box;
-  outline: none;
-  //background: #EEE0D4 !important;
-  font-weight: 700;
-  img {
-    width: 18px;
-    height: 18px;
-    margin-right: 7px;
-    margin-top: -3px;
-  }
-}
-.languageSelect {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 140%;
-  margin-right: 7px;
-}
 .inputWrapperLang {
   position: relative;
   margin-bottom: 16px;
@@ -76,19 +33,14 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  text-align: start;
   height: 68px;
   border-radius: 14px;
   padding: 0 16px;
-  color: #121212;
-  font-size: 21px;
   border: 1px solid rgba(153, 108, 66, 0.12);
-  box-sizing: border-box;
-  outline: none;
-  background: #EEE0D4 !important;
-  font-weight: 700;
-  margin-bottom: 15px;
-  span {
+  background: #EEE0D4;
+  & > label {
+    font-weight: 700;
+    font-size: 21px;
     color: #595959;
   }
 }
@@ -127,4 +79,11 @@
 }
 .spinnerWrapper {
   margin-top: 150px;
+}
+
+.profileForm {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 40px;
+  width: 100%;
 }

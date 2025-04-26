@@ -1,61 +1,60 @@
-import React, { useState } from 'react'
-import 'antd/dist/antd.css'
-import { Form, Input } from 'antd'
-import styles from '../../UserManagementCommon.module.scss'
-import { useDispatch } from 'react-redux'
-import { editUser, getMe } from '../../../../Auth/slices/auth'
-import { EditUserParams } from '../../../../Auth/types'
+import React, { useState } from "react";
+import "antd/dist/antd.css";
+import { Form, Input } from "antd";
+import styles from "../../UserManagementCommon.module.scss";
+import { useDispatch } from "react-redux";
+import { editUser } from "../../../../Auth/slices/auth";
+import { EditUserParams } from "../../../../Auth/types";
 
-import { Collapse } from 'antd';
+import { Collapse } from "antd";
 import Button from "../../../../../components/common/Buttons/Button";
 
 const { Panel } = Collapse;
 
 export type PropsForEdit = {
-  email?: string,
-  name?: string,
-  is_active?: boolean
-}
+  email?: string;
+  name?: string;
+  is_active?: boolean;
+};
 
-const EditForm: React.FC<PropsForEdit> = ({ email, name, is_active }) => {
-  const dispatch = useDispatch()
+const EditForm: React.FC<PropsForEdit> = ({ email, name }) => {
+  const dispatch = useDispatch();
   const [fields, setFields] = useState([
     {
-      name: ['username'],
+      name: ["username"],
       value: name,
     },
     {
-      name: ['email'],
+      name: ["email"],
       value: email,
     },
     {
-      name: ['oldpassword'],
-      value: '',
+      name: ["oldpassword"],
+      value: "",
     },
     {
-      name: ['newpassword'],
-      value: '',
+      name: ["newpassword"],
+      value: "",
     },
-  ])
+  ]);
 
   const onSubmitValues = () => {
-    console.log('inn')
-    dispatch(getMe())
-    const editedData:EditUserParams = {
-      name: (fields[0].value) as string,
-      email: (fields[1].value) as string,
+    console.log("inn");
+    // dispatch(getMe())
+    const editedData: EditUserParams = {
+      name: fields[0].value as string,
+      email: fields[1].value as string,
       old_password: fields[2]?.value,
-      password: fields[3]?.value
-    }
-    console.log('editedData', editedData)
-    dispatch(editUser(editedData))
-  }
-const [isPanelShow, setIsPanelShow] = useState(false)
-  function callback(key:any) {
+      password: fields[3]?.value,
+    };
+    console.log("editedData", editedData);
+    dispatch(editUser(editedData));
+  };
+  const [isPanelShow, setIsPanelShow] = useState(false);
+  function callback(key: any) {
     console.log(key);
-    setIsPanelShow(!isPanelShow)
+    setIsPanelShow(!isPanelShow);
   }
-
 
   return (
     <>
@@ -65,69 +64,74 @@ const [isPanelShow, setIsPanelShow] = useState(false)
         isPanelShow={isPanelShow}
         callback={callback}
         onChange={(newFields: any) => {
-          setFields(newFields)
+          setFields(newFields);
         }}
       />
     </>
-  )
-}
-export default EditForm
+  );
+};
+export default EditForm;
 
 export type FormProps = {
-  onSubmitValues: () => void,
-  onChange: (values: any) => void,
-  fields: any,
-  callback: (value: any) => void
-  isPanelShow: boolean
-}
+  onSubmitValues: () => void;
+  onChange: (values: any) => void;
+  fields: any;
+  callback: (value: any) => void;
+  isPanelShow: boolean;
+};
 
-const CustomizedForm: React.FC<FormProps> = ({ isPanelShow, callback, onSubmitValues, onChange, fields }) => (
-
-    <Form
-      onFinish={onSubmitValues}
-      name='global_state'
-      fields={fields}
-      onFieldsChange={(_, allFields) => {
-        onChange(allFields)
-      }}
-
+const CustomizedForm: React.FC<FormProps> = ({
+  isPanelShow,
+  callback,
+  onSubmitValues,
+  onChange,
+  fields,
+}) => (
+  <Form
+    onFinish={onSubmitValues}
+    name="global_state"
+    fields={fields}
+    onFieldsChange={(_, allFields) => {
+      onChange(allFields);
+    }}
+  >
+    <Form.Item
+      name="username"
+      label="Profile Name"
+      rules={[
+        {
+          required: true,
+          message: "Username is required!",
+        },
+      ]}
     >
-            <Form.Item
-              name='username'
-              label='Profile Name'
-              rules={[
-                {
-                  required: true,
-                  message: 'Username is required!',
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          <Form.Item
-            name='email'
-            label='Email'
-            rules={[
-              {
-                required: true,
-                message: 'Username is required!',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-      <div className="edit_profile_collapse">
-        <Collapse defaultActiveKey={['0']} onChange={callback}>
-          <Panel header="Click to change your password" key="1">
-            {isPanelShow&&<div className="collapse_inner">
+      <Input />
+    </Form.Item>
+    <Form.Item
+      name="email"
+      label="Email"
+      rules={[
+        {
+          required: true,
+          message: "Username is required!",
+        },
+      ]}
+    >
+      <Input />
+    </Form.Item>
+    <div className="edit_profile_collapse">
+      <Collapse defaultActiveKey={["0"]} onChange={callback}>
+        <Panel header="Click to change your password" key="1">
+          {isPanelShow && (
+            <div className="collapse_inner">
               <Form.Item
-                name='oldpassword'
-                label='Old Password:'
+                name="oldpassword"
+                label="Old Password:"
                 rules={[
                   {
                     min: 8,
                     required: true,
-                    message: 'Password must be at least 8 characters long!',
+                    message: "Password must be at least 8 characters long!",
                   },
                 ]}
                 hasFeedback
@@ -136,36 +140,29 @@ const CustomizedForm: React.FC<FormProps> = ({ isPanelShow, callback, onSubmitVa
               </Form.Item>
 
               <Form.Item
-                name='newpassword'
-                label='New Passport:'
+                name="newpassword"
+                label="New Passport:"
                 rules={[
                   {
                     min: 8,
                     required: true,
-                    message: 'Confirm password or enter new!',
+                    message: "Confirm password or enter new!",
                   },
                 ]}
                 hasFeedback
               >
                 <Input.Password />
               </Form.Item>
-            </div>}
-          </Panel>
-        </Collapse>
-      </div>
-          <div className={styles.buttons_group}>
-            <Button htmlType='submit'>Save Changes</Button>
-          </div>
-
-
-    </Form>
-
-)
-
-
-
-
-
+            </div>
+          )}
+        </Panel>
+      </Collapse>
+    </div>
+    <div className={styles.buttons_group}>
+      <Button htmlType="submit">Save Changes</Button>
+    </div>
+  </Form>
+);
 
 // import {
 //   Form,

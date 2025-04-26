@@ -1,91 +1,51 @@
+import { FC, useMemo } from "react";
+import { Button, Form, Input, Modal } from "antd";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+
 import commonStyles from "../../../../assets/css/commonStyles/CommonStyles.module.scss";
 import Close from "../../../../assets/images/icons/Close.svg";
-import { Input, Modal } from "antd";
 import Search from "../../../../assets/images/icons/SearchIcon.svg";
-import Button from "../../../../components/common/Buttons/Button";
-import { FC, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import i18next from "i18next";
+import { getLanguages, useAuthState } from "../../slices/auth";
+import { Language } from "../../slices/auth/types";
+import cn from "classnames";
 
 interface LanguageModalProps {
-  isModalOpen: any;
-  setIsModalOpen: any;
-  languages: any;
-  defaultLanguage: any;
-  onLanguageSelect: any;
-  currentSelectedLanguage?: {
-    id: number;
-    name: string;
-    isoCode: string;
-    isoCode2char: string;
-    flag: {
-      id: string;
-      prefix: string;
-      postfix: string;
-      name: string;
-    };
-    translationType: string;
-  };
+  isModalOpen: boolean;
+  closeModal?: () => void;
+  setIsModalOpen?: any;
+  onLanguageSelect: (lang: Language) => void;
+  currentSelectedLanguage?: Language;
   modalType?: string;
 }
 
-type LanguageType = {
-  id: number;
-  name: string;
-  isoCode2char: string;
-  flag: {
-    link: string;
-  };
-};
-
 const LanguageModal: FC<LanguageModalProps> = ({
   isModalOpen,
-  setIsModalOpen,
-  languages,
+  closeModal,
   currentSelectedLanguage,
-  defaultLanguage,
   onLanguageSelect,
-  modalType,
 }) => {
   const { t } = useTranslation();
-  const initialLanguage = currentSelectedLanguage
-    ? currentSelectedLanguage
-    : defaultLanguage;
-  console.log("languages", languages);
+  const dispatch = useDispatch();
+  const [form] = Form.useForm();
+  const searchTerm = Form.useWatch("searchedLangName", form);
+  const { languages: storedLanguages } = useAuthState();
 
-  const [selectedLanguage, setSelectedLanguage] = useState(initialLanguage);
-  const [searchTerm, setSearchTerm] = useState("");
-  const hideModal = () => {
-    setIsModalOpen(false); // исправлено: закрытие окна
-    setSearchTerm("");
-  };
+  const languages = storedLanguages.result?.data;
 
-  useEffect(() => {
-    setSelectedLanguage(currentSelectedLanguage || defaultLanguage);
-  }, [currentSelectedLanguage, defaultLanguage]);
-
-  const handleLanguageSelect = async (lang: LanguageType) => {
-    setSelectedLanguage(lang);
-    onLanguageSelect(lang);
-    hideModal();
-  };
-
-  const handleChangeAppLang = async (lang: LanguageType) => {
-    try {
-      if (modalType === "language") {
-        await i18next.changeLanguage(lang.isoCode2char);
-      }
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setSelectedLanguage(lang);
-      onLanguageSelect(lang);
-      hideModal();
+  useMemo(() => {
+    if (!storedLanguages.result?.data?.length) {
+      return dispatch(getLanguages());
     }
+    return [];
+  }, []);
+
+  const handleLanguageSelect = async (lang: Language) => {
+    onLanguageSelect(lang);
   };
 
-  const filteredLanguages = languages?.filter((lang: LanguageType) =>
-    lang.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredLanguages = languages?.filter((lang: Language) =>
+    lang.name.toLowerCase().includes(searchTerm?.toLowerCase())
   );
 
   return (
@@ -93,53 +53,56 @@ const LanguageModal: FC<LanguageModalProps> = ({
       title={
         <div className={commonStyles.selectLangModalHeader}>
           <div className="custom-modal-title">{t("selectLanguage")}</div>
-          <img src={Close} alt="close" onClick={hideModal} />
+          <img src={Close} alt="close" onClick={closeModal} />
         </div>
       }
-      visible={isModalOpen}
-      onOk={hideModal}
-      onCancel={hideModal}
+      closable={false}
+      open={isModalOpen}
+      onOk={closeModal}
+      onCancel={closeModal}
       className="custom-modal"
       footer={null}
-      closable={false}
     >
-      <Input
-        placeholder={t("menuItemSearch")}
-        prefix={<img src={Search} alt="search" />}
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className={commonStyles.searchInput}
-      />
+      <Form
+        name={"Search language form"}
+        form={form}
+        initialValues={{
+          searchedLangName: "",
+        }}
+      >
+        <Form.Item name={"searchedLangName"} noStyle>
+          <Input
+            placeholder={t("menuItemSearch")}
+            bordered={false}
+            prefix={<img src={Search} alt="search" />}
+            className={commonStyles.searchInput}
+          />
+        </Form.Item>
+      </Form>
 
       <div className={commonStyles.languageList}>
         {/* Official Translations */}
-        {filteredLanguages.some((lang: any) => lang.translationType) ? (
+        {filteredLanguages?.some((lang: any) => lang.translationType) ? (
           <>
             <span style={{ fontWeight: 600, fontSize: "22px" }}>
               Official Translations
             </span>
             <div>
               {filteredLanguages
-                .filter((lang: any) => lang.translationType === "official")
-                .map((lang: LanguageType) => (
+                ?.filter((lang: any) => lang.translationType === "official")
+                .map((lang: Language) => (
                   <div
                     key={lang.id}
-                    className={`${commonStyles.languageItem} ${
-                      lang.name === selectedLanguage.name
-                        ? commonStyles.active
-                        : ""
-                    }`}
+                    className={cn(commonStyles.languageItem, {
+                      [commonStyles.active]:
+                        lang?.name === currentSelectedLanguage?.name,
+                    })}
                     onClick={() => handleLanguageSelect(lang)}
                   >
                     <div
                       className={commonStyles.flagIcon}
-                      style={{
-                        backgroundImage: `url(${lang.flag.link})`,
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "center",
-                        backgroundSize: "140%",
-                      }}
-                    ></div>
+                      style={{ backgroundImage: `url(${lang.flag.link})` }}
+                    />
                     <span style={{ paddingLeft: 22 }}>{lang.name}</span>
                   </div>
                 ))}
@@ -152,26 +115,20 @@ const LanguageModal: FC<LanguageModalProps> = ({
             </span>
             <div>
               {filteredLanguages
-                .filter((lang: any) => lang.translationType === "ai")
-                .map((lang: LanguageType) => (
+                ?.filter((lang: any) => lang.translationType === "ai")
+                .map((lang: Language) => (
                   <div
                     key={lang.id}
-                    className={`${commonStyles.languageItem} ${
-                      lang.name === selectedLanguage.name
-                        ? commonStyles.active
-                        : ""
-                    }`}
+                    className={cn(commonStyles.languageItem, {
+                      [commonStyles.active]:
+                        lang?.name === currentSelectedLanguage?.name,
+                    })}
                     onClick={() => handleLanguageSelect(lang)}
                   >
                     <div
                       className={commonStyles.flagIcon}
-                      style={{
-                        backgroundImage: `url(${lang.flag.link})`,
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "center",
-                        backgroundSize: "140%",
-                      }}
-                    ></div>
+                      style={{ backgroundImage: `url(${lang.flag.link})` }}
+                    />
                     <span style={{ paddingLeft: 22 }}>{lang.name}</span>
                   </div>
                 ))}
@@ -180,34 +137,28 @@ const LanguageModal: FC<LanguageModalProps> = ({
         ) : (
           // If there's no translationType field, render languages without filtering
           <div>
-            {filteredLanguages.map((lang: LanguageType) => (
+            {filteredLanguages?.map((lang: Language) => (
               <div
-                key={lang.id}
-                className={`${commonStyles.languageItem} ${
-                  lang.name === selectedLanguage.name ? commonStyles.active : ""
-                }`}
-                onClick={() => handleChangeAppLang(lang)}
+                key={lang?.id}
+                className={cn(commonStyles.languageItem, {
+                  [commonStyles.active]:
+                    lang?.name === currentSelectedLanguage?.name,
+                })}
+                onClick={() => handleLanguageSelect(lang)}
               >
                 <div
                   className={commonStyles.flagIcon}
-                  style={{
-                    backgroundImage: `url(${lang.flag.link})`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                    backgroundSize: "140%",
-                  }}
+                  style={{ backgroundImage: `url(${lang.flag.link})` }}
                 />
-                <span style={{ paddingLeft: 22 }}>{lang.name}</span>
+                <span style={{ paddingLeft: 22 }}>{lang?.name}</span>
               </div>
             ))}
           </div>
         )}
       </div>
 
-      <div style={{ textAlign: "right" }}>
-        <Button variant="Brown" onClick={hideModal}>
-          {t("backBtn")}
-        </Button>
+      <div className={commonStyles.primaryModalBtn}>
+        <Button onClick={closeModal}>{t("backBtn")}</Button>
       </div>
     </Modal>
   );
