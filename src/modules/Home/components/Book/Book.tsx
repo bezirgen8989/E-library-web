@@ -31,6 +31,7 @@ import { Language } from "../../../Auth/slices/auth/types";
 import { BookSkeleton } from "./Skeleton";
 import { useAuthState } from "../../../Auth/slices/auth";
 import { formatFileSize } from "../../../../helpers/helper";
+import cn from "classnames";
 
 type BookProps = {
   languages: Language[];
@@ -113,17 +114,17 @@ const Book = ({
   }, [id]);
 
   useEffect(() => {
-    if (currentBook?.result?.id) {
+    if (id) {
       dispatch(
         getBookVersion({
           page: "1",
           limit: "1",
           filterLanguage: `[language.id][eq]=${selectedLanguage?.id}`,
-          filterId: `[coreBook.id][eq]=${currentBook?.result?.id}`,
+          filterId: `[coreBook.id][eq]=${id}`,
         })
       );
     }
-  }, [currentBook.result?.id]);
+  }, [id]);
 
   const closeSelectBookLangModal = () => {
     setIsModalOpen(false);
@@ -174,10 +175,9 @@ const Book = ({
   };
 
   if (
-    !currentBook ||
-    currentBookVersion.isLoading ||
-    !currentBook?.result?.id ||
-    userData.isLoading
+    currentBook.isLoading ||
+    userData.isLoading ||
+    currentBookVersion.isLoading
   ) {
     return <BookSkeleton />;
   }
@@ -317,7 +317,7 @@ const Book = ({
               </Button>
               <div className={styles.btns_block}>
                 <Button
-                  className={styles.buttonElement}
+                  className={cn(styles.listenButton, styles.buttonElement)}
                   icon={<img src={ListenIcon} alt="icon" />}
                   onClick={() => {
                     startListen({ bookId: id });
