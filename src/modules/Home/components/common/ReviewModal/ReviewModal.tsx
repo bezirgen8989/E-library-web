@@ -6,15 +6,15 @@ import Button from "../../../../../components/common/Buttons/Button";
 // @ts-ignore
 import Rating from "react-rating-stars-component";
 import { UserContext } from "../../../../../core/contexts";
-import { BookType } from "../../Book/Book";
 import { useDispatch } from "react-redux";
 import { getLocalization } from "../../../../Auth/slices/auth";
 import { useTranslation } from "react-i18next";
+import { HomeState } from "../../../slices/home/types";
 
 interface ReviewModalProps {
   isModalOpen: boolean;
   setIsModalOpen: (open: boolean) => void;
-  book: BookType | null;
+  book: HomeState["currentBook"]["result"] | null;
   reviewSubmit: any;
   customClass: any;
 }
@@ -65,7 +65,7 @@ const ReviewModal: FC<ReviewModalProps> = ({
   return (
     <Modal
       title={<div className="custom-modal-title">{t("writeReviewBtn")}</div>}
-      visible={isModalOpen}
+      open={isModalOpen}
       onCancel={hideModal}
       className="custom-modal"
       footer={null}

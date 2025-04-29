@@ -24,8 +24,8 @@ export const addBookToShelf = (params: AddBookToShelfParams) =>
 export const addBookReview = (params: AddReviewParams) =>
   usingPost(`/api/v1/reviews`, params);
 export const deleteBookFromShelf = (params: {
-  userId: string;
-  bookId: string;
+  userId: number;
+  bookId: number;
 }) => usingDelete(`/api/v1/bookshelf/${params.userId}/${params.bookId}`);
 export const getBook = (id: string) => usingGet(`/api/v1/books/${id}`);
 export const getAuthorName = (id: string) => usingGet(`/api/v1/authors/${id}`);

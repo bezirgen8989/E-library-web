@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./Book.module.scss";
-import { UserContext } from "core/contexts";
-import Button from "../../../../components/common/Buttons/Button";
+import { Button, Divider, Tag, Typography } from "antd";
 import Question from "../../../../assets/images/icons/question.png";
 import Download from "../../../../assets/images/icons/download.png";
 import Group from "../../../../assets/images/icons/group.png";
@@ -10,136 +9,111 @@ import ReviewIcon from "../../../../assets/images/icons/review_icon.png";
 import LikeIcon from "../../../../assets/images/icons/like.svg";
 import ListenIcon from "../../../../assets/images/icons/listenIcon.svg";
 import { useHistory, useParams } from "react-router-dom";
-// @ts-ignore
-import Rating from "react-rating-stars-component";
 import NoImg from "../../../../assets/images/NoImagePlaceholder.jpg";
+import arrowDown from "../../../../assets/images/icons/arrowProfile.svg";
 import LanguageModal from "../../../Auth/components/LanguageModal";
 import ReviewModal from "../common/ReviewModal";
 import { routes } from "../../routing";
 import PageBooksList from "../common/PageBooksList/PageBooksList";
 import BackIcon from "../../../../assets/images/icons/backPage.svg";
 import Review from "../common/Review/Review";
-import { Rate, Skeleton } from "antd";
+import { Rate } from "antd";
 import { useDispatch } from "react-redux";
-import { getBookVersion } from "../../slices/home";
-import { getLocalization } from "../../../Auth/slices/auth";
+import {
+  addToShelf,
+  deleteFromShelf,
+  getBookVersion,
+  useHomeState,
+} from "../../slices/home";
 import { useTranslation } from "react-i18next";
 import { defaultEnglishLanguage } from "../../../../constants";
 import { Language } from "../../../Auth/slices/auth/types";
-
-type UserType = {
-  userName: string;
-  id: string;
-};
-
-type ReviewType = {
-  id?: number;
-  rating: number;
-  text: string;
-  reviewer: string;
-  deleteReview: any;
-  user?: UserType;
-};
-
-type CategoryType = {
-  id: number;
-  name: string;
-  color: string;
-};
-
-export type BookType = {
-  id: any;
-  title: string;
-  added: number;
-  isFavourite: boolean;
-  author: { name: string }[];
-  description: string;
-  bookCover: { link: string };
-  isAgeRestricted: boolean;
-  categories: CategoryType[];
-  rating: number;
-  reviewCount: number;
-};
+import { BookSkeleton } from "./Skeleton";
+import { useAuthState } from "../../../Auth/slices/auth";
+import { formatFileSize } from "../../../../helpers/helper";
 
 type BookProps = {
   languages: Language[];
-  reviews?: ReviewType[]; // Mark reviews as optional
-  currentBook: { result: BookType | null };
   getBook: (id: number) => void;
-  addToBookShelf: any;
-  deleteFromBookShelf: any;
   reviewSubmit: any;
   similarBooks: any;
   deleteReview: any;
   getAuthorBooks: any;
   startRead: any;
   startListen: any;
-  currentBookVersion: any;
   reviewsRating?: string;
 };
 
-const Book: React.FC<BookProps> = ({
-  languages,
-  reviews = [],
-  currentBook,
+const Book = ({
   getBook,
-  addToBookShelf,
-  deleteFromBookShelf,
   reviewSubmit,
   similarBooks,
   deleteReview,
   getAuthorBooks,
   startRead,
-  currentBookVersion,
   startListen,
   reviewsRating,
-}) => {
+}: BookProps) => {
   const { t } = useTranslation();
-  const [book, setBook] = useState<BookType | null>(null);
   const { id } = useParams<{ id: string }>();
-  const value = useContext(UserContext);
   const history = useHistory();
-
-  const defaultLanguage =
-    (languages || []).find((lang) => lang.name === "English") ||
-    defaultEnglishLanguage;
-
-  const [selectedLanguage, setSelectedLanguage] = useState(
-    value?.bookLanguage || defaultLanguage
-  );
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
   const dispatch = useDispatch();
 
-  const hasUserAlreadyReviewed = reviews.length
-    ? reviews.some((review) => review?.user?.id === value?.id)
-    : false;
+  const { userData } = useAuthState();
+  const { currentBook, currentBookVersion, reviews } = useHomeState();
 
-  useEffect(() => {
-    if (value?.language?.isoCode2char) {
-      dispatch(getLocalization(value?.language?.isoCode2char));
-    }
-  }, [dispatch, value?.language?.isoCode2char]);
+  const { userBookLanguage, userId } = useMemo(() => {
+    const userBookLanguage =
+      userData?.result?.bookLanguage || defaultEnglishLanguage;
+    const userId = userData?.result?.id;
+
+    return {
+      userBookLanguage,
+      userId,
+    };
+  }, [userData.result, userData.isLoading]);
+
+  const { bookReviews, isReviewed } = useMemo(() => {
+    const bookReviews = reviews?.result?.data;
+    const isReviewed = bookReviews?.some(
+      (review) => review?.user?.id === userId
+    );
+
+    return {
+      bookReviews,
+      isReviewed,
+    };
+  }, [reviews?.result]);
+
+  const { locBookCoverLink, isOfficial, downloadLink, isBookLiked } =
+    useMemo(() => {
+      const locBookCoverLink =
+        currentBookVersion?.result?.data[0]?.locBookCover?.link || NoImg;
+      const isOfficial =
+        currentBookVersion?.result?.data[0]?.translationType !== "official";
+      const downloadLink = currentBookVersion?.result?.data[0]?.bookFile?.link;
+      const isBookLiked = currentBook.result?.isFavourite;
+
+      return {
+        locBookCoverLink,
+        isOfficial,
+        downloadLink,
+        isBookLiked,
+      };
+    }, [currentBookVersion, currentBook]);
+
+  const [selectedLanguage, setSelectedLanguage] = useState(userBookLanguage);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   useEffect(() => {
     if (id) {
       getBook(Number(id));
     }
-  }, [id, getBook]);
+  }, [id]);
 
   useEffect(() => {
-    // Изначально выбираем язык из value?.bookLanguage, если он есть
-    if (value?.bookLanguage) {
-      setSelectedLanguage(value.bookLanguage);
-    } else {
-      // Если нет, используем дефолтный язык
-      setSelectedLanguage(defaultLanguage);
-    }
-  }, [value?.bookLanguage]);
-
-  useEffect(() => {
-    if (selectedLanguage && currentBook?.result?.id) {
+    if (currentBook?.result?.id) {
       dispatch(
         getBookVersion({
           page: "1",
@@ -149,456 +123,264 @@ const Book: React.FC<BookProps> = ({
         })
       );
     }
-  }, [selectedLanguage, currentBook?.result?.id, dispatch]);
+  }, [currentBook.result?.id]);
 
-  useEffect(() => {
-    if (currentBookVersion?.result) {
-      setBook(currentBookVersion.result);
-    }
-  }, [currentBookVersion?.result]);
-
-  useEffect(() => {
-    if (currentBook?.result) {
-      setBook(currentBook.result);
-      setIsLiked(currentBook.result.isFavourite);
-    }
-  }, [currentBook, currentBookVersion?.result]);
+  const closeSelectBookLangModal = () => {
+    setIsModalOpen(false);
+  };
 
   const handleLikeClick = () => {
-    if (book) {
-      if (isLiked) {
-        // If already liked, remove from bookshelf
-        deleteFromBookShelf({
-          userId: value.id,
-          bookId: book.id,
-        });
+    if (currentBook.result?.id) {
+      if (isBookLiked) {
+        dispatch(
+          deleteFromShelf({
+            userId: userId,
+            bookId: currentBook.result.id,
+          })
+        );
       } else {
-        // If not liked, add to bookshelf
-        addToBookShelf({
-          user: {
-            id: value.id,
-          },
-          book: {
-            id: book.id,
-          },
-          isFavourited: true,
-          readingState: "added",
-        });
+        dispatch(
+          addToShelf({
+            user: {
+              id: userId,
+            },
+            book: {
+              id: currentBook.result.id,
+            },
+            isFavourited: true,
+            readingState: "added",
+          })
+        );
       }
-      setIsLiked(!isLiked);
     }
   };
 
   const onLanguageSelect = (language: Language) => {
     setSelectedLanguage(language);
+    closeSelectBookLangModal();
+    dispatch(
+      getBookVersion({
+        page: "1",
+        limit: "1",
+        filterLanguage: `[language.id][eq]=${language?.id}`,
+        filterId: `[coreBook.id][eq]=${currentBook?.result?.id}`,
+      })
+    );
     sessionStorage.setItem("currentBookLanguage", JSON.stringify(language));
   };
-
-  useEffect(() => {
-    if (currentBook?.result) {
-      setBook(currentBook.result);
-    }
-  }, [currentBook]);
 
   const showModal = () => {
     setIsModalOpen(true);
   };
 
-  const formatFileSize = (bytesStr: string): string => {
-    const bytesNum = Number(bytesStr);
-    if (isNaN(bytesNum) || bytesNum <= 0) {
-      return "Введите корректное число";
-    }
-
-    const sizes = ["bytes", "KB", "MB"];
-    let value = bytesNum;
-    let index = 0;
-
-    while (value >= 1024 && index < sizes.length - 1) {
-      value /= 1024;
-      index++;
-    }
-
-    return `${value.toFixed(2)} ${sizes[index]}`;
-  };
-
   if (
-    (!languages.length && currentBook) ||
+    !currentBook ||
     currentBookVersion.isLoading ||
-    !currentBook?.result?.id
+    !currentBook?.result?.id ||
+    userData.isLoading
   ) {
-    return (
-      <div className={styles.home_page}>
-        <div className={styles.home_page}>
-          <div className={styles.flex_wrap}>
-            <div className={styles.left_side}>
-              <Skeleton.Image
-                style={{
-                  width: "247px",
-                  height: "372px",
-                  marginBottom: "20px",
-                }}
-              />
-              <Skeleton active paragraph={{ rows: 1 }} title={false} />
-            </div>
-            <div className={styles.right_side}>
-              <div style={{ marginBottom: "20px" }}>
-                <Skeleton.Button active />
-              </div>
-              <div style={{ marginBottom: "40px", width: "300px" }}>
-                <Skeleton.Button active block />
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <Skeleton.Button
-                  style={{ marginBottom: "20px", width: "95%", height: "54px" }}
-                  active
-                  block
-                />
-                <Skeleton.Button
-                  style={{ marginBottom: "20px", width: "95%", height: "54px" }}
-                  active
-                  block
-                />
-              </div>
-              <Skeleton.Button style={{ marginBottom: "20px" }} active block />
-              <Skeleton.Button
-                style={{ marginBottom: "20px", height: "80px" }}
-                active
-                block
-              />
-              <Skeleton.Button
-                style={{ marginBottom: "20px", height: "60px" }}
-                active
-                block
-              />
-              <Skeleton.Button
-                style={{ marginBottom: "20px", height: "60px" }}
-                active
-                block
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <BookSkeleton />;
   }
 
   return (
-    <div>
-      <div
-        onClick={() => history.goBack()}
+    <div className={styles.bookPageWrapper}>
+      <LanguageModal
+        isModalOpen={isModalOpen}
+        onLanguageSelect={onLanguageSelect}
+        currentSelectedLanguage={selectedLanguage}
+        closeModal={closeSelectBookLangModal}
+        languageSelectType={"book"}
+      />
+      <ReviewModal
+        reviewSubmit={reviewSubmit}
+        book={currentBook.result}
+        isModalOpen={isReviewModalOpen}
+        setIsModalOpen={setIsReviewModalOpen}
+        customClass={styles.overallModalRating}
+      />
+      <Button
         className={styles.backBtnRelativePage}
+        type={"text"}
+        icon={<img src={BackIcon} alt="Back arrow" />}
+        onClick={() => history.goBack()}
       >
-        <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
-        {t("backBtn")}
-      </div>
+        <span>{t("backBtn")}</span>
+      </Button>
       <div className={styles.home_page}>
         <div className={styles.flex_wrap}>
           <div className={styles.left_side}>
-            <div className={styles.img_wrap}>
-              {currentBookVersion?.result?.data[0]?.locBookCover?.link ? (
+            <div className={styles.bookImageBlock}>
+              <div className={styles.img_wrap}>
                 <img
-                  src={currentBookVersion?.result?.data[0]?.locBookCover?.link}
-                  alt={"img"}
-                  className={styles.bookCoverImage}
+                  className={styles.bookImg}
+                  src={locBookCoverLink}
+                  alt={`Book Image ${currentBook.result?.title}`}
                 />
-              ) : (
-                <img
-                  src={NoImg}
-                  alt={book?.title}
-                  className={styles.bookCoverImage}
-                />
-              )}
-            </div>
-            <div className={styles.desktopView}>
-              {book?.isAgeRestricted && (
-                <div className={styles.age_row}>
-                  <img style={{ marginRight: "5px" }} src={Group} alt="icon" />
-                  For Ages 16 and Up
-                </div>
-              )}
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(2, 1fr)",
-                  gap: "16px",
-                  paddingTop: "16px",
-                }}
-              >
-                {book?.categories?.map((category: any) => (
-                  <div
-                    key={category.id}
-                    style={{ background: category.color }}
-                    className={styles.habit_tag}
-                  >
-                    <img
-                      style={{ marginRight: "5px" }}
-                      src={HabitIcon}
-                      alt="icon"
-                    />
-                    {category?.name
-                      ? t(`category${category.name}`, {
-                          defaultValue: category?.name || t("categoryNotFound"),
-                        })
-                      : t("categoryNotFound")}
+              </div>
+              <div className={styles.desktopView}>
+                {currentBook.result?.isAgeRestricted && (
+                  <div className={styles.age_row}>
+                    <img src={Group} alt="icon" />
+                    For Ages 16 and Up
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className={styles.right_side}>
-            <div className={styles.top_block}>
-              <div className={styles.book_title}>
-                <div>{currentBookVersion?.result?.data[0]?.title}</div>
-                <div className={styles.bookSettings}>
-                  <div className={styles.desktopView}>
-                    <div
-                      onMouseDown={(e) => {
-                        e.preventDefault();
-                        showModal();
-                      }}
-                      className={styles.languageSelectWrapper}
-                    >
-                      <div
-                        className={styles.languageSelect}
-                        style={{
-                          backgroundImage: `url(${selectedLanguage.flag.link})`,
-                        }}
-                      ></div>
-                      <span style={{ whiteSpace: "nowrap" }}>
-                        {selectedLanguage.name}
-                      </span>
-                      {currentBookVersion?.result?.data[0]?.translationType !==
-                        "official" && <div className={styles.aiMarker}>AI</div>}
-                    </div>
-                  </div>
-                  <div
-                    className={styles.bookShelfButton}
-                    onClick={handleLikeClick}
-                  >
-                    <img
-                      src={LikeIcon}
-                      alt="like"
-                      className={isLiked ? styles.likedIcon : ""}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className={styles.author_title}
-              style={{ marginBottom: "28px" }}
-            >
-              {book?.author?.map((author: any, index: number) => {
-                const isLast = index === book.author.length - 1;
-                const isSecondLast = index === book.author.length - 2;
-                return (
-                  <React.Fragment key={index}>
-                    <span
-                      className={styles.author}
-                      onClick={() => getAuthorBooks(author.id)}
-                      style={{
-                        cursor: "pointer",
-                        transition: "opacity 0.2s",
-                      }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.opacity = "0.8")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.opacity = "1")
-                      }
-                    >
-                      {author.name}
-                    </span>
-                    {isSecondLast && (
-                      <span style={{ color: "#7C7A72" }}> and </span>
-                    )}
-                    {!isSecondLast && !isLast && ", "}
-                  </React.Fragment>
-                );
-              })}
-            </div>
-            <div className={styles.mobileView}>
-              <div style={{ display: "flex", marginBottom: "20px" }}>
-                <div
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                    showModal();
-                  }}
-                  className={styles.languageSelectWrapper}
-                >
-                  <div
-                    className={styles.languageSelect}
-                    style={{
-                      backgroundImage: `url(${selectedLanguage.flag.link})`,
-                    }}
-                  ></div>
-                  <span style={{ whiteSpace: "nowrap" }}>
-                    {selectedLanguage.name}
-                  </span>
-                  {currentBookVersion?.result?.data[0]?.translationType !==
-                    "official" && <div className={styles.aiMarker}>AI</div>}
-                </div>
-              </div>
-            </div>
-            <Button
-              className={styles.readBtn}
-              style={{ marginTop: "30px" }}
-              onClick={() => {
-                startRead({ bookId: id });
-              }}
-              variant="Brown"
-              type="submit"
-            >
-              {t("readNowBtn")}
-            </Button>
-            <div className={styles.btns_block}>
-              <Button
-                style={{
-                  color: "#996C42",
-                  border: "2px solid rgba(153, 108, 66, 0.2)",
-                  borderRadius: "50px",
-                  background: "transparent",
-                  marginTop: "0",
-                }}
-                onClick={() => {
-                  startListen({ bookId: id });
-                }}
-                icon={<img src={ListenIcon} alt="icon" />}
-              >
-                {t("listen")}
-              </Button>
-              <div className={styles.divider} />
-              <Button
-                className={styles.questionBtn}
-                to={`${routes.askQuestion}?currentStep=5&selectedBook=${id}`}
-                style={{
-                  color: "#996C42",
-                  border: "2px solid rgba(153, 108, 66, 0.2)",
-                  borderRadius: "50px",
-                  background: "transparent",
-                }}
-                variant="Transparent"
-                icon={<img src={Question} alt="icon" />}
-              >
-                {t("AskQuestionBtn")}
-              </Button>
-            </div>
-            <section className={styles.bookDescription}>
-              <div className={styles.description}>
-                <div className={styles.section_title}>
-                  {t("bookDescriptionBtn")}
-                </div>
-                <p>
-                  <div>{currentBookVersion?.result?.data[0]?.description}</div>
-                </p>
-              </div>
-              <div className={styles.mobileView}>
-                <div className={styles.age_row}>
-                  <img style={{ marginRight: "5px" }} src={Group} alt="icon" />
-                  {t("ageLimit")}
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "left",
-                    justifyContent: "left",
-                    paddingTop: "16px",
-                    paddingBottom: "16px",
-                  }}
-                >
-                  {book?.categories?.map((category: any) => (
+                )}
+                <div className={styles.bookCategories}>
+                  {currentBook.result?.categories?.map((category) => (
                     <div
                       key={category.id}
                       style={{ background: category.color }}
                       className={styles.habit_tag}
                     >
-                      <img
-                        style={{ marginRight: "5px" }}
-                        src={HabitIcon}
-                        alt="icon"
-                      />
-                      {category?.name
-                        ? t(`category${category.name}`, {
-                            defaultValue:
-                              category?.name || t("categoryNotFound"),
-                          })
-                        : t("categoryNotFound")}
+                      <img src={HabitIcon} alt="icon" />
+                      <span>
+                        {category?.name
+                          ? t(`category${category.name}`, {
+                              defaultValue:
+                                category?.name || t("categoryNotFound"),
+                            })
+                          : t("categoryNotFound")}
+                      </span>
                     </div>
                   ))}
                 </div>
               </div>
-              {currentBookVersion?.result?.data[0]?.bookFile?.link && (
-                <a
-                  href={currentBookVersion?.result?.data[0]?.bookFile?.link}
-                  download
-                  rel="noopener noreferrer"
-                  className={styles.downloadLink}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#996C42",
-                    border: "2px solid rgba(153, 108, 66, 0.2)",
-                    background: "transparent",
-                    borderRadius: "14px",
-                    padding: "10px 16px",
-                    cursor: "pointer",
-                    textDecoration: "none",
-                    width: "100%",
-                    fontWeight: "700",
-                    fontSize: "17px",
-                    textAlign: "center",
+            </div>
+          </div>
+          <div className={styles.right_side}>
+            <div className={styles.bookHeader}>
+              <div className={styles.bookInfo}>
+                <Typography.Title className={styles.bookName}>
+                  {currentBookVersion?.result?.data[0]?.title}
+                </Typography.Title>
+                <Typography.Title className={styles.bookAuthors}>
+                  {currentBook.result?.author?.map((i) => (
+                    <span key={i.id} onClick={() => getAuthorBooks(i.id)}>
+                      {i.name}
+                    </span>
+                  ))}
+                </Typography.Title>
+              </div>
+              <div className={styles.bookSettings}>
+                <Button
+                  className={styles.languageSelectWrapper}
+                  onMouseDown={showModal}
+                  icon={
+                    <div
+                      className={styles.languageSelect}
+                      style={{
+                        backgroundImage: `url(${selectedLanguage.flag.link})`,
+                      }}
+                    />
+                  }
+                >
+                  <div className={styles.languageTitle}>
+                    <div className={styles.selectedLanguageDetails}>
+                      <span>{selectedLanguage.name}</span>
+                      {isOfficial && <div className={styles.aiMarker}>AI</div>}
+                    </div>
+                    <img src={arrowDown} alt="Arrow" />
+                  </div>
+                </Button>
+                <Button
+                  className={styles.bookShelfButton}
+                  shape={"circle"}
+                  size={"large"}
+                  onClick={handleLikeClick}
+                  icon={
+                    <img
+                      src={LikeIcon}
+                      alt="Like"
+                      className={isBookLiked ? styles.likedIcon : ""}
+                    />
+                  }
+                />
+              </div>
+            </div>
+
+            <div className={styles.bookActions}>
+              <Button
+                className={styles.readBtn}
+                onClick={() => {
+                  startRead({ bookId: id });
+                }}
+              >
+                {t("readNowBtn")}
+              </Button>
+              <div className={styles.btns_block}>
+                <Button
+                  className={styles.buttonElement}
+                  icon={<img src={ListenIcon} alt="icon" />}
+                  onClick={() => {
+                    startListen({ bookId: id });
                   }}
                 >
-                  <img
-                    src={Download}
-                    alt="download icon"
-                    style={{ marginRight: "8px" }}
-                  />
-                  {t("downloadBtn")}
-                  <div
-                    style={{
-                      background: "rgba(153, 108, 66, 0.1)",
-                      fontSize: "12px",
-                      borderRadius: "24px",
-                      padding: "2px 6px",
-                      marginLeft: "5px",
-                    }}
-                  >
-                    {" "}
-                    {formatFileSize(
-                      currentBookVersion?.result?.data[0]?.bookFile?.fileSize
-                    )}
-                  </div>
-                </a>
-              )}
-            </section>
-            <section className={styles.reviewsSection}>
-              <div className={styles.section_title}>{t("reviews")}</div>
-              <div
-                className={styles.overallRating}
-                style={{ marginBottom: "25px" }}
+                  {t("listen")}
+                </Button>
+                <Button
+                  className={styles.buttonElement}
+                  icon={<img src={Question} alt="icon" />}
+                  onClick={() =>
+                    history.push(
+                      `${routes.askQuestion}?currentStep=5&selectedBook=${id}`
+                    )
+                  }
+                >
+                  {t("AskQuestionBtn")}
+                </Button>
+              </div>
+            </div>
+            <Divider style={{ margin: "12.5px 0" }} />
+            <div className={styles.descriptionBlock}>
+              <Typography.Title level={4} className={styles.section_title}>
+                {t("bookDescriptionBtn")}
+              </Typography.Title>
+              <Typography className={styles.descriptionText}>
+                {currentBookVersion?.result?.data[0]?.description}
+              </Typography>
+            </div>
+
+            {downloadLink && (
+              <Button
+                href={downloadLink}
+                className={styles.downloadButton}
+                icon={<img src={Download} alt="Download" />}
               >
-                {book?.rating !== undefined && (
-                  <Rate
-                    disabled
-                    value={
-                      Number(reviewsRating) > 0 ? Number(reviewsRating) : 0
-                    }
-                    allowHalf
-                  />
-                )}
-                <div className={styles.rating_count}>
-                  {reviewsRating ? Number(reviewsRating).toFixed(1) : ""}
-                </div>
-                <div>
-                  {/*({reviews?.length ?? 0} {t("reviews").toLowerCase()})*/}(
-                  {book?.reviewCount} {t("reviews").toLowerCase()})
+                <Typography>{t("downloadBtn")}</Typography>
+                <Tag className={styles.fileSizeTag}>
+                  {formatFileSize(
+                    currentBookVersion?.result?.data[0]?.bookFile?.fileSize
+                  )}
+                </Tag>
+              </Button>
+            )}
+
+            <section className={styles.reviewsSection}>
+              <div className={styles.reviewsHeader}>
+                <Typography className={styles.reviews_title}>
+                  {t("reviews")}
+                </Typography>
+                <div className={styles.overallRating}>
+                  {currentBook.result?.rating && (
+                    <Rate
+                      disabled
+                      value={
+                        Number(reviewsRating) > 0 ? Number(reviewsRating) : 0
+                      }
+                      allowHalf
+                    />
+                  )}
+                  <div className={styles.rating_count}>
+                    {reviewsRating ? Number(reviewsRating).toFixed(1) : ""}
+                  </div>
+                  <Typography>
+                    ({currentBook.result?.reviewCount}{" "}
+                    {t("reviews").toLowerCase()})
+                  </Typography>
                 </div>
               </div>
-              {reviews.length > 0 ? (
-                reviews.map((review) => (
+
+              {bookReviews?.length ? (
+                bookReviews.map((review: any) => (
                   <Review
                     key={review.id}
                     id={review.id}
@@ -610,53 +392,30 @@ const Book: React.FC<BookProps> = ({
                   />
                 ))
               ) : (
-                <p>{t("noReviewsAvailable")}</p>
+                <Typography className={styles.noReviewsAvailable}>
+                  {t("noReviewsAvailable")}
+                </Typography>
               )}
+
               <Button
-                style={{
-                  color: "#996C42",
-                  border: "2px solid rgba(153, 108, 66, 0.2)",
-                  borderRadius: "14px",
-                  background: "transparent",
-                  maxWidth: "196px",
-                }}
+                className={styles.writeReviewButton}
                 onClick={() => {
                   setIsReviewModalOpen(true);
                 }}
-                variant="Transparent"
-                disabled={hasUserAlreadyReviewed}
+                disabled={isReviewed}
               >
                 {t("writeReviewBtn")}
-                <img
-                  style={{ marginLeft: "10px" }}
-                  src={ReviewIcon}
-                  alt="icon"
-                />
+                <img src={ReviewIcon} alt="Review icon" />
               </Button>
             </section>
-            <section>
-              <PageBooksList
-                books={similarBooks}
-                title={t("titleSimilarBooks")}
-                seeAllLink={routes.similarBooks}
-                getBook={getBook}
-              />
-            </section>
+            <PageBooksList
+              books={similarBooks}
+              title={t("titleSimilarBooks")}
+              seeAllLink={routes.similarBooks}
+              getBook={getBook}
+            />
           </div>
         </div>
-        <LanguageModal
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
-          onLanguageSelect={onLanguageSelect}
-          currentSelectedLanguage={selectedLanguage}
-        />
-        <ReviewModal
-          reviewSubmit={reviewSubmit}
-          book={book}
-          isModalOpen={isReviewModalOpen}
-          setIsModalOpen={setIsReviewModalOpen}
-          customClass={styles.overallModalRating}
-        />
       </div>
     </div>
   );

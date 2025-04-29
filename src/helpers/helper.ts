@@ -242,14 +242,6 @@ export const unstickAddress = (location: string) => {
   };
 };
 
-export const capitalizeFirstLetter = (word: string) => {
-  if (typeof word !== "string") {
-    return;
-  }
-
-  return word.charAt(0).toUpperCase() + word.slice(1);
-};
-
 export const resampleTo16kHZ = (audioData: any, origSampleRate = 44100) => {
   const data = new Float32Array(audioData);
   const targetLength = Math.round(data.length * (16000 / origSampleRate));
@@ -279,9 +271,7 @@ export const float32ArrayToBase64 = (float32Array: Float32Array): string => {
     binaryString += String.fromCharCode(uint8Array[i]);
   }
 
-  const base64String = btoa(binaryString);
-
-  return base64String;
+  return btoa(binaryString);
 };
 
 export const renderLangCodes = (lang: string) => {
@@ -333,4 +323,22 @@ export const getNameInitials = (name: string, count = 2) => {
   const filtered = initials.replace(/[^a-zA-Z]/g, "");
 
   return filtered.slice(0, count).toUpperCase();
+};
+
+export const formatFileSize = (bytesStr: string): string => {
+  const bytesNum = Number(bytesStr);
+  if (isNaN(bytesNum) || bytesNum <= 0) {
+    return "Введите корректное число";
+  }
+
+  const sizes = ["bytes", "KB", "MB"];
+  let value = bytesNum;
+  let index = 0;
+
+  while (value >= 1024 && index < sizes.length - 1) {
+    value /= 1024;
+    index++;
+  }
+
+  return `${value.toFixed(2)} ${sizes[index]}`;
 };

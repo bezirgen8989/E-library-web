@@ -5,6 +5,7 @@ import AllBooksSlider from "../common/AllBooksSlider/AllBooksSlider";
 import books from "../../../../assets/images/icons/booksIcon.png";
 import { routes } from "../../routing";
 import { useTranslation } from "react-i18next";
+import { Divider } from "antd";
 
 type HomeProps = {
   onLogout: Callback;
@@ -43,7 +44,7 @@ const Home: React.FC<HomeProps> = ({
         getBook={getBook}
         isLoading={isNewBooksLoading}
       />
-      <div style={{ height: "1px", background: "rgba(18, 18, 18, 0.1)" }} />
+      <Divider />
       <AllBooksSlider
         books={suggestedBooks}
         title={t("titleSuggestedForYou")}

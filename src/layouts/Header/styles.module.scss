@@ -17,6 +17,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 15px 30px;
+  position: relative;
   .headerNav {
     display: flex;
     align-items: center;
@@ -58,7 +59,10 @@
   .profileElementsWrapper{
     display: flex;
     align-items: center;
-
+    position: absolute;
+    max-width: 180px;
+    text-overflow: clip;
+    right: 40px;
   }
 
   @media (max-width: 964px) {
@@ -77,14 +81,14 @@
 }
 .dropdown {
   display: flex !important;
-  align-items: center;
+  align-items: center !important;
   width: 100%;
   gap: 6px;
   height: fit-content !important;
   border-radius: 22px !important;
   min-width: 140px;
   border: none !important;
-  padding-right: 14px !important;
+  padding: 4px !important;
   &:hover {
     color: inherit !important;
     box-shadow: none !important;
@@ -92,27 +96,38 @@
   }
 }
 .dropdownLight{
-  .dropdownTitle{
-    flex: 1;
+  .userNameTitle{
     display: flex;
-    justify-content: space-between;
+    .dropdownTitle{
+      width: 37%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     & > span svg path {
       stroke: #996C42;
     }
   }
+
   background-color: #EFE1D6 !important;
 }
 .dropdownDark{
   background-color: rgba(255, 255, 255, 0.08) !important;
   color: #FFFFFF !important;
-  .dropdownTitle{
-    flex: 1;
+  .userNameTitle{
     display: flex;
-    justify-content: space-between;
+    gap: 6px;
+    .dropdownTitle{
+      width: 37%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     & > span svg path {
       stroke: #FFFFFF;
     }
   }
+
   &:hover {
     color: #FFFFFF !important;
   }
@@ -122,14 +137,10 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  margin: 6px;
-  overflow: hidden;
-  background-color: white;
-
-  img {
+  & > img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+
     border-radius: 50%;
   }
 }

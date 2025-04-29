@@ -2,13 +2,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Book } from "../components";
 import { useLazySelector } from "../../../hooks";
-import { getLanguages } from "../../Auth/slices/auth";
 import {
   addReview,
-  addToShelf,
   clearBooks,
   clearCurrentVersion,
-  deleteFromShelf,
   deleteYourReview,
   getBookById,
   getBookVersions,
@@ -21,29 +18,24 @@ import { useHistory } from "react-router-dom";
 const BookContainer: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-
-  const {
-    currentBook,
-    reviews,
-    similarBooks,
-    currentBookVersion,
-    bookVersions,
-  } = useLazySelector(({ home }) => {
-    const {
-      currentBook,
-      reviews,
-      similarBooks,
-      currentBookVersion,
-      bookVersions,
-    } = home;
-    return {
-      currentBook,
-      reviews,
-      similarBooks,
-      currentBookVersion,
-      bookVersions,
-    };
-  });
+  const { currentBook, reviews, similarBooks, bookVersions } = useLazySelector(
+    ({ home }) => {
+      const {
+        currentBook,
+        reviews,
+        similarBooks,
+        currentBookVersion,
+        bookVersions,
+      } = home;
+      return {
+        currentBook,
+        reviews,
+        similarBooks,
+        currentBookVersion,
+        bookVersions,
+      };
+    }
+  );
 
   const allTranslations =
     (bookVersions &&
@@ -51,7 +43,7 @@ const BookContainer: React.FC = () => {
         .filter((book: any) => book.language.id !== 5)
         .map((book: any) => ({
           id: book.language.id,
-          name: book.language.name,
+          name: 123,
           isoCode: book.language.isoCode,
           isoCode2char: book.language.isoCode2char,
           flag: book.language.flag,
@@ -72,26 +64,6 @@ const BookContainer: React.FC = () => {
     };
   }, []);
 
-  const addToBookShelf = useCallback(
-    (params) => {
-      console.log("params", params);
-      dispatch(addToShelf(params));
-    },
-    [dispatch]
-  );
-
-  const deleteFromBookShelf = useCallback(
-    (params) => {
-      dispatch(deleteFromShelf(params));
-    },
-    [dispatch]
-  );
-
-  useEffect(() => {
-    dispatch(getLanguages());
-    // dispatch(getMe());
-  }, [dispatch]);
-
   useEffect(() => {
     if (currentBook?.result?.id) {
       dispatch(
@@ -105,16 +77,10 @@ const BookContainer: React.FC = () => {
   }, [dispatch, currentBook?.result?.id]);
 
   useEffect(() => {
-    const unlisten = history.listen((location) => {
-      if (!location.pathname.startsWith(routes.reading)) {
-        sessionStorage.removeItem("selectedLanguage");
-      }
-    });
-
     return () => {
-      unlisten();
+      sessionStorage.removeItem("selectedLanguage");
     };
-  }, [history]);
+  }, []);
 
   const fetchReviews = useCallback(() => {
     if (currentBook?.result?.id) {
@@ -196,11 +162,7 @@ const BookContainer: React.FC = () => {
   return (
     <Book
       getBook={getBook}
-      currentBook={currentBook}
       languages={allTranslations}
-      addToBookShelf={addToBookShelf}
-      deleteFromBookShelf={deleteFromBookShelf}
-      reviews={reviews?.result?.data}
       reviewsRating={reviews?.result?.rating}
       reviewSubmit={reviewSubmit}
       similarBooks={similarBooks?.result?.data}
@@ -208,7 +170,6 @@ const BookContainer: React.FC = () => {
       getAuthorBooks={getAuthorBooks}
       startRead={startRead}
       startListen={startListen}
-      currentBookVersion={currentBookVersion}
     />
   );
 };
