@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import styles from "./Book.module.scss";
-import { Button, Divider, Tag, Typography } from "antd";
+import { Button, Divider, Skeleton, Tag, Typography } from "antd";
 import Question from "../../../../assets/images/icons/question.png";
 import Download from "../../../../assets/images/icons/download.png";
 import Group from "../../../../assets/images/icons/group.png";
@@ -249,9 +249,18 @@ const Book = ({
           <div className={styles.right_side}>
             <div className={styles.bookHeader}>
               <div className={styles.bookInfo}>
-                <Typography.Title className={styles.bookName}>
-                  {currentBookVersion?.result?.data[0]?.title}
-                </Typography.Title>
+                {currentBookVersion.isSecondLoading ? (
+                  <Skeleton.Input
+                    active
+                    size={"large"}
+                    style={{ width: "100%" }}
+                  />
+                ) : (
+                  <Typography.Title className={styles.bookName}>
+                    {currentBookVersion?.result?.data[0]?.title}
+                  </Typography.Title>
+                )}
+
                 <Typography.Title className={styles.bookAuthors}>
                   {currentBook.result?.author?.map((i) => (
                     <span key={i.id} onClick={() => getAuthorBooks(i.id)}>
@@ -334,9 +343,18 @@ const Book = ({
               <Typography.Title level={4} className={styles.section_title}>
                 {t("bookDescriptionBtn")}
               </Typography.Title>
-              <Typography className={styles.descriptionText}>
-                {currentBookVersion?.result?.data[0]?.description}
-              </Typography>
+              {currentBookVersion.isSecondLoading ? (
+                <Skeleton
+                  title={false}
+                  paragraph={{ rows: 3 }}
+                  active
+                  style={{ width: "100%" }}
+                />
+              ) : (
+                <Typography className={styles.descriptionText}>
+                  {currentBookVersion?.result?.data[0]?.description}
+                </Typography>
+              )}
             </div>
 
             {downloadLink && (

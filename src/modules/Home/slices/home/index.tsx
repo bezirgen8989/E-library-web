@@ -44,6 +44,7 @@ import { TokenManager } from "../../../../utils";
 import { API_PREFIX } from "../../../../api/apiHelpers";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
+import { deepEqual } from "../../../../helpers/helper";
 
 const initialState: HomeState = {
   counter: 0,
@@ -315,11 +316,39 @@ const homeSlice = createSlice({
         state.searchBooks = { isLoading: false, result: content, error };
       })
       .addCase(getBookVersion.pending, (state) => {
-        state.currentBookVersion = { isLoading: true };
+        state.currentBookVersion = {
+          ...state.currentBookVersion,
+          isLoading: !state.currentBookVersion.result,
+          isSecondLoading: true,
+        };
       })
       .addCase(getBookVersion.fulfilled, (state, action) => {
         const { content, error } = action.payload;
-        state.currentBookVersion = { isLoading: false, result: content, error };
+        if (!state.currentBookVersion.result) {
+          state.currentBookVersion = {
+            isLoading: false,
+            result: content,
+            error,
+          };
+        } else {
+          const updated = { ...state.currentBookVersion.result };
+
+          for (const key in content) {
+            if (
+              Object.prototype.hasOwnProperty.call(content, key) &&
+              !deepEqual(content[key], state.currentBookVersion.result[key])
+            ) {
+              updated[key] = content[key];
+            }
+          }
+
+          state.currentBookVersion = {
+            isLoading: false,
+            isSecondLoading: false,
+            result: updated,
+            error,
+          };
+        }
       })
 
       .addCase(getStartedBooks.pending, (state) => {
