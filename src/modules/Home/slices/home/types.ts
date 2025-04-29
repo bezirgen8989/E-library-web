@@ -1,3 +1,5 @@
+import { Language } from "../../../Auth/slices/auth/types";
+
 export type HomeState = {
   counter: number;
   isDrawerOpen: boolean;
@@ -5,8 +7,44 @@ export type HomeState = {
   topBooks: any;
   newBooks: any;
   suggestedBooks: any;
-  currentBook: any;
-  reviews: any;
+  currentBook: {
+    isLoading: boolean;
+    result: Partial<{
+      id: number;
+      title: string;
+      description: string;
+      isAgeRestricted: boolean;
+      dateAdded: string;
+      dateUpdated: null | string;
+      reviewCount: number;
+      reviewScoreSum: number;
+      rating: string;
+      added: number;
+      downloaded: number;
+      reading: number;
+      finished: number;
+      isFavourite: boolean;
+      isDownloaded: boolean;
+      isReading: boolean;
+      isFinished: boolean;
+      vectorEntity: any;
+      author: any[];
+      categories: BookCategory[];
+      bookCover: any;
+    }>;
+    error: any;
+  };
+  reviews: {
+    isLoading: boolean;
+    result: Partial<{
+      data: BookReviews[];
+      total: number;
+      page: number;
+      limit: number;
+      rating: string;
+    }>;
+    error: any;
+  };
   similarBooks: any;
   authorsName: any;
   authorBooks: any;
@@ -29,7 +67,16 @@ export type HomeState = {
   avatarLanguage: any;
   currentBookVersion: any;
   isStreamShow: boolean;
-  bookVersions: any;
+  bookVersions: {
+    isLoading: boolean;
+    result: Partial<{
+      data: BookItem[];
+      total: number;
+      page: number;
+      limit: number;
+    }>;
+    error?: any;
+  };
   currentAudioBook: any;
   avatarStreamShow: boolean;
   isStopQuestion: boolean;
@@ -105,18 +152,6 @@ export type TypeOnMetaEvents = {
         Producer: string;
         CreationDate: string;
       };
-      metadata: {
-        _metadata: {
-          "dc:format": string;
-          "dc:language": string;
-          "dc:date": string;
-          "pdf:producer": string;
-          "pdf:pdfversion": string;
-          "xmp:creatortool": string;
-          "xmp:metadatadate": string;
-          "xmp:createdate": string;
-        };
-      };
       totalPages: number;
     };
     loc: {
@@ -130,3 +165,49 @@ export type TypeOnMetaEvents = {
   };
   content: string;
 };
+
+type BookReviews = {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  rating: number;
+  text: string;
+  user: {
+    id: number;
+    userName: string;
+  };
+  coreBook: {
+    id: number;
+    title: string;
+  };
+};
+
+type BookCategory = {
+  id: number;
+  name: string;
+  color: string;
+};
+
+export interface FileEntity {
+  id: string;
+  prefix: string;
+  postfix: string;
+  name: string;
+  type: "FILE";
+  fileType: string;
+  fileSize: number;
+  tag: string | null;
+  link: string;
+}
+
+export interface BookItem {
+  id: number;
+  translationType: "ai" | "human" | string;
+  title: string;
+  description: string;
+  convertedBookLink: string | null;
+  totalPages: number | null;
+  language: Language;
+  bookFile: FileEntity | null;
+  locBookCover: FileEntity;
+}

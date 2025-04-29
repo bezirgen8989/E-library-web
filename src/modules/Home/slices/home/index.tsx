@@ -54,9 +54,23 @@ const initialState: HomeState = {
   suggestedBooks: {},
   similarBooks: {},
   authorBooks: {},
-  currentBook: {},
+  currentBook: {
+    isLoading: false,
+    result: {},
+    error: {},
+  },
   authorsName: {},
-  reviews: {},
+  reviews: {
+    isLoading: false,
+    result: {
+      data: [],
+      total: 0,
+      page: 0,
+      limit: 0,
+      rating: "",
+    },
+    error: {},
+  },
   currentCategoryId: "",
   searchBooks: [],
   booksByQueryName: {},
@@ -76,7 +90,15 @@ const initialState: HomeState = {
   avatarLanguage: {},
   isStreamShow: false,
   currentBookVersion: {},
-  bookVersions: {},
+  bookVersions: {
+    isLoading: false,
+    result: {
+      data: [],
+      total: 0,
+      page: 0,
+      limit: 0,
+    },
+  },
   currentAudioBook: {},
   avatarStreamShow: false,
   isStopQuestion: false,
@@ -124,7 +146,7 @@ const homeSlice = createSlice({
       state.suggestedBooks = {};
       state.similarBooks = {};
       state.authorBooks = {};
-      state.currentBook = {};
+      state.currentBook.result = {};
       state.authorsName = {};
       state.startedBooks = {};
       state.notStartedBooks = {};
@@ -272,14 +294,14 @@ const homeSlice = createSlice({
       })
 
       .addCase(getBookById.pending, (state) => {
-        state.currentBook = { isLoading: true };
+        state.currentBook.isLoading = true;
       })
       .addCase(getBookById.fulfilled, (state, action) => {
         const { content, error } = action.payload;
         state.currentBook = { isLoading: false, result: content, error };
       })
       .addCase(getReviews.pending, (state) => {
-        state.reviews = { isLoading: true };
+        state.reviews.isLoading = true;
       })
       .addCase(getReviews.fulfilled, (state, action) => {
         const { content, error } = action.payload;
@@ -452,11 +474,22 @@ const homeSlice = createSlice({
       })
 
       .addCase(getBookVersions.pending, (state) => {
-        state.bookVersions = { isLoading: true };
+        state.bookVersions.isLoading = true;
       })
       .addCase(getBookVersions.fulfilled, (state, action) => {
         const { content, error } = action.payload;
         state.bookVersions = { isLoading: false, result: content, error };
+      })
+
+      .addCase(deleteFromShelf.fulfilled, (state) => {
+        // const { content, error } = action.payload;
+
+        state.currentBook.result.isFavourite = false;
+      })
+      .addCase(addToShelf.fulfilled, (state) => {
+        // const { content, error } = action.payload;
+
+        state.currentBook.result.isFavourite = true;
       })
 
       // Clear store if 'userLoggedOut' happened
@@ -530,7 +563,7 @@ export const addToShelf = createAsyncThunk(
 
 export const deleteFromShelf = createAsyncThunk(
   "delete/api/v1/bookshelf",
-  async (params: { userId: string; bookId: string }) => {
+  async (params: { userId: number; bookId: number }) => {
     const response = await deleteBookFromShelf(params);
     return response;
   }

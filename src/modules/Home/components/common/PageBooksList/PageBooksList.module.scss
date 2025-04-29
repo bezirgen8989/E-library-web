@@ -33,7 +33,7 @@
   border-radius: 8px;
   overflow: hidden;
   margin: 0 12px;
-  & > a {
+  & > a div{
     color: #996C42;
     font-weight: 700;
     // TODO need to check
@@ -79,7 +79,7 @@
   overflow: hidden;
   border-radius: 8px;
   margin-bottom: 15px;
-  img {
+  img, div {
     width: 100%;
   }
 }

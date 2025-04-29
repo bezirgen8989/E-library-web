@@ -119,12 +119,12 @@ export const Header = ({ children }: PropsWithChildren<Props>) => {
             </NavLink>
           ))}
         </nav>
+        <span />
         <div className={styles.profileElementsWrapper}>
           <div className={styles.headerNotifications} onClick={showDrawer}>
             {hasNotifications && <div className={styles.dot} />}
             <img src={bell} alt="bell" />
           </div>
-
           <Button
             style={{ padding: 0 }}
             className={cn(styles.dropdown, {
@@ -133,16 +133,17 @@ export const Header = ({ children }: PropsWithChildren<Props>) => {
             })}
             onClick={toProfilePage}
             icon={
-              <div className={styles.headerAvatar}>
-                <img
-                  src={result?.photo?.link ? result?.photo?.link : noAvatar}
-                  alt="User avatar"
-                />
-              </div>
+              <img
+                className={styles.headerAvatar}
+                src={result?.photo?.link ? result?.photo?.link : noAvatar}
+                alt="User avatar"
+              />
             }
           >
-            <div className={styles.dropdownTitle}>
-              {result?.userName ? result?.userName : result?.email}
+            <div className={styles.userNameTitle}>
+              <div className={styles.dropdownTitle}>
+                {result?.userName ? result?.userName : result?.email}
+              </div>
               <span>{icons["arrow"]}</span>
             </div>
           </Button>

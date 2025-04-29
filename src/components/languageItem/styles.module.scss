@@ -1,0 +1,42 @@
+.languageItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px 12px;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 21px !important;
+  color: #000;
+
+  .flagIcon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 140%;
+  }
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+
+  &.active {
+    background-color: #F3EDE8;
+    color: #996C42;
+
+    &:before {
+      content: ' ';
+      width: 21px;
+      height: 15px;
+      background-image: url('../../assets/images/icons/langCheckIcon.svg');
+      background-repeat: no-repeat;
+      background-position: center;
+      position: absolute;
+      top: 17px;
+      right: 12px;
+    }
+  }
+}

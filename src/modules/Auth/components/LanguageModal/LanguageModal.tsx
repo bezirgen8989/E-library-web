@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { useMemo } from "react";
 import { Button, Form, Input, Modal } from "antd";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -8,29 +8,36 @@ import Close from "../../../../assets/images/icons/Close.svg";
 import Search from "../../../../assets/images/icons/SearchIcon.svg";
 import { getLanguages, useAuthState } from "../../slices/auth";
 import { Language } from "../../slices/auth/types";
-import cn from "classnames";
+import { RegularLanguages } from "./regularLanguages";
+import { BookLanguages } from "./bookLanguages";
+import { LanguageItem } from "../../../../components/languageItem";
+import { useHomeState } from "../../../Home/slices/home";
+import { BookItem } from "../../../Home/slices/home/types";
 
 interface LanguageModalProps {
   isModalOpen: boolean;
   closeModal?: () => void;
   setIsModalOpen?: any;
   onLanguageSelect: (lang: Language) => void;
-  currentSelectedLanguage?: Language;
+  currentSelectedLanguage: Language;
   modalType?: string;
+  languageSelectType?: "regular" | "book";
 }
 
-const LanguageModal: FC<LanguageModalProps> = ({
+const LanguageModal = ({
   isModalOpen,
   closeModal,
   currentSelectedLanguage,
   onLanguageSelect,
-}) => {
+  languageSelectType = "regular",
+}: LanguageModalProps) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const searchTerm = Form.useWatch("searchedLangName", form);
   const { languages: storedLanguages } = useAuthState();
-
+  const { bookVersions } = useHomeState();
+  const bookLanguages = bookVersions.result?.data;
   const languages = storedLanguages.result?.data;
 
   useMemo(() => {
@@ -44,9 +51,31 @@ const LanguageModal: FC<LanguageModalProps> = ({
     onLanguageSelect(lang);
   };
 
-  const filteredLanguages = languages?.filter((lang: Language) =>
-    lang.name.toLowerCase().includes(searchTerm?.toLowerCase())
-  );
+  const filteredLanguages =
+    languageSelectType === "regular"
+      ? languages?.filter((lang: Language) =>
+          lang.name.toLowerCase().includes(searchTerm?.toLowerCase())
+        )
+      : bookLanguages?.filter((lang: BookItem) =>
+          lang.language.name.toLowerCase().includes(searchTerm?.toLowerCase())
+        );
+
+  const languageListComponent = {
+    regular: (
+      <RegularLanguages
+        defaultSelectedLanguageId={currentSelectedLanguage?.id}
+        handleLanguageSelect={handleLanguageSelect}
+        languages={languages}
+      />
+    ),
+    book: (
+      <BookLanguages
+        defaultSelectedLanguageId={currentSelectedLanguage?.id}
+        handleLanguageSelect={handleLanguageSelect}
+        bookLanguages={bookLanguages}
+      />
+    ),
+  };
 
   return (
     <Modal
@@ -79,82 +108,19 @@ const LanguageModal: FC<LanguageModalProps> = ({
           />
         </Form.Item>
       </Form>
-
       <div className={commonStyles.languageList}>
-        {/* Official Translations */}
-        {filteredLanguages?.some((lang: any) => lang.translationType) ? (
-          <>
-            <span style={{ fontWeight: 600, fontSize: "22px" }}>
-              Official Translations
-            </span>
-            <div>
-              {filteredLanguages
-                ?.filter((lang: any) => lang.translationType === "official")
-                .map((lang: Language) => (
-                  <div
-                    key={lang.id}
-                    className={cn(commonStyles.languageItem, {
-                      [commonStyles.active]:
-                        lang?.name === currentSelectedLanguage?.name,
-                    })}
-                    onClick={() => handleLanguageSelect(lang)}
-                  >
-                    <div
-                      className={commonStyles.flagIcon}
-                      style={{ backgroundImage: `url(${lang.flag.link})` }}
-                    />
-                    <span style={{ paddingLeft: 22 }}>{lang.name}</span>
-                  </div>
-                ))}
-            </div>
-            <div className={commonStyles.divider}></div>
-
-            {/* AI-Generated Translations */}
-            <span style={{ fontWeight: 600, fontSize: "22px" }}>
-              AI-Generated Translations
-            </span>
-            <div>
-              {filteredLanguages
-                ?.filter((lang: any) => lang.translationType === "ai")
-                .map((lang: Language) => (
-                  <div
-                    key={lang.id}
-                    className={cn(commonStyles.languageItem, {
-                      [commonStyles.active]:
-                        lang?.name === currentSelectedLanguage?.name,
-                    })}
-                    onClick={() => handleLanguageSelect(lang)}
-                  >
-                    <div
-                      className={commonStyles.flagIcon}
-                      style={{ backgroundImage: `url(${lang.flag.link})` }}
-                    />
-                    <span style={{ paddingLeft: 22 }}>{lang.name}</span>
-                  </div>
-                ))}
-            </div>
-          </>
-        ) : (
-          // If there's no translationType field, render languages without filtering
-          <div>
-            {filteredLanguages?.map((lang: Language) => (
-              <div
-                key={lang?.id}
-                className={cn(commonStyles.languageItem, {
-                  [commonStyles.active]:
-                    lang?.name === currentSelectedLanguage?.name,
-                })}
-                onClick={() => handleLanguageSelect(lang)}
-              >
-                <div
-                  className={commonStyles.flagIcon}
-                  style={{ backgroundImage: `url(${lang.flag.link})` }}
-                />
-                <span style={{ paddingLeft: 22 }}>{lang?.name}</span>
-              </div>
-            ))}
-          </div>
-        )}
+        {searchTerm
+          ? filteredLanguages?.map((item: Language | BookItem | any) => (
+              <LanguageItem
+                key={item.id}
+                lang={item.language ? item.language : item}
+                defaultSelectedLanguageId={currentSelectedLanguage?.id}
+                handleLanguageSelect={handleLanguageSelect}
+              />
+            ))
+          : languageListComponent[
+              languageSelectType as keyof typeof languageListComponent
+            ]}
       </div>
 
       <div className={commonStyles.primaryModalBtn}>
