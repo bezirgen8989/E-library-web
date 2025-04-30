@@ -1,13 +1,5 @@
-import { EditProfileComponent } from '../components'
+import { EditProfileComponent } from "../components";
 
+const EditProfileContainer = () => <EditProfileComponent />;
 
-const EditProfileContainer: React.FC = () => {
-
-  return (
-    <>
-      <EditProfileComponent />
-    </>
-  )
-}
-
-export default EditProfileContainer
+export default EditProfileContainer;

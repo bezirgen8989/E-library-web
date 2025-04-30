@@ -1,7 +1,5 @@
 import { ProfileUserContainer } from "modules/UserManagement/containers";
 
-const ProfileUserPage: React.FC = () => {
-  return <ProfileUserContainer />;
-};
+const ProfileUserPage = () => <ProfileUserContainer />;
 
 export default ProfileUserPage;

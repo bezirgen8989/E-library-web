@@ -266,6 +266,7 @@
   display: flex;
   flex-direction: row;
   gap: 12px;
+
   & > input::placeholder {
     color: #303630 !important;
   }
@@ -278,9 +279,10 @@
   scrollbar-width: thin;
   scrollbar-color: lightgrey transparent;
   height: 70vh;
-  & > div {
-    padding-bottom: 74px;
-  }
+
+  //& > div {
+  //  padding-bottom: 74px;
+  //}
 }
 
 /* WebKit Browsers (Chrome, Safari) */
@@ -415,6 +417,56 @@
 
   & > img {
     cursor: pointer;
+  }
+
+}
+
+.primaryBtn {
+  button {
+    background-color: rgb(153, 108, 66);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 54px;
+    padding: 0 20px;
+    font-size: 16px;
+    border-radius: 12px;
+    transition: all 0.2s;
+    font-weight: 700;
+    white-space: nowrap;
+    color: white;
+    border: none;
+    width: 100%;
+
+    &:global(.ant-btn):hover {
+      background: #ad8968;
+      border-color: rgb(153, 108, 66);
+      color: white;
+      border: none;
+    }
+  }
+}
+
+.deleteBtn {
+
+  &:global(.ant-btn) {
+    max-width: 249px;
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid #D554541F;
+    background: #D5545421;
+    padding: 13px;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    justify-content: center;
+    span {
+      font-size: 17px;
+      font-weight: 700;
+      color: #D55454;
+      line-height: 1;
+    }
   }
 
 }

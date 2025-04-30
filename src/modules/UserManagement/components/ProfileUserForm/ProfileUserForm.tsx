@@ -33,7 +33,7 @@ const ProfileUserForm = () => {
   const [isNotificationsModalOpen, setIsNotificationsModalOpen] =
     useState(false);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const [form] = Form.useForm();
 
   const { userData } = useAuthState();
@@ -64,12 +64,20 @@ const ProfileUserForm = () => {
     setModalType(null);
   };
 
-  const onSelectLanguage = (language: Language) => {
+  const onSelectLanguage = async (language: Language) => {
     if (modalType === "language") {
-      dispatch(setAppLanguage({ language }));
+      const result = await dispatch(setAppLanguage({ language })).unwrap();
+      if (result.success) {
+        closeLangModalHandler();
+      }
     }
     if (modalType === "bookLanguage") {
-      dispatch(setBookLanguage({ bookLanguage: language }));
+      const result = await dispatch(
+        setBookLanguage({ bookLanguage: language })
+      ).unwrap();
+      if (result.success) {
+        closeLangModalHandler();
+      }
     }
   };
   const goToSelectAvatarPage = () => {
