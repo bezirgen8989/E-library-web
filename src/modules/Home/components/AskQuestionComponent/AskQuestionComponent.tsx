@@ -110,7 +110,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   const [messageClass, setMessageClass] = useState(styles.messageSystemChange);
   const [isCollapseVisible] = useState(false);
   // const videoRef = useRef<HTMLVideoElement | any>(null);
-  const [selectedAvatar, setSelectedAvatar] = useState<string>("");
+  // const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const quillRef = useRef<ReactQuill>(null);
   const cursorPositionRef = useRef<null | number>(null);
   const [url, setUrl] = useState<any>();
@@ -151,9 +151,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   useEffect(() => {
     if (avatars?.result?.data?.length && value) {
-      // const selectedBookQuery = selectedBookId
-      //   ? `&currentStep=${currentStep}`
-      //   : "";
       const initialAvatarIndex = avatars?.result?.data.findIndex(
         (avatar: AvatarData) => avatar.id === value?.avatarSettings?.id
       );
@@ -162,18 +159,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
       const initialAvatar = avatars?.result?.data[foundIndex];
       setCurrentImage(initialAvatar);
-      setSelectedAvatar(initialAvatar.avatarPicture.link);
-
-      // if (userData?.result?.avatarSettings?.id) {
-      //   push(`${pathname}?currentStep=${1}`);
-      // } else {
-      //   const nowStep = currentStep ? currentStep : 4;
-      //   push(
-      //     `${pathname}?currentStep=${
-      //       foundIndex === 0 ? 1 : nowStep
-      //     }${selectedBookQuery}`
-      //   );
-      // }
+      // setSelectedAvatar(initialAvatar.avatarPicture.link);
     }
   }, [userData?.result?.avatarSettings?.id, value]);
 
@@ -196,9 +182,12 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     setIsModalOpen(true);
   };
 
+  const closeSelectLangModal = () => setIsModalOpen(false);
+
   const onLanguageSelect = (language: Language) => {
     setSelectedLanguage(language);
     dispatch(selectAvatarLanguage(language));
+    closeSelectLangModal();
     // sessionStorage.setItem("selectedLanguage", JSON.stringify(language.id));
   };
 
@@ -301,18 +290,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
   };
 
   useEffect(() => {
-    // const handleRouteChange = () => {
-    //   if (!location.pathname.includes("ask_question") && videoRef.current) {
-    //     if (value?.id) {
-    //       stopAvatarGeneration({ client_id: String(value.id) }, token);
-    //     }
-    //     videoRef.current.srcObject = null;
-    //     setIsStreamConnect(false);
-    //   }
-    // };
-    //
-    // handleRouteChange();
-
     return () => {
       if (value?.id) {
         stopAvatarGeneration({ client_id: String(value.id) }, token);
@@ -323,14 +300,11 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     };
   }, []);
 
-  console.log("selectedAvatar", selectedAvatar);
-
   const chooseAvatarSteps = {
     "1": (
       <ChooseAvatar
         avatars={avatars.result}
-        // setCurrentStep={setCurrentStep}
-        setSelectedAvatar={setSelectedAvatar}
+        // setSelectedAvatar={setSelectedAvatar}
         setUserAvatar={setUserAvatar}
         initialSlide={initialSlide}
         setInitialSlide={setInitialSlide}
@@ -342,24 +316,16 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     ),
     "2": (
       <ChooseAvatarStep2
-        // setCurrentStep={setCurrentStep}
-        // selectedAvatar={selectedAvatar}
         selectedAvatar={
           "https://elore.sfo3.cdn.digitaloceanspaces.com/avatarsImages/avatars/male2.jpg"
         }
       />
     ),
     "3": (
-      <ChooseAvatarStep3
-        // setCurrentStep={setCurrentStep}
-        // selectedAvatar={selectedAvatar}
-        selectedAvatar="https://elore.sfo3.cdn.digitaloceanspaces.com/avatarsImages/avatars/male2.jpg"
-      />
+      <ChooseAvatarStep3 selectedAvatar="https://elore.sfo3.cdn.digitaloceanspaces.com/avatarsImages/avatars/male2.jpg" />
     ),
     "4": (
       <ChooseAvatarStep4
-        // setCurrentStep={setCurrentStep}
-        // selectedAvatar={selectedAvatar}
         selectedAvatar={userData?.result?.avatarSettings?.avatarPicture?.link}
       />
     ),
@@ -367,6 +333,18 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   return (
     <>
+      <LanguageModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        currentSelectedLanguage={selectedLanguage}
+        onLanguageSelect={onLanguageSelect}
+        closeModal={closeSelectLangModal}
+      />
+      <MetaModal
+        isModalOpen={isMetaModalOpen}
+        setIsModalOpen={setIsMetaModalOpen}
+        metaData={renderMetaData()}
+      />
       {chooseAvatarSteps[currentStep as keyof typeof chooseAvatarSteps]}
       {currentStep === "5" && (
         <div>
@@ -627,41 +605,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                             stopAvatarGeneration={stopAvatarGeneration}
                           />
                         )}
-
-                        {/*{!streamDone ? (*/}
-                        {/*  <button*/}
-                        {/*    type="button"*/}
-                        {/*    className={styles.submitButton}*/}
-                        {/*    disabled={isSending}*/}
-                        {/*    onClick={() => {*/}
-                        {/*      handleSubmit((data) => {*/}
-                        {/*        onSubmit(data);*/}
-                        {/*        setIsStreamConnect(true);*/}
-                        {/*        dispatch(setIsStreamShow(true));*/}
-                        {/*        setIsEmpty(true);*/}
-                        {/*        dispatch(setIsStopQuestion(false));*/}
-                        {/*        dispatch(setStreamDone(true));*/}
-                        {/*      })();*/}
-                        {/*    }}*/}
-                        {/*  >*/}
-                        {/*    <img src={Send} alt="btn" />*/}
-                        {/*  </button>*/}
-                        {/*) : (*/}
-                        {/*  <button*/}
-                        {/*    type="button"*/}
-                        {/*    className={styles.stopButton}*/}
-                        {/*    disabled={isSending}*/}
-                        {/*    onClick={() => {*/}
-                        {/*      stopAvatarGeneration({*/}
-                        {/*        client_id: String(value.id),*/}
-                        {/*      });*/}
-                        {/*      dispatch(setIsStopQuestion(true));*/}
-                        {/*      dispatch(setStreamDone(false));*/}
-                        {/*    }}*/}
-                        {/*  >*/}
-                        {/*    <div className={styles.beforeIcon} />*/}
-                        {/*  </button>*/}
-                        {/*)}*/}
                       </div>
                     </Form>
                   </div>
@@ -669,17 +612,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
               </div>
             </div>
           </div>
-          <LanguageModal
-            isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
-            currentSelectedLanguage={defaultLanguage}
-            onLanguageSelect={onLanguageSelect}
-          />
-          <MetaModal
-            isModalOpen={isMetaModalOpen}
-            setIsModalOpen={setIsMetaModalOpen}
-            metaData={renderMetaData()}
-          />
         </div>
       )}
     </>

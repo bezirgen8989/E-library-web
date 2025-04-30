@@ -1,9 +1,8 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { Modal, Popconfirm } from "antd";
+import { Button, Modal, Popconfirm } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import Button from "../../../../components/common/Buttons/Button";
 import NoAvatar from "../../../../assets/images/icons/uploadBg.png";
 import Close from "../../../../assets/images/icons/Close.svg";
 import Delete from "../../../../assets/images/icons/delete_icon.svg";
@@ -265,9 +264,11 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
             />
           </div>
         </div>
-        <Button variant="Brown" type="submit">
-          {t("saveBtn")}
-        </Button>
+        <div className={commonStyles.primaryBtn}>
+          <Button htmlType="submit" className={styles.saveBtn}>
+            {t("saveBtn")}
+          </Button>
+        </div>
       </form>
       <Popconfirm
         title={
@@ -312,15 +313,13 @@ const EditProfileModal: FC<EditProfileModalProps> = ({
             width: "100%",
             display: "flex",
             justifyContent: "center",
-            paddingBottom: "70px",
-            paddingTop: "57px",
           }}
         >
           <Button
-            style={{ width: 249, margin: "30px auto 0 auto" }}
-            variant="Error"
-            type="button"
+            danger
+            htmlType="button"
             icon={<img src={Delete} alt="delete-icon" />}
+            className={commonStyles.deleteBtn}
           >
             {t("deleteAccount")}
           </Button>

@@ -24,7 +24,7 @@ interface AvatarData {
 interface ChooseAvatarProps {
   // setCurrentStep: (value: number) => void;
   avatars: { data: AvatarData[] };
-  setSelectedAvatar: (link: string) => void;
+  // setSelectedAvatar: (link: string) => void;
   setUserAvatar: (id: number) => void;
   initialSlide: any;
   setInitialSlide: any;
@@ -37,7 +37,7 @@ interface ChooseAvatarProps {
 const ChooseAvatar: FC<ChooseAvatarProps> = ({
   // setCurrentStep,
   avatars = { data: [] },
-  setSelectedAvatar,
+  // setSelectedAvatar,
   setUserAvatar,
   initialSlide,
   setInitialSlide,
@@ -66,7 +66,7 @@ const ChooseAvatar: FC<ChooseAvatarProps> = ({
       if (avatars?.data?.length) {
         const selected = avatars.data[current % avatars.data.length];
         setCurrentImage(selected);
-        setSelectedAvatar(selected.avatarPicture.link);
+        // setSelectedAvatar(selected.avatarPicture.link);
       }
     },
     responsive: [

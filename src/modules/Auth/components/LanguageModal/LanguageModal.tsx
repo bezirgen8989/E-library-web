@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Button, Form, Input, Modal } from "antd";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -77,6 +77,10 @@ const LanguageModal = ({
     ),
   };
 
+  useEffect(() => {
+    return () => form.setFieldsValue({ searchedLangName: "" });
+  }, [isModalOpen]);
+
   return (
     <Modal
       title={
@@ -89,7 +93,7 @@ const LanguageModal = ({
       open={isModalOpen}
       onOk={closeModal}
       onCancel={closeModal}
-      className="custom-modal"
+      className="custom-modal custom-modal-language"
       footer={null}
     >
       <Form
