@@ -1,7 +1,7 @@
 export const stopAvatarGeneration = async (params: any, token: string) => {
   try {
     const response = await fetch(
-      "https://avatar19413587.plavno.app:24828/stop",
+      "https://avatar19788240.plavno.app:43947/stop",
       {
         method: "POST",
         headers: {
