@@ -144,7 +144,7 @@ export const Header = ({ children }: PropsWithChildren<Props>) => {
               <div className={styles.dropdownTitle}>
                 {result?.userName ? result?.userName : result?.email}
               </div>
-              <span>{icons["arrow"]}</span>
+              <div>{icons["arrow"]}</div>
             </div>
           </Button>
         </div>

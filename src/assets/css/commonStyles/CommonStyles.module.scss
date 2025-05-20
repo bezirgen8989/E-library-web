@@ -280,9 +280,9 @@
   scrollbar-color: lightgrey transparent;
   height: 70vh;
 
-  //& > div {
-  //  padding-bottom: 74px;
-  //}
+  & > div {
+    padding-bottom: 74px;
+  }
 }
 
 /* WebKit Browsers (Chrome, Safari) */

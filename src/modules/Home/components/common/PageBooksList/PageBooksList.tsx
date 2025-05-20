@@ -1,10 +1,10 @@
-import styles from "./PageBooksList.module.scss";
+import { ReactNode, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import NoImg from "../../../../../assets/images/NoImagePlaceholder.jpg";
-import { FC, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import styles from "./PageBooksList.module.scss";
 
 interface Author {
   name: string;
@@ -27,13 +27,13 @@ interface PageBooksListProps {
   getBook: (id: number) => void;
 }
 
-const PageBooksList: FC<PageBooksListProps> = ({
+const PageBooksList = ({
   title,
   titleImage,
   books,
   seeAllLink,
   getBook,
-}) => {
+}: PageBooksListProps) => {
   const { t } = useTranslation();
   const [displayCount, setDisplayCount] = useState<number>(
     books ? books.length : 0

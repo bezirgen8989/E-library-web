@@ -98,13 +98,19 @@
 .dropdownLight{
   .userNameTitle{
     display: flex;
+    gap: 6px;
+    width: 100%;
+    flex: 1;
+    padding: 0 10px 0 0;
     .dropdownTitle{
-      width: 37%;
+      flex: 1;
+      max-width: 4.5rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      text-align: start;
     }
-    & > span svg path {
+    & > div svg path {
       stroke: #996C42;
     }
   }
@@ -117,13 +123,18 @@
   .userNameTitle{
     display: flex;
     gap: 6px;
+    width: 100%;
+    flex: 1;
+    padding: 0 10px 0 0;
     .dropdownTitle{
-      width: 37%;
+      flex: 1;
+      max-width: 4.5rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      text-align: start;
     }
-    & > span svg path {
+    & > div svg path {
       stroke: #FFFFFF;
     }
   }

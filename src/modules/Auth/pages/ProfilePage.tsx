@@ -1,7 +1,7 @@
 import { ProfileContainer } from "modules/Auth/containers";
 
-const ProfilePage: React.FC = () => {
-  return <ProfileContainer />
-}
+const ProfilePage = () => {
+  return <ProfileContainer />;
+};
 
-export default ProfilePage
+export default ProfilePage;

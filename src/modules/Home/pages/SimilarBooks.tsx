@@ -1,7 +1,7 @@
 import SimilarBooksContainer from "../containers/SimilarBooksContainer";
 
-const NewBooks: React.FC = () => {
-  return <SimilarBooksContainer />
-}
+const NewBooks = () => {
+  return <SimilarBooksContainer />;
+};
 
-export default NewBooks
+export default NewBooks;

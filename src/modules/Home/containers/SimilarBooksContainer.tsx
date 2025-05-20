@@ -8,12 +8,14 @@ import BooksComponent from "../components/AllBooksComponents/BooksComponent";
 import { getLocalization } from "../../Auth/slices/auth";
 import { UserContext } from "../../../core/contexts";
 import { useTranslation } from "react-i18next";
+import { useQuery } from "../../../hooks/useQuery";
 
-const SimilarBooksContainer: React.FC = () => {
+const SimilarBooksContainer = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
   const value = useContext(UserContext);
+  const queryCategories = useQuery("categories");
 
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -40,14 +42,12 @@ const SimilarBooksContainer: React.FC = () => {
   const hasMoreBooks =
     (similarBooks?.result?.total || 0) >
     (similarBooks?.result?.data?.length || 0);
-  const habitsCategories = currentBook?.result?.categories
-    .map((genre: { id: string; name: string; colour: string }) => genre.id)
+
+  const filterBookLink = currentBook?.result?.categories
+    ?.map((genre: { id: string; name: string; colour: string }) => genre.id)
     .join(",");
 
-  console.log("habitsCategories Lis", habitsCategories);
-
-  // const dateOrder = "[dateAdded]=desc";
-  const suggestedFilter = `[categories.id][in]=${habitsCategories}`;
+  const suggestedFilter = `[categories.id][in]=${queryCategories}`;
   const ratingOrder = "[rating]=desc";
 
   const getBook = useCallback((id) => {
@@ -56,7 +56,7 @@ const SimilarBooksContainer: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (habitsCategories) {
+    if (queryCategories) {
       dispatch(clearBooks());
       dispatch(
         getSimilarBooks({
@@ -69,11 +69,11 @@ const SimilarBooksContainer: React.FC = () => {
     }
   }, [dispatch, suggestedFilter]);
 
-  const loadMoreBooks = async () => {
+  const loadMoreBooks = () => {
     setLoadingMore(true);
     const nextPage = page + 1;
     try {
-      await dispatch(
+      dispatch(
         getSimilarBooks({
           limit: limit.toString(),
           page: nextPage.toString(),
@@ -88,6 +88,11 @@ const SimilarBooksContainer: React.FC = () => {
       setLoadingMore(false);
     }
   };
+  useEffect(() => {
+    if (!filterBookLink && !queryCategories) {
+      history.push("/");
+    }
+  }, [filterBookLink, queryCategories]);
 
   return (
     <BooksComponent

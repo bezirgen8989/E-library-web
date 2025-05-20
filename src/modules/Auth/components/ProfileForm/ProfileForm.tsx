@@ -80,6 +80,7 @@ const ProfileForm: React.FC<RecoverProps> = ({
     setSelectedLanguage(language);
     sessionStorage.setItem("appLanguage", JSON.stringify(language));
     setValue("language", language.name);
+    setIsModalOpen(false);
   };
 
   const showModal = () => {
@@ -122,17 +123,6 @@ const ProfileForm: React.FC<RecoverProps> = ({
             <img style={{ marginRight: 9 }} src={BackIcon} alt="Back arrow" />
             {t("backBtn")}
           </div>
-          {/*<div*/}
-          {/*  onClick={() => history.push(homeRoutes.root)}*/}
-          {/*  className={commonStyles.backBtnRelative}*/}
-          {/*>*/}
-          {/*  Skip*/}
-          {/*  <img*/}
-          {/*    style={{ marginLeft: 9, transform: "rotate(180deg)" }}*/}
-          {/*    src={BackIcon}*/}
-          {/*    alt="Back arrow"*/}
-          {/*  />*/}
-          {/*</div>*/}
         </div>
         <div className={commonStyles.centered}>
           <div className={commonStyles.logo_name}>{t("profileDetails")}</div>
@@ -308,8 +298,9 @@ const ProfileForm: React.FC<RecoverProps> = ({
           modalType="language"
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
-          currentSelectedLanguage={defaultLanguage}
+          currentSelectedLanguage={selectedLanguage}
           onLanguageSelect={onLanguageSelect}
+          closeModal={() => setIsModalOpen(false)}
         />
       </div>
     </div>
