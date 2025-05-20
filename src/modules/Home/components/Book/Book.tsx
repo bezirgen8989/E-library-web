@@ -62,7 +62,9 @@ const Book = ({
 
   const { userData } = useAuthState();
   const { currentBook, currentBookVersion, reviews } = useHomeState();
-
+  const filterBookLink = currentBook?.result?.categories
+    ?.map((genre) => genre.id)
+    .join(",");
   const { userBookLanguage, userId } = useMemo(() => {
     const userBookLanguage =
       userData?.result?.bookLanguage || defaultEnglishLanguage;
@@ -429,7 +431,7 @@ const Book = ({
             <PageBooksList
               books={similarBooks}
               title={t("titleSimilarBooks")}
-              seeAllLink={routes.similarBooks}
+              seeAllLink={`${routes.similarBooks}?categories=${filterBookLink}`}
               getBook={getBook}
             />
           </div>

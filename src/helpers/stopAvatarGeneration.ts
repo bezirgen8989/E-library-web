@@ -14,7 +14,7 @@ export const stopAvatarGeneration = async (params: any, token: string) => {
     );
 
     if (!response.ok) {
-      throw new Error(`Error: ${response.status} ${response.statusText}`);
+      throw new Error(`Err: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();
