@@ -175,7 +175,7 @@ const AudioBookComponent: React.FC<AudioBookComponentProps> = ({
               {currentBookVersion?.result?.data[0]?.title}
             </div>
             <div className={styles.authorTitle}>
-              {book?.result?.author[0].name}
+              {book?.result?.author?.[0].name}
             </div>
             <div className={styles.controls}>
               <button
