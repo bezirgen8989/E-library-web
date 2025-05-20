@@ -47,9 +47,7 @@ const AudioBookContainer: React.FC = () => {
       if (id) {
         setIsFetchingAudio(true);
         try {
-          await dispatch(
-            getAudioBook({ bookId: id, langId, page: currentPage })
-          );
+          dispatch(getAudioBook({ bookId: id, langId, page: currentPage }));
         } catch (error) {
           console.error("Error fetching audio book:", error);
         } finally {
@@ -73,7 +71,7 @@ const AudioBookContainer: React.FC = () => {
       if (value?.id && id) {
         try {
           if (currentBook?.result?.isReading === false) {
-            await dispatch(
+            dispatch(
               addToShelf({
                 user: { id: +value.id },
                 book: { id: +id },
@@ -83,7 +81,7 @@ const AudioBookContainer: React.FC = () => {
             );
           }
 
-          await dispatch(
+          dispatch(
             getBookshelfById({
               userId: +value.id,
               bookId: +id,
