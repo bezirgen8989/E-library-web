@@ -67,6 +67,7 @@ const AskQuestionContainer: React.FC = () => {
   const ctrlRef = useRef<AbortController>(new AbortController());
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const srsSdkRef = useRef<typeof SrsRtcWhipWhepAsync | any>(null);
+  const selectedBookId = useQuery("selectedBook");
 
   useEffect(() => {
     if (!id) return; // Если id нет — выходим
@@ -253,15 +254,7 @@ const AskQuestionContainer: React.FC = () => {
   };
 
   useEffect(() => {
-    // const unlisten = history.listen((location) => {
-    //   if (!location.pathname.includes("ask_question")) {
-    //     dispatch(getMe());
-    //   }
-    // });
-
     return () => {
-      // unlisten();
-      // Cleanup dispatch when component is unmounted
       dispatch(setIsStreamShow(false));
     };
   }, [dispatch]);
@@ -300,9 +293,6 @@ const AskQuestionContainer: React.FC = () => {
     };
   }, [subscribeToEvent, unsubscribeFromEvent, connected, avatarStreamShow]);
 
-  // const filteredLanguages = languages?.result?.data.filter(lang => lang.name !== "Dari");
-
-  const selectedBookId = useQuery("selectedBook");
   useEffect(() => {
     if (selectedBookId && selectedBookId !== "global") {
       dispatch(getBookById(selectedBookId));

@@ -1,32 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import WaveSurfer from "wavesurfer.js";
-// import { Mic } from "lucide-react";
 import RecordPlugin from "wavesurfer.js/dist/plugins/record";
 import MicIcon from "../../../assets/images/icons/MicIconBrown.svg";
 import MuteMicIcon from "../../../assets/images/icons/MuteMicIconBrown.svg";
-
-// import { useNotification } from '@refinedev/core';
 import { Button, Spin, Tooltip } from "antd";
 import classNames from "classnames";
-
-// import { CUSTOM_BUTTONS_TYPES, CustomButton } from '@components/Button';
-// import {
-//   renderLangCodes,
-// } from '@helper';
-// import SpinMic from '@components/SpinMic';
-
 import styles from "./styles.module.scss";
 import { renderLangCodes } from "../../../helpers/helper";
 import { useVoice } from "../../../hooks/useVoice";
 import { CustomButton } from "../Button";
 import SpinMic from "../SpinMic";
 import CustomIcon, { ICON_TYPES } from "../CustomIcon";
-// import Button from "../../common/Buttons/Button";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { useAuthState } from "../../../modules/Auth/slices/auth";
-// import {setIsStopQuestion} from "../../../modules/Home/slices/home";
-// import {useDispatch} from "react-redux";
 
 interface IVoiceRecorder {
   isNonHealth?: boolean;
@@ -34,7 +21,6 @@ interface IVoiceRecorder {
   clickCursor: () => void;
   isLoadingData?: boolean;
   link: string;
-  setIsStreamConnect?: (value: boolean) => void;
   userId: any;
   selectedLanguageCode: string;
   isFirst: boolean;
@@ -54,7 +40,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   addTextWithDelay,
   isNonHealth,
   link,
-  setIsStreamConnect,
   userId,
   indexName,
   selectedLanguageCode,
@@ -65,11 +50,9 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   streamDone,
   recording,
   setRecording,
-  stopAvatarGeneration,
 }) => {
   const { t } = useTranslation();
   const { userData } = useAuthState();
-  // const [recording, setRecording] = useState(false);
   const [recordingUrl] = useState<string | null>(null);
   const wavesurferRef = useRef<WaveSurfer | null>(null);
   const recordRef = useRef<any>(null);
@@ -85,12 +68,10 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     startStreaming,
     deleteStreaming,
     connectToWhisper,
-    // pauseStreaming,
     toggleMicMute,
   ] = useVoice({
     language,
     setTextAreaValue: addTextWithDelay,
-    // setQuestion,
     userId,
     indexName,
     selectedLanguageCode,
@@ -110,8 +91,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   const [hasMicrophoneAccess, setHasMicrophoneAccess] = useState<
     boolean | null
   >(null);
-
-  // const dispatch = useDispatch();
 
   const [isMuted, setIsMuted] = useState(false);
 
@@ -141,7 +120,7 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
       setHasMicrophoneAccess(false);
     }
   };
-  console.log("isFirst", isFirst);
+
   useEffect(() => {
     checkMicrophoneAccess();
   }, []);
@@ -153,17 +132,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
   }, [isLoadingData, hasMicrophoneAccess]);
 
   const createWaveSurfer = () => {
-    // if (!hasMicrophoneAccess) {
-    //   open && open({
-    //     message: 'Please enable it in your browser settings',
-    //     type: 'error',
-    //     description: 'Microphone access denied',
-    //   });
-    //
-    //   return;
-    // }
-
-    // Destroy existing instance if any
     if (wavesurferRef.current) {
       wavesurferRef.current.destroy();
     }
@@ -240,33 +208,13 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
     if (!progressRef.current) {
       return;
     }
-
-    const formattedTime = [
+    progressRef.current.textContent = [
       Math.floor((time % 3600000) / 60000),
       Math.floor((time % 60000) / 1000),
     ]
       .map((v) => (v < 10 ? "0" + v : v))
       .join(":");
-    progressRef.current.textContent = formattedTime;
   };
-
-  // const renderText = () => {
-  //   if (recordingUrl) {
-  //     return "Recording is ready!";
-  //   }
-  //
-  //   if (!isFirst && paused) {
-  //     return "Paused";
-  //   }
-  //
-  //   if (!isFirst && !paused) {
-  //     return t("askNow");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   handleRecordClick();
-  // }, [avatarLanguage]);
 
   useEffect(() => {
     if (recording) {
@@ -291,13 +239,10 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
       setRecording(false);
       stopStreaming();
       setIsFirst(true);
-      // dispatch(setIsStopQuestion(true));
-      // setIsStreamConnect && setIsStreamConnect(false); // Stop stream connection when recording stops
       return;
     }
     setDisconnected(false);
     setRecording(true);
-    setIsStreamConnect && setIsStreamConnect(true); // Start stream connection
     await recordRef.current?.startRecording();
   };
 
@@ -322,6 +267,20 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
 
     createWaveSurfer();
   }, [isFirst]);
+
+  useEffect(() => {
+    return () => {
+      if (wavesurferRef.current) {
+        wavesurferRef.current.destroy();
+        wavesurferRef.current = null;
+      }
+      if (recordRef.current) {
+        recordRef.current.destroy();
+        recordRef.current = null;
+      }
+      stopStreaming();
+    };
+  }, []);
 
   if (isLoadingData) {
     return (
@@ -371,7 +330,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
                 borderRadius: "50%",
                 display: "flex",
               }}
-              // onClick={startRecording}
               onClick={() => {
                 setIsConnecting(true);
               }}
@@ -382,7 +340,6 @@ const VoiceRecorder: React.FC<IVoiceRecorder> = ({
         </div>
       ) : (
         <div className={styles.voiceBlock}>
-          {/*<span className={styles.name}>{renderText()}</span>*/}
           {!recordingUrl && (
             <>
               <div

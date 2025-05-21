@@ -1,6 +1,6 @@
 import { AskQuestionContainer } from "../containers";
 
-const AskQuestionPage: React.FC = () => {
+const AskQuestionPage = () => {
   return <AskQuestionContainer />;
 };
 
