@@ -20,13 +20,9 @@ interface IUseVoiceHook {
 }
 
 export const useVoice = ({
-  language = "en",
-  setTextAreaValue,
-  isTrascribe = false,
   userId,
   indexName,
   selectedLanguageCode,
-  setIsShowSilent,
   setChatHistory,
   setMessageClass,
   disconnected,
@@ -36,50 +32,40 @@ export const useVoice = ({
   const recorderRef = useRef<ScriptProcessorNode | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const dispatch = useDispatch();
-
-  const [userLanguage, setUserLanguage] = useState("en");
   const [state, setState] = useState(0);
   const stateRef = useRef(state);
-
-  // const { isStopQuestion } = useLazySelector(({ home }) => {
-  //   const { isStopQuestion } = home;
-  //   return {
-  //     isStopQuestion,
-  //   };
-  // });
-
-  console.log(userLanguage);
-
-  useEffect(() => {
-    if (navigator) {
-      setUserLanguage(navigator.language?.split("-")?.[0]);
-    }
-  }, []);
 
   useEffect(() => {
     stateRef.current = state;
   }, [state]);
 
-  // useEffect(() => {
-  //   if (socketRef.current) {
-  //     socketRef.current.close();
-  //     socketRef.current = null;
-  //   }
-  //
-  // }, [avatarLanguage]);
-
   useEffect(() => {
     if (socketRef.current && disconnected) {
-      console.log("Disconnect Socket");
       socketRef.current.close();
       socketRef.current = null;
     }
   }, [disconnected]);
-  console.log("socketRef.current", socketRef.current);
 
-  const [messages, setMessages] = useState<string[]>([]);
-  // const [chatHistory, setChatHistory] = useState<any>([]);
-  console.log("messages", messages);
+  useEffect(() => {
+    return () => {
+      if (audioCtxRef.current) {
+        audioCtxRef.current.close(); // Завершаем AudioContext
+        audioCtxRef.current = null;
+      }
+      if (recorderRef.current) {
+        recorderRef.current.disconnect(); // Дисконнект рекордера
+        recorderRef.current = null;
+      }
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop()); // Останавливаем поток
+        streamRef.current = null;
+      }
+      if (socketRef.current) {
+        socketRef.current.close(); // Закрываем WebSocket
+        socketRef.current = null;
+      }
+    };
+  }, []);
 
   const connectToWhisper = () => {
     socketRef.current = new WebSocket(urlSocket);
@@ -148,25 +134,10 @@ export const useVoice = ({
       if (data?.type === "answer" && data?.text) {
         const chunkText = data.text;
 
-        setMessages((prev) => [...prev, chunkText]);
-
         setChatHistory((prev: any) => [
           ...prev,
           { type: "response", message: chunkText },
         ]);
-
-        // setChatHistory((prev: any) => {
-        //   const updatedHistory = [...prev];
-        //   const lastIndex = updatedHistory.length - 1;
-        //
-        //   if (updatedHistory[lastIndex]?.type === "response") {
-        //     updatedHistory[lastIndex].message += chunkText;
-        //   } else {
-        //     updatedHistory.push({ type: "response", message: chunkText });
-        //   }
-        //
-        //   return updatedHistory;
-        // });
 
         dispatch(setIsStreamShow(true));
       }

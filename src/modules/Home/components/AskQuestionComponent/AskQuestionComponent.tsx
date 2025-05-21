@@ -109,12 +109,9 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
 
   const [messageClass, setMessageClass] = useState(styles.messageSystemChange);
   const [isCollapseVisible] = useState(false);
-  // const videoRef = useRef<HTMLVideoElement | any>(null);
-  // const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const quillRef = useRef<ReactQuill>(null);
   const cursorPositionRef = useRef<null | number>(null);
   const [url, setUrl] = useState<any>();
-  const [, setIsStreamConnect] = useState(false);
   const chatContentRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMetaModalOpen, setIsMetaModalOpen] = useState(false);
@@ -220,10 +217,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
           }
         );
 
-        if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`);
-        }
-
         const text = await response.text();
         console.log("Response text (URL):", text);
 
@@ -304,7 +297,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
     "1": (
       <ChooseAvatar
         avatars={avatars.result}
-        // setSelectedAvatar={setSelectedAvatar}
         setUserAvatar={setUserAvatar}
         initialSlide={initialSlide}
         setInitialSlide={setInitialSlide}
@@ -315,11 +307,7 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
       />
     ),
     "2": (
-      <ChooseAvatarStep2
-        selectedAvatar={
-          "https://elore.sfo3.cdn.digitaloceanspaces.com/avatarsImages/avatars/male2.jpg"
-        }
-      />
+      <ChooseAvatarStep2 selectedAvatar="https://elore.sfo3.cdn.digitaloceanspaces.com/avatarsImages/avatars/male2.jpg" />
     ),
     "3": (
       <ChooseAvatarStep3 selectedAvatar="https://elore.sfo3.cdn.digitaloceanspaces.com/avatarsImages/avatars/male2.jpg" />
@@ -488,13 +476,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                               isLoading &&
                               !chat.message && <ChatSpinner />}
                             {chat.message}
-                            {/*{chat.type === "user" && (*/}
-                            {/*  <div className={styles.messageSystemBottom}>*/}
-                            {/*    <span className={styles.messageTime}>*/}
-                            {/*      {messageTime}*/}
-                            {/*    </span>*/}
-                            {/*  </div>*/}
-                            {/*)}*/}
                           </div>
                         </div>
                       );
@@ -591,7 +572,6 @@ const AskQuestionComponent: React.FC<AskQuestionComponentProps> = ({
                             addTextWithDelay={addTextWithDelay}
                             clickCursor={clickCursor}
                             isLoadingData={false}
-                            setIsStreamConnect={setIsStreamConnect}
                             userId={value?.id?.toString()}
                             selectedLanguageCode={selectedLanguage.isoCode2char}
                             indexName={indexName}
