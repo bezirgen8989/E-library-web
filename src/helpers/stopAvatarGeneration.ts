@@ -3,7 +3,7 @@ const avatarUrl = process.env.REACT_APP_AVATAR_URL;
 export const stopAvatarGeneration = async (params: any, token: string) => {
   try {
     const response = await fetch(
-      avatarUrl || "https://avatar20197939.plavno.app:57930/stop",
+      avatarUrl || "https://avatar20424329.plavno.app:3316/stop",
       {
         method: "POST",
         headers: {
