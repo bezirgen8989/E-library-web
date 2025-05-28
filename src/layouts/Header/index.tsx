@@ -27,7 +27,7 @@ import routes from "../../modules/UserManagement/routing/routes";
 
 type Props = {};
 
-const otherStyle = ["/ask_question", "/user/profile", "/choose_avatar"];
+const otherStyle = ["ask_question", "user", "choose_avatar", "audio_book"];
 
 export const Header = ({ children }: PropsWithChildren<Props>) => {
   const { t } = useTranslation();
@@ -56,7 +56,10 @@ export const Header = ({ children }: PropsWithChildren<Props>) => {
     dispatch(setDrawerOpen(true));
   };
 
-  const darkPage = otherStyle.includes(pathname);
+  const darkPage = otherStyle.includes(splitRoute[1]);
+
+  console.log(pathname);
+  console.log(splitRoute[1]);
 
   useLayoutEffect(() => {
     if (!user?.id) {
