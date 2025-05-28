@@ -58,9 +58,6 @@ export const Header = ({ children }: PropsWithChildren<Props>) => {
 
   const darkPage = otherStyle.includes(splitRoute[1]);
 
-  console.log(pathname);
-  console.log(splitRoute[1]);
-
   useLayoutEffect(() => {
     if (!user?.id) {
       dispatch(getMe());
